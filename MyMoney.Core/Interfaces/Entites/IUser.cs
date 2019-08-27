@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace MyMoney.Core.Interfaces.Entites
 {
@@ -8,5 +9,8 @@ namespace MyMoney.Core.Interfaces.Entites
         string PasswordHash { get; set; }
         DateTime DateOfBirth { get; set; }
         string FullName { get; set; }
+
+        IQueryable<ITransaction> Transactions { get; }
+        IQueryable<IBudget> Budgets { get; }
     }
 }
