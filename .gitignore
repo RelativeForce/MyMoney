@@ -3,3 +3,15 @@
 ################################################################################
 
 /.vs
+/MyMoney.Android/bin/Debug
+/MyMoney.Android/obj
+/MyMoney.API/bin/Debug/netcoreapp2.0
+/MyMoney.API/obj
+/MyMoney.Common/bin/Debug/netstandard2.0
+/MyMoney.Common/obj
+/MyMoney.Core/bin/Debug
+/MyMoney.Core/obj
+/MyMoney.Infrastructure/bin/Debug
+/MyMoney.Infrastructure/obj
+/MyMoney.iOS/bin/iPhoneSimulator/Debug
+/MyMoney.iOS/obj
