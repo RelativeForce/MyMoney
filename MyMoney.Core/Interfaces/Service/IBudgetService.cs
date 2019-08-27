@@ -5,7 +5,7 @@ namespace MyMoney.Core.Interfaces.Service
 {
     public interface IBudgetService
     {
-        IBudget Add(DateTime month, decimal amount);
-        IBudget Find(DateTime month);
+        IBudget Add(IUser user, DateTime month, decimal amount);
+        IBudget Find(IUser user, DateTime month);
     }
 }

@@ -19,7 +19,7 @@ namespace MyMoney.API.Controllers
             _userService = userService;
         }
 
-        [HttpPost("login")]
+        [HttpPost(nameof(Login))]
         public IActionResult Login([FromBody]LoginRequest loginParameters)
         {
             try
@@ -44,7 +44,7 @@ namespace MyMoney.API.Controllers
             }
         }
 
-        [HttpPost("register")]
+        [HttpPost(nameof(Register))]
         public IActionResult Register([FromBody] RegisterRequest registerParameters)
         {
             try

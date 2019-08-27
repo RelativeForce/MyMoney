@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyMoney.Client.Models.DTO;
 using MyMoney.Client.Models.Request;
-using MyMoney.Client.Models.Response;
 using MyMoney.Core.Interfaces.Service;
 
 namespace MyMoney.API.Controllers
@@ -22,23 +22,28 @@ namespace MyMoney.API.Controllers
             _budgetService = budgetService;
         }
 
-        [HttpGet("login")]
-        public IActionResult Login([FromBody]LoginRequest loginParameters)
+        [HttpGet(nameof(Find))]
+        public IActionResult Find([FromBody]BudgetRequest findParameters)
         {
             try
             {
-                if (loginParameters == null || !ModelState.IsValid)
+                if (findParameters == null || !ModelState.IsValid)
                 {
                     return BadRequest("Invalid State");
                 }
 
-                var result = _userService.Login(loginParameters.Email, loginParameters.Password);
+                var user = _userService.GetById(CurrentUserId);
 
-                return Ok(new LoginResponse
+                if (user == null)
+                    return BadRequest("Error while retrieving user information");
+
+                var result = _budgetService.Find(user, findParameters.Date);
+
+                return Ok(new BudgetModel
                 {
-                    Success = result.Success,
-                    Error = result.Error,
-                    Token = result.Token
+                    Id = result.Id,
+                    Amount = result.Amount,
+                    Month = result.Month
                 });
             }
             catch (Exception)
@@ -47,8 +52,8 @@ namespace MyMoney.API.Controllers
             }
         }
 
-        [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterRequest registerParameters)
+        [HttpPost(nameof(Add))]
+        public IActionResult Add([FromBody] BudgetModel registerParameters)
         {
             try
             {
@@ -57,18 +62,22 @@ namespace MyMoney.API.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var result = _userService.Register(
-                    registerParameters.Email, 
-                    registerParameters.Password, 
-                    registerParameters.DateOfBirth, 
-                    registerParameters.FullName
+                var user = _userService.GetById(CurrentUserId);
+
+                if (user == null)
+                    return BadRequest("Error while retrieving user information");
+
+                var result = _budgetService.Add(
+                    user, 
+                    registerParameters.Month, 
+                    registerParameters.Amount
                     );
 
-                return Ok(new LoginResponse
+                return Ok(new BudgetModel
                 {
-                    Success = result.Success,
-                    Error = result.Error,
-                    Token = result.Token
+                    Id = result.Id,
+                    Amount = result.Amount,
+                    Month = result.Month
                 });
 
             }
