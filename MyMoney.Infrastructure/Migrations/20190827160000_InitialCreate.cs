@@ -17,7 +17,8 @@ namespace MyMoney.Infrastructure.Migrations
                     Email = table.Column<string>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
-                    FullName = table.Column<string>(nullable: false)
+                    FullName = table.Column<string>(nullable: false),
+                    Salt = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

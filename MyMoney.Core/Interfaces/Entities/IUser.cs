@@ -8,6 +8,7 @@ namespace MyMoney.Core.Interfaces.Entities
     {
         string Email { get; set; }
         string PasswordHash { get; set; }
+        string Salt { get; set; }
         DateTime DateOfBirth { get; set; }
         string FullName { get; set; }
 

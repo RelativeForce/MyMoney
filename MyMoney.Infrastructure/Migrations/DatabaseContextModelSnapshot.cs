@@ -75,6 +75,9 @@ namespace MyMoney.Infrastructure.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired();
 
+                    b.Property<string>("Salt")
+                        .IsRequired();
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")

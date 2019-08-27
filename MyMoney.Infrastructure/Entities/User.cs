@@ -17,6 +17,8 @@ namespace MyMoney.Infrastructure.Entities
         public DateTime DateOfBirth { get; set; }
         [Required]
         public string FullName { get; set; }
+        [Required]
+        public string Salt { get; set; }
 
         [NotMapped]
         public IQueryable<IBudget> Budgets => BudgetsProxy.Cast<IBudget>().AsQueryable();
