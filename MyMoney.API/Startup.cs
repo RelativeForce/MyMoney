@@ -9,6 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MyMoney.API.Utility;
+using MyMoney.Core.Interfaces;
+using MyMoney.Core.Interfaces.Service;
+using MyMoney.Core.Services;
+using MyMoney.Infrastructure;
 using MyMoney.Infrastructure.EntityFramework;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -55,6 +59,13 @@ namespace MyMoney.API
                         ValidateAudience = false
                     };
                 });
+
+            services.AddScoped<ITokenProvider, TokenProvider>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IBudgetService, BudgetService>();
+            services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IEntityFactory, EntityFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
