@@ -61,6 +61,24 @@ namespace MyMoney.Infrastructure
             }
         }
 
+        public bool Update<T>(T item) where T : class, IBaseEntity
+        {
+            if (item == null)
+                return false;
+
+            try
+            {
+                _model.SaveChanges();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
         public IQueryable<T> Where<T>(Expression<Func<T, bool>> predicate) where T : class, IBaseEntity
         {
             if (predicate == null)
@@ -85,6 +103,22 @@ namespace MyMoney.Infrastructure
             try
             {
                 return _model.Set<T>().FirstOrDefault(predicate);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+
+        public T FindById<T>(long id) where T : class, IBaseEntity
+        {
+            if (id <= 0)
+                return null;
+
+            try
+            {
+                return _model.Set<T>().FirstOrDefault(e => e.Id == id);
             }
             catch (Exception e)
             {

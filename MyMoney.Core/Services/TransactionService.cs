@@ -18,7 +18,7 @@ namespace MyMoney.Core.Services
 
         public ITransaction Add(IUser user, DateTime date, string description, decimal amount)
         {
-            if (string.IsNullOrWhiteSpace(description))
+            if (string.IsNullOrWhiteSpace(description) || user == null)
                 return null;
 
             var transaction = _entityFactory.NewTransaction;
@@ -29,6 +29,24 @@ namespace MyMoney.Core.Services
             transaction.User = user;
 
             return _repository.Add(transaction);
+        }
+
+        public bool Update(ITransaction transaction)
+        {
+            if (string.IsNullOrWhiteSpace(transaction.Description) || transaction.User == null || transaction.UserId == default)
+                return false;
+
+            return _repository.Update(transaction);
+        }
+
+        public bool Delete(long transactionId)
+        {
+            var transaction = _repository.FindById<ITransaction>(transactionId);
+
+            if (transaction == null)
+                return false;
+
+            return _repository.Delete(transaction);
         }
     }
 }
