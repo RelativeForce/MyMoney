@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Infrastructure.Entities;
 using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Infrastructure
@@ -86,7 +87,7 @@ namespace MyMoney.Infrastructure
 
             try
             {
-                return _model.Set<T>().Where(predicate);
+                return Set<T>().Where(predicate);
             }
             catch (Exception e)
             {
@@ -102,7 +103,7 @@ namespace MyMoney.Infrastructure
 
             try
             {
-                return _model.Set<T>().FirstOrDefault(predicate);
+                return Set<T>().FirstOrDefault(predicate);
             }
             catch (Exception e)
             {
@@ -118,7 +119,7 @@ namespace MyMoney.Infrastructure
 
             try
             {
-                return _model.Set<T>().FirstOrDefault(e => e.Id == id);
+                return Set<T>().FirstOrDefault(e => e.Id == id);
             }
             catch (Exception e)
             {
@@ -131,13 +132,27 @@ namespace MyMoney.Infrastructure
         {
             try
             {
-                return _model.Set<T>();
+                return Set<T>();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return null;
             }
+        }
+
+        private IQueryable<T> Set<T>() where T : class, IBaseEntity
+        {
+            if (typeof(T) == typeof(ITransaction))
+                return _model.Set<Transaction>().Cast<ITransaction>().AsQueryable() as IQueryable<T>;
+
+            if (typeof(T) == typeof(IUser))
+                return _model.Set<User>().Cast<IUser>().AsQueryable() as IQueryable<T>;
+
+            if (typeof(T) == typeof(IBudget))
+                return _model.Set<Budget>().Cast<IBudget>().AsQueryable() as IQueryable<T>;
+
+            throw new InvalidCastException("Unsupported entity type");
         }
     }
 }

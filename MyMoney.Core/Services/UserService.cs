@@ -21,7 +21,7 @@ namespace MyMoney.Core.Services
 
         public LoginResult Login(string email, string passwordHash)
         {
-            var user = _repository.Find<IUser>(u => u.Email == email);
+            var user = _repository.Find<IUser>(u => u.Email.Equals(email));
 
             if (user == null)
                 return LoginResult.FailResult("No user with that email exists");
