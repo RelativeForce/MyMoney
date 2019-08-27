@@ -90,5 +90,10 @@ namespace MyMoney.Core.Services
 
             return LoginResult.SuccessResult(token);
         }
+
+        public IUser GetById(long userId)
+        {
+            return _repository.FindById<IUser>(userId);
+        }
     }
 }

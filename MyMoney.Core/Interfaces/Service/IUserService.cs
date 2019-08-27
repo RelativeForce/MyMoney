@@ -1,4 +1,5 @@
 ﻿using System;
+using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Services;
 
 namespace MyMoney.Core.Interfaces.Service
@@ -7,5 +8,6 @@ namespace MyMoney.Core.Interfaces.Service
     {
         LoginResult Login(string email, string passwordHash);
         LoginResult Register(string email, string passwordHash, DateTime dateOfBirth, string fullName);
+        IUser GetById(long userId);
     }
 }
