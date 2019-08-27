@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MyMoney.Core.Interfaces.Entities
@@ -12,5 +13,6 @@ namespace MyMoney.Core.Interfaces.Entities
 
         IQueryable<ITransaction> Transactions { get; }
         IQueryable<IBudget> Budgets { get; }
+        IList<ITransaction> Between(DateTime start, DateTime end);
     }
 }

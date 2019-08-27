@@ -16,3 +16,5 @@
 /MyMoney.iOS/bin/iPhoneSimulator/Debug
 /MyMoney.iOS/obj
 /MyMoney.API/bin/Debug/netcoreapp2.1
+/MyMoney.Core.Tests/bin/Debug/netcoreapp2.2
+/MyMoney.Core.Tests/obj

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
@@ -18,19 +16,17 @@ namespace MyMoney.Core.Services
             _entityFactory = entityFactory;
         }
 
-        public IList<ITransaction> Between(DateTime start, DateTime end)
+        public ITransaction Add(IUser user, DateTime date, string description, decimal amount)
         {
-            return _repository
-                .Where<ITransaction>(t => DateTime.Compare(t.Date, start) >= 0 && DateTime.Compare(t.Date, end) <= 0)
-                .ToList();
-        }
+            if (string.IsNullOrWhiteSpace(description))
+                return null;
 
-        public ITransaction Add(DateTime date, string description, decimal amount)
-        {
             var transaction = _entityFactory.NewTransaction;
             transaction.Date = date;
             transaction.Description = description;
             transaction.Amount = amount;
+            transaction.UserId = user.Id;
+            transaction.User = user;
 
             return _repository.Add(transaction);
         }

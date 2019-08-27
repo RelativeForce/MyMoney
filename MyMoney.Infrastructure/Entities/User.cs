@@ -26,6 +26,14 @@ namespace MyMoney.Infrastructure.Entities
         public IQueryable<ITransaction> Transactions => TransactionsProxy.Cast<ITransaction>().AsQueryable();
         public ICollection<Transaction> TransactionsProxy { get; set; } = new List<Transaction>();
 
+        public IList<ITransaction> Between(DateTime start, DateTime end)
+        {
+            return TransactionsProxy
+                .Where(t => DateTime.Compare(t.Date, start) >= 0 && DateTime.Compare(t.Date, end) <= 0)
+                .Cast<ITransaction>()
+                .ToList();
+        }
+
         internal static void Configure(ModelBuilder model)
         {
             model.Entity<User>().HasIndex(t => new { t.Email }).IsUnique();
