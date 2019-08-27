@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyMoney.Core.Interfaces.Entites
+namespace MyMoney.Core.Interfaces.Entities
 {
     public interface IBudget : IBaseEntity
     {

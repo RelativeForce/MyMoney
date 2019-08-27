@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using MyMoney.Core.Interfaces.Entites;
+using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Infrastructure.Entities
 {
@@ -21,7 +21,7 @@ namespace MyMoney.Infrastructure.Entities
             set => UserProxy = value as User;
         }
 
-        [ForeignKey("UserId")]
+        [ForeignKey(nameof(UserId))]
         public virtual User UserProxy { get; set; }
 
         internal static void Configure(ModelBuilder model)

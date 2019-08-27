@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace MyMoney.Core.Interfaces.Entites
+namespace MyMoney.Core.Interfaces.Entities
 {
     public interface IUser : IBaseEntity
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using MyMoney.Core.Interfaces.Entites;
+using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Core.Interfaces
 {

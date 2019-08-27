@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using MyMoney.Core.Interfaces.Entites;
+using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Infrastructure.Entities
 {

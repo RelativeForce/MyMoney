@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Entites;
+using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Infrastructure

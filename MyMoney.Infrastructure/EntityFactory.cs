@@ -1,5 +1,5 @@
 ﻿using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Entites;
+using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities;
 
 namespace MyMoney.Infrastructure
