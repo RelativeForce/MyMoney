@@ -10,7 +10,6 @@ namespace MyMoney.Infrastructure
 {
     public sealed class Repository : IRepository
     {
-        
         private readonly DatabaseContext _model;
 
         public Repository(DatabaseContext model)
