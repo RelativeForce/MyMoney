@@ -9,17 +9,17 @@ namespace MyMoney.API.Controllers
 {
     [AllowAnonymous]
     [Route("api/[controller]")]
-    public class LoginController : Controller
+    public class UserController : Controller
     {
 
         private readonly IUserService _userService;
 
-        public LoginController(IUserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public IActionResult Login([FromBody]LoginRequest loginParameters)
         {
             try
@@ -44,7 +44,7 @@ namespace MyMoney.API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterRequest registerParameters)
         {
             try
