@@ -10,7 +10,7 @@ using MyMoney.Infrastructure.EntityFramework;
 namespace MyMoney.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190827160000_InitialCreate")]
+    [Migration("20190827165301_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,10 +74,7 @@ namespace MyMoney.Infrastructure.Migrations
                     b.Property<string>("FullName")
                         .IsRequired();
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired();
-
-                    b.Property<string>("Salt")
+                    b.Property<string>("Password")
                         .IsRequired();
 
                     b.HasKey("Id");

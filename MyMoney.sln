@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMoney.Core", "MyMoney.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMoney.Core.Tests", "MyMoney.Core.Tests\MyMoney.Core.Tests.csproj", "{3786BA27-93F7-463A-9FD0-5FF8D35A4D41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMoney.Client", "MyMoney.Client\MyMoney.Client.csproj", "{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,18 @@ Global
 		{3786BA27-93F7-463A-9FD0-5FF8D35A4D41}.Release|iPhone.Build.0 = Release|Any CPU
 		{3786BA27-93F7-463A-9FD0-5FF8D35A4D41}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{3786BA27-93F7-463A-9FD0-5FF8D35A4D41}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Release|iPhone.Build.0 = Release|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{2E13A4DB-DB37-4FFE-BB45-6AEAECA7AC0D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

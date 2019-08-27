@@ -72,10 +72,7 @@ namespace MyMoney.Infrastructure.Migrations
                     b.Property<string>("FullName")
                         .IsRequired();
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired();
-
-                    b.Property<string>("Salt")
+                    b.Property<string>("Password")
                         .IsRequired();
 
                     b.HasKey("Id");

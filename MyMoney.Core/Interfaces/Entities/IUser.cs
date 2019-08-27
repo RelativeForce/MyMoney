@@ -7,8 +7,7 @@ namespace MyMoney.Core.Interfaces.Entities
     public interface IUser : IBaseEntity
     {
         string Email { get; set; }
-        string PasswordHash { get; set; }
-        string Salt { get; set; }
+        string Password { get; set; }
         DateTime DateOfBirth { get; set; }
         string FullName { get; set; }
 

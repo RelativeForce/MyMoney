@@ -15,10 +15,9 @@ namespace MyMoney.Infrastructure.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Email = table.Column<string>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
-                    FullName = table.Column<string>(nullable: false),
-                    Salt = table.Column<string>(nullable: false)
+                    FullName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

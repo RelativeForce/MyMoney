@@ -18,7 +18,7 @@ namespace MyMoney.Core.Tests.Services
             _entityFactoryMock = new Mock<IEntityFactory>(MockBehavior.Strict);
         }
 
-        #region Add Tests
+        #region Register Tests
 
         [Theory]
         [InlineData(null)]

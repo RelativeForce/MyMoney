@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using MyMoney.Core.Services;
 
 namespace MyMoney.Core.Interfaces.Service
 {
     public interface IUserService
     {
-        bool Login(string email, string passwordHash);
+        LoginResult Login(string email, string passwordHash);
+        LoginResult Register(string email, string passwordHash, DateTime dateOfBirth, string fullName);
     }
 }
