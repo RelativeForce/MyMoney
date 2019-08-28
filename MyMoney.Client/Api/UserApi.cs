@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using MyMoney.Client.Interfaces;
 using MyMoney.Client.Interfaces.Api;
@@ -14,10 +15,29 @@ namespace MyMoney.Client.Api
 
         }
 
+        public async Task<bool> Authenticate()
+        {
+            if(Manager.CurrentUser == null)
+                throw new InvalidOperationException("User must be logged in first");
+
+            var response = await SendPost<LoginResponse>($"api/User/Login", Manager.CurrentUser.ToLoginRequest());
+
+            if (!response.Success)
+            {
+                Manager.SetAuthenticated();
+                return false;
+            }
+
+            Manager.SetAuthenticated(response.Token);
+            return true;
+        }
+
         public async Task<LoginResponse> Login(LoginRequest loginDetails)
         {
             if (loginDetails == null)
                 return null;
+
+            Manager.SetUser(loginDetails.Email, loginDetails.Password);
 
             var response = await SendPost<LoginResponse>($"api/User/Login", loginDetails);
 
@@ -33,6 +53,8 @@ namespace MyMoney.Client.Api
         {
             if (registerDetails == null)
                 return null;
+
+            Manager.SetUser(registerDetails.Email, registerDetails.Password);
 
             var response = await SendPost<LoginResponse>($"api/User/Register", registerDetails);
 

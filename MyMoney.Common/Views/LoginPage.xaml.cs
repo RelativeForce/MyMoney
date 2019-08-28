@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using MyMoney.Client;
 using MyMoney.Client.Interfaces;
 using MyMoney.Common.Models;
@@ -33,19 +34,24 @@ namespace MyMoney.Common.Views
 
         async void Login_Clicked(object sender, EventArgs e)
         {
-            App.AuthenticationManager.SetUser(UserDetails.Email, UserDetails.Password);
-            
             using (var client = App.NewApiClient)
             {
-                var response = await client.UserApi.Login(UserDetails.ToLoginRequest());
-
-                if (response.Success)
+                try
                 {
-                    RootPage.Detail = new ItemsPage();
-                    return;
-                }
+                    var response = await client.UserApi.Login(UserDetails.ToLoginRequest());
 
-                await RootPage.DisplayAlert("Login Failed", response.Error, "Close");
+                    if (response.Success)
+                    {
+                        RootPage.Detail = new ItemsPage();
+                        return;
+                    }
+
+                    await RootPage.DisplayAlert("Login Failed", response.Error, "Close");
+                }
+                catch (Exception ex)
+                {
+                    await RootPage.DisplayAlert("Login Failed", "Server Error", "Close");
+                }
             }
         }
 
