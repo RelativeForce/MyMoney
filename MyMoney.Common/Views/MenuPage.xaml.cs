@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using MyMoney.Common.Models;
 using Xamarin.Forms;
@@ -11,28 +12,42 @@ namespace MyMoney.Common.Views
     public partial class MenuPage : ContentPage
     {
         MainPage RootPage => Application.Current.MainPage as MainPage;
-        List<HomeMenuItem> menuItems;
+        ObservableCollection<HomeMenuItem> menuItems;
         public MenuPage()
         {
+            menuItems = new ObservableCollection<HomeMenuItem>();
+
             InitializeComponent();
 
-            menuItems = new List<HomeMenuItem>
-            {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
-            };
+            PopulateMenuItems();
 
             ListViewMenu.ItemsSource = menuItems;
-
             ListViewMenu.SelectedItem = menuItems[0];
             ListViewMenu.ItemSelected += async (sender, e) =>
             {
                 if (e.SelectedItem == null)
                     return;
 
-                var id = (int)((HomeMenuItem)e.SelectedItem).Id;
+                var id = ((HomeMenuItem) e.SelectedItem).Id;
                 await RootPage.NavigateFromMenu(id);
             };
+        }
+
+        public void PopulateMenuItems()
+        {
+            menuItems.Clear();
+
+            if (App.AuthenticationManager.CurrentUser != null)
+            {
+                menuItems.Add(new HomeMenuItem(HomeMenuItems.Transactions));
+                menuItems.Add(new HomeMenuItem(HomeMenuItems.About));
+            }
+            else
+            {
+                menuItems.Add(new HomeMenuItem(HomeMenuItems.Login));
+                menuItems.Add(new HomeMenuItem(HomeMenuItems.Register));
+                menuItems.Add(new HomeMenuItem(HomeMenuItems.About));
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Security;
 using System.Threading.Tasks;
@@ -19,30 +20,35 @@ namespace MyMoney.Common.Views
             InitializeComponent();
 
             MasterBehavior = MasterBehavior.Popover;
-
-            MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
         }
 
         public async Task NavigateFromMenu(int id)
         {
-            if (!MenuPages.ContainsKey(id))
+            var item = (HomeMenuItems) id;
+
+            switch (item)
             {
-                switch (id)
-                {
-                    case (int)MenuItemType.Browse:
-                        MenuPages.Add(id, new NavigationPage(new ItemsPage()));
-                        break;
-                    case (int)MenuItemType.About:
-                        MenuPages.Add(id, new NavigationPage(new AboutPage()));
-                        break;
-                }
+                case HomeMenuItems.Transactions:
+                    await NavigateTo(new ItemsPage());
+                    break;
+                case HomeMenuItems.About:
+                    await NavigateTo(new AboutPage());
+                    break;
+                case HomeMenuItems.Login:
+                    await NavigateTo(new LoginPage());
+                    break;
+                case HomeMenuItems.Register:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+        }
 
-            var newPage = MenuPages[id];
-
+        private async Task NavigateTo(Page newPage)
+        {
             if (newPage != null && Detail != newPage)
             {
-                Detail = newPage;
+                Detail = new NavigationPage(newPage);
 
                 if (Device.RuntimePlatform == Device.Android)
                     await Task.Delay(100);

@@ -16,8 +16,6 @@ namespace MyMoney.Common.Views
         private MainPage RootPage => Application.Current.MainPage as MainPage;
 
         public ICurrentUserDetails UserDetails { get; set; }
-        public string Error { get; set; }
-        public bool IsBusyLogin { get; set; }
 
         public LoginPage()
         {
@@ -42,7 +40,8 @@ namespace MyMoney.Common.Views
 
                     if (response.Success)
                     {
-                        RootPage.Detail = new ItemsPage();
+                        RootPage.Detail = new NavigationPage(new ItemsPage());
+                        (RootPage.Master as MenuPage)?.PopulateMenuItems();
                         return;
                     }
 

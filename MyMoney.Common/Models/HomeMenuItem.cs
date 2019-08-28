@@ -1,14 +1,24 @@
 ﻿namespace MyMoney.Common.Models
 {
-    public enum MenuItemType
+    public enum HomeMenuItems
     {
-        Browse,
-        About
+        Login = 0,
+        Register = 1,
+        Transactions = 2,
+        About = 3,
     }
+
     public class HomeMenuItem
     {
-        public MenuItemType Id { get; set; }
-
+        public int Id { get; set; }
+        public HomeMenuItems Item { get; set; }
         public string Title { get; set; }
+
+        public HomeMenuItem(HomeMenuItems item)
+        {
+            Id = (int) item;
+            Item = item;
+            Title = item.ToString();
+        }
     }
 }
