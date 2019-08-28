@@ -7,7 +7,7 @@ namespace MyMoney.Core.Interfaces.Service
     public interface IUserService
     {
         LoginResult Login(string email, string passwordHash);
-        LoginResult Register(string email, string passwordHash, DateTime dateOfBirth, string fullName);
+        LoginResult Register(string email, string password, DateTime dateOfBirth, string fullName);
         IUser GetById(long userId);
     }
 }

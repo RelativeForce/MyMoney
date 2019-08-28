@@ -5,7 +5,7 @@ using MyMoney.Client.Models.Response;
 
 namespace MyMoney.Client.Interfaces.Api
 {
-    public interface ITransactionApi : IBaseApi
+    public interface ITransactionApi
     {
         Task<TransactionListResponse> List(TransactionListRequest listParameters);
         Task<TransactionModel> Add(TransactionModel model);

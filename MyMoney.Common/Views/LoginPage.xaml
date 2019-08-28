@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="MyMoney.Common.Views.LoginPage"
+             Title="Login">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Register" Clicked="Register_Clicked" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <Label Text="Email" FontSize="Medium" />
+            <Entry Text="{Binding UserDetails.Email}" FontSize="Small" />
+            <Label Text="Password" FontSize="Medium" />
+            <Entry Text="{Binding UserDetails.Password}" FontSize="Small" Margin="0" IsPassword="True"/>
+            <Button Text="Login" Clicked="Login_Clicked"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

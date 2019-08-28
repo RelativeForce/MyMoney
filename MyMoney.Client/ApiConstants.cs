@@ -2,6 +2,6 @@
 {
     public static class ApiConstants
     {
-        public const string Url = "http://localhost:5000/";
+        public const string Url = "http://10.0.2.2:5000/";
     }
 }

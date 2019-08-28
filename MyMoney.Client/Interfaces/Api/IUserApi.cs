@@ -4,7 +4,7 @@ using MyMoney.Client.Models.Response;
 
 namespace MyMoney.Client.Interfaces.Api
 {
-    public interface IUserApi : IBaseApi
+    public interface IUserApi
     {
         Task<LoginResponse> Login(LoginRequest loginDetails);
         Task<LoginResponse> Register(RegisterRequest registerDetails);

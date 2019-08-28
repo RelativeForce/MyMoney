@@ -2,11 +2,11 @@
 
 namespace MyMoney.Client
 {
-    public class MyMoneyClientFactory : IMyMoneyClientFactory
+    public sealed class MyMoneyClientFactory : IMyMoneyClientFactory
     {
-        public IMyMoneyClient NewClient(string token = null)
+        public IMyMoneyClient NewClient(IAuthenticationManager manager)
         {
-            return new MyMoneyClient(token);
+            return new MyMoneyClient(manager);
         }
     }
 }

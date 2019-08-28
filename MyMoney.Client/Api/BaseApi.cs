@@ -2,20 +2,20 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using MyMoney.Client.Interfaces.Api;
+using MyMoney.Client.Interfaces;
 using Newtonsoft.Json;
 
 namespace MyMoney.Client.Api
 {
-    public abstract class BaseApi : IBaseApi
+    public abstract class BaseApi
     {
         private readonly HttpClient _client;
+        protected readonly IAuthenticationManager Manager;
 
-        public string Token { get; set; }
-
-        protected BaseApi(HttpClient client)
+        protected BaseApi(HttpClient client, IAuthenticationManager manager)
         {
             _client = client;
+            Manager = manager;
         }
 
         protected async Task<T> SendPost<T>(string endPoint, object payload)
@@ -27,6 +27,12 @@ namespace MyMoney.Client.Api
             var result = await _client.SendAsync(request).ConfigureAwait(false);
 
             return await Deserialize<T>(result);
+        }
+
+        protected void EnsureAuthenticated()
+        {
+            if(!Manager.IsAuthenticated)
+                throw new InvalidOperationException("User must be logged in first");
         }
 
         protected async Task<T> SendGet<T>(string endPoint, object payload)
@@ -49,9 +55,9 @@ namespace MyMoney.Client.Api
                 Content = content,
             };
 
-            if (Token != null)
+            if (Manager.IsAuthenticated)
             {
-                request.Headers.Add("Authorization", $"Bearer {Token}");
+                request.Headers.Add("Authorization", $"Bearer {Manager.Token}");
             }
 
             return request;

@@ -51,7 +51,7 @@ namespace MyMoney.Core.Services
             return LoginResult.SuccessResult(token);
         }
 
-        public LoginResult Register(string email, string passwordHash, DateTime dateOfBirth, string fullName)
+        public LoginResult Register(string email, string password, DateTime dateOfBirth, string fullName)
         {
             if(string.IsNullOrWhiteSpace(email))
                 return LoginResult.FailResult("Invalid Email");
@@ -63,7 +63,7 @@ namespace MyMoney.Core.Services
             new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
 
-            var pbkdf2 = new Rfc2898DeriveBytes(passwordHash, salt, 10000);
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
             byte[] hash = pbkdf2.GetBytes(20);
 
 

@@ -7,28 +7,25 @@ namespace MyMoney.Client
 {
     public sealed class MyMoneyClient : IMyMoneyClient
     {
+        private readonly IAuthenticationManager _manager;
         private readonly HttpClient _client;
-
-        public MyMoneyClient(string token = null)
-        {
-            _client = new HttpClient();
-
-            UserApi = new UserApi(_client);
-            BudgetApi = new BudgetApi(_client);
-            TransactionApi = new TransactionApi(_client);
-
-            SetToken(token);
-        }
 
         public IUserApi UserApi { get; private set; }
         public IBudgetApi BudgetApi { get; private set; }
         public ITransactionApi TransactionApi { get; private set; }
 
-        public void SetToken(string token)
+        public MyMoneyClient(IAuthenticationManager manager) : this(manager, new HttpClient())
         {
-            UserApi.Token = token;
-            TransactionApi.Token = token;
-            BudgetApi.Token = token;
+        }
+
+        public MyMoneyClient(IAuthenticationManager manager, HttpClient client)
+        {
+            _manager = manager;
+            _client = client;
+
+            UserApi = new UserApi(_client, manager);
+            BudgetApi = new BudgetApi(_client, manager);
+            TransactionApi = new TransactionApi(_client, manager);
         }
 
         public void Dispose()
@@ -37,6 +34,7 @@ namespace MyMoney.Client
             BudgetApi = null;
             TransactionApi = null;
 
+            _manager.SetAuthenticated();
             _client.Dispose();
         }
     }

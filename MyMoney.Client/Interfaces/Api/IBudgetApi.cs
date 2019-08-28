@@ -4,7 +4,7 @@ using MyMoney.Client.Models.Request;
 
 namespace MyMoney.Client.Interfaces.Api
 {
-    public interface IBudgetApi : IBaseApi
+    public interface IBudgetApi
     {
         Task<BudgetModel> Add(BudgetModel model);
         Task<BudgetModel> Find(BudgetRequest findParameters);

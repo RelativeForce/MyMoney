@@ -2,6 +2,6 @@
 {
     public interface IMyMoneyClientFactory
     {
-        IMyMoneyClient NewClient(string token = null);
+        IMyMoneyClient NewClient(IAuthenticationManager manager);
     }
 }
