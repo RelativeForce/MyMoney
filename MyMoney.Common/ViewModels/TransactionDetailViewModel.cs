@@ -1,4 +1,4 @@
-﻿using MyMoney.Client.Models.DTO;
+﻿using MyMoney.Client.Models.Entity;
 
 namespace MyMoney.Common.ViewModels
 {

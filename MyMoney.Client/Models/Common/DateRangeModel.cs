@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyMoney.Client.Models.DTO
+namespace MyMoney.Client.Models.Common
 {
     public class DateRangeModel
     {

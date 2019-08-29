@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using MyMoney.Client.Models.DTO;
+using MyMoney.Client.Models.Entity;
 using MyMoney.Common.ViewModels;
 using Xamarin.Forms;
 

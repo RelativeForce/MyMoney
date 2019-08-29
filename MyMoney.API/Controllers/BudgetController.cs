@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyMoney.Client.Models.DTO;
+using MyMoney.Client.Models.Entity;
 using MyMoney.Client.Models.Request;
 using MyMoney.Core.Interfaces.Service;
 

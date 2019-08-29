@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using MyMoney.Client.Interfaces;
 using MyMoney.Client.Interfaces.Api;
-using MyMoney.Client.Models.DTO;
+using MyMoney.Client.Models.Common;
+using MyMoney.Client.Models.Entity;
 using MyMoney.Client.Models.Request;
 using MyMoney.Client.Models.Response;
 

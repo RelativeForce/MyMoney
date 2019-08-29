@@ -2,7 +2,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyMoney.Client.Models.DTO;
+using MyMoney.Client.Models.Common;
+using MyMoney.Client.Models.Entity;
 using MyMoney.Client.Models.Request;
 using MyMoney.Client.Models.Response;
 using MyMoney.Core.Interfaces.Service;

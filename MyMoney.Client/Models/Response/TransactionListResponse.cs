@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using MyMoney.Client.Models.DTO;
+using MyMoney.Client.Models.Common;
+using MyMoney.Client.Models.Entity;
 
 namespace MyMoney.Client.Models.Response
 {
