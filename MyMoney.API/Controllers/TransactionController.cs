@@ -23,7 +23,7 @@ namespace MyMoney.API.Controllers
             _transactionService = transactionService;
         }
 
-        [HttpGet(nameof(List))]
+        [HttpPost(nameof(List))]
         public IActionResult List([FromBody]TransactionListRequest listParameters)
         {
             try

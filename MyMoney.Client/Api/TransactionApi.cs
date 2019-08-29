@@ -21,7 +21,7 @@ namespace MyMoney.Client.Api
 
             EnsureAuthenticated();
 
-            return await SendGet<TransactionListResponse>($"api/Transaction/List", listParameters);
+            return await SendPost<TransactionListResponse>($"api/Transaction/List", listParameters);
         }
 
         public async Task<TransactionModel> Add(TransactionModel model)
