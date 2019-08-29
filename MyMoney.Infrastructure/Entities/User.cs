@@ -20,17 +20,18 @@ namespace MyMoney.Infrastructure.Entities
 
         [NotMapped]
         public IQueryable<IBudget> Budgets => BudgetsProxy.Cast<IBudget>().AsQueryable();
-        public ICollection<Budget> BudgetsProxy { get; set; } = new List<Budget>();
+        public virtual ICollection<Budget> BudgetsProxy { get; set; } = new List<Budget>();
 
         [NotMapped]
         public IQueryable<ITransaction> Transactions => TransactionsProxy.Cast<ITransaction>().AsQueryable();
-        public ICollection<Transaction> TransactionsProxy { get; set; } = new List<Transaction>();
+        public virtual ICollection<Transaction> TransactionsProxy { get; set; } = new List<Transaction>();
 
         public IList<ITransaction> Between(DateTime start, DateTime end)
         {
-            return TransactionsProxy
-                .Where(t => t.Date >= start && t.Date <= end)
-                .Cast<ITransaction>()
+            var results = TransactionsProxy.Where(t => t.Date >= start && t.Date <= end).ToList();
+
+            return
+               results.Cast<ITransaction>()
                 .ToList();
         }
 

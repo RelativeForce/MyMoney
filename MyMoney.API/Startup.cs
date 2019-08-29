@@ -38,7 +38,9 @@ namespace MyMoney.API
             services.AddCors();
             services.AddMvc();
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options
+                    .UseLazyLoadingProxies()
+                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "MyMoney API", Version = "v1"}); });
 
