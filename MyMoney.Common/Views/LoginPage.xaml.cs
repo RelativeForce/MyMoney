@@ -30,7 +30,7 @@ namespace MyMoney.Common.Views
 
         async void Login_Clicked(object sender, EventArgs e)
         {
-            using (var client = App.NewApiClient)
+            using (var client = App.NewApiClient())
             {
                 try
                 {

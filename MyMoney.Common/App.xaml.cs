@@ -10,7 +10,7 @@ namespace MyMoney.Common
     {
         public static readonly IAuthenticationManager AuthenticationManager = new AuthenticationManager();
         public static MainPage RootPage => Current.MainPage as MainPage;
-        public static IMyMoneyClient NewApiClient => ClientFactory.NewClient(AuthenticationManager);
+        public static IMyMoneyClient NewApiClient() => ClientFactory.NewClient(AuthenticationManager);
 
         private static readonly IMyMoneyClientFactory ClientFactory = new MyMoneyClientFactory();
 

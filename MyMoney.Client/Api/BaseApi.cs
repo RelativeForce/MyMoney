@@ -21,13 +21,7 @@ namespace MyMoney.Client.Api
 
         protected async Task<T> SendPost<T>(string endPoint, object payload)
         {
-            var content = Serialize(payload);
-
-            var request = BuildRequest(HttpMethod.Post, endPoint, content);
-
-            var result = await _client.SendAsync(request).ConfigureAwait(false);
-
-            return await Deserialize<T>(result);
+            return await Send<T>(HttpMethod.Post, endPoint, payload);
         }
 
         protected void EnsureAuthenticated()
@@ -38,13 +32,19 @@ namespace MyMoney.Client.Api
 
         protected async Task<T> SendGet<T>(string endPoint, object payload)
         {
+            return await Send<T>(HttpMethod.Get, endPoint, payload);
+        }
+
+        private async Task<T> Send<T>(HttpMethod method, string endPoint, object payload)
+        {
             var content = Serialize(payload);
 
-            var request = BuildRequest(HttpMethod.Get, endPoint, content);
+            var request = BuildRequest(method, endPoint, content);
 
-            var result = await _client.SendAsync(request).ConfigureAwait(false);
-
-            return await Deserialize<T>(result);
+            using (var result = await _client.SendAsync(request))
+            {
+                return await Deserialize<T>(result);
+            }
         }
 
         private HttpRequestMessage BuildRequest(HttpMethod method, string endPoint, StringContent content)

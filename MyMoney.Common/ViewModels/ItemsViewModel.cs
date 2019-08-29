@@ -23,7 +23,7 @@ namespace MyMoney.Common.ViewModels
 
             MessagingCenter.Subscribe<NewItemPage, TransactionModel>(this, "AddItem", async (obj, item) =>
             {
-                using (var client = App.NewApiClient)
+                using (var client = App.NewApiClient())
                 {
                     try
                     {
@@ -59,7 +59,7 @@ namespace MyMoney.Common.ViewModels
             {
                 Items.Clear();
 
-                using (var client = App.NewApiClient)
+                using (var client = App.NewApiClient())
                 {
                     try
                     {
