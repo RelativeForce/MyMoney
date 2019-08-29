@@ -30,7 +30,7 @@ namespace MyMoney.Client.Api
 
             EnsureAuthenticated();
 
-            return await SendGet<BudgetModel>($"api/Budget/Find", findParameters);
+            return await SendPost<BudgetModel>($"api/Budget/Find", findParameters);
         }
     }
 }

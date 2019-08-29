@@ -22,7 +22,7 @@ namespace MyMoney.API.Controllers
             _budgetService = budgetService;
         }
 
-        [HttpGet(nameof(Find))]
+        [HttpPost(nameof(Find))]
         public IActionResult Find([FromBody]BudgetRequest findParameters)
         {
             try
