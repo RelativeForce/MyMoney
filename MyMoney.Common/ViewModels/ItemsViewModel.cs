@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using MyMoney.Client.Models.DTO;
+using MyMoney.Client.Models.Request;
 using MyMoney.Common.Models;
 using MyMoney.Common.Views;
 using Xamarin.Forms;
@@ -10,20 +12,39 @@ namespace MyMoney.Common.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        public ObservableCollection<Item> Items { get; set; }
+        public ObservableCollection<TransactionModel> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
         public ItemsViewModel()
         {
             Title = "Transactions";
-            Items = new ObservableCollection<Item>();
+            Items = new ObservableCollection<TransactionModel>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
+            MessagingCenter.Subscribe<NewItemPage, TransactionModel>(this, "AddItem", async (obj, item) =>
             {
-                var newItem = item as Item;
-                Items.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
+                using (var client = App.NewApiClient)
+                {
+                    try
+                    {
+                        var authenticate = await client.UserApi.Authenticate();
+
+                        if (!authenticate)
+                        {
+                            await App.RootPage.DisplayAlert("Authentication Failed", "Returning to login...", "Close");
+                            App.LogOut();
+                            return;
+                        }
+
+                        var newItem = await client.TransactionApi.Add(item);
+
+                        Items.Add(newItem);
+                    }
+                    catch (Exception ex)
+                    {
+                        await App.RootPage.DisplayAlert("Add Transaction Failed", "Server Error", "Close");
+                    }
+                }
             });
         }
 
@@ -37,10 +58,31 @@ namespace MyMoney.Common.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
+
+                using (var client = App.NewApiClient)
                 {
-                    Items.Add(item);
+                    try
+                    {
+                        var authenticate = await client.UserApi.Authenticate();
+
+                        if (!authenticate)
+                        {
+                            await App.RootPage.DisplayAlert("Authentication Failed", "Returning to login...", "Close");
+                            App.LogOut();
+                            return;
+                        }
+
+                        var list = await client.TransactionApi.List(new TransactionListRequest());
+
+                        foreach (var item in list.Transactions)
+                        {
+                            Items.Add(item);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await App.RootPage.DisplayAlert("Transaction List Failed", "Server Error", "Close");
+                    }
                 }
             }
             catch (Exception ex)

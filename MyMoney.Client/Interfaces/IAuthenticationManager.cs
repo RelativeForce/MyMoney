@@ -6,7 +6,8 @@
         string Token { get; set; }
         bool IsAuthenticated { get; }
         void SetAuthenticated(string token);
-        void SetUser(string email, string password);
+        void SaveUser(string email, string password);
+        void ClearUser();
         void SetAuthenticated();
     }
 }

@@ -13,8 +13,6 @@ namespace MyMoney.Common.Views
     [DesignTimeVisible(false)]
     public partial class LoginPage : ContentPage
     {
-        private MainPage RootPage => Application.Current.MainPage as MainPage;
-
         public ICurrentUserDetails UserDetails { get; set; }
 
         public LoginPage()
@@ -40,16 +38,15 @@ namespace MyMoney.Common.Views
 
                     if (response.Success)
                     {
-                        RootPage.Detail = new NavigationPage(new ItemsPage());
-                        (RootPage.Master as MenuPage)?.PopulateMenuItems();
+                        App.Login();
                         return;
                     }
 
-                    await RootPage.DisplayAlert("Login Failed", response.Error, "Close");
+                    await App.RootPage.DisplayAlert("Login Failed", response.Error, "Close");
                 }
                 catch (Exception ex)
                 {
-                    await RootPage.DisplayAlert("Login Failed", "Server Error", "Close");
+                    await App.RootPage.DisplayAlert("Login Failed", "Server Error", "Close");
                 }
             }
         }

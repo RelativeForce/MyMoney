@@ -6,5 +6,11 @@ namespace MyMoney.Client.Models.Request
     {
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+
+        public TransactionListRequest()
+        {
+            End = DateTime.Now;
+            Start = DateTime.Now.AddMonths(-1);
+        }
     }
 }

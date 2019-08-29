@@ -14,13 +14,18 @@ namespace MyMoney.Client
             SetAuthenticated();
         }
 
-        public void SetUser(string email, string password)
+        public void SaveUser(string email, string password)
         {
             CurrentUser = new CurrentUserDetails
             {
                 Email = email,
                 Password = password
             };
+        }
+
+        public void ClearUser()
+        {
+            CurrentUser = null;
         }
 
         public void SetAuthenticated(string token)

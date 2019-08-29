@@ -37,7 +37,7 @@ namespace MyMoney.Client.Api
             if (loginDetails == null)
                 return null;
 
-            Manager.SetUser(loginDetails.Email, loginDetails.Password);
+            Manager.SaveUser(loginDetails.Email, loginDetails.Password);
 
             var response = await SendPost<LoginResponse>($"api/User/Login", loginDetails);
 
@@ -54,7 +54,7 @@ namespace MyMoney.Client.Api
             if (registerDetails == null)
                 return null;
 
-            Manager.SetUser(registerDetails.Email, registerDetails.Password);
+            Manager.SaveUser(registerDetails.Email, registerDetails.Password);
 
             var response = await SendPost<LoginResponse>($"api/User/Register", registerDetails);
 
