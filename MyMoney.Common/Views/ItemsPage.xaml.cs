@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using MyMoney.Client.Models.DTO;
 using MyMoney.Common.Models;
 using MyMoney.Common.ViewModels;
 using Xamarin.Forms;
@@ -22,7 +23,7 @@ namespace MyMoney.Common.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Item;
+            var item = args.SelectedItem as TransactionModel;
             if (item == null)
                 return;
 

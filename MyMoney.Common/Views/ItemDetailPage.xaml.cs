@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using MyMoney.Client.Models.DTO;
 using MyMoney.Common.Models;
 using MyMoney.Common.ViewModels;
 using Xamarin.Forms;
@@ -23,10 +25,11 @@ namespace MyMoney.Common.Views
         {
             InitializeComponent();
 
-            var item = new Item
+            var item = new TransactionModel
             {
-                Text = "UserDetails 1",
-                Description = "This is an item description."
+                Date = DateTime.Now,
+                Description = "This is an item description.",
+                Amount = 0
             };
 
             viewModel = new ItemDetailViewModel(item);

@@ -1,13 +1,14 @@
-﻿using MyMoney.Common.Models;
+﻿using MyMoney.Client.Models.DTO;
+using MyMoney.Common.Models;
 
 namespace MyMoney.Common.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {
-        public Item Item { get; set; }
-        public ItemDetailViewModel(Item item = null)
+        public TransactionModel Item { get; set; }
+        public ItemDetailViewModel(TransactionModel item = null)
         {
-            Title = item?.Text;
+            Title = "Edit";
             Item = item;
         }
     }
