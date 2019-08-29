@@ -6,6 +6,7 @@
         Register = 1,
         Transactions = 2,
         About = 3,
+        Logout = 4,
     }
 
     public class HomeMenuItem

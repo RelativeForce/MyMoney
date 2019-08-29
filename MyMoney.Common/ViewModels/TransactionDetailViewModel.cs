@@ -5,9 +5,10 @@ namespace MyMoney.Common.ViewModels
     public class TransactionDetailViewModel : BaseViewModel
     {
         public TransactionModel Transaction { get; set; }
-        public TransactionDetailViewModel(TransactionModel transaction = null)
+
+        public TransactionDetailViewModel(TransactionModel transaction)
         {
-            Title = "Edit";
+            Title = $"View Transaction {transaction.Id}";
             Transaction = transaction;
         }
     }

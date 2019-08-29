@@ -41,6 +41,7 @@ namespace MyMoney.Common.Views
             {
                 menuItems.Add(new HomeMenuItem(HomeMenuItems.Transactions));
                 menuItems.Add(new HomeMenuItem(HomeMenuItems.About));
+                menuItems.Add(new HomeMenuItem(HomeMenuItems.Logout));
             }
             else
             {

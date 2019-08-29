@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Net.Security;
 using System.Threading.Tasks;
 using MyMoney.Common.Models;
 using Xamarin.Forms;
@@ -39,6 +38,9 @@ namespace MyMoney.Common.Views
                     break;
                 case HomeMenuItems.Register:
                     await NavigateTo(new RegisterPage());
+                    break;
+                case HomeMenuItems.Logout:
+                    App.LogOut();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
