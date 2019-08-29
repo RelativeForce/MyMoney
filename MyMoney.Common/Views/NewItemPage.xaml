@@ -14,11 +14,11 @@
     
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
-            <Label Text="Date" FontSize="Medium" />
+            <Label Text="Date" FontSize="Small" />
             <DatePicker MinimumDate="{Binding MinDate}"  MaximumDate="{Binding MaxDate}" Date="{Binding Item.Date}" FontSize="Small" DateSelected="OnDateChanged"/>
-            <Label Text="Amount" FontSize="Medium" />
+            <Label Text="Amount" FontSize="Small" />
             <Entry Text="{Binding Item.Amount}" FontSize="Small" />
-            <Label Text="Description" FontSize="Medium" />
+            <Label Text="Description" FontSize="Small" />
             <Editor Text="{Binding Item.Description}" FontSize="Small" />
         </StackLayout>
     </ContentPage.Content>

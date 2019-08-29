@@ -8,11 +8,11 @@
              Title="{Binding Title}">
 
     <StackLayout Spacing="20" Padding="15">
-        <Label Text="Date:" FontSize="Medium" />
+        <Label Text="Date:" FontSize="Small" />
         <Label Text="{Binding Item.Date, StringFormat='{0:dd MMMM yyyy}'}" FontSize="Small"/>
-        <Label Text="Description:" FontSize="Medium" />
+        <Label Text="Description:" FontSize="Small" />
         <Label Text="{Binding Item.Description}" FontSize="Small"/>
-        <Label Text="Amount:" FontSize="Medium" />
+        <Label Text="Amount:" FontSize="Small" />
         <Label Text="{Binding Item.Amount}" FontSize="Small"/>
     </StackLayout>
     
