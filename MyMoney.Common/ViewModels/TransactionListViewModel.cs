@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
-using MyMoney.Client.Models.DTO;
+using MyMoney.Client.Models.Common;
+using MyMoney.Client.Models.Entity;
 using MyMoney.Client.Models.Request;
 using MyMoney.Common.Views;
 using Xamarin.Forms;
@@ -47,7 +49,7 @@ namespace MyMoney.Common.ViewModels
                             return;
                         }
 
-                        var list = await client.TransactionApi.List(new TransactionListRequest());
+                        var list = await client.TransactionApi.List(new DateRangeModel());
 
                         foreach (var item in list.Transactions)
                         {
@@ -127,6 +129,49 @@ namespace MyMoney.Common.ViewModels
                     catch (Exception ex)
                     {
                         await App.RootPage.DisplayAlert("Delete Transaction Failed", "Server Error", "Close");
+                    }
+                }
+            });
+
+            MessagingCenter.Subscribe<TransactionDetailPage, TransactionModel>(this, "UpdateTransaction", async (obj, transaction) =>
+            {
+                using (var client = App.NewApiClient())
+                {
+                    try
+                    {
+                        var authenticate = await client.UserApi.Authenticate();
+
+                        if (!authenticate)
+                        {
+                            await App.RootPage.DisplayAlert("Authentication Failed", "Returning to login...", "Close");
+                            App.LogOut();
+                            return;
+                        }
+
+                        var response = await client.TransactionApi.Update(transaction);
+
+                        if (!response.Success)
+                        {
+                            await App.RootPage.DisplayAlert("Update Transaction Failed", response.Error, "Close");
+                        }
+                        else
+                        {
+                            var transactionInList = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
+
+                            if (transactionInList == null)
+                            {
+                                await App.RootPage.DisplayAlert("Update Transaction Failed", "Transaction does not exist in list", "Close");
+                                return;
+                            }
+
+                            var index = Transactions.IndexOf(transactionInList);
+                            Transactions.RemoveAt(index);
+                            Transactions.Insert(index, transaction);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await App.RootPage.DisplayAlert("Update Transaction Failed", "Server Error", "Close");
                     }
                 }
             });

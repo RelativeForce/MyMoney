@@ -2,7 +2,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyMoney.Client.Models.DTO;
+using MyMoney.Client.Models.Common;
+using MyMoney.Client.Models.Entity;
 using MyMoney.Client.Models.Request;
 using MyMoney.Client.Models.Response;
 using MyMoney.Core.Interfaces.Service;
@@ -24,7 +25,7 @@ namespace MyMoney.API.Controllers
         }
 
         [HttpPost(nameof(List))]
-        public IActionResult List([FromBody]TransactionListRequest listParameters)
+        public IActionResult List([FromBody]DateRangeModel listParameters)
         {
             try
             {
@@ -42,8 +43,11 @@ namespace MyMoney.API.Controllers
 
                 return Ok(new TransactionListResponse
                 {
-                    Start = listParameters.Start,
-                    End = listParameters.End,
+                    DateRange = new DateRangeModel
+                    { 
+                        Start = listParameters.Start,
+                        End = listParameters.End
+                    },
                     Transactions = transactions.Select(t => new TransactionModel
                     {
                         Id = t.Id,
@@ -56,6 +60,46 @@ namespace MyMoney.API.Controllers
             catch (Exception)
             {
                 return BadRequest("Error while creating");
+            }
+        }
+
+        [HttpPost(nameof(Update))]
+        public IActionResult Update([FromBody] TransactionModel model)
+        {
+            try
+            {
+                if (model == null || !ModelState.IsValid || model.Id == default)
+                {
+                    return BadRequest("Invalid State");
+                }
+
+                var user = _userService.GetById(CurrentUserId);
+
+                if (user == null)
+                    return BadRequest("Error while retrieving user information");
+
+                var transaction = _transactionService.FindById(model.Id);
+
+                if (transaction == null)
+                {
+                    return NotFound("Transaction does not exist");
+                }
+
+                transaction.Amount = model.Amount;
+                transaction.Date = model.Date;
+                transaction.Description = model.Description;
+
+                var success = _transactionService.Update(user, transaction);
+
+                return Ok(new UpdateResponse
+                {
+                    Success = success,
+                    Error = success ? "" : "Invalid transaction information"
+                });
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error while updating");
             }
         }
 
@@ -76,7 +120,7 @@ namespace MyMoney.API.Controllers
 
                 var result = _transactionService.Add(user, model.Date, model.Description, model.Amount);
 
-                if(result == null)
+                if (result == null)
                     return BadRequest("Invalid State");
 
                 return Ok(new TransactionModel

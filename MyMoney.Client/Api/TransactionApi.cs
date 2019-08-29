@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using MyMoney.Client.Interfaces;
 using MyMoney.Client.Interfaces.Api;
-using MyMoney.Client.Models.DTO;
+using MyMoney.Client.Models.Common;
+using MyMoney.Client.Models.Entity;
 using MyMoney.Client.Models.Request;
 using MyMoney.Client.Models.Response;
 
@@ -14,7 +15,7 @@ namespace MyMoney.Client.Api
         {
         }
 
-        public async Task<TransactionListResponse> List(TransactionListRequest listParameters)
+        public async Task<TransactionListResponse> List(DateRangeModel listParameters)
         {
             if (listParameters == null)
                 return null;
@@ -32,6 +33,16 @@ namespace MyMoney.Client.Api
             EnsureAuthenticated();
 
             return await SendPost<TransactionModel>($"api/Transaction/Add", model);
+        }
+
+        public async Task<UpdateResponse> Update(TransactionModel model)
+        {
+            if (model == null)
+                return null;
+
+            EnsureAuthenticated();
+
+            return await SendPost<UpdateResponse>($"api/Transaction/Update", model);
         }
 
         public async Task<DeleteResponse> Delete(DeleteRequest deleteRequest)

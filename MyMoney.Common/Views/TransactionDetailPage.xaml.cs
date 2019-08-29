@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using MyMoney.Client.Models.DTO;
+using MyMoney.Client.Models.Entity;
 using MyMoney.Common.Models;
 using MyMoney.Common.ViewModels;
 using Xamarin.Forms;
@@ -35,11 +35,38 @@ namespace MyMoney.Common.Views
             viewModel = new TransactionDetailViewModel(item);
             BindingContext = viewModel;
         }
+        void OnDateChanged(object sender, DateChangedEventArgs args)
+        {
+            viewModel.Transaction.Date = args.NewDate;
+        }
 
         public async void Delete_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "DeleteTransaction", viewModel.Transaction);
+            var delete = await App.RootPage.DisplayAlert("Delete Transaction", "Are you sure you want to delete this transaction?", "Yes" ,"No");
+
+            if (delete)
+            {
+                MessagingCenter.Send(this, "DeleteTransaction", viewModel.Transaction);
+                await Navigation.PopAsync();
+            }
+        }
+
+        public async void Update_Clicked(object sender, EventArgs e)
+        {
+            if(viewModel.IsView)
+            {
+                await App.RootPage.DisplayAlert("Update Transaction", "Enter edit mode to update this transaction", "Ok");
+                return;
+            }
+
+            MessagingCenter.Send(this, "UpdateTransaction", viewModel.Transaction);
             await Navigation.PopAsync();
+        }
+
+        private void Switch_OnToggled(object sender, ToggledEventArgs e)
+        {
+            viewModel.IsEdit = e.Value;
+            viewModel.IsView = !e.Value;
         }
     }
 }

@@ -13,7 +13,7 @@
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="15">
+        <StackLayout Padding="15">
             <Label Text="Date" FontSize="Small" />
             <DatePicker 
                 MinimumDate="{Binding MinDate}"  
