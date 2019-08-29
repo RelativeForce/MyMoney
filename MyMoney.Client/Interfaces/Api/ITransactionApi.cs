@@ -9,5 +9,6 @@ namespace MyMoney.Client.Interfaces.Api
     {
         Task<TransactionListResponse> List(TransactionListRequest listParameters);
         Task<TransactionModel> Add(TransactionModel model);
+        Task<DeleteResponse> Delete(DeleteRequest deleteRequest);
     }
 }

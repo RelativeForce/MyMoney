@@ -20,31 +20,7 @@ namespace MyMoney.Common.ViewModels
             Transactions = new ObservableCollection<TransactionModel>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            MessagingCenter.Subscribe<NewTransactionPage, TransactionModel>(this, "AddTransaction", async (obj, item) =>
-            {
-                using (var client = App.NewApiClient())
-                {
-                    try
-                    {
-                        var authenticate = await client.UserApi.Authenticate();
-
-                        if (!authenticate)
-                        {
-                            await App.RootPage.DisplayAlert("Authentication Failed", "Returning to login...", "Close");
-                            App.LogOut();
-                            return;
-                        }
-
-                        var newItem = await client.TransactionApi.Add(item);
-
-                        Transactions.Add(newItem);
-                    }
-                    catch (Exception ex)
-                    {
-                        await App.RootPage.DisplayAlert("Add Transaction Failed", "Server Error", "Close");
-                    }
-                }
-            });
+            SetupMessages();
         }
 
         public async Task ExecuteLoadItemsCommand()
@@ -92,6 +68,68 @@ namespace MyMoney.Common.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        public void SetupMessages()
+        {
+            MessagingCenter.Subscribe<NewTransactionPage, TransactionModel>(this, "AddTransaction", async (obj, transaction) =>
+            {
+                using (var client = App.NewApiClient())
+                {
+                    try
+                    {
+                        var authenticate = await client.UserApi.Authenticate();
+
+                        if (!authenticate)
+                        {
+                            await App.RootPage.DisplayAlert("Authentication Failed", "Returning to login...", "Close");
+                            App.LogOut();
+                            return;
+                        }
+
+                        var newItem = await client.TransactionApi.Add(transaction);
+
+                        Transactions.Add(newItem);
+                    }
+                    catch (Exception ex)
+                    {
+                        await App.RootPage.DisplayAlert("Add Transaction Failed", "Server Error", "Close");
+                    }
+                }
+            });
+
+            MessagingCenter.Subscribe<TransactionDetailPage, TransactionModel>(this, "DeleteTransaction", async (obj, transaction) =>
+            {
+                using (var client = App.NewApiClient())
+                {
+                    try
+                    {
+                        var authenticate = await client.UserApi.Authenticate();
+
+                        if (!authenticate)
+                        {
+                            await App.RootPage.DisplayAlert("Authentication Failed", "Returning to login...", "Close");
+                            App.LogOut();
+                            return;
+                        }
+
+                        var newItem = await client.TransactionApi.Delete(new DeleteRequest(transaction.Id));
+
+                        if (newItem.Success)
+                        {
+                            Transactions.Remove(transaction);
+                        }
+                        else
+                        {
+                            await App.RootPage.DisplayAlert("Delete Transaction Failed", "Server Error", "Close");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await App.RootPage.DisplayAlert("Delete Transaction Failed", "Server Error", "Close");
+                    }
+                }
+            });
         }
     }
 }
