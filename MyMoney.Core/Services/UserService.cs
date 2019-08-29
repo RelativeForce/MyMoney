@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net.Mail;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
@@ -53,24 +55,30 @@ namespace MyMoney.Core.Services
 
         public LoginResult Register(string email, string password, DateTime dateOfBirth, string fullName)
         {
-            if(string.IsNullOrWhiteSpace(email))
+            if(!IsValidEmail(email))
                 return LoginResult.FailResult("Invalid Email");
 
             if (string.IsNullOrWhiteSpace(fullName))
                 return LoginResult.FailResult("Invalid Name");
 
+            if(!IsValidPassword(password))
+                return LoginResult.FailResult("Invalid Password (Must: contain 1 uppercase, contain 1 number and be 8-15 characters long)");
+
+            if (dateOfBirth >= DateTime.Today)
+                return LoginResult.FailResult("Invalid Date of Birth");
+
+            if(_repository.Find<IUser>(u => u.Email.Equals(email)) != null)
+                return LoginResult.FailResult("Email already exists");
+
             byte[] salt;
             new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-
 
             var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
             byte[] hash = pbkdf2.GetBytes(20);
 
-
             byte[] hashBytes = new byte[36];
             Array.Copy(salt, 0, hashBytes, 0, 16);
             Array.Copy(hash, 0, hashBytes, 16, 20);
-
 
             string savedPasswordHash = Convert.ToBase64String(hashBytes);
 
@@ -84,7 +92,7 @@ namespace MyMoney.Core.Services
             user = _repository.Add(user);
 
             if(user == null)
-                return LoginResult.FailResult("Incorrect password");
+                return LoginResult.FailResult("Database Error");
 
             var token = _tokenProvider.NewToken(user);
 
@@ -94,6 +102,25 @@ namespace MyMoney.Core.Services
         public IUser GetById(long userId)
         {
             return _repository.FindById<IUser>(userId);
+        }
+
+        private static bool IsValidEmail(string emailAddress)
+        {
+            try
+            {
+                var m = new MailAddress(emailAddress);
+
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
+        private static bool IsValidPassword(string password)
+        {
+            return Regex.IsMatch(password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$");
         }
     }
 }
