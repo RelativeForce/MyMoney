@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="MyMoney.Common.Views.RegisterPage"
+             Title="Register">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Login" Clicked="Login_Clicked" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout Padding="15">
+            <Label Text="Email" FontSize="Small" />
+            <Entry Text="{Binding UserDetails.Email}" FontSize="Small" IsEnabled="{Binding IsBusy.Equals(false)}" />
+
+            <Label Text="Password" FontSize="Small" />
+            <Entry Text="{Binding UserDetails.Password}" FontSize="Small" Margin="0" IsPassword="True" IsEnabled="{Binding IsBusy.Equals(false)}"/>
+
+            <Label Text="Re-Type Password" FontSize="Small" />
+            <Entry Text="{Binding RePassword}" FontSize="Small" Margin="0" IsPassword="True" IsEnabled="{Binding IsBusy.Equals(false)}"/>
+
+            <Label Text="Date Of Birth" FontSize="Small" />
+            <DatePicker 
+                MinimumDate="{Binding MinDate}" 
+                IsEnabled="{Binding IsBusy.Equals(false)}" 
+                MaximumDate="{Binding MaxDate}"
+                Date="{Binding UserDetails.DateOfBirth}" 
+                FontSize="Small" 
+                DateSelected="OnDateChanged"/>
+
+            <Label Text="Full Name" FontSize="Small" />
+            <Entry Text="{Binding UserDetails.FullName}" FontSize="Small" IsEnabled="{Binding IsBusy.Equals(false)}" />
+
+            <Button Text="Register" Clicked="Register_Clicked" IsEnabled="{Binding IsBusy.Equals(false)}"></Button>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" />
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

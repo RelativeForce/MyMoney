@@ -38,6 +38,7 @@ namespace MyMoney.Common.Views
                     await NavigateTo(new LoginPage());
                     break;
                 case HomeMenuItems.Register:
+                    await NavigateTo(new RegisterPage());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

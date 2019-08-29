@@ -58,9 +58,9 @@ namespace MyMoney.Common.Views
             IsBusy = false;
         }
 
-        async void Register_Clicked(object sender, EventArgs e)
+        void Register_Clicked(object sender, EventArgs e)
         {
-            
+            App.RootPage.Detail = new NavigationPage(new RegisterPage());
         }
     }
 }

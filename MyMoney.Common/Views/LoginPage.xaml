@@ -12,11 +12,13 @@
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="15">
-            <Label Text="Email" FontSize="Medium" />
+        <StackLayout Padding="15">
+            <Label Text="Email" FontSize="Small" />
             <Entry Text="{Binding UserDetails.Email}" FontSize="Small" IsEnabled="{Binding IsBusy.Equals(false)}" />
-            <Label Text="Password" FontSize="Medium" />
+
+            <Label Text="Password" FontSize="Small" />
             <Entry Text="{Binding UserDetails.Password}" FontSize="Small" Margin="0" IsPassword="True" IsEnabled="{Binding IsBusy.Equals(false)}"/>
+
             <Button Text="Login" Clicked="Login_Clicked" IsEnabled="{Binding IsBusy.Equals(false)}"></Button>
             <ActivityIndicator IsRunning="{Binding IsBusy}" />
         </StackLayout>
