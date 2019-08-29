@@ -39,11 +39,11 @@ namespace MyMoney.Core.Services
             return _repository.Update(transaction);
         }
 
-        public bool Delete(long transactionId)
+        public bool Delete(IUser user, long transactionId)
         {
             var transaction = _repository.FindById<ITransaction>(transactionId);
 
-            if (transaction == null)
+            if (transaction == null || transaction.UserId != user.Id)
                 return false;
 
             return _repository.Delete(transaction);

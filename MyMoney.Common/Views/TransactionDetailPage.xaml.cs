@@ -35,5 +35,11 @@ namespace MyMoney.Common.Views
             viewModel = new TransactionDetailViewModel(item);
             BindingContext = viewModel;
         }
+
+        public async void Delete_Clicked(object sender, EventArgs e)
+        {
+            MessagingCenter.Send(this, "DeleteTransaction", viewModel.Transaction);
+            await Navigation.PopAsync();
+        }
     }
 }
