@@ -92,5 +92,30 @@ namespace MyMoney.API.Controllers
                 return BadRequest("Error while creating");
             }
         }
+
+        [HttpPost(nameof(Delete))]
+        public IActionResult Delete([FromBody]DeleteRequest deleteParameters)
+        {
+            try
+            {
+                if (deleteParameters == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid State");
+                }
+
+                var user = _userService.GetById(CurrentUserId);
+
+                if (user == null)
+                    return BadRequest("Error while retrieving user information");
+
+                var result = _transactionService.Delete(user, deleteParameters.Id);
+
+                return Ok(new DeleteResponse{ Success = result });
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error while deleting");
+            }
+        }
     }
 }

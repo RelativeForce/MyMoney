@@ -7,6 +7,6 @@ namespace MyMoney.Core.Interfaces.Service
     {
         ITransaction Add(IUser user, DateTime date, string description, decimal amount);
         bool Update(ITransaction transaction);
-        bool Delete(long transactionId);
+        bool Delete(IUser user, long transactionId);
     }
 }
