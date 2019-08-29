@@ -33,7 +33,7 @@ namespace MyMoney.Core.Services
 
         public bool Update(IUser user, ITransaction transaction)
         {
-            if (string.IsNullOrWhiteSpace(transaction.Description) || transaction.UserId != user.Id || transaction.User == null || transaction.UserId == default)
+            if (string.IsNullOrWhiteSpace(transaction.Description) || transaction.UserId != user.Id || transaction.Id == default)
                 return false;
 
             return _repository.Update(transaction);

@@ -131,6 +131,35 @@ namespace MyMoney.Common.ViewModels
                     }
                 }
             });
+
+            MessagingCenter.Subscribe<NewTransactionPage, TransactionModel>(this, "UpdateTransaction", async (obj, transaction) =>
+            {
+                using (var client = App.NewApiClient())
+                {
+                    try
+                    {
+                        var authenticate = await client.UserApi.Authenticate();
+
+                        if (!authenticate)
+                        {
+                            await App.RootPage.DisplayAlert("Authentication Failed", "Returning to login...", "Close");
+                            App.LogOut();
+                            return;
+                        }
+
+                        var response = await client.TransactionApi.Update(transaction);
+
+                        if (!response.Success)
+                        {
+                            await App.RootPage.DisplayAlert("Update Transaction Failed", response.Error, "Close");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await App.RootPage.DisplayAlert("Update Transaction Failed", "Server Error", "Close");
+                    }
+                }
+            });
         }
     }
 }

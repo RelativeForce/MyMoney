@@ -38,7 +38,18 @@ namespace MyMoney.Common.Views
 
         public async void Delete_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "DeleteTransaction", viewModel.Transaction);
+            var delete = await App.RootPage.DisplayAlert("Delete Transaction", "Are you sure you want to delete this transaction?", "Yes" ,"No");
+
+            if (delete)
+            {
+                MessagingCenter.Send(this, "DeleteTransaction", viewModel.Transaction);
+                await Navigation.PopAsync();
+            }
+        }
+
+        public async void Update_Clicked(object sender, EventArgs e)
+        {
+            MessagingCenter.Send(this, "UpdateTransaction", viewModel.Transaction);
             await Navigation.PopAsync();
         }
     }

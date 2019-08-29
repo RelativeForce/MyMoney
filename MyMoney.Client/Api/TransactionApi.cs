@@ -35,6 +35,16 @@ namespace MyMoney.Client.Api
             return await SendPost<TransactionModel>($"api/Transaction/Add", model);
         }
 
+        public async Task<UpdateResponse> Update(TransactionModel model)
+        {
+            if (model == null)
+                return null;
+
+            EnsureAuthenticated();
+
+            return await SendPost<UpdateResponse>($"api/Transaction/Update", model);
+        }
+
         public async Task<DeleteResponse> Delete(DeleteRequest deleteRequest)
         {
             if (deleteRequest == null)
