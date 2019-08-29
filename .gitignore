@@ -27,3 +27,6 @@
 /MyMoney.Client/bin/Release/netstandard2.0
 /MyMoney.Core/bin/Release/netcoreapp2.1
 /MyMoney.Infrastructure/bin/Release/netcoreapp2.1
+/MyMoney.Common/bin/Release/netstandard2.0
+/MyMoney.Android/bin/Release
+/MyMoney.Core.Tests/bin/Release/netcoreapp2.1

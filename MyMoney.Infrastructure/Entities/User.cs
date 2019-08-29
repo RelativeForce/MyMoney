@@ -28,10 +28,9 @@ namespace MyMoney.Infrastructure.Entities
 
         public IList<ITransaction> Between(DateTime start, DateTime end)
         {
-            var results = TransactionsProxy.Where(t => t.Date >= start && t.Date <= end).ToList();
-
-            return
-               results.Cast<ITransaction>()
+            return TransactionsProxy
+                .Where(t => t.Date >= start && t.Date <= end)
+                .Cast<ITransaction>()
                 .ToList();
         }
 

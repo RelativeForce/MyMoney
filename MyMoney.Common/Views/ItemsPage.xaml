@@ -25,23 +25,37 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Padding="10">
-                            <Label
-                                Text="{Binding Date}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="16" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackLayout Padding="10" Grid.Row="0" Grid.Column="0">
+                                <Label
+                                    Text="{Binding Date, StringFormat='{0:dd MMMM yyyy}'}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    FontSize="13" />
+                                <Label 
+                                    Text="{Binding Description}" 
+                                    LineBreakMode="NoWrap"
+                                    Style="{DynamicResource ListItemDetailTextStyle}"
+                                    FontSize="13" />
+                            </StackLayout>
                             <Label 
-                                Text="{Binding Description}" 
-                                LineBreakMode="NoWrap"
-                                Style="{DynamicResource ListItemDetailTextStyle}"
-                                FontSize="13" />
-                            <Label 
+                                Margin="10"
+                                Grid.Row="0" 
+                                Grid.Column="1"
                                 Text="{Binding Amount}" 
                                 LineBreakMode="NoWrap" 
+                                YAlign="Center"
+                                HorizontalOptions="End"
                                 Style="{DynamicResource ListItemTextStyle}" 
                                 FontSize="16" />
-                        </StackLayout>
+                        </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
