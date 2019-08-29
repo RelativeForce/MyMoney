@@ -29,7 +29,7 @@ namespace MyMoney.Infrastructure.Entities
         public IList<ITransaction> Between(DateTime start, DateTime end)
         {
             return TransactionsProxy
-                .Where(t => DateTime.Compare(t.Date, start) >= 0 && DateTime.Compare(t.Date, end) <= 0)
+                .Where(t => t.Date >= start && t.Date <= end)
                 .Cast<ITransaction>()
                 .ToList();
         }
@@ -37,7 +37,7 @@ namespace MyMoney.Infrastructure.Entities
         public decimal Total(DateTime start, DateTime end)
         {
             return TransactionsProxy
-                .Where(t => DateTime.Compare(t.Date, start) >= 0 && DateTime.Compare(t.Date, end) <= 0)
+                .Where(t => t.Date >= start && t.Date <= end)
                 .Aggregate((decimal) 0, (total, transaction) => total + transaction.Amount);
         }
 

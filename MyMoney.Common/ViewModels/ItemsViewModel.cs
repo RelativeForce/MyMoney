@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using MyMoney.Client.Models.DTO;
 using MyMoney.Client.Models.Request;
-using MyMoney.Common.Models;
 using MyMoney.Common.Views;
 using Xamarin.Forms;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using MyMoney.Client.Models.DTO;
 using MyMoney.Common.Models;
 using Xamarin.Forms;
 
@@ -10,17 +11,23 @@ namespace MyMoney.Common.Views
     [DesignTimeVisible(false)]
     public partial class NewItemPage : ContentPage
     {
-        public Item Item { get; set; }
+        public TransactionModel Item { get; set; }
+        public string MaxDate { get; set; }
+        public string MinDate { get; set; }
 
         public NewItemPage()
         {
             InitializeComponent();
 
-            Item = new Item
+            Item = new TransactionModel
             {
-                Text = "UserDetails name",
-                Description = "This is an item description."
+                Amount = 0,
+                Description = "",
+                Date = DateTime.Now
             };
+
+            MaxDate = DateTime.Now.AddMonths(36).ToShortDateString();
+            MinDate = DateTime.Now.AddMonths(-36).ToShortDateString();
 
             BindingContext = this;
         }
@@ -29,6 +36,11 @@ namespace MyMoney.Common.Views
         {
             MessagingCenter.Send(this, "AddItem", Item);
             await Navigation.PopModalAsync();
+        }
+
+        void OnDateChanged(object sender, DateChangedEventArgs args)
+        {
+            Item.Date = args.NewDate;
         }
 
         async void Cancel_Clicked(object sender, EventArgs e)
