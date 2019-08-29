@@ -89,7 +89,22 @@ namespace MyMoney.API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyMoney API V1");
             });
 
+            UpdateDatabase(app);
+
             app.Run(async (context) => await Task.Run(() => context.Response.Redirect("/swagger")));
+        }
+
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<DatabaseContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }
