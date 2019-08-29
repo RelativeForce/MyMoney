@@ -12,9 +12,9 @@ namespace MyMoney.Common.Views
     [DesignTimeVisible(false)]
     public partial class ItemDetailPage : ContentPage
     {
-        ItemDetailViewModel viewModel;
+        TransactionDetailViewModel viewModel;
 
-        public ItemDetailPage(ItemDetailViewModel viewModel)
+        public ItemDetailPage(TransactionDetailViewModel viewModel)
         {
             InitializeComponent();
 
@@ -32,7 +32,7 @@ namespace MyMoney.Common.Views
                 Amount = 0
             };
 
-            viewModel = new ItemDetailViewModel(item);
+            viewModel = new TransactionDetailViewModel(item);
             BindingContext = viewModel;
         }
     }

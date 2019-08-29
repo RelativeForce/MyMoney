@@ -9,11 +9,11 @@
 
     <StackLayout Spacing="20" Padding="15">
         <Label Text="Date:" FontSize="Small" />
-        <Label Text="{Binding Item.Date, StringFormat='{0:dd MMMM yyyy}'}" FontSize="Small"/>
+        <Label Text="{Binding Transaction.Date, StringFormat='{0:dd MMMM yyyy}'}" FontSize="Small"/>
         <Label Text="Description:" FontSize="Small" />
-        <Label Text="{Binding Item.Description}" FontSize="Small"/>
+        <Label Text="{Binding Transaction.Description}" FontSize="Small"/>
         <Label Text="Amount:" FontSize="Small" />
-        <Label Text="{Binding Item.Amount}" FontSize="Small"/>
+        <Label Text="{Binding Transaction.Amount}" FontSize="Small"/>
     </StackLayout>
     
 </ContentPage>

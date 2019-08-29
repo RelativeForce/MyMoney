@@ -27,7 +27,7 @@ namespace MyMoney.Common.Views
             if (item == null)
                 return;
 
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
+            await Navigation.PushAsync(new ItemDetailPage(new TransactionDetailViewModel(item)));
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;

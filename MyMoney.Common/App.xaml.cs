@@ -1,6 +1,5 @@
 ﻿using MyMoney.Client;
 using MyMoney.Client.Interfaces;
-using MyMoney.Common.Services;
 using MyMoney.Common.Views;
 using Xamarin.Forms;
 
@@ -17,12 +16,6 @@ namespace MyMoney.Common
         public App()
         {
             InitializeComponent();
-
-            #region RegisterServices
-
-            DependencyService.Register<MockDataStore>();
-
-            #endregion
 
             MainPage = new MainPage();
         }
