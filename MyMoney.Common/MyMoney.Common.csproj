@@ -21,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\TransactionDetailPage.xaml.cs">
+      <DependentUpon>TransactionDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\RegisterPage.xaml.cs">
       <DependentUpon>RegisterPage.xaml</DependentUpon>
     </Compile>
