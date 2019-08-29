@@ -34,7 +34,7 @@ namespace MyMoney.Common.Views
 
         async void Save_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "AddItem", Item);
+            MessagingCenter.Send(this, "AddTransaction", Item);
             await Navigation.PopModalAsync();
         }
 

@@ -10,18 +10,18 @@ namespace MyMoney.Common.Views
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
-    public partial class ItemsPage : ContentPage
+    public partial class TransactionListPage : ContentPage
     {
-        ItemsViewModel viewModel;
+        TransactionListViewModel viewModel;
 
-        public ItemsPage()
+        public TransactionListPage()
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new ItemsViewModel();
+            BindingContext = viewModel = new TransactionListViewModel();
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        async void OnTransactionSelected(object sender, SelectedItemChangedEventArgs args)
         {
             var item = args.SelectedItem as TransactionModel;
             if (item == null)
@@ -30,10 +30,10 @@ namespace MyMoney.Common.Views
             await Navigation.PushAsync(new TransactionDetailPage(new TransactionDetailViewModel(item)));
 
             // Manually deselect item.
-            ItemsListView.SelectedItem = null;
+            TransactionListView.SelectedItem = null;
         }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
+        async void Add_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
         }
@@ -42,7 +42,7 @@ namespace MyMoney.Common.Views
         {
             base.OnAppearing();
 
-            if (viewModel.Items.Count == 0)
+            if (viewModel.Transactions.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
         }
     }

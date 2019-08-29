@@ -22,7 +22,7 @@ namespace MyMoney.Common
 
         public static void Login()
         {
-            RootPage.Detail = new NavigationPage(new ItemsPage());
+            RootPage.Detail = new NavigationPage(new TransactionListPage());
             (RootPage.Master as MenuPage)?.PopulateMenuItems();
         }
 

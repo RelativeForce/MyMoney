@@ -29,7 +29,7 @@ namespace MyMoney.Common.Views
             switch (item)
             {
                 case HomeMenuItems.Transactions:
-                    await NavigateTo(new ItemsPage());
+                    await NavigateTo(new TransactionListPage());
                     break;
                 case HomeMenuItems.About:
                     await NavigateTo(new AboutPage());

@@ -9,18 +9,18 @@ using Xamarin.Forms;
 
 namespace MyMoney.Common.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public class TransactionListViewModel : BaseViewModel
     {
-        public ObservableCollection<TransactionModel> Items { get; set; }
+        public ObservableCollection<TransactionModel> Transactions { get; set; }
         public Command LoadItemsCommand { get; set; }
 
-        public ItemsViewModel()
+        public TransactionListViewModel()
         {
             Title = "Transactions";
-            Items = new ObservableCollection<TransactionModel>();
+            Transactions = new ObservableCollection<TransactionModel>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            MessagingCenter.Subscribe<NewItemPage, TransactionModel>(this, "AddItem", async (obj, item) =>
+            MessagingCenter.Subscribe<NewItemPage, TransactionModel>(this, "AddTransaction", async (obj, item) =>
             {
                 using (var client = App.NewApiClient())
                 {
@@ -37,7 +37,7 @@ namespace MyMoney.Common.ViewModels
 
                         var newItem = await client.TransactionApi.Add(item);
 
-                        Items.Add(newItem);
+                        Transactions.Add(newItem);
                     }
                     catch (Exception ex)
                     {
@@ -47,7 +47,7 @@ namespace MyMoney.Common.ViewModels
             });
         }
 
-        async Task ExecuteLoadItemsCommand()
+        public async Task ExecuteLoadItemsCommand()
         {
             if (IsBusy)
                 return;
@@ -56,7 +56,7 @@ namespace MyMoney.Common.ViewModels
 
             try
             {
-                Items.Clear();
+                Transactions.Clear();
 
                 using (var client = App.NewApiClient())
                 {
@@ -75,7 +75,7 @@ namespace MyMoney.Common.ViewModels
 
                         foreach (var item in list.Transactions)
                         {
-                            Items.Add(item);
+                            Transactions.Add(item);
                         }
                     }
                     catch (Exception ex)
