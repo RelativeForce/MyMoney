@@ -25,11 +25,15 @@ namespace MyMoney.Common.Views
                 Password = ""
             };
 
+            IsBusy = false;
+
             BindingContext = this;
         }
 
         async void Login_Clicked(object sender, EventArgs e)
         {
+            IsBusy = true;
+
             using (var client = App.NewApiClient())
             {
                 try
@@ -39,16 +43,19 @@ namespace MyMoney.Common.Views
                     if (response.Success)
                     {
                         App.Login();
-                        return;
                     }
-
-                    await App.RootPage.DisplayAlert("Login Failed", response.Error, "Close");
+                    else
+                    {
+                        await App.RootPage.DisplayAlert("Login Failed", response.Error, "Close");
+                    }
                 }
                 catch (Exception ex)
                 {
                     await App.RootPage.DisplayAlert("Login Failed", "Server Error", "Close");
                 }
             }
+
+            IsBusy = false;
         }
 
         async void Register_Clicked(object sender, EventArgs e)

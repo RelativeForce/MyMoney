@@ -18,6 +18,7 @@
             <Label Text="Password" FontSize="Medium" />
             <Entry Text="{Binding UserDetails.Password}" FontSize="Small" Margin="0" IsPassword="True"/>
             <Button Text="Login" Clicked="Login_Clicked"></Button>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" />
         </StackLayout>
     </ContentPage.Content>
     
