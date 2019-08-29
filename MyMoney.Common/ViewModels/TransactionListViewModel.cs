@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using MyMoney.Client.Models.Common;
 using MyMoney.Client.Models.Entity;
@@ -132,7 +133,7 @@ namespace MyMoney.Common.ViewModels
                 }
             });
 
-            MessagingCenter.Subscribe<NewTransactionPage, TransactionModel>(this, "UpdateTransaction", async (obj, transaction) =>
+            MessagingCenter.Subscribe<TransactionDetailPage, TransactionModel>(this, "UpdateTransaction", async (obj, transaction) =>
             {
                 using (var client = App.NewApiClient())
                 {
@@ -152,6 +153,20 @@ namespace MyMoney.Common.ViewModels
                         if (!response.Success)
                         {
                             await App.RootPage.DisplayAlert("Update Transaction Failed", response.Error, "Close");
+                        }
+                        else
+                        {
+                            var transactionInList = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
+
+                            if (transactionInList == null)
+                            {
+                                await App.RootPage.DisplayAlert("Update Transaction Failed", "Transaction does not exist in list", "Close");
+                                return;
+                            }
+
+                            var index = Transactions.IndexOf(transactionInList);
+                            Transactions.RemoveAt(index);
+                            Transactions.Insert(index, transaction);
                         }
                     }
                     catch (Exception ex)
