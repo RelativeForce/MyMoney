@@ -9,17 +9,17 @@ namespace MyMoney.Common.Views
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
-    public partial class NewItemPage : ContentPage
+    public partial class NewTransactionPage : ContentPage
     {
-        public TransactionModel Item { get; set; }
+        public TransactionModel Transaction { get; set; }
         public string MaxDate { get; set; }
         public string MinDate { get; set; }
 
-        public NewItemPage()
+        public NewTransactionPage()
         {
             InitializeComponent();
 
-            Item = new TransactionModel
+            Transaction = new TransactionModel
             {
                 Amount = 0,
                 Description = "",
@@ -34,13 +34,13 @@ namespace MyMoney.Common.Views
 
         async void Save_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "AddTransaction", Item);
+            MessagingCenter.Send(this, "AddTransaction", Transaction);
             await Navigation.PopModalAsync();
         }
 
         void OnDateChanged(object sender, DateChangedEventArgs args)
         {
-            Item.Date = args.NewDate;
+            Transaction.Date = args.NewDate;
         }
 
         async void Cancel_Clicked(object sender, EventArgs e)

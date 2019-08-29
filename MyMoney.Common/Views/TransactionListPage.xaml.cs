@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using MyMoney.Client.Models.DTO;
-using MyMoney.Common.Models;
 using MyMoney.Common.ViewModels;
 using Xamarin.Forms;
 
@@ -35,7 +34,7 @@ namespace MyMoney.Common.Views
 
         async void Add_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
+            await Navigation.PushModalAsync(new NavigationPage(new NewTransactionPage()));
         }
 
         protected override void OnAppearing()

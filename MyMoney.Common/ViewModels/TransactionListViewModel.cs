@@ -20,7 +20,7 @@ namespace MyMoney.Common.ViewModels
             Transactions = new ObservableCollection<TransactionModel>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            MessagingCenter.Subscribe<NewItemPage, TransactionModel>(this, "AddTransaction", async (obj, item) =>
+            MessagingCenter.Subscribe<NewTransactionPage, TransactionModel>(this, "AddTransaction", async (obj, item) =>
             {
                 using (var client = App.NewApiClient())
                 {
