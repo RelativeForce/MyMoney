@@ -14,7 +14,7 @@ namespace MyMoney.Client.Api
         {
         }
 
-        public async Task<TransactionListResponse> List(TransactionListRequest listParameters)
+        public async Task<TransactionListResponse> List(DateRangeModel listParameters)
         {
             if (listParameters == null)
                 return null;

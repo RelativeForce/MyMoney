@@ -7,7 +7,7 @@ namespace MyMoney.Client.Interfaces.Api
 {
     public interface ITransactionApi
     {
-        Task<TransactionListResponse> List(TransactionListRequest listParameters);
+        Task<TransactionListResponse> List(DateRangeModel listParameters);
         Task<TransactionModel> Add(TransactionModel model);
         Task<DeleteResponse> Delete(DeleteRequest deleteRequest);
     }

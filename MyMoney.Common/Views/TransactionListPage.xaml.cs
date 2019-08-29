@@ -22,8 +22,7 @@ namespace MyMoney.Common.Views
 
         async void OnTransactionSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as TransactionModel;
-            if (item == null)
+            if (!(args.SelectedItem is TransactionModel item))
                 return;
 
             await Navigation.PushAsync(new TransactionDetailPage(new TransactionDetailViewModel(item)));

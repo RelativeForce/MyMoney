@@ -47,7 +47,7 @@ namespace MyMoney.Common.ViewModels
                             return;
                         }
 
-                        var list = await client.TransactionApi.List(new TransactionListRequest());
+                        var list = await client.TransactionApi.List(new DateRangeModel());
 
                         foreach (var item in list.Transactions)
                         {
