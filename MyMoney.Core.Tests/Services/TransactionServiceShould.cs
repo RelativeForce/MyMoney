@@ -213,7 +213,7 @@ namespace MyMoney.Core.Tests.Services
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void ShouldReturnTrueOnUpdateTransactionWhenTransactionExistsAndIsValid(bool expectedResult)
+        public void ShouldReturnExpectedResultOnUpdateTransactionWhenTransactionExistsAndIsValid(bool expectedResult)
         {
             var now = DateTime.Now;
             const decimal amount = 45;
@@ -227,7 +227,7 @@ namespace MyMoney.Core.Tests.Services
             mockTransaction.Object.UserId = userId;
 
             _repositoryMock
-                .Setup(m => m.Update(It.IsAny<ITransaction>()))
+                .Setup(m => m.Update(mockTransaction.Object))
                 .Returns(expectedResult)
                 .Verifiable();
 
@@ -249,6 +249,93 @@ namespace MyMoney.Core.Tests.Services
             Assert.Equal(now, mockTransaction.Object.Date);
 
             _repositoryMock.Verify(m => m.Update(mockTransaction.Object), Times.Once);
+            _repositoryMock.Verify(m => m.FindById<ITransaction>(transactionId), Times.Once);
+        }
+
+        #endregion
+
+        #region Delete Tests
+
+        [Fact]
+        public void ShouldReturnFalseOnDeleteTransactionWhenIsNotOwnedByCurrentUser()
+        {
+            const long transactionId = 7;
+            const long userId = 9;
+
+            var mockTransaction = new Mock<ITransaction>(MockBehavior.Strict);
+            mockTransaction.SetupAllProperties();
+            mockTransaction.Object.Id = transactionId;
+            mockTransaction.Object.UserId = userId + 5;
+            
+            _currentUserProvider.Setup(m => m.CurrentUserId).Returns(userId).Verifiable();
+
+            _repositoryMock
+                .Setup(m => m.FindById<ITransaction>(transactionId))
+                .Returns(mockTransaction.Object)
+                .Verifiable();
+
+            var service = NewService;
+
+            var result = service.Delete(transactionId);
+
+            Assert.False(result);
+            _repositoryMock.Verify(m => m.FindById<ITransaction>(transactionId), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldReturnFalseOnDeleteTransactionWhenTransactionDoesNotExist()
+        {
+            const long transactionId = 7;
+            const long userId = 9;
+
+            _currentUserProvider.Setup(m => m.CurrentUserId).Returns(userId).Verifiable();
+
+            _repositoryMock
+                .Setup(m => m.FindById<ITransaction>(transactionId))
+                .Returns((ITransaction) null)
+                .Verifiable();
+
+            var service = NewService;
+
+            var result = service.Delete(transactionId);
+
+            Assert.False(result);
+
+            _repositoryMock.Verify(m => m.FindById<ITransaction>(transactionId), Times.Once);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ShouldReturnExpectedResultOnDeleteTransactionWhenTransactionExists(bool expectedResult)
+        {
+            const long transactionId = 7;
+            const long userId = 9;
+
+            var mockTransaction = new Mock<ITransaction>(MockBehavior.Strict);
+            mockTransaction.SetupAllProperties();
+            mockTransaction.Object.Id = transactionId;
+            mockTransaction.Object.UserId = userId;
+
+            _repositoryMock
+                .Setup(m => m.Delete(mockTransaction.Object))
+                .Returns(expectedResult)
+                .Verifiable();
+
+            _currentUserProvider.Setup(m => m.CurrentUserId).Returns(userId).Verifiable();
+
+            _repositoryMock
+                .Setup(m => m.FindById<ITransaction>(transactionId))
+                .Returns(mockTransaction.Object)
+                .Verifiable();
+
+            var service = NewService;
+
+            var result = service.Delete(transactionId);
+
+            Assert.Equal(expectedResult, result);
+
+            _repositoryMock.Verify(m => m.Delete(mockTransaction.Object), Times.Once);
             _repositoryMock.Verify(m => m.FindById<ITransaction>(transactionId), Times.Once);
         }
 
