@@ -2,7 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using MyMoney.Client.ApiExceptions;
 using MyMoney.Client.Models.Common;
 using MyMoney.Client.Models.Entity;
 using MyMoney.Client.Models.Request;
@@ -160,7 +162,8 @@ namespace MyMoney.Common.ViewModels
 
                             if (transactionInList == null)
                             {
-                                await App.RootPage.DisplayAlert("Update Transaction Failed", "Transaction does not exist in list", "Close");
+                                await App.RootPage.DisplayAlert("Update Transaction Failed",
+                                    "Transaction does not exist in list", "Close");
                                 return;
                             }
 
@@ -169,7 +172,14 @@ namespace MyMoney.Common.ViewModels
                             Transactions.Insert(index, transaction);
                         }
                     }
-                    catch (Exception ex)
+                    catch (MyMoneyApiException apiException)
+                    {
+                        if (apiException.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            await App.RootPage.DisplayAlert("Update Transaction Failed", "Transaction does not exist on server", "Close");
+                        }
+                    }
+                    catch (Exception)
                     {
                         await App.RootPage.DisplayAlert("Update Transaction Failed", "Server Error", "Close");
                     }

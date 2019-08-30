@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MyMoney.Client.ApiExceptions;
 using MyMoney.Client.Interfaces;
 using Newtonsoft.Json;
 
@@ -74,7 +75,7 @@ namespace MyMoney.Client.Api
             var responseString = await result.Content.ReadAsStringAsync();
 
             if (result.StatusCode != HttpStatusCode.OK)
-                throw new Exception(responseString);
+                throw new MyMoneyApiException(result.StatusCode, responseString);
 
             return JsonConvert.DeserializeObject<T>(responseString);
         }
