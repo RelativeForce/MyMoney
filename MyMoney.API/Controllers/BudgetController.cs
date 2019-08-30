@@ -9,7 +9,7 @@ namespace MyMoney.API.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
-    public class BudgetController : AuthorizedController
+    public class BudgetController : Controller
     {
         private readonly IBudgetService _budgetService;
 

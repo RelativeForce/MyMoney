@@ -13,7 +13,7 @@ namespace MyMoney.API.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
-    public class TransactionController : AuthorizedController
+    public class TransactionController : Controller
     {
 
         private readonly ICurrentUserProvider _currentUserProvider;
