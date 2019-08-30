@@ -6,21 +6,22 @@ using MyMoney.Client.Models.Common;
 using MyMoney.Client.Models.Entity;
 using MyMoney.Client.Models.Request;
 using MyMoney.Client.Models.Response;
+using MyMoney.Core;
 using MyMoney.Core.Interfaces.Service;
 
 namespace MyMoney.API.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
-    public class TransactionController : AuthorizedController
+    public class TransactionController : Controller
     {
 
-        private readonly IUserService _userService;
+        private readonly ICurrentUserProvider _currentUserProvider;
         private readonly ITransactionService _transactionService;
 
-        public TransactionController(IUserService userService, ITransactionService transactionService)
+        public TransactionController(ICurrentUserProvider currentUserProvider, ITransactionService transactionService)
         {
-            _userService = userService;
+            _currentUserProvider = currentUserProvider;
             _transactionService = transactionService;
         }
 
@@ -34,12 +35,7 @@ namespace MyMoney.API.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var user = _userService.GetById(CurrentUserId);
-
-                if(user == null)
-                    return BadRequest("Error while retrieving user information");
-
-                var transactions = user.Between(listParameters.Start, listParameters.End);
+                var transactions = _currentUserProvider.CurrentUser.Between(listParameters.Start, listParameters.End);
 
                 return Ok(new TransactionListResponse
                 {
@@ -68,28 +64,12 @@ namespace MyMoney.API.Controllers
         {
             try
             {
-                if (model == null || !ModelState.IsValid || model.Id == default)
+                if (model == null || !ModelState.IsValid)
                 {
                     return BadRequest("Invalid State");
                 }
 
-                var user = _userService.GetById(CurrentUserId);
-
-                if (user == null)
-                    return BadRequest("Error while retrieving user information");
-
-                var transaction = _transactionService.FindById(model.Id);
-
-                if (transaction == null)
-                {
-                    return NotFound("Transaction does not exist");
-                }
-
-                transaction.Amount = model.Amount;
-                transaction.Date = model.Date;
-                transaction.Description = model.Description;
-
-                var success = _transactionService.Update(user, transaction);
+                var success = _transactionService.Update(model.Id, model.Date, model.Description, model.Amount);
 
                 return Ok(new UpdateResponse
                 {
@@ -113,12 +93,7 @@ namespace MyMoney.API.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var user = _userService.GetById(CurrentUserId);
-
-                if (user == null)
-                    return BadRequest("Error while retrieving user information");
-
-                var result = _transactionService.Add(user, model.Date, model.Description, model.Amount);
+                var result = _transactionService.Add(model.Date, model.Description, model.Amount);
 
                 if (result == null)
                     return BadRequest("Invalid State");
@@ -147,12 +122,7 @@ namespace MyMoney.API.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var user = _userService.GetById(CurrentUserId);
-
-                if (user == null)
-                    return BadRequest("Error while retrieving user information");
-
-                var result = _transactionService.Delete(user, deleteParameters.Id);
+                var result = _transactionService.Delete(deleteParameters.Id);
 
                 return Ok(new DeleteResponse{ Success = result });
             }

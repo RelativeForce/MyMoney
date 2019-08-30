@@ -5,9 +5,8 @@ namespace MyMoney.Core.Interfaces.Service
 {
     public interface ITransactionService
     {
-        ITransaction Add(IUser user, DateTime date, string description, decimal amount);
-        bool Update(IUser user, ITransaction transaction);
-        bool Delete(IUser user, long transactionId);
-        ITransaction FindById(long transactionId);
+        ITransaction Add(DateTime date, string description, decimal amount);
+        bool Update(long transactionId, DateTime date, string description, decimal amount);
+        bool Delete(long transactionId);
     }
 }

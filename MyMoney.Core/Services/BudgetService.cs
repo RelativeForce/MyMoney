@@ -9,43 +9,62 @@ namespace MyMoney.Core.Services
     {
         private readonly IRepository _repository;
         private readonly IEntityFactory _entityFactory;
+        private readonly ICurrentUserProvider _currentUserProvider;
 
-        public BudgetService(IRepository repository, IEntityFactory entityFactory)
+        public BudgetService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider)
         {
             _repository = repository;
             _entityFactory = entityFactory;
+            _currentUserProvider = currentUserProvider;
         }
 
-        public IBudget Add(IUser user, DateTime month, decimal amount)
+        public IBudget Add(DateTime start, DateTime end, decimal amount, string notes)
         {
-            var filteredMonth = FilterDate(month);
+            var user = _currentUserProvider.CurrentUser;
 
-            var existing = Find(user, filteredMonth);
+            notes = notes ?? "";
 
-            if (existing != null)
+            if(end < start)
             {
-                return existing;
+                var temp = start;
+                start = end;
+                end = temp;
+            }
+
+            start = CleanDate(start).Date;
+            end = CleanDate(end).Date.AddDays(1).AddTicks(-1);
+
+            var existingStart = Find(start);
+            var existingEnd = Find(end);
+
+            if (existingStart != null || existingEnd != null)
+            {
+                return null;
             }
 
             var budget = _entityFactory.NewBudget;
+            budget.UserId = user.Id;
+            budget.User = user;
             budget.Amount = amount;
-            budget.Month = filteredMonth;
+            budget.Start = start;
+            budget.End = end;
+            budget.Notes = notes;
 
             return _repository.Add(budget);
         }
 
-        public IBudget Find(IUser user, DateTime month)
+        public IBudget Find(DateTime date)
         {
-            var filteredMonth = FilterDate(month);
+            var user = _currentUserProvider.CurrentUser;
 
-            return _repository.Find<IBudget>(b => b.Month.Equals(filteredMonth) && b.UserId == user.Id);
+            date = CleanDate(date);
+
+            return _repository.Find<IBudget>(b => date >= b.Start && date <= b.End && b.UserId == user.Id);
         }
 
-        private static DateTime FilterDate(DateTime date)
+        private static DateTime CleanDate(DateTime date)
         {
-            var filteredDate = new DateTime(date.Year, date.Month, 1);
-
-            return filteredDate;
+            return date.ToUniversalTime();
         }
     }
 }

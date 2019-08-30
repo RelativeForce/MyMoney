@@ -6,6 +6,8 @@ namespace MyMoney.Client.Models.Entity
     {
         public long Id { get; set; }
         public decimal Amount { get; set; }
-        public DateTime Month { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public string Notes { get; set; }
     }
 }
