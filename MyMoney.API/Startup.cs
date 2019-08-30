@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MyMoney.API.Utility;
+using MyMoney.Core;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Service;
 using MyMoney.Core.Services;
@@ -68,6 +69,7 @@ namespace MyMoney.API
             services.AddScoped<IBudgetService, BudgetService>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IEntityFactory, EntityFactory>();
+            services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

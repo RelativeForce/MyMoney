@@ -68,7 +68,7 @@ namespace MyMoney.API.Controllers
         {
             try
             {
-                if (model == null || !ModelState.IsValid || model.Id == default)
+                if (model == null || !ModelState.IsValid)
                 {
                     return BadRequest("Invalid State");
                 }
@@ -78,18 +78,7 @@ namespace MyMoney.API.Controllers
                 if (user == null)
                     return BadRequest("Error while retrieving user information");
 
-                var transaction = _transactionService.FindById(model.Id);
-
-                if (transaction == null)
-                {
-                    return NotFound("Transaction does not exist");
-                }
-
-                transaction.Amount = model.Amount;
-                transaction.Date = model.Date;
-                transaction.Description = model.Description;
-
-                var success = _transactionService.Update(user, transaction);
+                var success = _transactionService.Update(user, model.Id, model.Date, model.Description, model.Amount);
 
                 return Ok(new UpdateResponse
                 {

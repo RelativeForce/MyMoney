@@ -31,10 +31,19 @@ namespace MyMoney.Core.Services
             return _repository.Add(transaction);
         }
 
-        public bool Update(IUser user, ITransaction transaction)
+        public bool Update(IUser user, long transactionId, DateTime date, string description, decimal amount)
         {
-            if (string.IsNullOrWhiteSpace(transaction.Description) || transaction.UserId != user.Id)
+            if (string.IsNullOrWhiteSpace(description))
                 return false;
+
+            var transaction = _repository.FindById<ITransaction>(transactionId);
+
+            if (transaction == null || transaction.UserId != user.Id)
+                return false;
+
+            transaction.Amount = amount;
+            transaction.Date = date;
+            transaction.Description = description;
 
             return _repository.Update(transaction);
         }
@@ -47,11 +56,6 @@ namespace MyMoney.Core.Services
                 return false;
 
             return _repository.Delete(transaction);
-        }
-
-        public ITransaction FindById(long transactionId)
-        {
-            return _repository.FindById<ITransaction>(transactionId);
         }
     }
 }
