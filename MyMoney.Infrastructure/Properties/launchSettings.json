@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MyMoney.Infrastructure": {
+      "commandName": "Project",
+      "environmentVariables": {
+        " ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
