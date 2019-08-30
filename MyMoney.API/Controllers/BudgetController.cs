@@ -11,14 +11,10 @@ namespace MyMoney.API.Controllers
     [Route("api/[controller]")]
     public class BudgetController : AuthorizedController
     {
-
-        private readonly IUserService _userService;
         private readonly IBudgetService _budgetService;
 
-
-        public BudgetController(IUserService userService, IBudgetService budgetService)
+        public BudgetController(IBudgetService budgetService)
         {
-            _userService = userService;
             _budgetService = budgetService;
         }
 
@@ -32,12 +28,7 @@ namespace MyMoney.API.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var user = _userService.GetById(CurrentUserId);
-
-                if (user == null)
-                    return BadRequest("Error while retrieving user information");
-
-                var result = _budgetService.Find(user, findParameters.Date);
+                var result = _budgetService.Find(findParameters.Date);
 
                 if (result == null)
                     return NotFound();
@@ -67,13 +58,7 @@ namespace MyMoney.API.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var user = _userService.GetById(CurrentUserId);
-
-                if (user == null)
-                    return BadRequest("Error while retrieving user information");
-
                 var result = _budgetService.Add(
-                    user, 
                     model.Start, 
                     model.End,
                     model.Amount,

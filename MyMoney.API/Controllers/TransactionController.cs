@@ -6,6 +6,7 @@ using MyMoney.Client.Models.Common;
 using MyMoney.Client.Models.Entity;
 using MyMoney.Client.Models.Request;
 using MyMoney.Client.Models.Response;
+using MyMoney.Core;
 using MyMoney.Core.Interfaces.Service;
 
 namespace MyMoney.API.Controllers
@@ -15,12 +16,12 @@ namespace MyMoney.API.Controllers
     public class TransactionController : AuthorizedController
     {
 
-        private readonly IUserService _userService;
+        private readonly ICurrentUserProvider _currentUserProvider;
         private readonly ITransactionService _transactionService;
 
-        public TransactionController(IUserService userService, ITransactionService transactionService)
+        public TransactionController(ICurrentUserProvider currentUserProvider, ITransactionService transactionService)
         {
-            _userService = userService;
+            _currentUserProvider = currentUserProvider;
             _transactionService = transactionService;
         }
 
@@ -34,12 +35,7 @@ namespace MyMoney.API.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var user = _userService.GetById(CurrentUserId);
-
-                if(user == null)
-                    return BadRequest("Error while retrieving user information");
-
-                var transactions = user.Between(listParameters.Start, listParameters.End);
+                var transactions = _currentUserProvider.CurrentUser.Between(listParameters.Start, listParameters.End);
 
                 return Ok(new TransactionListResponse
                 {
