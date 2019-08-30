@@ -113,7 +113,144 @@ namespace MyMoney.Core.Tests.Services
 
         #region Update Tests
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("     ")]
+        public void ShouldReturnFalseOnUpdateTransactionWhenDescriptionIsInvalid(string invalidDescription)
+        {
+            var now = DateTime.Now;
+            const decimal amount = 45;
+            const long transactionId = 7;
 
+            _repositoryMock
+                .Setup(m => m.Update(It.IsAny<ITransaction>()))
+                .Returns(false)
+                .Verifiable();
+
+            _repositoryMock
+                .Setup(m => m.FindById<ITransaction>(transactionId))
+                .Returns((ITransaction) null)
+                .Verifiable();
+
+            var service = NewService;
+
+            var result = service.Update(transactionId, now, invalidDescription, amount);
+
+            Assert.False(result);
+
+            _repositoryMock.Verify(m => m.Update(It.IsAny<ITransaction>()), Times.Never);
+            _repositoryMock.Verify(m => m.FindById<ITransaction>(transactionId), Times.Never);
+        }
+
+        [Fact]
+        public void ShouldReturnFalseOnUpdateTransactionWhenCurrentUserIsNotTransactionOwner()
+        {
+            var now = DateTime.Now;
+            const decimal amount = 45;
+            const long transactionId = 7;
+            const long userId = 9;
+            const string description = "test";
+
+            var mockTransaction = new Mock<ITransaction>(MockBehavior.Strict);
+            mockTransaction.Setup(m => m.Id).Returns(transactionId);
+            mockTransaction.Setup(m => m.UserId).Returns(userId + 4);
+            mockTransaction.SetupAllProperties();
+
+            _repositoryMock
+                .Setup(m => m.Update(It.IsAny<ITransaction>()))
+                .Returns(false)
+                .Verifiable();
+
+            _currentUserProvider.Setup(m => m.CurrentUserId).Returns(userId).Verifiable();
+
+            _repositoryMock
+                .Setup(m => m.FindById<ITransaction>(transactionId))
+                .Returns(mockTransaction.Object)
+                .Verifiable();
+
+            var service = NewService;
+
+            var result = service.Update(transactionId, now, description, amount);
+
+            Assert.False(result);
+
+            _repositoryMock.Verify(m => m.Update(It.IsAny<ITransaction>()), Times.Never);
+            _repositoryMock.Verify(m => m.FindById<ITransaction>(transactionId), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldReturnFalseOnUpdateTransactionWhenTransactionDoesNotExist()
+        {
+            var now = DateTime.Now;
+            const decimal amount = 45;
+            const long transactionId = 7;
+            const long userId = 9;
+            const string description = "test";
+
+            _repositoryMock
+                .Setup(m => m.Update(It.IsAny<ITransaction>()))
+                .Returns(false)
+                .Verifiable();
+
+            _currentUserProvider.Setup(m => m.CurrentUserId).Returns(userId).Verifiable();
+
+            _repositoryMock
+                .Setup(m => m.FindById<ITransaction>(transactionId))
+                .Returns((ITransaction) null)
+                .Verifiable();
+
+            var service = NewService;
+
+            var result = service.Update(transactionId, now, description, amount);
+
+            Assert.False(result);
+
+            _repositoryMock.Verify(m => m.Update(It.IsAny<ITransaction>()), Times.Never);
+            _repositoryMock.Verify(m => m.FindById<ITransaction>(transactionId), Times.Once);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ShouldReturnTrueOnUpdateTransactionWhenTransactionExistsAndIsValid(bool expectedResult)
+        {
+            var now = DateTime.Now;
+            const decimal amount = 45;
+            const long transactionId = 7;
+            const long userId = 9;
+            const string description = "test";
+
+            var mockTransaction = new Mock<ITransaction>(MockBehavior.Strict);
+            mockTransaction.SetupAllProperties();
+            mockTransaction.Object.Id = transactionId;
+            mockTransaction.Object.UserId = userId;
+
+            _repositoryMock
+                .Setup(m => m.Update(It.IsAny<ITransaction>()))
+                .Returns(expectedResult)
+                .Verifiable();
+
+            _currentUserProvider.Setup(m => m.CurrentUserId).Returns(userId).Verifiable();
+
+            _repositoryMock
+                .Setup(m => m.FindById<ITransaction>(transactionId))
+                .Returns(mockTransaction.Object)
+                .Verifiable();
+
+            var service = NewService;
+
+            var result = service.Update(transactionId, now, description, amount);
+
+            Assert.Equal(expectedResult, result);
+
+            Assert.Equal(amount, mockTransaction.Object.Amount);
+            Assert.Equal(description, mockTransaction.Object.Description);
+            Assert.Equal(now, mockTransaction.Object.Date);
+
+            _repositoryMock.Verify(m => m.Update(mockTransaction.Object), Times.Once);
+            _repositoryMock.Verify(m => m.FindById<ITransaction>(transactionId), Times.Once);
+        }
 
         #endregion
 
