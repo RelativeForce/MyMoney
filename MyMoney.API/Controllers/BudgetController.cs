@@ -39,11 +39,16 @@ namespace MyMoney.API.Controllers
 
                 var result = _budgetService.Find(user, findParameters.Date);
 
+                if (result == null)
+                    return NotFound();
+
                 return Ok(new BudgetModel
                 {
                     Id = result.Id,
                     Amount = result.Amount,
-                    Month = result.Month
+                    Start = result.Start,
+                    End = result.End,
+                    Notes = result.Notes
                 });
             }
             catch (Exception)
@@ -53,11 +58,11 @@ namespace MyMoney.API.Controllers
         }
 
         [HttpPost(nameof(Add))]
-        public IActionResult Add([FromBody] BudgetModel registerParameters)
+        public IActionResult Add([FromBody] BudgetModel model)
         {
             try
             {
-                if (registerParameters == null || !ModelState.IsValid)
+                if (model == null || !ModelState.IsValid)
                 {
                     return BadRequest("Invalid State");
                 }
@@ -69,15 +74,22 @@ namespace MyMoney.API.Controllers
 
                 var result = _budgetService.Add(
                     user, 
-                    registerParameters.Month, 
-                    registerParameters.Amount
-                    );
+                    model.Start, 
+                    model.End,
+                    model.Amount,
+                    model.Notes
+                );
+
+                if (result == null)
+                    return BadRequest("Invalid budget data");
 
                 return Ok(new BudgetModel
                 {
                     Id = result.Id,
                     Amount = result.Amount,
-                    Month = result.Month
+                    Start = result.Start,
+                    End = result.End,
+                    Notes = result.Notes
                 });
 
             }
