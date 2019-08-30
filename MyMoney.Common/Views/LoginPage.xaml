@@ -14,12 +14,12 @@
     <ContentPage.Content>
         <StackLayout Padding="15">
             <Label Text="Email" FontSize="Small" />
-            <Entry Text="{Binding UserDetails.Email}" FontSize="Small" IsEnabled="{Binding IsBusy.Equals(false)}" />
+            <Entry Text="{Binding UserDetails.Email}" FontSize="Small" IsEnabled="{Binding IsFormEnabled}" />
 
             <Label Text="Password" FontSize="Small" />
-            <Entry Text="{Binding UserDetails.Password}" FontSize="Small" Margin="0" IsPassword="True" IsEnabled="{Binding IsBusy.Equals(false)}"/>
+            <Entry Text="{Binding UserDetails.Password}" FontSize="Small" Margin="0" IsPassword="True" IsEnabled="{Binding IsFormEnabled}"/>
 
-            <Button Text="Login" Clicked="Login_Clicked" IsEnabled="{Binding IsBusy.Equals(false)}"></Button>
+            <Button Text="Login" Clicked="Login_Clicked" IsEnabled="{Binding IsFormEnabled}"></Button>
             <ActivityIndicator IsRunning="{Binding IsBusy}" />
         </StackLayout>
     </ContentPage.Content>

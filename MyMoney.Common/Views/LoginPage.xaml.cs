@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using MyMoney.Client;
 using MyMoney.Client.Interfaces;
-using MyMoney.Common.Models;
 using Xamarin.Forms;
 
 namespace MyMoney.Common.Views
@@ -15,6 +13,8 @@ namespace MyMoney.Common.Views
     {
         public ICurrentUserDetails UserDetails { get; set; }
 
+        public bool IsFormEnabled { get; set; }
+
         public LoginPage()
         {
             InitializeComponent();
@@ -24,8 +24,9 @@ namespace MyMoney.Common.Views
                 Email = "",
                 Password = ""
             };
-
+            
             IsBusy = false;
+            IsFormEnabled = true;
 
             BindingContext = this;
         }
@@ -33,6 +34,7 @@ namespace MyMoney.Common.Views
         async void Login_Clicked(object sender, EventArgs e)
         {
             IsBusy = true;
+            IsFormEnabled = false;
 
             using (var client = App.NewApiClient())
             {
@@ -56,6 +58,7 @@ namespace MyMoney.Common.Views
             }
 
             IsBusy = false;
+            IsFormEnabled = true;
         }
 
         void Register_Clicked(object sender, EventArgs e)
