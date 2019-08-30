@@ -28,8 +28,8 @@ namespace MyMoney.Common.Views
                 if (e.SelectedItem == null)
                     return;
 
-                var id = ((HomeMenuItem) e.SelectedItem).Id;
-                await RootPage.NavigateFromMenu(id);
+                var item = ((HomeMenuItem) e.SelectedItem).Item;
+                await RootPage.NavigateFromMenu(item);
             };
         }
 
@@ -40,6 +40,7 @@ namespace MyMoney.Common.Views
             if (App.AuthenticationManager.CurrentUser != null)
             {
                 menuItems.Add(new HomeMenuItem(HomeMenuItems.Transactions));
+                menuItems.Add(new HomeMenuItem(HomeMenuItems.Budget));
                 menuItems.Add(new HomeMenuItem(HomeMenuItems.About));
                 menuItems.Add(new HomeMenuItem(HomeMenuItems.Logout));
             }

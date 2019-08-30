@@ -21,8 +21,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\NewBudgetPage.xaml.cs">
+      <DependentUpon>NewBudgetPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\NewTransactionPage.xaml.cs">
       <DependentUpon>NewTransactionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\BudgetsPage.xaml.cs">
+      <DependentUpon>BudgetsPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\TransactionListPage.xaml.cs">
       <DependentUpon>TransactionListPage.xaml</DependentUpon>
