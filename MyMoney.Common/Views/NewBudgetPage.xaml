@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="MyMoney.Common.Views.NewBudgetPage"
+             Title="New Budget">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
+        <ToolbarItem Text="Save" Clicked="Save_Clicked" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout Padding="15">
+            <Label Text="Start" FontSize="Small" />
+            <DatePicker 
+                x:Name="StartDatePicker"
+                MinimumDate="{Binding MinDate}"  
+                MaximumDate="{Binding MaxDate}" 
+                Date="{Binding Budget.Start}" 
+                FontSize="Small" 
+                DateSelected="OnStartDateChanged"/>
+
+            <Label Text="End" FontSize="Small" />
+            <DatePicker 
+                x:Name="EndDatePicker"
+                MinimumDate="{Binding MinDate}"  
+                MaximumDate="{Binding MaxDate}" 
+                Date="{Binding Budget.End}" 
+                FontSize="Small" 
+                Unfocused="OnEndDateChanged"/>
+
+            <Label Text="Amount" FontSize="Small" />
+            <Entry Text="{Binding Budget.Amount}" FontSize="Small" />
+
+            <Label Text="Notes" FontSize="Small" />
+            <Editor Text="{Binding Budget.Notes}" FontSize="Small" />
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

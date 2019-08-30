@@ -21,10 +21,8 @@ namespace MyMoney.Common.Views
             MasterBehavior = MasterBehavior.Popover;
         }
 
-        public async Task NavigateFromMenu(int id)
+        public async Task NavigateFromMenu(HomeMenuItems item)
         {
-            var item = (HomeMenuItems) id;
-
             switch (item)
             {
                 case HomeMenuItems.Transactions:
@@ -38,6 +36,9 @@ namespace MyMoney.Common.Views
                     break;
                 case HomeMenuItems.Register:
                     await NavigateTo(new RegisterPage());
+                    break;
+                case HomeMenuItems.Budget:
+                    await NavigateTo(new BudgetsPage());
                     break;
                 case HomeMenuItems.Logout:
                     App.LogOut();

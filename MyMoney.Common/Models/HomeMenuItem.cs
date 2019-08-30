@@ -7,19 +7,18 @@
         Transactions = 2,
         About = 3,
         Logout = 4,
+        Budget = 5,
     }
 
     public class HomeMenuItem
     {
-        public int Id { get; set; }
         public HomeMenuItems Item { get; set; }
         public string Title { get; set; }
 
         public HomeMenuItem(HomeMenuItems item)
         {
-            Id = (int) item;
             Item = item;
-            Title = item.ToString();
+            Title = item.ToString().Replace('_', ' ');
         }
     }
 }
