@@ -9,17 +9,21 @@ namespace MyMoney.Core.Services
     {
         private readonly IRepository _repository;
         private readonly IEntityFactory _entityFactory;
+        private readonly ICurrentUserProvider _currentUserProvider;
 
-        public TransactionService(IRepository repository, IEntityFactory entityFactory)
+        public TransactionService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider)
         {
             _repository = repository;
             _entityFactory = entityFactory;
+            _currentUserProvider = currentUserProvider;
         }
 
-        public ITransaction Add(IUser user, DateTime date, string description, decimal amount)
+        public ITransaction Add(DateTime date, string description, decimal amount)
         {
-            if (string.IsNullOrWhiteSpace(description) || user == null)
+            if (string.IsNullOrWhiteSpace(description))
                 return null;
+
+            var user = _currentUserProvider.CurrentUser;
 
             var transaction = _entityFactory.NewTransaction;
             transaction.Date = date;
@@ -31,14 +35,15 @@ namespace MyMoney.Core.Services
             return _repository.Add(transaction);
         }
 
-        public bool Update(IUser user, long transactionId, DateTime date, string description, decimal amount)
+        public bool Update(long transactionId, DateTime date, string description, decimal amount)
         {
             if (string.IsNullOrWhiteSpace(description))
                 return false;
 
             var transaction = _repository.FindById<ITransaction>(transactionId);
+            var userId = _currentUserProvider.CurrentUserId;
 
-            if (transaction == null || transaction.UserId != user.Id)
+            if (transaction == null || transaction.UserId != userId)
                 return false;
 
             transaction.Amount = amount;
@@ -48,11 +53,12 @@ namespace MyMoney.Core.Services
             return _repository.Update(transaction);
         }
 
-        public bool Delete(IUser user, long transactionId)
+        public bool Delete(long transactionId)
         {
             var transaction = _repository.FindById<ITransaction>(transactionId);
+            var userId = _currentUserProvider.CurrentUserId;
 
-            if (transaction == null || transaction.UserId != user.Id)
+            if (transaction == null || transaction.UserId != userId)
                 return false;
 
             return _repository.Delete(transaction);

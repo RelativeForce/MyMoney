@@ -11,14 +11,16 @@ namespace MyMoney.Core.Tests.Services
     {
         private readonly Mock<IRepository> _repositoryMock;
         private readonly Mock<IEntityFactory> _entityFactoryMock;
+        private readonly Mock<ICurrentUserProvider> _currentUserProvider;
 
         public TransactionServiceShould()
         {
             _repositoryMock = new Mock<IRepository>(MockBehavior.Strict);
             _entityFactoryMock = new Mock<IEntityFactory>(MockBehavior.Strict);
+            _currentUserProvider = new Mock<ICurrentUserProvider>(MockBehavior.Strict);
         }
 
-        #region Register Tests
+        #region Add Tests
 
         [Theory]
         [InlineData(null)]
@@ -28,8 +30,6 @@ namespace MyMoney.Core.Tests.Services
         {
             var now = DateTime.Now;
             const decimal amount = 45;
-
-            var mockUser = new Mock<IUser>(MockBehavior.Strict);
 
             _repositoryMock
                 .Setup(m => m.Add(It.IsAny<ITransaction>()))
@@ -43,7 +43,7 @@ namespace MyMoney.Core.Tests.Services
 
             var service = NewService;
 
-            var result = service.Add(mockUser.Object, now, invalidDescription, amount);
+            var result = service.Add(now, invalidDescription, amount);
 
             Assert.Null(result);
 
@@ -62,6 +62,11 @@ namespace MyMoney.Core.Tests.Services
 
             var mockUser = new Mock<IUser>(MockBehavior.Strict);
             mockUser.Setup(m => m.Id).Returns(userId);
+
+            _currentUserProvider
+                .Setup(m => m.CurrentUser)
+                .Returns(mockUser.Object)
+                .Verifiable();
 
             var mockTransaction = new Mock<ITransaction>(MockBehavior.Strict);
             mockTransaction.SetupAllProperties();
@@ -89,7 +94,7 @@ namespace MyMoney.Core.Tests.Services
 
             var service = NewService;
 
-            var result = service.Add(mockUser.Object, now, description, amount);
+            var result = service.Add(now, description, amount);
 
             Assert.NotNull(result);
             Assert.Equal(now, result.Date);
@@ -101,13 +106,20 @@ namespace MyMoney.Core.Tests.Services
             
             _repositoryMock.Verify(m => m.Add(It.IsAny<ITransaction>()), Times.Once);
             _entityFactoryMock.Verify(m => m.NewTransaction, Times.Once);
+            _currentUserProvider.Verify(m => m.CurrentUser, Times.Once);
         }
+
+        #endregion
+
+        #region Update Tests
+
+
 
         #endregion
 
         #region Common
 
-        private TransactionService NewService => new TransactionService(_repositoryMock.Object, _entityFactoryMock.Object);
+        private TransactionService NewService => new TransactionService(_repositoryMock.Object, _entityFactoryMock.Object, _currentUserProvider.Object);
 
         #endregion
     }

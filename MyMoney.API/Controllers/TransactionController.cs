@@ -73,12 +73,7 @@ namespace MyMoney.API.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var user = _userService.GetById(CurrentUserId);
-
-                if (user == null)
-                    return BadRequest("Error while retrieving user information");
-
-                var success = _transactionService.Update(user, model.Id, model.Date, model.Description, model.Amount);
+                var success = _transactionService.Update(model.Id, model.Date, model.Description, model.Amount);
 
                 return Ok(new UpdateResponse
                 {
@@ -102,12 +97,7 @@ namespace MyMoney.API.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var user = _userService.GetById(CurrentUserId);
-
-                if (user == null)
-                    return BadRequest("Error while retrieving user information");
-
-                var result = _transactionService.Add(user, model.Date, model.Description, model.Amount);
+                var result = _transactionService.Add(model.Date, model.Description, model.Amount);
 
                 if (result == null)
                     return BadRequest("Invalid State");
@@ -136,12 +126,7 @@ namespace MyMoney.API.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var user = _userService.GetById(CurrentUserId);
-
-                if (user == null)
-                    return BadRequest("Error while retrieving user information");
-
-                var result = _transactionService.Delete(user, deleteParameters.Id);
+                var result = _transactionService.Delete(deleteParameters.Id);
 
                 return Ok(new DeleteResponse{ Success = result });
             }
