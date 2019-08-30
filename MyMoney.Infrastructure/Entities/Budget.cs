@@ -8,9 +8,7 @@ namespace MyMoney.Infrastructure.Entities
     public class Budget : BaseEntity, IBudget
     {
         public decimal Amount { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-        public string Notes { get; set; }
+        public DateTime Month { get; set; }
         public long UserId { get; set; }
 
         [NotMapped]
@@ -25,7 +23,7 @@ namespace MyMoney.Infrastructure.Entities
 
         internal static void Configure(ModelBuilder model)
         {
-            model.Entity<Budget>().HasIndex(t => new {t.UserId, t.Start, t.End, t.Amount}).IsUnique();
+            model.Entity<Budget>().HasIndex(t => new {t.UserId, t.Month}).IsUnique();
             model.Entity<Budget>().HasOne(t => t.UserProxy).WithMany(t => t.BudgetsProxy).IsRequired();
         }
     }

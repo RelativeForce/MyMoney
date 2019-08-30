@@ -16,39 +16,36 @@ namespace MyMoney.Core.Services
             _entityFactory = entityFactory;
         }
 
-        public IBudget Add(IUser user, DateTime start, DateTime end, decimal amount, string notes)
+        public IBudget Add(IUser user, DateTime month, decimal amount)
         {
-            notes = notes ?? "";
-            start = CleanDate(start).Date;
-            end = CleanDate(end).Date.AddDays(1).AddTicks(-1);
+            var filteredMonth = FilterDate(month);
 
-            var existingStart = Find(user, start);
-            var existingEnd = Find(user, end);
+            var existing = Find(user, filteredMonth);
 
-            if (existingStart != null || existingEnd != null)
+            if (existing != null)
             {
-                return null;
+                return existing;
             }
 
             var budget = _entityFactory.NewBudget;
             budget.Amount = amount;
-            budget.Start = start;
-            budget.End = end;
-            budget.Notes = notes;
+            budget.Month = filteredMonth;
 
             return _repository.Add(budget);
         }
 
-        public IBudget Find(IUser user, DateTime date)
+        public IBudget Find(IUser user, DateTime month)
         {
-            date = CleanDate(date);
+            var filteredMonth = FilterDate(month);
 
-            return _repository.Find<IBudget>(b => date >= b.Start && date <= b.End && b.UserId == user.Id);
+            return _repository.Find<IBudget>(b => b.Month.Equals(filteredMonth) && b.UserId == user.Id);
         }
 
-        private static DateTime CleanDate(DateTime date)
+        private static DateTime FilterDate(DateTime date)
         {
-            return date.ToUniversalTime();
+            var filteredDate = new DateTime(date.Year, date.Month, 1);
+
+            return filteredDate;
         }
     }
 }
