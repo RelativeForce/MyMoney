@@ -23,6 +23,14 @@ namespace MyMoney.Core.Services
             var user = _currentUserProvider.CurrentUser;
 
             notes = notes ?? "";
+
+            if(end < start)
+            {
+                var temp = start;
+                start = end;
+                end = temp;
+            }
+
             start = CleanDate(start).Date;
             end = CleanDate(end).Date.AddDays(1).AddTicks(-1);
 
