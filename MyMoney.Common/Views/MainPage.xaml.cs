@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using MyMoney.Common.Models;
@@ -12,8 +11,6 @@ namespace MyMoney.Common.Views
     [DesignTimeVisible(false)]
     public partial class MainPage : MasterDetailPage
     {
-        public Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
-
         public MainPage()
         {
             InitializeComponent();

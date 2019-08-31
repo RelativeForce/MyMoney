@@ -1,22 +1,24 @@
-﻿using MyMoney.Client;
+﻿using System.Threading.Tasks;
+using MyMoney.Client;
 using MyMoney.Client.Interfaces;
+using MyMoney.Common.Data;
 using MyMoney.Common.Views;
 using Xamarin.Forms;
 
 namespace MyMoney.Common
 {
-    public partial class App : Application
+    public partial class App : Application, IAlertDisplay
     {
-        public static readonly IAuthenticationManager AuthenticationManager = new AuthenticationManager();
         public static MainPage RootPage => Current.MainPage as MainPage;
-        public static IMyMoneyClient NewApiClient() => ClientFactory.NewClient(AuthenticationManager);
+        public static DataStore DataStore { get; private set; }
 
-        private static readonly IMyMoneyClientFactory ClientFactory = new MyMoneyClientFactory();
+        public static readonly IAuthenticationManager AuthenticationManager = new AuthenticationManager();
 
         public App()
         {
             InitializeComponent();
 
+            DataStore = new DataStore(new MyMoneyClientFactory(), AuthenticationManager, this);
             MainPage = new MainPage();
         }
 
@@ -46,6 +48,16 @@ namespace MyMoney.Common
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        public async Task DisplayAlert(string title, string message, string cancel)
+        {
+            await RootPage.DisplayAlert(title, message, cancel);
+        }
+
+        public async Task DisplayAlert(string title, string message, string accept, string cancel)
+        {
+            await RootPage.DisplayAlert(title, message, accept, cancel);
         }
     }
 }

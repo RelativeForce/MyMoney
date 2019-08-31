@@ -30,6 +30,7 @@ namespace MyMoney.Infrastructure.Entities
         {
             return TransactionsProxy
                 .Where(t => t.Date >= start && t.Date <= end)
+                .OrderByDescending(t => t.Date)
                 .Cast<ITransaction>()
                 .ToList();
         }

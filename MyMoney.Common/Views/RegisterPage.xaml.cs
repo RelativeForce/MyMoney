@@ -50,26 +50,7 @@ namespace MyMoney.Common.Views
 
             IsBusy = true;
 
-            using (var client = App.NewApiClient())
-            {
-                try
-                {
-                    var response = await client.UserApi.Register(UserDetails);
-
-                    if (response.Success)
-                    {
-                        App.Login();
-                    }
-                    else
-                    {
-                        await App.RootPage.DisplayAlert("Register Failed", response.Error, "Close");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    await App.RootPage.DisplayAlert("Register Failed", "Server Error", "Close");
-                }
-            }
+            await App.DataStore.Register(UserDetails);
 
             IsBusy = false;
         }
