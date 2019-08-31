@@ -72,7 +72,7 @@ namespace MyMoney.Common.Data
 
                     var newItem = await client.TransactionApi.Add(model);
 
-                    var itemAfter = _transactionsCache.FirstOrDefault(t => t.Date >= model.Date);
+                    var itemAfter = _transactionsCache.FirstOrDefault(t => t.Date < model.Date);
 
                     if (itemAfter != null)
                     {
