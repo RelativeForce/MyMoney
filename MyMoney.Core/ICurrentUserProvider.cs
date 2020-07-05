@@ -4,7 +4,7 @@ namespace MyMoney.Core
 {
     public interface ICurrentUserProvider
     {
-        long CurrentUserId { get; }
-        IUser CurrentUser { get; }
+        long CurrentUserId(string token);
+        IUser CurrentUser(string token);
     }
 }

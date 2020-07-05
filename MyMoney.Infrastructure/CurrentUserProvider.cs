@@ -10,36 +10,29 @@ namespace MyMoney.Infrastructure
 {
     public sealed class CurrentUserProvider : ICurrentUserProvider
     {
-        private readonly IHttpContextAccessor _accessor;
+
         private readonly IRepository _repository;
+        private readonly ITokenProvider _tokenProvider;
 
-        public CurrentUserProvider(IHttpContextAccessor accessor, IRepository repository)
+        public CurrentUserProvider(IRepository repository, ITokenProvider tokenProvider)
         {
-            _accessor = accessor;
             _repository = repository;
+            _tokenProvider = tokenProvider;
         }
 
-        public long CurrentUserId
+        public long CurrentUserId(string token)
         {
-            get
-            {
-                var claim = _accessor.HttpContext.User.Claims.First(c => c.Type.Equals(ClaimTypes.Name));
-
-                return long.Parse(claim.Value);
-            }
+            return _tokenProvider.GetUserId(token) ?? throw new Exception("Cannot parse user id from token");
         }
 
-        public IUser CurrentUser
+        public IUser CurrentUser(string token)
         {
-            get
-            {
-                var user = _repository.FindById<IUser>(CurrentUserId);
+            var user = _repository.FindById<IUser>(CurrentUserId(token));
 
-                if(user == null)
-                    throw new Exception("Current user does not exist");
+            if (user == null)
+                throw new Exception("Current user does not exist");
 
-                return user;
-            }
+            return user;
         }
     }
 }
