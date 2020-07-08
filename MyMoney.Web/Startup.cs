@@ -28,13 +28,14 @@ namespace MyMoney.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
             services.AddScoped<ITokenProvider, TokenProvider>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IBudgetService, BudgetService>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IEntityFactory, EntityFactory>();
-            //services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
             
             services.AddControllersWithViews();
