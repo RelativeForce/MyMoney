@@ -7,8 +7,7 @@
 /MyMoney.Core/obj
 /MyMoney.Infrastructure/bin
 /MyMoney.Infrastructure/obj
-/MyMoney.Core.Tests/obj
-/MyMoney.Core/bin
-/MyMoney.Infrastructure/bin
 /MyMoney.Core.Tests/bin
+/MyMoney.Core.Tests/obj
 /MyMoney.Web/bin
+/MyMoney.Web/obj
