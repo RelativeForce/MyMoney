@@ -11,3 +11,5 @@
 /MyMoney.Core.Tests/obj
 /MyMoney.Web/bin
 /MyMoney.Web/obj
+/MyMoney.Web.Tests/bin
+/MyMoney.Web.Tests/obj
