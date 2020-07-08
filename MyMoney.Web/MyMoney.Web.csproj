@@ -31,8 +31,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\authentication.service.ts" />
+    <None Remove="ClientApp\src\app\helpers\jwt.interceptor.ts" />
+    <None Remove="ClientApp\src\app\models\login.response.ts" />
+    <None Remove="ClientApp\src\app\register\register.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MyMoney.Core\MyMoney.Core.csproj" />
     <ProjectReference Include="..\MyMoney.Infrastructure\MyMoney.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\authentication.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\helpers\jwt.interceptor.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\login.response.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\register\register.component.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
