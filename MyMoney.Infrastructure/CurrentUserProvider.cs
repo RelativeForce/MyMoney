@@ -10,13 +10,14 @@ namespace MyMoney.Infrastructure
 {
     public sealed class CurrentUserProvider : ICurrentUserProvider
     {
-        private readonly IHttpContextAccessor _accessor;
+
         private readonly IRepository _repository;
+        private readonly IHttpContextAccessor _accessor;
 
         public CurrentUserProvider(IHttpContextAccessor accessor, IRepository repository)
         {
-            _accessor = accessor;
             _repository = repository;
+            _accessor = accessor;
         }
 
         public long CurrentUserId
@@ -35,7 +36,8 @@ namespace MyMoney.Infrastructure
             {
                 var user = _repository.FindById<IUser>(CurrentUserId);
 
-                if(user == null)
+
+                if (user == null)
                     throw new Exception("Current user does not exist");
 
                 return user;
