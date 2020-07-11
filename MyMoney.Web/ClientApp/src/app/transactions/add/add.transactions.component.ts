@@ -23,7 +23,7 @@ export class AddTransactionsComponent implements OnInit {
     private http: HttpClient
   ) {
 
-    if (!this.authenticationService.currentUserValue) {
+    if (!this.authenticationService.isLoggedIn) {
       this.router.navigate(['/login']);
     }
   }

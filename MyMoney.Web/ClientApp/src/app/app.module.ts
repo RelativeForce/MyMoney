@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { RegisterComponent } from './register/register.component';
 import { AddTransactionsComponent } from './transactions/add/add.transactions.component';
+import { TransactionsComponent } from './transactions/transactions.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { AddTransactionsComponent } from './transactions/add/add.transactions.co
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    AddTransactionsComponent
+    AddTransactionsComponent,
+    TransactionsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -28,6 +30,7 @@ import { AddTransactionsComponent } from './transactions/add/add.transactions.co
 
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
+      { path: 'transactions', component: TransactionsComponent, pathMatch: 'full' },
       { path: 'transactions/add', component: AddTransactionsComponent, pathMatch: 'full' },
       { path: '', component: HomeComponent, pathMatch: 'full' },
       // otherwise redirect to home
