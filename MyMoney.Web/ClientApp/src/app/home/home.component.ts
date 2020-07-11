@@ -14,7 +14,7 @@ export class HomeComponent {
     private router: Router
   ) {
     // redirect to home if already logged in
-    if (!this.authenticationService.currentUserValue) {
+    if (!this.authenticationService.isLoggedIn) {
       this.router.navigate(['/login']);
     }
   }

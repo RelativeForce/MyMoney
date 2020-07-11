@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
@@ -34,6 +35,8 @@
     <None Remove="ClientApp\src\app\authentication.service.ts" />
     <None Remove="ClientApp\src\app\helpers\jwt.interceptor.ts" />
     <None Remove="ClientApp\src\app\models\login.response.ts" />
+    <None Remove="ClientApp\src\app\models\transaction.model.ts" />
+    <None Remove="ClientApp\src\app\models\update.response.ts" />
     <None Remove="ClientApp\src\app\register\register.component.ts" />
   </ItemGroup>
 
@@ -45,8 +48,16 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\authentication.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\jwt.interceptor.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\transaction.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\update.response.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\login.response.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\register\register.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ClientApp\src\app\models\transaction.model.js">
+      <DependentUpon>transaction.model.ts</DependentUpon>
+    </None>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

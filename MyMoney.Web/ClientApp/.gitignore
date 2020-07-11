@@ -35,6 +35,7 @@ yarn-error.log
 testem.log
 /typings
 /src/app/**/*.js
+/src/app/**/*.js.map
 
 # System Files
 .DS_Store

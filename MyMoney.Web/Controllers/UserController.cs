@@ -32,12 +32,7 @@ namespace MyMoney.Web.Controllers
 
                 var result = _userService.Login(loginParameters.Email, loginParameters.Password);
 
-                return Ok(new LoginResponse
-                {
-                    Success = result.Success,
-                    Error = result.Error,
-                    Token = result.Token
-                });
+                return Ok(new LoginResponse(result));
             }
             catch (Exception)
             {
@@ -62,12 +57,7 @@ namespace MyMoney.Web.Controllers
                     registerParameters.FullName
                     );
 
-                return Ok(new LoginResponse
-                {
-                    Success = result.Success,
-                    Error = result.Error,
-                    Token = result.Token
-                });
+                return Ok(new LoginResponse(result));
 
             }
             catch (Exception)
