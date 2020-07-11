@@ -14,6 +14,10 @@ export class AuthenticationService {
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
+
+    if (!this.isLoggedIn) {
+      this.logout();
+    }
   }
 
   get currentUserValue(): User {
@@ -38,7 +42,7 @@ export class AuthenticationService {
     if (!this.currentUserValue) {
       return false;
     }
-    console.log(this.currentUserValue);
+
     if (new Date(this.currentUserValue.validTo) > new Date(Date.now())) {
       return true;
     }
