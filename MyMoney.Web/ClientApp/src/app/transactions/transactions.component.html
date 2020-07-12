@@ -24,29 +24,22 @@
   </div>
 </form>
 <div class="container-fluid">
-  <div class="row">
-    <div class="col">
-      Date
-    </div>
-    <div class="col">
-      Description
-    </div>
-    <div class="col">
-      Amount
-    </div>
-  </div>
-  <div *ngFor="let transaction of transactions; let i = index" class="row">
-    <div class="col">
-      {{transaction.date}}
-    </div>
-    <div class="col">
-      {{transaction.description}}
-    </div>
-    <div class="col">
-      {{transaction.amount}}
-    </div>
-  </div>
-
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Description</th>
+        <th scope="col">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaction of transactions; let i = index">
+        <td>{{transaction.date}}</td>
+        <td>{{transaction.description}}</td>
+        <td>{{transaction.amount}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 

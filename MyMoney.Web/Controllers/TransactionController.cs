@@ -40,15 +40,10 @@ namespace MyMoney.Web.Controllers
 
                 return Ok(new TransactionListResponse
                 {
-                    DateRange = new DateRangeModel
-                    {
-                        Start = listParameters.Start,
-                        End = listParameters.End
-                    },
                     Transactions = transactions.Select(t => new TransactionModel
                     {
                         Id = t.Id,
-                        Date = t.Date,
+                        Date = t.Date.ToShortDateString(),
                         Description = t.Description,
                         Amount = t.Amount,
                     }).ToList()
@@ -70,7 +65,7 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var success = _transactionService.Update(model.Id, model.Date, model.Description, model.Amount);
+                var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount);
 
                 return Ok(new UpdateResponse
                 {
@@ -94,7 +89,7 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var result = _transactionService.Add(model.Date, model.Description, model.Amount);
+                var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount);
 
                 if (result == null)
                     return BadRequest("Invalid State");
@@ -103,7 +98,7 @@ namespace MyMoney.Web.Controllers
                 {
                     Id = result.Id,
                     Amount = result.Amount,
-                    Date = result.Date,
+                    Date = result.Date.ToShortDateString(),
                     Description = result.Description
                 });
             }

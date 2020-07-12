@@ -7,6 +7,7 @@ import { AuthenticationService } from '../authentication.service';
 import { TransactionModel } from '../models/transaction.model';
 import { DateRangeModel } from '../models/date.range.model';
 import { TransactionListResponse } from '../models/transaction.list.response';
+import { TransactionViewModel } from '../models/transaction.view.model';
 
 @Component({
   selector: 'transactions-component',
@@ -14,7 +15,7 @@ import { TransactionListResponse } from '../models/transaction.list.response';
 })
 export class TransactionsComponent implements OnInit {
 
-  transactions: Array<TransactionModel> = [];
+  transactions: Array<TransactionViewModel> = [];
   dateRange: DateRangeModel;
   dateRangeForm: FormGroup;
   loading: Boolean = false;
@@ -45,11 +46,34 @@ export class TransactionsComponent implements OnInit {
 
   ngOnInit() {
     this.dateRangeForm = this.formBuilder.group({
-      start: [this.dateRange.start, Validators.required],
-      end: [this.dateRange.end, Validators.required]
+      start: [this.start, Validators.required],
+      end: [this.end, Validators.required]
     });
 
     this.fetchTransactions();
+  }
+
+  formatDate(date: Date): string {
+
+    var date = new Date(date);
+
+    var month = date.getMonth() + 1;
+
+    var day = date.getDate();
+
+    var monthStr = month < 10 ? "0" + month : month;
+
+    var dayStr = day < 10 ? "0" + day : day;
+
+    return date.getFullYear() + "-" + monthStr + "-" + dayStr;
+  }
+
+  get start(): string {
+    return this.formatDate(this.dateRange.start);
+  }
+
+  get end(): string {
+    return this.formatDate(this.dateRange.end);
   }
 
   get f() { return this.dateRangeForm.controls; }
@@ -57,7 +81,6 @@ export class TransactionsComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    // stop here if form is invalid
     if (this.dateRangeForm.invalid) {
       return;
     }
@@ -74,12 +97,11 @@ export class TransactionsComponent implements OnInit {
       .post<TransactionListResponse>(`/Transaction/List`, this.dateRange)
       .subscribe(response => {
 
-        this.transactions = response.transactions;
-        this.dateRange = response.dateRange;
+        this.transactions = response.transactions.map(t => new TransactionViewModel(t));
         this.loading = false;
       },
         error => {
-          // Show error
+          // TODO: Show error
           this.loading = false;
         });
   }

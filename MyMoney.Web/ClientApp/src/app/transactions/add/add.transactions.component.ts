@@ -57,7 +57,7 @@ export class AddTransactionsComponent implements OnInit {
       .post<TransactionModel>(`/Transaction/Add`, { date, description, amount, id: 0 })
       .subscribe(response => {
         if (response.id != 0) {
-          this.router.navigate(["/"]);
+          this.router.navigate(["/transactions"]);
         }
       },
       error => {

@@ -1,4 +1,4 @@
-export class DateRangeModel {
+export interface DateRangeModel {
   start: Date;
   end: Date;
 }
