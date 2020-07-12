@@ -34,26 +34,5 @@ namespace MyMoney.Web.Utility
 
             return tokenHandler.WriteToken(token);
         }
-
-        public long? GetUserId(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            if (!tokenHandler.CanReadToken(token))
-            {
-                return null;
-            }
-
-            var securityToken = tokenHandler.ReadJwtToken(token);
-
-            if (DateTime.UtcNow > securityToken.ValidTo)
-            {
-                return null;
-            }
-
-            var idString = securityToken.Claims.First(c => c.Type.Equals(ClaimTypes.Name))?.Value;
-
-            return idString == null ? (long?) null : long.Parse(idString);
-        }
     }
 }

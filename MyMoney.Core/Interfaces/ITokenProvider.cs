@@ -8,7 +8,5 @@ namespace MyMoney.Core.Interfaces
         DateTime TokenTimeOut { get; }
 
         string NewToken(IUser user);
-
-        long? GetUserId(string token);
     }
 }
