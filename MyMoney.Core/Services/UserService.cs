@@ -48,9 +48,7 @@ namespace MyMoney.Core.Services
                     return LoginResult.FailResult("Incorrect password");
             }
 
-            var token = _tokenProvider.NewToken(user);
-
-            return LoginResult.SuccessResult(token);
+            return LoginResult.SuccessResult(_tokenProvider.NewToken(user), _tokenProvider.TokenTimeOut);
         }
 
         public LoginResult Register(string email, string password, DateTime dateOfBirth, string fullName)
@@ -94,9 +92,7 @@ namespace MyMoney.Core.Services
             if(user == null)
                 return LoginResult.FailResult("Database Error");
 
-            var token = _tokenProvider.NewToken(user);
-
-            return LoginResult.SuccessResult(token);
+            return LoginResult.SuccessResult(_tokenProvider.NewToken(user), _tokenProvider.TokenTimeOut);
         }
 
         public IUser GetById(long userId)

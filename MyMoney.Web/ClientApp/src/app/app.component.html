@@ -1,17 +1,31 @@
 <body>
   <!-- nav -->
-  <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link" routerLink="/">Home</a>
-      <a class="nav-item nav-link" (click)="logout()">Logout</a>
-    </div>
+  <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="isLoggedIn">
+    <a class="navbar-brand" href="#">MyMoney</a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/">Home</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Transactions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="transactionsMenuLink">
+          <a class="dropdown-item" routerLink="/transactions">View</a>
+          <a class="dropdown-item" routerLink="/transactions/add">Add</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="logout()">Logout</a>
+      </li>
+    </ul>
   </nav>
 
   <!-- main app container -->
   <div class="jumbotron">
     <div class="container">
       <div class="row">
-        <div class="col-sm-6 offset-sm-3">
+        <div class="col-sm-8 offset-sm-2">
           <router-outlet></router-outlet>
         </div>
       </div>

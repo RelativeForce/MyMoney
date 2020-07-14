@@ -14,33 +14,52 @@ export class AuthenticationService {
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
+
+    if (!this.isLoggedIn) {
+      this.logout();
+    }
   }
 
   get currentUserValue(): User {
     return this.currentUserSubject.value;
   }
 
-  login(email, password) {
+  login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`/User/Login`, { email, password })
       .pipe(map(response => {
 
         if (response.success) {
 
-          this.setUser(email, response.token);
+          this.setUser(email, response.token, response.validTo);
         }
 
         return response;
       }));
   }
 
-  setUser(email, token) {
-    var user = { email, token: token };
+  get isLoggedIn(): Boolean {
+
+    if (!this.currentUserValue) {
+      return false;
+    }
+
+    if (new Date(this.currentUserValue.validTo) > new Date(Date.now())) {
+      return true;
+    }
+
+    this.logout();
+
+    return false;
+  }
+
+  setUser(email: string, token: string, validTo: string) : void {
+    var user: User = { email, token, validTo };
 
     localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
   }
 
-  logout() {
+  logout() : void {
     // remove user from local storage and set current user to null
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);

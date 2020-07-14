@@ -13,6 +13,10 @@ using MyMoney.Core.Services;
 using MyMoney.Infrastructure;
 using MyMoney.Infrastructure.EntityFramework;
 using MyMoney.Web.Utility;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace MyMoney.Web
 {
@@ -37,12 +41,30 @@ namespace MyMoney.Web
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IEntityFactory, EntityFactory>();
             services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
-            
+
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
+            });
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(TokenProvider.Key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
 
             services.AddCors();
@@ -76,7 +98,8 @@ namespace MyMoney.Web
             UpdateDatabase(app);
 
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -1,11 +1,12 @@
 ﻿using MyMoney.Core.Interfaces.Entities;
+using System;
 
 namespace MyMoney.Core.Interfaces
 {
     public interface ITokenProvider
     {
-        string NewToken(IUser user);
+        DateTime TokenTimeOut { get; }
 
-        long? GetUserId(string token);
+        string NewToken(IUser user);
     }
 }

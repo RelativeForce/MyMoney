@@ -4,7 +4,7 @@ namespace MyMoney.Web.Models.Entity
 {
     public class TransactionModel : EntityModel
     {
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
 

@@ -2,17 +2,16 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from './authentication.service';
-import { User } from './models/user';
 
 @Component({ selector: 'app-root', templateUrl: 'app.component.html' })
 export class AppComponent {
-  currentUser: User;
+  isLoggedIn: Boolean;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService
   ) {
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    this.authenticationService.currentUser.subscribe(x => this.isLoggedIn = this.authenticationService.isLoggedIn);
   }
 
   logout() {
