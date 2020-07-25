@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
@@ -42,11 +44,11 @@ namespace MyMoney.Core.Services
             return _repository.Add(budget);
         }
 
-        public IBudget Find(string monthId)
+        public List<IBudget> List(string monthId)
         {
             var user = _currentUserProvider.CurrentUser;
 
-            return _repository.Find<IBudget>(b => monthId == b.MonthId && b.UserId == user.Id);
+            return user.Budgets.Where(b => monthId == b.MonthId).ToList();
         }
     }
 }

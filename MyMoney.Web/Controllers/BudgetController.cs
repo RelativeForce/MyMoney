@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using MyMoney.Web.Models.Entity;
 using MyMoney.Web.Models.Request;
 using MyMoney.Core.Interfaces.Service;
+using System.Linq;
+using MyMoney.Web.Models.Response;
 
 namespace MyMoney.Web.Controllers
 {
@@ -19,8 +21,8 @@ namespace MyMoney.Web.Controllers
             _budgetService = budgetService;
         }
 
-        [HttpPost(nameof(Find))]
-        public IActionResult Find([FromBody] BudgetRequest findParameters)
+        [HttpPost(nameof(List))]
+        public IActionResult List([FromBody] BudgetRequest findParameters)
         {
             try
             {
@@ -29,12 +31,15 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var result = _budgetService.Find(findParameters.MonthId);
+                var budgets = _budgetService.List(findParameters.MonthId);
 
-                if (result == null)
+                if (budgets == null)
                     return NotFound();
 
-                return Ok(new BudgetModel(result));
+                return Ok(new BudgetListResponse
+                {
+                    Budgets = budgets.Select(t => new BudgetModel(t)).ToList()
+                });
             }
             catch (Exception)
             {
