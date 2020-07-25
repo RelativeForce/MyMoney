@@ -18,7 +18,7 @@ export class BudgetsComponent implements OnInit {
   budgets: Array<BudgetViewModel> = [];
   year: Number;
   month: Number;
-  dateRangeForm: FormGroup;
+  monthIdForm: FormGroup;
   loading: Boolean = false;
   submitted: Boolean = false;
 
@@ -44,7 +44,7 @@ export class BudgetsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dateRangeForm = this.formBuilder.group({
+    this.monthIdForm = this.formBuilder.group({
       year: [this.year, Validators.required],
       month: [this.month, Validators.required]
     });
@@ -52,12 +52,12 @@ export class BudgetsComponent implements OnInit {
     this.fetchbudgets();
   }
 
-  get f() { return this.dateRangeForm.controls; }
+  get f() { return this.monthIdForm.controls; }
 
   onSubmit() {
     this.submitted = true;
 
-    if (this.dateRangeForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.year.value > 12) {
+    if (this.monthIdForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
       return;
     }
 

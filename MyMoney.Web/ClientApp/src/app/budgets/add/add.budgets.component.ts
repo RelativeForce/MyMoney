@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { AuthenticationService } from '../../authentication.service';
-import { TransactionModel } from '../../models/transaction.model';
+import { BudgetModel } from '../../models/budget.model';
 
 @Component({
   selector: 'add-budgets-component',
@@ -12,9 +12,14 @@ import { TransactionModel } from '../../models/transaction.model';
 })
 export class AddBudgetsComponent implements OnInit {
 
-  addTransactionForm: FormGroup;
+  addBudgetForm: FormGroup;
   loading = false;
   submitted = false;
+  year: Number;
+  month: Number;
+  name: string;
+  notes: string;
+  amount: Number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,38 +31,55 @@ export class AddBudgetsComponent implements OnInit {
     if (!this.authenticationService.isLoggedIn) {
       this.router.navigate(['/login']);
     }
+
+    this.defaultMonth();
   }
 
   ngOnInit() {
-    this.addTransactionForm = this.formBuilder.group({
-      date: ['', Validators.required],
-      description: ['', Validators.required],
-      amount: ['', Validators.required]
+    this.addBudgetForm = this.formBuilder.group({
+      year: [this.year, Validators.required],
+      month: [this.month, Validators.required],
+      amount: [this.amount, Validators.required],
+      name: [this.name, Validators.required],
+      notes: [this.notes, Validators.required]
     });
   }
 
-  get f() { return this.addTransactionForm.controls; }
+  defaultMonth(): void {
+
+    var today = new Date();
+
+    this.year = today.getFullYear();
+    this.month = today.getMonth();
+  }
+
+  get f() { return this.addBudgetForm.controls; }
 
   onSubmit() {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.addTransactionForm.invalid) {
+    if (this.addBudgetForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
       return;
     }
 
     this.loading = true;
 
-    // Login here
-    var date = this.f.date.value;
-    var description = this.f.description.value;
-    var amount = this.f.amount.value;
+    this.year = this.f.year.value;
+    this.month = this.f.month.value;
+    this.amount = this.f.amount.value;
+    this.name = this.f.name.value;
+    this.notes = this.f.notes.value;
+
+    var monthId = "" + this.year + (this.month < 10 ? "0" + this.month : this.month);
+
+    var budget : BudgetModel = { monthId, name: this.name, amount: this.amount, notes: this.notes, id: 0 };
 
     this.http
-      .post<TransactionModel>(`/Transaction/Add`, { date, description, amount, id: 0 })
+      .post<BudgetModel>(`/Budget/Add`, budget)
       .subscribe(response => {
         if (response.id != 0) {
-          this.router.navigate(["/transactions"]);
+          this.router.navigate(["/budgets"]);
         }
       },
       error => {
