@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { AuthenticationService } from '../authentication.service';
-import { TransactionModel } from '../models/transaction.model';
 import { DateRangeModel } from '../models/date.range.model';
-import { TransactionListResponse } from '../models/transaction.list.response';
 import { TransactionViewModel } from '../models/transaction.view.model';
+import { BudgetViewModel } from '../models/budget.view.model';
+import { BudgetListResponse } from '../models/budget.list.response';
 
 @Component({
   selector: 'budgets-component',
@@ -15,8 +15,9 @@ import { TransactionViewModel } from '../models/transaction.view.model';
 })
 export class BudgetsComponent implements OnInit {
 
-  transactions: Array<TransactionViewModel> = [];
-  dateRange: DateRangeModel;
+  budgets: Array<BudgetViewModel> = [];
+  year: Number;
+  month: Number;
   dateRangeForm: FormGroup;
   loading: Boolean = false;
   submitted: Boolean = false;
@@ -31,49 +32,24 @@ export class BudgetsComponent implements OnInit {
       this.router.navigate(['/login']);
     }
 
-    this.dateRange = this.defaultDateRange;
+    this.defaultMonth();
   }
 
-  get defaultDateRange(): DateRangeModel {
+  defaultMonth(): void {
 
-    var end: Date = new Date();
+    var today = new Date();
 
-    var start: Date = new Date();
-    start.setMonth(start.getMonth() - 1);
-
-    return { end, start };
+    this.year = today.getFullYear();
+    this.month = today.getMonth();
   }
 
   ngOnInit() {
     this.dateRangeForm = this.formBuilder.group({
-      start: [this.start, Validators.required],
-      end: [this.end, Validators.required]
+      year: [this.year, Validators.required],
+      month: [this.month, Validators.required]
     });
 
-    this.fetchTransactions();
-  }
-
-  formatDate(date: Date): string {
-
-    var date = new Date(date);
-
-    var month = date.getMonth() + 1;
-
-    var day = date.getDate();
-
-    var monthStr = month < 10 ? "0" + month : month;
-
-    var dayStr = day < 10 ? "0" + day : day;
-
-    return date.getFullYear() + "-" + monthStr + "-" + dayStr;
-  }
-
-  get start(): string {
-    return this.formatDate(this.dateRange.start);
-  }
-
-  get end(): string {
-    return this.formatDate(this.dateRange.end);
+    this.fetchbudgets();
   }
 
   get f() { return this.dateRangeForm.controls; }
@@ -81,23 +57,27 @@ export class BudgetsComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    if (this.dateRangeForm.invalid) {
+    if (this.dateRangeForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.year.value > 12) {
       return;
     }
 
+    this.year = this.f.year.value;
+    this.month = this.f.month.value;
+
     this.loading = true;
 
-    this.dateRange = { start: this.f.start.value, end: this.f.end.value };
-
-    this.fetchTransactions();
+    this.fetchbudgets();
   }
 
-  fetchTransactions(): void {
+  fetchbudgets(): void {
+
+    var monthStr = this.month < 10 ? "0" + this.month : this.month;
+
     this.http
-      .post<TransactionListResponse>(`/Transaction/List`, this.dateRange)
+      .post<BudgetListResponse>(`/Budget/List`, { monthId: "" + this.year + monthStr })
       .subscribe(response => {
 
-        this.transactions = response.transactions.map(t => new TransactionViewModel(t));
+        this.budgets = response.budgets.map(t => new BudgetViewModel(t));
         this.loading = false;
       },
         error => {

@@ -3,20 +3,20 @@
   <div class="form-inline">
     <div class="input-group mb-3 pr-2">
       <div class="input-group-prepend">
-        <span class="input-group-text">Start</span>
+        <span class="input-group-text">Year</span>
       </div>
-      <input type="date" formControlName="start" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
-      <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
-        <div *ngIf="f.start.errors.required">start is required</div>
+      <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.year.errors }" />
+      <div *ngIf="submitted && f.year.errors" class="invalid-feedback">
+        <div *ngIf="f.year.errors.required">year is required</div>
       </div>
     </div>
     <div class="input-group mb-3 pr-2">
       <div class="input-group-prepend">
-        <span class="input-group-text">End</span>
+        <span class="input-group-text">Month</span>
       </div>
-      <input type="date" formControlName="end" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
-      <div *ngIf="submitted && f.end.errors" class="invalid-feedback">
-        <div *ngIf="f.end.errors.required">end is required</div>
+      <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.month.errors }" />
+      <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
+        <div *ngIf="f.month.errors.required">month is required</div>
       </div>
     </div>
     <div class="input-group mb-3">
@@ -31,16 +31,16 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Description</th>
+        <th scope="col">Name</th>
         <th scope="col">Amount</th>
+        <th scope="col">Notes</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let transaction of transactions; let i = index">
-        <td>{{transaction.date}}</td>
-        <td>{{transaction.description}}</td>
-        <td>{{transaction.amount}}</td>
+      <tr *ngFor="let budget of budgets; let i = index">
+        <td>{{budget.name}}</td>
+        <td>{{budget.amount}}</td>
+        <td>{{budget.notes}}</td>
       </tr>
     </tbody>
   </table>

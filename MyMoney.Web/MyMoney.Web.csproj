@@ -40,6 +40,7 @@
     <None Remove="ClientApp\src\app\helpers\jwt.interceptor.ts" />
     <None Remove="ClientApp\src\app\models\budget.list.response.ts" />
     <None Remove="ClientApp\src\app\models\budget.model.ts" />
+    <None Remove="ClientApp\src\app\models\budget.view.model.ts" />
     <None Remove="ClientApp\src\app\models\login.response.ts" />
     <None Remove="ClientApp\src\app\models\transaction.list.response.ts" />
     <None Remove="ClientApp\src\app\models\transaction.model.ts" />
@@ -58,6 +59,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\helpers\jwt.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\budget.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\budget.list.response.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\budget.view.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\transaction.view.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\transaction.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\transaction.list.response.ts" />
