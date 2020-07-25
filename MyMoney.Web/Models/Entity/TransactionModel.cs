@@ -1,4 +1,5 @@
 ﻿using MyMoney.Core.Interfaces.Entities;
+using System.Linq;
 
 namespace MyMoney.Web.Models.Entity
 {
@@ -7,6 +8,7 @@ namespace MyMoney.Web.Models.Entity
         public string Date { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
+        public long[] BudgetIds { get; set; }
 
         public TransactionModel()
         {
@@ -18,6 +20,7 @@ namespace MyMoney.Web.Models.Entity
             Date = model.Date.ToShortDateString();
             Description = model.Description;
             Amount = model.Amount;
+            BudgetIds = model.Budgets.Select(t => t.Id).ToArray();
         }
     }
 }

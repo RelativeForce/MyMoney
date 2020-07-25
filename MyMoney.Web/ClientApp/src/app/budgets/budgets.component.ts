@@ -40,7 +40,7 @@ export class BudgetsComponent implements OnInit {
     var today = new Date();
 
     this.year = today.getFullYear();
-    this.month = today.getMonth();
+    this.month = today.getMonth() + 1;
   }
 
   ngOnInit() {

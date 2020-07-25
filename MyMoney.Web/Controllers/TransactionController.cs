@@ -85,7 +85,7 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, new List<IBudget>());
+                var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
 
                 if (result == null)
                     return BadRequest("Invalid State");

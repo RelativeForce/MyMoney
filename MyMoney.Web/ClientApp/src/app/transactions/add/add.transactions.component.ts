@@ -5,6 +5,9 @@ import { HttpClient } from '@angular/common/http';
 
 import { AuthenticationService } from '../../authentication.service';
 import { TransactionModel } from '../../models/transaction.model';
+import { BudgetModel } from '../../models/budget.model';
+import { BudgetViewModel } from '../../models/budget.view.model';
+import { BudgetListResponse } from '../../models/budget.list.response';
 
 @Component({
   selector: 'add-transactions-component',
@@ -13,6 +16,8 @@ import { TransactionModel } from '../../models/transaction.model';
 export class AddTransactionsComponent implements OnInit {
 
   addTransactionForm: FormGroup;
+  selectedBudgets: Set<Number> = new Set();
+  budgets: Array<BudgetViewModel> = [];
   loading = false;
   submitted = false;
 
@@ -38,6 +43,46 @@ export class AddTransactionsComponent implements OnInit {
 
   get f() { return this.addTransactionForm.controls; }
 
+  onCheckboxChange(e, id) {
+    if (e.target.checked) {
+      this.selectedBudgets.add(id);
+    } else {
+      this.selectedBudgets.delete(id);
+    }
+  }
+
+  onDateChange(e) {
+
+    this.selectedBudgets.clear();
+
+    this.fetchbudgets();
+  }
+
+  fetchbudgets(): void {
+
+    this.loading = false;
+
+    var date = new Date(this.f.date.value);
+
+    var month = date.getMonth() + 1;
+
+    var monthStr = month < 10 ? "0" + month : month;
+
+    var monthId = "" + date.getFullYear() + monthStr;
+
+    this.http
+      .post<BudgetListResponse>(`/Budget/List`, { monthId })
+      .subscribe(response => {
+
+        this.budgets = response.budgets.map(t => new BudgetViewModel(t));
+        this.loading = false;
+      },
+        error => {
+          // TODO: Show error
+          this.loading = false;
+        });
+  }
+
   onSubmit() {
     this.submitted = true;
 
@@ -53,8 +98,10 @@ export class AddTransactionsComponent implements OnInit {
     var description = this.f.description.value;
     var amount = this.f.amount.value;
 
+    var transaction: TransactionModel = { date, description, amount, id: 0, budgetIds: Array.from(this.selectedBudgets) };
+
     this.http
-      .post<TransactionModel>(`/Transaction/Add`, { date, description, amount, id: 0 })
+      .post<TransactionModel>(`/Transaction/Add`, transaction)
       .subscribe(response => {
         if (response.id != 0) {
           this.router.navigate(["/transactions"]);

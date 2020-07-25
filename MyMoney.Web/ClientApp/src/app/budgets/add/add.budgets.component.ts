@@ -50,7 +50,7 @@ export class AddBudgetsComponent implements OnInit {
     var today = new Date();
 
     this.year = today.getFullYear();
-    this.month = today.getMonth();
+    this.month = today.getMonth() + 1;
   }
 
   get f() { return this.addBudgetForm.controls; }
