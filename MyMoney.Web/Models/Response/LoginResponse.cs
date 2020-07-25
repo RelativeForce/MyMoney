@@ -15,7 +15,7 @@ namespace MyMoney.Web.Models.Response
             Success = result.Success;
             Error = result.Error;
             Token = result.Token;
-            ValidTo = result.ValidTo.ToString("dd/MM/yyyy HH:mm:ss");
+            ValidTo = result.ValidTo.ToString("yyyy-MM-dd") + "T" + result.ValidTo.ToString("HH:mm:ss");
         }
     }
 }
