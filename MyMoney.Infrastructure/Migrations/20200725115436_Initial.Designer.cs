@@ -10,8 +10,8 @@ using MyMoney.Infrastructure.EntityFramework;
 namespace MyMoney.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190830094905_BudgetStartEnd")]
-    partial class BudgetStartEnd
+    [Migration("20200725115436_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,18 +29,17 @@ namespace MyMoney.Infrastructure.Migrations
 
                     b.Property<decimal>("Amount");
 
-                    b.Property<DateTime>("End");
+                    b.Property<string>("MonthId");
+
+                    b.Property<string>("Name");
 
                     b.Property<string>("Notes");
-
-                    b.Property<DateTime>("Start");
 
                     b.Property<long>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId", "Start", "End", "Amount")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Budgets");
                 });
@@ -66,6 +65,19 @@ namespace MyMoney.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionBudget", b =>
+                {
+                    b.Property<long>("BudgetId");
+
+                    b.Property<long>("TransactionId");
+
+                    b.HasKey("BudgetId", "TransactionId");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("TransactionBudget");
                 });
 
             modelBuilder.Entity("MyMoney.Infrastructure.Entities.User", b =>
@@ -106,6 +118,19 @@ namespace MyMoney.Infrastructure.Migrations
                     b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
                         .WithMany("TransactionsProxy")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionBudget", b =>
+                {
+                    b.HasOne("MyMoney.Infrastructure.Entities.Budget", "Budget")
+                        .WithMany("TransactionsProxy")
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MyMoney.Infrastructure.Entities.Transaction", "Transaction")
+                        .WithMany("BudgetsProxy")
+                        .HasForeignKey("TransactionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

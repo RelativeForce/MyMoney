@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
@@ -18,7 +20,7 @@ namespace MyMoney.Core.Services
             _currentUserProvider = currentUserProvider;
         }
 
-        public ITransaction Add(DateTime date, string description, decimal amount)
+        public ITransaction Add(DateTime date, string description, decimal amount, long[] budgetIds)
         {
             if (string.IsNullOrWhiteSpace(description))
                 return null;
@@ -32,7 +34,21 @@ namespace MyMoney.Core.Services
             transaction.UserId = user.Id;
             transaction.User = user;
 
-            return _repository.Add(transaction);
+            var addedTransaction = _repository.Add(transaction);
+
+            if(addedTransaction == null)
+            {
+                return null;
+            }
+
+            var budgets = user.Budgets.Where(b => budgetIds.Contains(b.Id)).ToList();
+
+            foreach (var budget in budgets)
+            {
+                budget.AddTransaction(addedTransaction);
+            }
+
+            return _repository.Update(addedTransaction) ? addedTransaction : null;
         }
 
         public bool Update(long transactionId, DateTime date, string description, decimal amount)

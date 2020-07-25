@@ -43,7 +43,10 @@ export class AuthenticationService {
       return false;
     }
 
-    if (new Date(this.currentUserValue.validTo) > new Date(Date.now())) {
+    var now = new Date(Date.now()).getTime();
+    var validTo = Date.parse(this.currentUserValue.validTo); 
+
+    if (validTo > now) {
       return true;
     }
 

@@ -1,9 +1,11 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyMoney.Core.Interfaces.Service;
 using MyMoney.Web.Models.Entity;
 using MyMoney.Web.Models.Request;
-using MyMoney.Core.Interfaces.Service;
+using MyMoney.Web.Models.Response;
+using System;
+using System.Linq;
 
 namespace MyMoney.Web.Controllers
 {
@@ -19,8 +21,8 @@ namespace MyMoney.Web.Controllers
             _budgetService = budgetService;
         }
 
-        [HttpPost(nameof(Find))]
-        public IActionResult Find([FromBody] BudgetRequest findParameters)
+        [HttpPost(nameof(List))]
+        public IActionResult List([FromBody] BudgetRequest findParameters)
         {
             try
             {
@@ -29,18 +31,14 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var result = _budgetService.Find(findParameters.Date);
+                var budgets = _budgetService.List(findParameters.MonthId);
 
-                if (result == null)
+                if (budgets == null)
                     return NotFound();
 
-                return Ok(new BudgetModel
+                return Ok(new BudgetListResponse
                 {
-                    Id = result.Id,
-                    Amount = result.Amount,
-                    Start = result.Start,
-                    End = result.End,
-                    Notes = result.Notes
+                    Budgets = budgets.Select(t => new BudgetModel(t)).ToList()
                 });
             }
             catch (Exception)
@@ -60,8 +58,8 @@ namespace MyMoney.Web.Controllers
                 }
 
                 var result = _budgetService.Add(
-                    model.Start,
-                    model.End,
+                    model.MonthId,
+                    model.Name,
                     model.Amount,
                     model.Notes
                 );
@@ -69,14 +67,7 @@ namespace MyMoney.Web.Controllers
                 if (result == null)
                     return BadRequest("Invalid budget data");
 
-                return Ok(new BudgetModel
-                {
-                    Id = result.Id,
-                    Amount = result.Amount,
-                    Start = result.Start,
-                    End = result.End,
-                    Notes = result.Notes
-                });
+                return Ok(new BudgetModel(result));
 
             }
             catch (Exception)

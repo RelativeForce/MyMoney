@@ -20,6 +20,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
   </ItemGroup>
@@ -34,6 +38,9 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\authentication.service.ts" />
     <None Remove="ClientApp\src\app\helpers\jwt.interceptor.ts" />
+    <None Remove="ClientApp\src\app\models\budget.list.response.ts" />
+    <None Remove="ClientApp\src\app\models\budget.model.ts" />
+    <None Remove="ClientApp\src\app\models\budget.view.model.ts" />
     <None Remove="ClientApp\src\app\models\login.response.ts" />
     <None Remove="ClientApp\src\app\models\transaction.list.response.ts" />
     <None Remove="ClientApp\src\app\models\transaction.model.ts" />
@@ -50,6 +57,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\authentication.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\jwt.interceptor.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\budget.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\budget.list.response.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\budget.view.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\transaction.view.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\transaction.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\transaction.list.response.ts" />
@@ -59,6 +69,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ClientApp\src\app\models\transaction - Copy %282%29.model.js">
+      <DependentUpon>transaction.model.ts</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\app\models\transaction - Copy - Copy.model.js">
+      <DependentUpon>transaction.model.ts</DependentUpon>
+    </None>
     <None Update="ClientApp\src\app\models\transaction - Copy.model.js">
       <DependentUpon>transaction.model.ts</DependentUpon>
     </None>

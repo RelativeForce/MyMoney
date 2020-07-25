@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Core.Interfaces.Service
 {
     public interface IBudgetService
     {
-        IBudget Add(DateTime start, DateTime end, decimal amount, string notes);
-        IBudget Find(DateTime date);
+        IBudget Add(string monthId, string name, decimal amount, string notes);
+        List<IBudget> List(string monthId);
     }
 }

@@ -14,6 +14,7 @@ namespace MyMoney.Infrastructure.EntityFramework
             Budget.Configure(modelBuilder);
             Transaction.Configure(modelBuilder);
             User.Configure(modelBuilder);
+            TransactionBudget.Configure(modelBuilder);
         }
 
         public virtual DbSet<Transaction> Transactions { get; set; }

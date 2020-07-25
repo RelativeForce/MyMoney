@@ -1,13 +1,15 @@
-﻿using System;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyMoney.Core;
+using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Core.Interfaces.Service;
 using MyMoney.Web.Models.Common;
 using MyMoney.Web.Models.Entity;
 using MyMoney.Web.Models.Request;
 using MyMoney.Web.Models.Response;
-using MyMoney.Core;
-using MyMoney.Core.Interfaces.Service;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MyMoney.Web.Controllers
 {
@@ -40,13 +42,7 @@ namespace MyMoney.Web.Controllers
 
                 return Ok(new TransactionListResponse
                 {
-                    Transactions = transactions.Select(t => new TransactionModel
-                    {
-                        Id = t.Id,
-                        Date = t.Date.ToShortDateString(),
-                        Description = t.Description,
-                        Amount = t.Amount,
-                    }).ToList()
+                    Transactions = transactions.Select(t => new TransactionModel(t)).ToList()
                 });
             }
             catch (Exception)
@@ -89,18 +85,12 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount);
+                var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
 
                 if (result == null)
                     return BadRequest("Invalid State");
 
-                return Ok(new TransactionModel
-                {
-                    Id = result.Id,
-                    Amount = result.Amount,
-                    Date = result.Date.ToShortDateString(),
-                    Description = result.Description
-                });
+                return Ok(new TransactionModel(result));
             }
             catch (Exception)
             {

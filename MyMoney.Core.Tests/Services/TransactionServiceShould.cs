@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
@@ -33,17 +35,17 @@ namespace MyMoney.Core.Tests.Services
 
             _repositoryMock
                 .Setup(m => m.Add(It.IsAny<ITransaction>()))
-                .Returns((ITransaction) null)
+                .Returns((ITransaction)null)
                 .Verifiable();
 
             _entityFactoryMock
                 .Setup(m => m.NewTransaction)
-                .Returns((ITransaction) null)
+                .Returns((ITransaction)null)
                 .Verifiable();
 
             var service = NewService;
 
-            var result = service.Add(now, invalidDescription, amount);
+            var result = service.Add(now, invalidDescription, amount, new long[0]);
 
             Assert.Null(result);
 
@@ -62,6 +64,7 @@ namespace MyMoney.Core.Tests.Services
 
             var mockUser = new Mock<IUser>(MockBehavior.Strict);
             mockUser.Setup(m => m.Id).Returns(userId);
+            mockUser.Setup(m => m.Budgets).Returns(new List<IBudget>().AsQueryable());
 
             _currentUserProvider
                 .Setup(m => m.CurrentUser)
@@ -72,7 +75,7 @@ namespace MyMoney.Core.Tests.Services
             mockTransaction.SetupAllProperties();
 
             _repositoryMock
-                .Setup(m => m.Add(It.Is<ITransaction>(t => 
+                .Setup(m => m.Add(It.Is<ITransaction>(t =>
                     t.UserId == userId &&
                     t.User.Equals(mockUser.Object) &&
                     t.Date.Equals(now) &&
@@ -87,6 +90,16 @@ namespace MyMoney.Core.Tests.Services
                 })
                 .Verifiable();
 
+            _repositoryMock
+                .Setup(m => m.Update(It.Is<ITransaction>(t =>
+                    t.UserId == userId &&
+                    t.User.Equals(mockUser.Object) &&
+                    t.Date.Equals(now) &&
+                    t.Amount == amount &&
+                    t.Description == description)))
+                .Returns((ITransaction t) => true)
+                .Verifiable();
+
             _entityFactoryMock
                 .Setup(m => m.NewTransaction)
                 .Returns(mockTransaction.Object)
@@ -94,7 +107,7 @@ namespace MyMoney.Core.Tests.Services
 
             var service = NewService;
 
-            var result = service.Add(now, description, amount);
+            var result = service.Add(now, description, amount, new long[0]);
 
             Assert.NotNull(result);
             Assert.Equal(now, result.Date);
@@ -103,7 +116,7 @@ namespace MyMoney.Core.Tests.Services
             Assert.Equal(description, result.Description);
             Assert.Equal(amount, result.Amount);
             Assert.Equal(mockUser.Object, result.User);
-            
+
             _repositoryMock.Verify(m => m.Add(It.IsAny<ITransaction>()), Times.Once);
             _entityFactoryMock.Verify(m => m.NewTransaction, Times.Once);
             _currentUserProvider.Verify(m => m.CurrentUser, Times.Once);
@@ -130,7 +143,7 @@ namespace MyMoney.Core.Tests.Services
 
             _repositoryMock
                 .Setup(m => m.FindById<ITransaction>(transactionId))
-                .Returns((ITransaction) null)
+                .Returns((ITransaction)null)
                 .Verifiable();
 
             var service = NewService;
@@ -197,7 +210,7 @@ namespace MyMoney.Core.Tests.Services
 
             _repositoryMock
                 .Setup(m => m.FindById<ITransaction>(transactionId))
-                .Returns((ITransaction) null)
+                .Returns((ITransaction)null)
                 .Verifiable();
 
             var service = NewService;
@@ -266,7 +279,7 @@ namespace MyMoney.Core.Tests.Services
             mockTransaction.SetupAllProperties();
             mockTransaction.Object.Id = transactionId;
             mockTransaction.Object.UserId = userId + 5;
-            
+
             _currentUserProvider.Setup(m => m.CurrentUserId).Returns(userId).Verifiable();
 
             _repositoryMock
@@ -292,7 +305,7 @@ namespace MyMoney.Core.Tests.Services
 
             _repositoryMock
                 .Setup(m => m.FindById<ITransaction>(transactionId))
-                .Returns((ITransaction) null)
+                .Returns((ITransaction)null)
                 .Verifiable();
 
             var service = NewService;

@@ -1,0 +1,49 @@
+<h2>Budgets</h2>
+<form [formGroup]="monthIdForm" (ngSubmit)="onSubmit()">
+  <div class="form-inline">
+    <div class="input-group mb-3 pr-2">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Year</span>
+      </div>
+      <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.year.errors }" />
+      <div *ngIf="submitted && f.year.errors" class="invalid-feedback">
+        <div *ngIf="f.year.errors.required">year is required</div>
+      </div>
+    </div>
+    <div class="input-group mb-3 pr-2">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Month</span>
+      </div>
+      <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.month.errors }" />
+      <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
+        <div *ngIf="f.month.errors.required">month is required</div>
+      </div>
+    </div>
+    <div class="input-group mb-3">
+      <button [disabled]="loading" class="btn btn-primary">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        Update
+      </button>
+    </div>
+  </div>
+</form>
+<div class="container-fluid">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let budget of budgets; let i = index">
+        <td>{{budget.name}}</td>
+        <td>{{budget.amount}}</td>
+        <td>{{budget.notes}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+

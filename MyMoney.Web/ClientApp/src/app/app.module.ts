@@ -11,6 +11,8 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { RegisterComponent } from './register/register.component';
 import { AddTransactionsComponent } from './transactions/add/add.transactions.component';
 import { TransactionsComponent } from './transactions/transactions.component';
+import { BudgetsComponent } from './budgets/budgets.component';
+import { AddBudgetsComponent } from './budgets/add/add.budgets.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { TransactionsComponent } from './transactions/transactions.component';
     LoginComponent,
     RegisterComponent,
     AddTransactionsComponent,
-    TransactionsComponent
+    TransactionsComponent,
+    BudgetsComponent,
+    AddBudgetsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,6 +36,8 @@ import { TransactionsComponent } from './transactions/transactions.component';
       { path: 'register', component: RegisterComponent },
       { path: 'transactions', component: TransactionsComponent, pathMatch: 'full' },
       { path: 'transactions/add', component: AddTransactionsComponent, pathMatch: 'full' },
+      { path: 'budgets', component: BudgetsComponent, pathMatch: 'full' },
+      { path: 'budgets/add', component: AddBudgetsComponent, pathMatch: 'full' },
       { path: '', component: HomeComponent, pathMatch: 'full' },
       // otherwise redirect to home
       { path: '**', redirectTo: '' }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyMoney.Infrastructure.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,8 +31,10 @@ namespace MyMoney.Infrastructure.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Amount = table.Column<decimal>(nullable: false),
-                    Month = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<long>(nullable: false)
+                    Notes = table.Column<string>(nullable: true),
+                    UserId = table.Column<long>(nullable: false),
+                    MonthId = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -67,11 +69,39 @@ namespace MyMoney.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TransactionBudget",
+                columns: table => new
+                {
+                    TransactionId = table.Column<long>(nullable: false),
+                    BudgetId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionBudget", x => new { x.BudgetId, x.TransactionId });
+                    table.ForeignKey(
+                        name: "FK_TransactionBudget_Budgets_BudgetId",
+                        column: x => x.BudgetId,
+                        principalTable: "Budgets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TransactionBudget_Transactions_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Budgets_UserId_Month",
+                name: "IX_Budgets_UserId",
                 table: "Budgets",
-                columns: new[] { "UserId", "Month" },
-                unique: true);
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionBudget_TransactionId",
+                table: "TransactionBudget",
+                column: "TransactionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_UserId_Date_Description",
@@ -88,6 +118,9 @@ namespace MyMoney.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "TransactionBudget");
+
             migrationBuilder.DropTable(
                 name: "Budgets");
 

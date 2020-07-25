@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyMoney.Web.Models.Request
+﻿namespace MyMoney.Web.Models.Request
 {
     public class BudgetRequest
     {
-        public DateTime Date { get; set; }
+        public string MonthId { get; set; }
     }
 }

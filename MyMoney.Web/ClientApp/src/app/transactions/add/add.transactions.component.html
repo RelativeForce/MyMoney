@@ -1,30 +1,54 @@
 <h2>Add transaction</h2>
-<form [formGroup]="addTransactionForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label for="date">Date</label>
-    <input type="date" formControlName="date" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
-    <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
-      <div *ngIf="f.date.errors.required">Date is required</div>
-    </div>
+<div class="row">
+  <div class="col-6">
+    <form [formGroup]="addTransactionForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" formControlName="date" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" (change)="onDateChange($event)"/>
+        <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
+          <div *ngIf="f.date.errors.required">Date is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+        <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+          <div *ngIf="f.description.errors.required">description is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" />
+        <div *ngIf="submitted && f.amount.errors" class="invalid-feedback">
+          <div *ngIf="f.amount.errors.required">amount is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Add
+        </button>
+      </div>
+    </form>
   </div>
-  <div class="form-group">
-    <label for="description">Description</label>
-    <input type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
-    <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-      <div *ngIf="f.description.errors.required">description is required</div>
-    </div>
+  <div class="col-6">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Name</th>
+          <th scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let budget of budgets; let i = index">
+          <td>
+            <input type="checkbox" [value]="budget.id" [checked]="selectedBudgets.has(budget.id)" (change)="onCheckboxChange($event, budget.id)" />
+          </td>
+          <td>{{budget.name}}</td>
+          <td>{{budget.amount}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="form-group">
-    <label for="amount">Amount</label>
-    <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" />
-    <div *ngIf="submitted && f.amount.errors" class="invalid-feedback">
-      <div *ngIf="f.amount.errors.required">amount is required</div>
-    </div>
-  </div>
-  <div class="form-group">
-    <button [disabled]="loading" class="btn btn-primary">
-      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-      Add
-    </button>
-  </div>
-</form>
+</div>

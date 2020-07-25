@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyMoney.Core.Interfaces.Service;
 using MyMoney.Web.Models.Request;
 using MyMoney.Web.Models.Response;
-using MyMoney.Core.Interfaces.Service;
+using System;
 
 namespace MyMoney.Web.Controllers
 {
