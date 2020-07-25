@@ -1,5 +1,4 @@
 ﻿using MyMoney.Core.Services;
-using System;
 
 namespace MyMoney.Web.Models.Response
 {

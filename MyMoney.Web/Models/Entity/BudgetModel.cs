@@ -1,5 +1,4 @@
 ﻿using MyMoney.Core.Interfaces.Entities;
-using System;
 
 namespace MyMoney.Web.Models.Entity
 {
@@ -7,7 +6,7 @@ namespace MyMoney.Web.Models.Entity
     {
         public decimal Amount { get; set; }
         public string MonthId { get; set; }
-        public string Name { get; set;  }
+        public string Name { get; set; }
         public string Notes { get; set; }
 
         public BudgetModel()

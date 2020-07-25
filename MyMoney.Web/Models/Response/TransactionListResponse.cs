@@ -1,6 +1,5 @@
-﻿using System;
+﻿using MyMoney.Web.Models.Entity;
 using System.Collections.Generic;
-using MyMoney.Web.Models.Entity;
 
 namespace MyMoney.Web.Models.Response
 {
