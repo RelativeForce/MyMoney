@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Moq;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
@@ -43,7 +44,7 @@ namespace MyMoney.Core.Tests.Services
 
             var service = NewService;
 
-            var result = service.Add(now, invalidDescription, amount);
+            var result = service.Add(now, invalidDescription, amount, new List<IBudget>());
 
             Assert.Null(result);
 
@@ -94,7 +95,7 @@ namespace MyMoney.Core.Tests.Services
 
             var service = NewService;
 
-            var result = service.Add(now, description, amount);
+            var result = service.Add(now, description, amount, new List<IBudget>());
 
             Assert.NotNull(result);
             Assert.Equal(now, result.Date);

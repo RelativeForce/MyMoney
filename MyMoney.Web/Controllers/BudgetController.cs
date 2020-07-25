@@ -29,19 +29,12 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var result = _budgetService.Find(findParameters.Date);
+                var result = _budgetService.Find(findParameters.MonthId);
 
                 if (result == null)
                     return NotFound();
 
-                return Ok(new BudgetModel
-                {
-                    Id = result.Id,
-                    Amount = result.Amount,
-                    Start = result.Start,
-                    End = result.End,
-                    Notes = result.Notes
-                });
+                return Ok(new BudgetModel(result));
             }
             catch (Exception)
             {
@@ -60,8 +53,8 @@ namespace MyMoney.Web.Controllers
                 }
 
                 var result = _budgetService.Add(
-                    model.Start,
-                    model.End,
+                    model.MonthId,
+                    model.Name,
                     model.Amount,
                     model.Notes
                 );
@@ -69,14 +62,7 @@ namespace MyMoney.Web.Controllers
                 if (result == null)
                     return BadRequest("Invalid budget data");
 
-                return Ok(new BudgetModel
-                {
-                    Id = result.Id,
-                    Amount = result.Amount,
-                    Start = result.Start,
-                    End = result.End,
-                    Notes = result.Notes
-                });
+                return Ok(new BudgetModel(result));
 
             }
             catch (Exception)

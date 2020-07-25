@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
@@ -18,26 +19,14 @@ namespace MyMoney.Core.Services
             _currentUserProvider = currentUserProvider;
         }
 
-        public IBudget Add(DateTime start, DateTime end, decimal amount, string notes)
+        public IBudget Add(string monthId, string name, decimal amount, string notes)
         {
             var user = _currentUserProvider.CurrentUser;
 
             notes = notes ?? "";
+            name = name ?? "Budget for " + monthId;
 
-            if(end < start)
-            {
-                var temp = start;
-                start = end;
-                end = temp;
-            }
-
-            start = CleanDate(start).Date;
-            end = CleanDate(end).Date.AddDays(1).AddTicks(-1);
-
-            var existingStart = Find(start);
-            var existingEnd = Find(end);
-
-            if (existingStart != null || existingEnd != null)
+            if (!Regex.Match(monthId, "^[0-9]{6}$").Success)
             {
                 return null;
             }
@@ -46,25 +35,18 @@ namespace MyMoney.Core.Services
             budget.UserId = user.Id;
             budget.User = user;
             budget.Amount = amount;
-            budget.Start = start;
-            budget.End = end;
+            budget.MonthId = monthId;
             budget.Notes = notes;
+            budget.Name = name;
 
             return _repository.Add(budget);
         }
 
-        public IBudget Find(DateTime date)
+        public IBudget Find(string monthId)
         {
             var user = _currentUserProvider.CurrentUser;
 
-            date = CleanDate(date);
-
-            return _repository.Find<IBudget>(b => date >= b.Start && date <= b.End && b.UserId == user.Id);
-        }
-
-        private static DateTime CleanDate(DateTime date)
-        {
-            return date.ToUniversalTime();
+            return _repository.Find<IBudget>(b => monthId == b.MonthId && b.UserId == user.Id);
         }
     }
 }

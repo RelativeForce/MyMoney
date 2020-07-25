@@ -1,19 +1,25 @@
-﻿using System;
+﻿using MyMoney.Core.Interfaces.Entities;
+using System;
 
 namespace MyMoney.Web.Models.Entity
 {
     public class BudgetModel : EntityModel
     {
         public decimal Amount { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
+        public string MonthId { get; set; }
+        public string Name { get; set;  }
         public string Notes { get; set; }
 
-        public void Update(BudgetModel model)
+        public BudgetModel()
+        {
+
+        }
+
+        public BudgetModel(IBudget model) : base(model.Id)
         {
             Amount = model.Amount;
-            Start = model.Start;
-            End = model.End;
+            MonthId = model.MonthId;
+            Name = model.Name;
             Notes = model.Notes;
         }
     }

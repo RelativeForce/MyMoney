@@ -1,4 +1,4 @@
-﻿using System;
+﻿using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Web.Models.Entity
 {
@@ -13,17 +13,11 @@ namespace MyMoney.Web.Models.Entity
 
         }
 
-        public TransactionModel(TransactionModel other)
+        public TransactionModel(ITransaction model) : base(model.Id)
         {
-            Id = other.Id;
-            Update(other);
-        }
-
-        public void Update(TransactionModel other)
-        {
-            Date = other.Date;
-            Description = other.Description;
-            Amount = other.Amount;
+            Date = model.Date.ToShortDateString();
+            Description = model.Description;
+            Amount = model.Amount;
         }
     }
 }

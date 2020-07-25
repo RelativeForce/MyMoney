@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MyMoney.Core.Interfaces.Entities;
 
@@ -23,6 +25,10 @@ namespace MyMoney.Infrastructure.Entities
 
         [ForeignKey(nameof(UserId))]
         public virtual User UserProxy { get; set; }
+
+        [NotMapped]
+        public IQueryable<IBudget> Budgets => BudgetsProxy.Select(tb => tb.Budget).Cast<IBudget>().AsQueryable();
+        public virtual ICollection<TransactionBudget> BudgetsProxy { get; set; } = new List<TransactionBudget>();
 
         internal static void Configure(ModelBuilder model)
         {

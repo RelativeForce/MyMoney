@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace MyMoney.Core.Interfaces.Entities
 {
@@ -10,5 +11,6 @@ namespace MyMoney.Core.Interfaces.Entities
         long UserId { get; set; }
 
         IUser User { get; set; }
+        IQueryable<IBudget> Budgets { get; }
     }
 }
