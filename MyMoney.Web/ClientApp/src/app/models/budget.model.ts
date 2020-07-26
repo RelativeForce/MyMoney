@@ -4,4 +4,5 @@ export interface BudgetModel {
   notes: string;
   monthId: string;
   name: string;
+  remaining: Number;
 }

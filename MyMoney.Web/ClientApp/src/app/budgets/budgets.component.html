@@ -33,6 +33,7 @@
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Amount</th>
+        <th scope="col">Remaining</th>
         <th scope="col">Notes</th>
       </tr>
     </thead>
@@ -40,6 +41,7 @@
       <tr *ngFor="let budget of budgets; let i = index">
         <td>{{budget.name}}</td>
         <td>{{budget.amount}}</td>
+        <td>{{budget.remaining}}</td>
         <td>{{budget.notes}}</td>
       </tr>
     </tbody>
