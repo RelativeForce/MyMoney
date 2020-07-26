@@ -1,4 +1,5 @@
 ﻿using MyMoney.Core.Interfaces.Entities;
+using System.Linq;
 
 namespace MyMoney.Web.Models.Entity
 {
@@ -8,6 +9,7 @@ namespace MyMoney.Web.Models.Entity
         public string MonthId { get; set; }
         public string Name { get; set; }
         public string Notes { get; set; }
+        public decimal Remaining { get; set; }
 
         public BudgetModel()
         {
@@ -20,6 +22,7 @@ namespace MyMoney.Web.Models.Entity
             MonthId = model.MonthId;
             Name = model.Name;
             Notes = model.Notes;
+            Remaining = model.Amount - model.Transactions.Select(b => b.Amount).Sum();
         }
     }
 }

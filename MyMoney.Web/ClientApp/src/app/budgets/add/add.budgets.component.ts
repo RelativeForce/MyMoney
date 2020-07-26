@@ -73,7 +73,14 @@ export class AddBudgetsComponent implements OnInit {
 
     var monthId = "" + this.year + (this.month < 10 ? "0" + this.month : this.month);
 
-    var budget : BudgetModel = { monthId, name: this.name, amount: this.amount, notes: this.notes, id: 0 };
+    var budget: BudgetModel = {
+      monthId,
+      name: this.name,
+      amount: this.amount,
+      remaining: this.amount,
+      notes: this.notes,
+      id: 0
+    };
 
     this.http
       .post<BudgetModel>(`/Budget/Add`, budget)
@@ -82,9 +89,9 @@ export class AddBudgetsComponent implements OnInit {
           this.router.navigate(["/budgets"]);
         }
       },
-      error => {
-        // Show error
-        this.loading = false;
-      });
+        error => {
+          // Show error
+          this.loading = false;
+        });
   }
 }
