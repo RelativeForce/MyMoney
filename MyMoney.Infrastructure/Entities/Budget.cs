@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Infrastructure.Entities
@@ -29,11 +30,21 @@ namespace MyMoney.Infrastructure.Entities
         public IQueryable<ITransaction> Transactions => TransactionsProxy.Select(tb => tb.Transaction).Cast<ITransaction>().AsQueryable();
         public virtual ICollection<TransactionBudget> TransactionsProxy { get; set; } = new List<TransactionBudget>();
 
-        public void AddTransaction(ITransaction transaction)
+        public void AddTransaction(IRelationRepository relationRepository, ITransaction transaction)
         {
-            if(transaction is Transaction t)
+            if (transaction is Transaction t)
             {
-                TransactionsProxy.Add(new TransactionBudget(t, this));
+                relationRepository.Add(new TransactionBudget(t, this));
+            }
+        }
+
+        public void RemoveTransaction(IRelationRepository relationRepository, ITransaction transaction)
+        {
+            var transactionBudget = TransactionsProxy.FirstOrDefault(t => t.TransactionId == transaction.Id);
+
+            if (transactionBudget != null)
+            {
+                relationRepository.Delete(transactionBudget);
             }
         }
 

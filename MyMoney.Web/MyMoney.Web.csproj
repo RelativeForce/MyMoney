@@ -41,12 +41,14 @@
     <None Remove="ClientApp\src\app\models\budget.list.response.ts" />
     <None Remove="ClientApp\src\app\models\budget.model.ts" />
     <None Remove="ClientApp\src\app\models\budget.view.model.ts" />
+    <None Remove="ClientApp\src\app\models\delete.response.ts" />
     <None Remove="ClientApp\src\app\models\login.response.ts" />
     <None Remove="ClientApp\src\app\models\transaction.list.response.ts" />
     <None Remove="ClientApp\src\app\models\transaction.model.ts" />
     <None Remove="ClientApp\src\app\models\transaction.view.model.ts" />
     <None Remove="ClientApp\src\app\models\update.response.ts" />
     <None Remove="ClientApp\src\app\register\register.component.ts" />
+    <None Remove="ClientApp\src\app\transactions\transactions.component.html~RF2011703.TMP" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,6 +62,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\models\budget.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\budget.list.response.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\budget.view.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\delete.response.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\transaction.view.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\transaction.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\transaction.list.response.ts" />

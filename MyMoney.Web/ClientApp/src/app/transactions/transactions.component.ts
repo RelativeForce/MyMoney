@@ -8,6 +8,7 @@ import { TransactionModel } from '../models/transaction.model';
 import { DateRangeModel } from '../models/date.range.model';
 import { TransactionListResponse } from '../models/transaction.list.response';
 import { TransactionViewModel } from '../models/transaction.view.model';
+import { DeleteResponse } from '../models/delete.response';
 
 @Component({
   selector: 'transactions-component',
@@ -77,6 +78,26 @@ export class TransactionsComponent implements OnInit {
   }
 
   get f() { return this.dateRangeForm.controls; }
+
+  delete(id: Number) {
+
+    this.loading = true;
+
+    this.http
+      .post<DeleteResponse>(`/Transaction/Delete`, { id })
+      .subscribe(response => {
+
+        if (response.success) {
+          this.transactions = this.transactions.filter(v => v.id != id);
+        }
+        
+        this.loading = false;
+      },
+        error => {
+          // TODO: Show error
+          this.loading = false;
+        });
+  }
 
   onSubmit() {
     this.submitted = true;

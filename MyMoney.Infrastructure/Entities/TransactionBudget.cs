@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyMoney.Core.Interfaces.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyMoney.Infrastructure.Entities
 {
-    public class TransactionBudget
+    public class TransactionBudget : IRelationEntity
     {
         [Required]
         public long TransactionId { get; set; }
