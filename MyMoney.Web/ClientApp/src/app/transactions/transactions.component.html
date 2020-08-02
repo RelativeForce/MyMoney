@@ -34,6 +34,7 @@
         <th scope="col">Date</th>
         <th scope="col">Description</th>
         <th scope="col">Amount</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -41,6 +42,7 @@
         <td>{{transaction.date}}</td>
         <td>{{transaction.description}}</td>
         <td>{{transaction.amount}}</td>
+        <td><button class="btn btn-danger" (click)="delete(transaction.id)">✕</button></td>
       </tr>
     </tbody>
   </table>
