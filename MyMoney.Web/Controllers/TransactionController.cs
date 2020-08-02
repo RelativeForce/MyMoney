@@ -28,6 +28,31 @@ namespace MyMoney.Web.Controllers
             _transactionService = transactionService;
         }
 
+        [HttpPost(nameof(Find))]
+        public IActionResult Find([FromBody] FindRequest findParameters)
+        {
+            try
+            {
+                if (findParameters == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid State");
+                }
+
+                var transaction = _currentUserProvider.CurrentUser.Transactions.FirstOrDefault(t => t.Id == findParameters.Id);
+
+                if(transaction != null)
+                {
+                    return Ok(new TransactionModel(transaction));
+                }
+
+                return NotFound("Transaction does not exist");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error while creating");
+            }
+        }
+
         [HttpPost(nameof(List))]
         public IActionResult List([FromBody] DateRangeModel listParameters)
         {
@@ -61,7 +86,7 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount);
+                var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
 
                 return Ok(new UpdateResponse
                 {

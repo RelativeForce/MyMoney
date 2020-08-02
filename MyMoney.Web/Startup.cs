@@ -34,6 +34,7 @@ namespace MyMoney.Web
             services.AddScoped<ITokenProvider, TokenProvider>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IRelationRepository, RelationRepository>();
             services.AddScoped<IBudgetService, BudgetService>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IEntityFactory, EntityFactory>();

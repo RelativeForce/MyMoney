@@ -13,6 +13,7 @@ import { AddTransactionsComponent } from './transactions/add/add.transactions.co
 import { TransactionsComponent } from './transactions/transactions.component';
 import { BudgetsComponent } from './budgets/budgets.component';
 import { AddBudgetsComponent } from './budgets/add/add.budgets.component';
+import { EditTransactionsComponent } from './transactions/edit/edit.transactions.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AddBudgetsComponent } from './budgets/add/add.budgets.component';
     LoginComponent,
     RegisterComponent,
     AddTransactionsComponent,
+    EditTransactionsComponent,
     TransactionsComponent,
     BudgetsComponent,
     AddBudgetsComponent
@@ -36,6 +38,7 @@ import { AddBudgetsComponent } from './budgets/add/add.budgets.component';
       { path: 'register', component: RegisterComponent },
       { path: 'transactions', component: TransactionsComponent, pathMatch: 'full' },
       { path: 'transactions/add', component: AddTransactionsComponent, pathMatch: 'full' },
+      { path: 'transactions/edit/:id', component: EditTransactionsComponent, pathMatch: 'full' },
       { path: 'budgets', component: BudgetsComponent, pathMatch: 'full' },
       { path: 'budgets/add', component: AddBudgetsComponent, pathMatch: 'full' },
       { path: '', component: HomeComponent, pathMatch: 'full' },

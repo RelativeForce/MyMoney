@@ -12,6 +12,7 @@ namespace MyMoney.Core.Interfaces.Entities
 
         IUser User { get; set; }
         IQueryable<ITransaction> Transactions { get; }
-        void AddTransaction(ITransaction transaction);
+        void AddTransaction(IRelationRepository _relationRepository, ITransaction transaction);
+        void RemoveTransaction(IRelationRepository relationRepository, ITransaction transaction);
     }
 }
