@@ -18,13 +18,10 @@ namespace MyMoney.Web.Controllers
     [Route("[controller]")]
     public class TransactionController : ControllerBase
     {
-
-        private readonly ICurrentUserProvider _currentUserProvider;
         private readonly ITransactionService _transactionService;
 
-        public TransactionController(ICurrentUserProvider currentUserProvider, ITransactionService transactionService)
+        public TransactionController(ITransactionService transactionService)
         {
-            _currentUserProvider = currentUserProvider;
             _transactionService = transactionService;
         }
 
@@ -38,7 +35,7 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var transaction = _currentUserProvider.CurrentUser.Transactions.FirstOrDefault(t => t.Id == findParameters.Id);
+                var transaction = _transactionService.Find(findParameters.Id);
 
                 if(transaction != null)
                 {
@@ -63,7 +60,7 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var transactions = _currentUserProvider.CurrentUser.Between(listParameters.Start, listParameters.End);
+                var transactions = _transactionService.Between(listParameters.Start, listParameters.End);
 
                 return Ok(new TransactionListResponse
                 {

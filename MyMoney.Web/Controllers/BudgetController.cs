@@ -21,6 +21,31 @@ namespace MyMoney.Web.Controllers
             _budgetService = budgetService;
         }
 
+        [HttpPost(nameof(Find))]
+        public IActionResult Find([FromBody] FindRequest findParameters)
+        {
+            try
+            {
+                if (findParameters == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid State");
+                }
+
+                var budget =_budgetService.Find(findParameters.Id);
+
+                if (budget != null)
+                {
+                    return Ok(new BudgetModel(budget));
+                }
+
+                return NotFound("Transaction does not exist");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error while creating");
+            }
+        }
+
         [HttpPost(nameof(List))]
         public IActionResult List([FromBody] BudgetRequest findParameters)
         {
