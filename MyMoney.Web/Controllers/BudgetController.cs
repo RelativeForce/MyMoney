@@ -75,5 +75,29 @@ namespace MyMoney.Web.Controllers
                 return BadRequest("Error while registering");
             }
         }
+
+        [HttpPost(nameof(Update))]
+        public IActionResult Update([FromBody] BudgetModel model)
+        {
+            try
+            {
+                if (model == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid State");
+                }
+
+                var success = _budgetService.Update(model.Id, model.Name, model.Amount, model.Notes);
+
+                return Ok(new UpdateResponse
+                {
+                    Success = success,
+                    Error = success ? "" : "Invalid budget information"
+                });
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error while updating");
+            }
+        }
     }
 }

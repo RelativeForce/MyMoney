@@ -8,5 +8,6 @@ namespace MyMoney.Core.Interfaces.Service
     {
         IBudget Add(string monthId, string name, decimal amount, string notes);
         List<IBudget> List(string monthId);
+        bool Update(long budgetId, string name, decimal amount, string notes);
     }
 }

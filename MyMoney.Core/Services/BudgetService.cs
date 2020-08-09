@@ -50,5 +50,23 @@ namespace MyMoney.Core.Services
 
             return user.Budgets.Where(b => monthId == b.MonthId).ToList();
         }
+
+        public bool Update(long budgetId, string name, decimal amount, string notes)
+        {
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(notes))
+                return false;
+
+            var budget = _repository.FindById<IBudget>(budgetId);
+            var user = _currentUserProvider.CurrentUser;
+
+            if (budget == null || budget.UserId != user.Id)
+                return false;
+
+            budget.Amount = amount;
+            budget.Notes = notes;
+            budget.Name = name;
+
+            return _repository.Update(budget);
+        }
     }
 }
