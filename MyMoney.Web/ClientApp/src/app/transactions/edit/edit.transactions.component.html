@@ -1,4 +1,4 @@
-<h2>Edit transaction {{id}} </h2>
+<h2>Edit transaction {{id}}</h2>
 <div class="row">
   <div class="col-6">
     <form [formGroup]="editTransactionForm" (ngSubmit)="onSubmit()">
@@ -26,7 +26,7 @@
       <div class="form-group">
         <button [disabled]="loading" class="btn btn-primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          Update
+          Save changes
         </button>
       </div>
     </form>

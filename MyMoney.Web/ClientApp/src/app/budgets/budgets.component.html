@@ -35,6 +35,7 @@
         <th scope="col">Amount</th>
         <th scope="col">Remaining</th>
         <th scope="col">Notes</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -43,6 +44,10 @@
         <td>{{budget.amount}}</td>
         <td>{{budget.remaining}}</td>
         <td>{{budget.notes}}</td>
+        <td>
+          <a class="btn btn-primary" href="budgets/edit/{{budget.id}}">🖉</a>
+          <!--<button class="btn btn-danger" (click)="delete(transaction.id)">✕</button>-->
+        </td>
       </tr>
     </tbody>
   </table>
