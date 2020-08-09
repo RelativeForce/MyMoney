@@ -22,6 +22,22 @@ namespace MyMoney.Core.Services
             _currentUserProvider = currentUserProvider;
         }
 
+        public ITransaction Find(long transactionId)
+        {
+            var transaction = _repository.FindById<ITransaction>(transactionId);
+            var userId = _currentUserProvider.CurrentUserId;
+
+            if (transaction == null || transaction.UserId != userId)
+                return null;
+
+            return transaction;
+        }
+
+        public IList<ITransaction> Between(DateTime start, DateTime end)
+        {
+            return _currentUserProvider.CurrentUser.Between(start, end);
+        }
+
         public ITransaction Add(DateTime date, string description, decimal amount, long[] budgetIds)
         {
             if (string.IsNullOrWhiteSpace(description))

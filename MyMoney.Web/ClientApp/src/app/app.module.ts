@@ -14,6 +14,7 @@ import { TransactionsComponent } from './transactions/transactions.component';
 import { BudgetsComponent } from './budgets/budgets.component';
 import { AddBudgetsComponent } from './budgets/add/add.budgets.component';
 import { EditTransactionsComponent } from './transactions/edit/edit.transactions.component';
+import { EditBudgetsComponent } from './budgets/edit/edit.budgets.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { EditTransactionsComponent } from './transactions/edit/edit.transactions
     EditTransactionsComponent,
     TransactionsComponent,
     BudgetsComponent,
-    AddBudgetsComponent
+    AddBudgetsComponent,
+    EditBudgetsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -41,6 +43,7 @@ import { EditTransactionsComponent } from './transactions/edit/edit.transactions
       { path: 'transactions/edit/:id', component: EditTransactionsComponent, pathMatch: 'full' },
       { path: 'budgets', component: BudgetsComponent, pathMatch: 'full' },
       { path: 'budgets/add', component: AddBudgetsComponent, pathMatch: 'full' },
+      { path: 'budgets/edit/:id', component: EditBudgetsComponent, pathMatch: 'full' },
       { path: '', component: HomeComponent, pathMatch: 'full' },
       // otherwise redirect to home
       { path: '**', redirectTo: '' }

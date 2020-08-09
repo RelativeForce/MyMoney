@@ -21,6 +21,17 @@ namespace MyMoney.Core.Services
             _currentUserProvider = currentUserProvider;
         }
 
+        public IBudget Find(long budgetId)
+        {
+            var budget = _repository.FindById<IBudget>(budgetId);
+            var userId = _currentUserProvider.CurrentUserId;
+
+            if (budget == null || budget.UserId != userId)
+                return null;
+
+            return budget;
+        }
+
         public IBudget Add(string monthId, string name, decimal amount, string notes)
         {
             var user = _currentUserProvider.CurrentUser;
@@ -49,6 +60,35 @@ namespace MyMoney.Core.Services
             var user = _currentUserProvider.CurrentUser;
 
             return user.Budgets.Where(b => monthId == b.MonthId).ToList();
+        }
+
+        public bool Update(long budgetId, string name, decimal amount, string notes)
+        {
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(notes))
+                return false;
+
+            var budget = _repository.FindById<IBudget>(budgetId);
+            var userId = _currentUserProvider.CurrentUserId;
+
+            if (budget == null || budget.UserId != userId)
+                return false;
+
+            budget.Amount = amount;
+            budget.Notes = notes;
+            budget.Name = name;
+
+            return _repository.Update(budget);
+        }
+
+        public bool Delete(long budgetId)
+        {
+            var budget = _repository.FindById<IBudget>(budgetId);
+            var userId = _currentUserProvider.CurrentUserId;
+
+            if (budget == null || budget.UserId != userId)
+                return false;
+
+            return _repository.Delete(budget);
         }
     }
 }

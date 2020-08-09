@@ -21,6 +21,31 @@ namespace MyMoney.Web.Controllers
             _budgetService = budgetService;
         }
 
+        [HttpPost(nameof(Find))]
+        public IActionResult Find([FromBody] FindRequest findParameters)
+        {
+            try
+            {
+                if (findParameters == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid State");
+                }
+
+                var budget =_budgetService.Find(findParameters.Id);
+
+                if (budget != null)
+                {
+                    return Ok(new BudgetModel(budget));
+                }
+
+                return NotFound("Transaction does not exist");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error while creating");
+            }
+        }
+
         [HttpPost(nameof(List))]
         public IActionResult List([FromBody] BudgetRequest findParameters)
         {
@@ -73,6 +98,50 @@ namespace MyMoney.Web.Controllers
             catch (Exception)
             {
                 return BadRequest("Error while registering");
+            }
+        }
+
+        [HttpPost(nameof(Update))]
+        public IActionResult Update([FromBody] BudgetModel model)
+        {
+            try
+            {
+                if (model == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid State");
+                }
+
+                var success = _budgetService.Update(model.Id, model.Name, model.Amount, model.Notes);
+
+                return Ok(new UpdateResponse
+                {
+                    Success = success,
+                    Error = success ? "" : "Invalid budget information"
+                });
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error while updating");
+            }
+        }
+
+        [HttpPost(nameof(Delete))]
+        public IActionResult Delete([FromBody] DeleteRequest deleteParameters)
+        {
+            try
+            {
+                if (deleteParameters == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid State");
+                }
+
+                var result = _budgetService.Delete(deleteParameters.Id);
+
+                return Ok(new DeleteResponse { Success = result });
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error while deleting");
             }
         }
     }
