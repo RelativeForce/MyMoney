@@ -49,7 +49,7 @@ export class EditTransactionsComponent implements OnInit {
         .post<TransactionModel>(`/Transaction/Find`, { id: this.id })
         .subscribe(response => {
 
-          response.budgetIds.forEach(bid => this.selectedBudgets.add(bid)); 
+          response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
 
           this.editTransactionForm = this.formBuilder.group({
             date: [this.toInputDateString(response.date), Validators.required],
