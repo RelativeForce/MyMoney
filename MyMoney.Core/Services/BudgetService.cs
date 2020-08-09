@@ -57,9 +57,9 @@ namespace MyMoney.Core.Services
                 return false;
 
             var budget = _repository.FindById<IBudget>(budgetId);
-            var user = _currentUserProvider.CurrentUser;
+            var userId = _currentUserProvider.CurrentUserId;
 
-            if (budget == null || budget.UserId != user.Id)
+            if (budget == null || budget.UserId != userId)
                 return false;
 
             budget.Amount = amount;
@@ -67,6 +67,17 @@ namespace MyMoney.Core.Services
             budget.Name = name;
 
             return _repository.Update(budget);
+        }
+
+        public bool Delete(long budgetId)
+        {
+            var budget = _repository.FindById<IBudget>(budgetId);
+            var userId = _currentUserProvider.CurrentUserId;
+
+            if (budget == null || budget.UserId != userId)
+                return false;
+
+            return _repository.Delete(budget);
         }
     }
 }

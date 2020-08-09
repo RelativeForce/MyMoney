@@ -99,5 +99,25 @@ namespace MyMoney.Web.Controllers
                 return BadRequest("Error while updating");
             }
         }
+
+        [HttpPost(nameof(Delete))]
+        public IActionResult Delete([FromBody] DeleteRequest deleteParameters)
+        {
+            try
+            {
+                if (deleteParameters == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid State");
+                }
+
+                var result = _budgetService.Delete(deleteParameters.Id);
+
+                return Ok(new DeleteResponse { Success = result });
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error while deleting");
+            }
+        }
     }
 }
