@@ -63,8 +63,6 @@ export class EditTransactionsComponent implements OnInit {
             this.router.navigate(['/transactions']);
           });
     });
-
-
   }
 
   get f() { return this.editTransactionForm.controls; }
@@ -84,7 +82,7 @@ export class EditTransactionsComponent implements OnInit {
     this.fetchbudgets();
   }
 
-  toInputDateString(text): String {
+  toInputDateString(text): string {
     var date = new Date(text);
 
     var month = date.getMonth() + 1;
@@ -95,7 +93,7 @@ export class EditTransactionsComponent implements OnInit {
 
     var dayStr = day < 10 ? "0" + day : day;
 
-    return date.getFullYear() + "-" + dayStr + "-" + monthStr;
+    return date.getFullYear() + "-" + monthStr + "-" + dayStr;
   }
 
   fetchbudgets(): void {

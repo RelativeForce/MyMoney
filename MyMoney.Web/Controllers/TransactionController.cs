@@ -42,7 +42,7 @@ namespace MyMoney.Web.Controllers
 
                 if(transaction != null)
                 {
-                    return Ok(new TransactionModel(transaction));
+                    return Ok(new TransactionModel(transaction, useJavaScriptDate: true));
                 }
 
                 return NotFound("Transaction does not exist");

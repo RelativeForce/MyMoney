@@ -15,9 +15,9 @@ namespace MyMoney.Web.Models.Entity
 
         }
 
-        public TransactionModel(ITransaction model) : base(model.Id)
+        public TransactionModel(ITransaction model, bool useJavaScriptDate = false) : base(model.Id)
         {
-            Date = model.Date.ToShortDateString();
+            Date = useJavaScriptDate ? model.Date.ToString("yyyy-MM-dd") : model.Date.ToShortDateString();
             Description = model.Description;
             Amount = model.Amount;
             BudgetIds = model.Budgets.Select(t => t.Id).ToArray();
