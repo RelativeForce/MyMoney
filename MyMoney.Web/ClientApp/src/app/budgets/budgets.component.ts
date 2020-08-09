@@ -8,6 +8,7 @@ import { DateRangeModel } from '../models/date.range.model';
 import { TransactionViewModel } from '../models/transaction.view.model';
 import { BudgetViewModel } from '../models/budget.view.model';
 import { BudgetListResponse } from '../models/budget.list.response';
+import { DeleteResponse } from '../models/delete.response';
 
 @Component({
   selector: 'budgets-component',
@@ -53,6 +54,26 @@ export class BudgetsComponent implements OnInit {
   }
 
   get f() { return this.monthIdForm.controls; }
+
+  delete(id: Number) {
+
+    this.loading = true;
+
+    this.http
+      .post<DeleteResponse>(`/Budget/Delete`, { id })
+      .subscribe(response => {
+
+        if (response.success) {
+          this.budgets = this.budgets.filter(v => v.id != id);
+        }
+
+        this.loading = false;
+      },
+        error => {
+          // TODO: Show error
+          this.loading = false;
+        });
+  }
 
   onSubmit() {
     this.submitted = true;
