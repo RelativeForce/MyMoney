@@ -3,19 +3,21 @@ import { Router } from '@angular/router';
 
 import { AuthenticationService } from './authentication.service';
 
-@Component({ selector: 'app-root', templateUrl: 'app.component.html' })
+@Component({ selector: 'mymoney-root', templateUrl: 'app.component.html' })
 export class AppComponent {
-  isLoggedIn: Boolean;
+   public isLoggedIn: Boolean;
 
-  constructor(
-    private router: Router,
-    private authenticationService: AuthenticationService
-  ) {
-    this.authenticationService.currentUser.subscribe(x => this.isLoggedIn = this.authenticationService.isLoggedIn);
-  }
+   constructor(
+      private readonly router: Router,
+      private readonly authenticationService: AuthenticationService
+   ) {
+      this.authenticationService.currentUser.subscribe(
+         (x) => (this.isLoggedIn = this.authenticationService.isLoggedIn)
+      );
+   }
 
-  logout() {
-    this.authenticationService.logout();
-    this.router.navigate(['/login']);
-  }
+   public logout(): void {
+      this.authenticationService.logout();
+      this.router.navigate(['/login']);
+   }
 }

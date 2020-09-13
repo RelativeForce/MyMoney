@@ -1,5 +1,5 @@
-import { BudgetModel } from "./budget.model";
+import { BudgetModel } from './budget.model';
 
 export interface BudgetListResponse {
-  budgets: Array<BudgetModel>;
+   budgets: Array<BudgetModel>;
 }

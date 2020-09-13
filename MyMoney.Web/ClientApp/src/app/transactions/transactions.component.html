@@ -1,59 +1,57 @@
 <h2>Transactions</h2>
 <form [formGroup]="dateRangeForm" (ngSubmit)="onSubmit()">
-  <div class="form-inline">
-    <div class="input-group mb-3 pr-2">
-      <div class="input-group-prepend">
-        <span class="input-group-text">Start</span>
+   <div class="form-inline">
+      <div class="input-group mb-3 pr-2">
+         <div class="input-group-prepend">
+            <span class="input-group-text">Start</span>
+         </div>
+         <input type="date" formControlName="start" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
+         <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
+            <div *ngIf="f.start.errors.required">start is required</div>
+         </div>
       </div>
-      <input type="date" formControlName="start" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
-      <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
-        <div *ngIf="f.start.errors.required">start is required</div>
+      <div class="input-group mb-3 pr-2">
+         <div class="input-group-prepend">
+            <span class="input-group-text">End</span>
+         </div>
+         <input type="date" formControlName="end" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
+         <div *ngIf="submitted && f.end.errors" class="invalid-feedback">
+            <div *ngIf="f.end.errors.required">end is required</div>
+         </div>
       </div>
-    </div>
-    <div class="input-group mb-3 pr-2">
-      <div class="input-group-prepend">
-        <span class="input-group-text">End</span>
+      <div class="input-group mb-3 pr-2">
+         <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Update
+         </button>
       </div>
-      <input type="date" formControlName="end" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
-      <div *ngIf="submitted && f.end.errors" class="invalid-feedback">
-        <div *ngIf="f.end.errors.required">end is required</div>
+      <div class="input-group mb-3">
+         <a class="btn btn-success" href="/transactions/add">
+            Add
+         </a>
       </div>
-    </div>
-    <div class="input-group mb-3 pr-2">
-      <button [disabled]="loading" class="btn btn-primary">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        Update
-      </button>
-    </div>
-    <div class="input-group mb-3">
-      <a class="btn btn-success" href="/transactions/add">
-        Add
-      </a>
-    </div>
-  </div>
+   </div>
 </form>
 <div class="container-fluid">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Description</th>
-        <th scope="col">Amount</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let transaction of transactions; let i = index">
-        <td>{{transaction.date}}</td>
-        <td>{{transaction.description}}</td>
-        <td>{{transaction.amount}}</td>
-        <td>
-          <a class="btn btn-primary" href="transactions/edit/{{transaction.id}}">🖉</a>
-          <button class="btn btn-danger" (click)="delete(transaction.id)">✕</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+   <table class="table">
+      <thead>
+         <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Description</th>
+            <th scope="col">Amount</th>
+            <th scope="col"></th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr *ngFor="let transaction of transactions; let i = index">
+            <td>{{transaction.date}}</td>
+            <td>{{transaction.description}}</td>
+            <td>{{transaction.amount}}</td>
+            <td>
+               <a class="btn btn-primary" href="transactions/edit/{{transaction.id}}">🖉</a>
+               <button class="btn btn-danger" (click)="delete(transaction.id)">✕</button>
+            </td>
+         </tr>
+      </tbody>
+   </table>
 </div>
-
-

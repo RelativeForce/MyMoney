@@ -1,6 +1,6 @@
 export class RegisterRequest {
-  email: string;
-  password: string;
-  dateOfBirth: Date;
-  fullName: string;
+   email: string;
+   password: string;
+   dateOfBirth: Date;
+   fullName: string;
 }

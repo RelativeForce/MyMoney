@@ -1,4 +1,4 @@
 export interface DateRangeModel {
-  start: Date;
-  end: Date;
+   start: Date;
+   end: Date;
 }

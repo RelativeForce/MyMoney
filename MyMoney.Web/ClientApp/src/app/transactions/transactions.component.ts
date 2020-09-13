@@ -4,126 +4,124 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { AuthenticationService } from '../authentication.service';
-import { TransactionModel } from '../models/transaction.model';
 import { DateRangeModel } from '../models/date.range.model';
 import { TransactionListResponse } from '../models/transaction.list.response';
 import { TransactionViewModel } from '../models/transaction.view.model';
 import { DeleteResponse } from '../models/delete.response';
 
 @Component({
-  selector: 'transactions-component',
-  templateUrl: './transactions.component.html'
+   templateUrl: './transactions.component.html'
 })
 export class TransactionsComponent implements OnInit {
 
-  transactions: Array<TransactionViewModel> = [];
-  dateRange: DateRangeModel;
-  dateRangeForm: FormGroup;
-  loading: Boolean = false;
-  submitted: Boolean = false;
+   public transactions: Array<TransactionViewModel> = [];
+   public dateRange: DateRangeModel;
+   public dateRangeForm: FormGroup;
+   public loading: Boolean = false;
+   public submitted: Boolean = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService,
-    private router: Router,
-    private http: HttpClient
-  ) {
-    if (!this.authenticationService.isLoggedIn) {
-      this.router.navigate(['/login']);
-    }
+   constructor(
+      private readonly formBuilder: FormBuilder,
+      private readonly authenticationService: AuthenticationService,
+      private readonly router: Router,
+      private readonly http: HttpClient
+   ) {
+      if (!this.authenticationService.isLoggedIn) {
+         this.router.navigate(['/login']);
+      }
 
-    this.dateRange = this.defaultDateRange;
-  }
+      this.dateRange = this.defaultDateRange;
+   }
 
-  get defaultDateRange(): DateRangeModel {
+   public get defaultDateRange(): DateRangeModel {
 
-    var end: Date = new Date();
+      const end: Date = new Date();
 
-    var start: Date = new Date();
-    start.setMonth(start.getMonth() - 1);
+      const start: Date = new Date();
+      start.setMonth(start.getMonth() - 1);
 
-    return { end, start };
-  }
+      return { end, start };
+   }
 
-  ngOnInit() {
-    this.dateRangeForm = this.formBuilder.group({
-      start: [this.start, Validators.required],
-      end: [this.end, Validators.required]
-    });
+   public ngOnInit(): void {
+      this.dateRangeForm = this.formBuilder.group({
+         start: [this.start, Validators.required],
+         end: [this.end, Validators.required]
+      });
 
-    this.fetchTransactions();
-  }
+      this.fetchTransactions();
+   }
 
-  formatDate(date: Date): string {
+   private formatDate(date: Date): string {
 
-    var date = new Date(date);
+      const parsedDate = new Date(date);
 
-    var month = date.getMonth() + 1;
+      const month = parsedDate.getMonth() + 1;
 
-    var day = date.getDate();
+      const day = parsedDate.getDate();
 
-    var monthStr = month < 10 ? "0" + month : month;
+      const monthStr = month < 10 ? '0' + month : month;
 
-    var dayStr = day < 10 ? "0" + day : day;
+      const dayStr = day < 10 ? '0' + day : day;
 
-    return date.getFullYear() + "-" + monthStr + "-" + dayStr;
-  }
+      return parsedDate.getFullYear() + '-' + monthStr + '-' + dayStr;
+   }
 
-  get start(): string {
-    return this.formatDate(this.dateRange.start);
-  }
+   public get start(): string {
+      return this.formatDate(this.dateRange.start);
+   }
 
-  get end(): string {
-    return this.formatDate(this.dateRange.end);
-  }
+   public get end(): string {
+      return this.formatDate(this.dateRange.end);
+   }
 
-  get f() { return this.dateRangeForm.controls; }
+   public get f() { return this.dateRangeForm.controls; }
 
-  delete(id: Number) {
+   public delete(id: Number): void {
 
-    this.loading = true;
+      this.loading = true;
 
-    this.http
-      .post<DeleteResponse>(`/Transaction/Delete`, { id })
-      .subscribe(response => {
+      this.http
+         .post<DeleteResponse>(`/Transaction/Delete`, { id })
+         .subscribe(response => {
 
-        if (response.success) {
-          this.transactions = this.transactions.filter(v => v.id != id);
-        }
-        
-        this.loading = false;
-      },
-        error => {
-          // TODO: Show error
-          this.loading = false;
-        });
-  }
+            if (response.success) {
+               this.transactions = this.transactions.filter(v => v.id !== id);
+            }
 
-  onSubmit() {
-    this.submitted = true;
+            this.loading = false;
+         },
+            error => {
+               // TODO: Show error
+               this.loading = false;
+            });
+   }
 
-    if (this.dateRangeForm.invalid) {
-      return;
-    }
+   public onSubmit(): void {
+      this.submitted = true;
 
-    this.loading = true;
+      if (this.dateRangeForm.invalid) {
+         return;
+      }
 
-    this.dateRange = { start: this.f.start.value, end: this.f.end.value };
+      this.loading = true;
 
-    this.fetchTransactions();
-  }
+      this.dateRange = { start: this.f.start.value, end: this.f.end.value };
 
-  fetchTransactions(): void {
-    this.http
-      .post<TransactionListResponse>(`/Transaction/List`, this.dateRange)
-      .subscribe(response => {
+      this.fetchTransactions();
+   }
 
-        this.transactions = response.transactions.map(t => new TransactionViewModel(t));
-        this.loading = false;
-      },
-        error => {
-          // TODO: Show error
-          this.loading = false;
-        });
-  }
+   public fetchTransactions(): void {
+      this.http
+         .post<TransactionListResponse>(`/Transaction/List`, this.dateRange)
+         .subscribe(response => {
+
+            this.transactions = response.transactions.map(t => new TransactionViewModel(t));
+            this.loading = false;
+         },
+            error => {
+               // TODO: Show error
+               this.loading = false;
+            });
+   }
 }

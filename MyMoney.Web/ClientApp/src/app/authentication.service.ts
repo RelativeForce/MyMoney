@@ -8,63 +8,65 @@ import { LoginResponse } from './models/login.response';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  currentUserSubject: BehaviorSubject<User>;
-  currentUser: Observable<User>;
+   public currentUserSubject: BehaviorSubject<User>;
+   public currentUser: Observable<User>;
 
-  constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
+   constructor(private readonly http: HttpClient) {
+      this.currentUserSubject = new BehaviorSubject<User>(
+         JSON.parse(localStorage.getItem('currentUser'))
+      );
+      this.currentUser = this.currentUserSubject.asObservable();
 
-    if (!this.isLoggedIn) {
+      if (!this.isLoggedIn) {
+         this.logout();
+      }
+   }
+
+   public get currentUserValue(): User {
+      return this.currentUserSubject.value;
+   }
+
+   public login(email: string, password: string): Observable<LoginResponse> {
+      return this.http
+         .post<LoginResponse>(`/User/Login`, { email, password })
+         .pipe(
+            map((response) => {
+               if (response.success) {
+                  this.setUser(email, response.token, response.validTo);
+               }
+
+               return response;
+            })
+         );
+   }
+
+   public get isLoggedIn(): Boolean {
+      if (!this.currentUserValue) {
+         return false;
+      }
+
+      const now = new Date(Date.now()).getTime();
+      const validTo = Date.parse(this.currentUserValue.validTo);
+
+      if (validTo > now) {
+         return true;
+      }
+
       this.logout();
-    }
-  }
 
-  get currentUserValue(): User {
-    return this.currentUserSubject.value;
-  }
-
-  login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`/User/Login`, { email, password })
-      .pipe(map(response => {
-
-        if (response.success) {
-
-          this.setUser(email, response.token, response.validTo);
-        }
-
-        return response;
-      }));
-  }
-
-  get isLoggedIn(): Boolean {
-
-    if (!this.currentUserValue) {
       return false;
-    }
+   }
 
-    var now = new Date(Date.now()).getTime();
-    var validTo = Date.parse(this.currentUserValue.validTo); 
+   public setUser(email: string, token: string, validTo: string): void {
+      const user: User = { email, token, validTo };
 
-    if (validTo > now) {
-      return true;
-    }
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      this.currentUserSubject.next(user);
+   }
 
-    this.logout();
-
-    return false;
-  }
-
-  setUser(email: string, token: string, validTo: string) : void {
-    var user: User = { email, token, validTo };
-
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    this.currentUserSubject.next(user);
-  }
-
-  logout() : void {
-    // remove user from local storage and set current user to null
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
-  }
+   public logout(): void {
+      // remove user from local storage and set current user to null
+      localStorage.removeItem('currentUser');
+      this.currentUserSubject.next(null);
+   }
 }

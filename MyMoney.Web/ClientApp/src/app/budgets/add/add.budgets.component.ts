@@ -7,91 +7,90 @@ import { AuthenticationService } from '../../authentication.service';
 import { BudgetModel } from '../../models/budget.model';
 
 @Component({
-  selector: 'add-budgets-component',
-  templateUrl: './add.budgets.component.html'
+   templateUrl: './add.budgets.component.html'
 })
 export class AddBudgetsComponent implements OnInit {
 
-  addBudgetForm: FormGroup;
-  loading = false;
-  submitted = false;
-  year: Number;
-  month: Number;
-  name: string;
-  notes: string;
-  amount: Number;
+   public addBudgetForm: FormGroup;
+   public loading = false;
+   public submitted = false;
+   public year: Number;
+   public month: Number;
+   public name: string;
+   public notes: string;
+   public amount: Number;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService,
-    private router: Router,
-    private http: HttpClient
-  ) {
+   constructor(
+      private readonly formBuilder: FormBuilder,
+      private readonly authenticationService: AuthenticationService,
+      private readonly router: Router,
+      private readonly http: HttpClient
+   ) {
 
-    if (!this.authenticationService.isLoggedIn) {
-      this.router.navigate(['/login']);
-    }
+      if (!this.authenticationService.isLoggedIn) {
+         this.router.navigate(['/login']);
+      }
 
-    this.defaultMonth();
-  }
+      this.defaultMonth();
+   }
 
-  ngOnInit() {
-    this.addBudgetForm = this.formBuilder.group({
-      year: [this.year, Validators.required],
-      month: [this.month, Validators.required],
-      amount: [this.amount, Validators.required],
-      name: [this.name, Validators.required],
-      notes: [this.notes, Validators.required]
-    });
-  }
+   public ngOnInit(): void {
+      this.addBudgetForm = this.formBuilder.group({
+         year: [this.year, Validators.required],
+         month: [this.month, Validators.required],
+         amount: [this.amount, Validators.required],
+         name: [this.name, Validators.required],
+         notes: [this.notes, Validators.required]
+      });
+   }
 
-  defaultMonth(): void {
+   private defaultMonth(): void {
 
-    var today = new Date();
+      const today = new Date();
 
-    this.year = today.getFullYear();
-    this.month = today.getMonth() + 1;
-  }
+      this.year = today.getFullYear();
+      this.month = today.getMonth() + 1;
+   }
 
-  get f() { return this.addBudgetForm.controls; }
+   public get f() { return this.addBudgetForm.controls; }
 
-  onSubmit() {
-    this.submitted = true;
+   public onSubmit(): void {
+      this.submitted = true;
 
-    // stop here if form is invalid
-    if (this.addBudgetForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
-      return;
-    }
+      // stop here if form is invalid
+      if (this.addBudgetForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
+         return;
+      }
 
-    this.loading = true;
+      this.loading = true;
 
-    this.year = this.f.year.value;
-    this.month = this.f.month.value;
-    this.amount = this.f.amount.value;
-    this.name = this.f.name.value;
-    this.notes = this.f.notes.value;
+      this.year = this.f.year.value;
+      this.month = this.f.month.value;
+      this.amount = this.f.amount.value;
+      this.name = this.f.name.value;
+      this.notes = this.f.notes.value;
 
-    var monthId = "" + this.year + (this.month < 10 ? "0" + this.month : this.month);
+      const monthId: string = '' + this.year + (this.month < 10 ? '0' + this.month : this.month);
 
-    var budget: BudgetModel = {
-      monthId,
-      name: this.name,
-      amount: this.amount,
-      remaining: this.amount,
-      notes: this.notes,
-      id: 0
-    };
+      const budget: BudgetModel = {
+         monthId,
+         name: this.name,
+         amount: this.amount,
+         remaining: this.amount,
+         notes: this.notes,
+         id: 0
+      };
 
-    this.http
-      .post<BudgetModel>(`/Budget/Add`, budget)
-      .subscribe(response => {
-        if (response.id != 0) {
-          this.router.navigate(["/budgets"]);
-        }
-      },
-        error => {
-          // Show error
-          this.loading = false;
-        });
-  }
+      this.http
+         .post<BudgetModel>(`/Budget/Add`, budget)
+         .subscribe(response => {
+            if (response.id !== 0) {
+               this.router.navigate(['/budgets']);
+            }
+         },
+            error => {
+               // Show error
+               this.loading = false;
+            });
+   }
 }
