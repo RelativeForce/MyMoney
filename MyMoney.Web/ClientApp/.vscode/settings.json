@@ -1,0 +1,22 @@
+{
+   "[html]": {
+      "editor.defaultFormatter": "vscode.html-language-features"
+   },
+   "[typescript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+   },
+   "javascript.preferences.quoteStyle": "single",
+   "typescript.preferences.quoteStyle": "single",
+   "prettier.singleQuote": true,
+   "editor.tabSize": 3,
+   "prettier.tabWidth": 3,
+   "editor.detectIndentation": false,
+   "editor.formatOnSave": true,
+   "prettier.embeddedLanguageFormatting": "off",
+   "prettier.quoteProps": "consistent",
+   "[jsonc]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+   },
+   "prettier.printWidth": 140,
+   "html.format.wrapLineLength": 140
+}

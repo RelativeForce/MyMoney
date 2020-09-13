@@ -11,99 +11,99 @@ import { BudgetListResponse } from '../models/budget.list.response';
 import { DeleteResponse } from '../models/delete.response';
 
 @Component({
-  selector: 'budgets-component',
-  templateUrl: './budgets.component.html'
+   selector: 'budgets-component',
+   templateUrl: './budgets.component.html'
 })
 export class BudgetsComponent implements OnInit {
 
-  budgets: Array<BudgetViewModel> = [];
-  year: Number;
-  month: Number;
-  monthIdForm: FormGroup;
-  loading: Boolean = false;
-  submitted: Boolean = false;
+   budgets: Array<BudgetViewModel> = [];
+   year: Number;
+   month: Number;
+   monthIdForm: FormGroup;
+   loading: Boolean = false;
+   submitted: Boolean = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService,
-    private router: Router,
-    private http: HttpClient
-  ) {
-    if (!this.authenticationService.isLoggedIn) {
-      this.router.navigate(['/login']);
-    }
+   constructor(
+      private formBuilder: FormBuilder,
+      private authenticationService: AuthenticationService,
+      private router: Router,
+      private http: HttpClient
+   ) {
+      if (!this.authenticationService.isLoggedIn) {
+         this.router.navigate(['/login']);
+      }
 
-    this.defaultMonth();
-  }
+      this.defaultMonth();
+   }
 
-  defaultMonth(): void {
+   defaultMonth(): void {
 
-    var today = new Date();
+      const today = new Date();
 
-    this.year = today.getFullYear();
-    this.month = today.getMonth() + 1;
-  }
+      this.year = today.getFullYear();
+      this.month = today.getMonth() + 1;
+   }
 
-  ngOnInit() {
-    this.monthIdForm = this.formBuilder.group({
-      year: [this.year, Validators.required],
-      month: [this.month, Validators.required]
-    });
+   ngOnInit() {
+      this.monthIdForm = this.formBuilder.group({
+         year: [this.year, Validators.required],
+         month: [this.month, Validators.required]
+      });
 
-    this.fetchbudgets();
-  }
+      this.fetchBudgets();
+   }
 
-  get f() { return this.monthIdForm.controls; }
+   get f() { return this.monthIdForm.controls; }
 
-  delete(id: Number) {
+   delete(id: Number) {
 
-    this.loading = true;
+      this.loading = true;
 
-    this.http
-      .post<DeleteResponse>(`/Budget/Delete`, { id })
-      .subscribe(response => {
+      this.http
+         .post<DeleteResponse>(`/Budget/Delete`, { id })
+         .subscribe(response => {
 
-        if (response.success) {
-          this.budgets = this.budgets.filter(v => v.id != id);
-        }
+            if (response.success) {
+               this.budgets = this.budgets.filter(v => v.id != id);
+            }
 
-        this.loading = false;
-      },
-        error => {
-          // TODO: Show error
-          this.loading = false;
-        });
-  }
+            this.loading = false;
+         },
+            error => {
+               // TODO: Show error
+               this.loading = false;
+            });
+   }
 
-  onSubmit() {
-    this.submitted = true;
+   onSubmit() {
+      this.submitted = true;
 
-    if (this.monthIdForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
-      return;
-    }
+      if (this.monthIdForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
+         return;
+      }
 
-    this.year = this.f.year.value;
-    this.month = this.f.month.value;
+      this.year = this.f.year.value;
+      this.month = this.f.month.value;
 
-    this.loading = true;
+      this.loading = true;
 
-    this.fetchbudgets();
-  }
+      this.fetchBudgets();
+   }
 
-  fetchbudgets(): void {
+   fetchBudgets(): void {
 
-    var monthStr = this.month < 10 ? "0" + this.month : this.month;
+      const monthStr = this.month < 10 ? '0' + this.month : this.month;
 
-    this.http
-      .post<BudgetListResponse>(`/Budget/List`, { monthId: "" + this.year + monthStr })
-      .subscribe(response => {
+      this.http
+         .post<BudgetListResponse>(`/Budget/List`, { monthId: '' + this.year + monthStr })
+         .subscribe(response => {
 
-        this.budgets = response.budgets.map(t => new BudgetViewModel(t));
-        this.loading = false;
-      },
-        error => {
-          // TODO: Show error
-          this.loading = false;
-        });
-  }
+            this.budgets = response.budgets.map(t => new BudgetViewModel(t));
+            this.loading = false;
+         },
+            error => {
+               // TODO: Show error
+               this.loading = false;
+            });
+   }
 }

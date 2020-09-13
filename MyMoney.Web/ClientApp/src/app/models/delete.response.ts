@@ -1,3 +1,3 @@
 export interface DeleteResponse {
-  success: boolean;
+   success: boolean;
 }
