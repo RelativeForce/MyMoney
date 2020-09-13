@@ -13,17 +13,17 @@ import { BudgetListResponse } from '../../models/budget.list.response';
 })
 export class AddTransactionsComponent implements OnInit {
 
-   addTransactionForm: FormGroup;
-   selectedBudgets: Set<Number> = new Set();
-   budgets: Array<BudgetViewModel> = [];
-   loading = false;
-   submitted = false;
+   public addTransactionForm: FormGroup;
+   public selectedBudgets: Set<Number> = new Set();
+   public budgets: Array<BudgetViewModel> = [];
+   public loading = false;
+   public submitted = false;
 
    constructor(
-      private formBuilder: FormBuilder,
-      private authenticationService: AuthenticationService,
-      private router: Router,
-      private http: HttpClient
+      private readonly formBuilder: FormBuilder,
+      private readonly authenticationService: AuthenticationService,
+      private readonly router: Router,
+      private readonly http: HttpClient
    ) {
 
       if (!this.authenticationService.isLoggedIn) {
@@ -31,7 +31,7 @@ export class AddTransactionsComponent implements OnInit {
       }
    }
 
-   ngOnInit() {
+   public ngOnInit(): void {
       this.addTransactionForm = this.formBuilder.group({
          date: ['', Validators.required],
          description: ['', Validators.required],
@@ -39,9 +39,9 @@ export class AddTransactionsComponent implements OnInit {
       });
    }
 
-   get f() { return this.addTransactionForm.controls; }
+   public get f() { return this.addTransactionForm.controls; }
 
-   onCheckboxChange(e, id) {
+   public onCheckboxChange(e, id): void {
       if (e.target.checked) {
          this.selectedBudgets.add(id);
       } else {
@@ -49,14 +49,14 @@ export class AddTransactionsComponent implements OnInit {
       }
    }
 
-   onDateChange(e) {
+   public onDateChange(e): void {
 
       this.selectedBudgets.clear();
 
       this.fetchBudgets();
    }
 
-   fetchBudgets(): void {
+   public fetchBudgets(): void {
 
       this.loading = false;
 
@@ -81,7 +81,7 @@ export class AddTransactionsComponent implements OnInit {
             });
    }
 
-   onSubmit() {
+   public onSubmit(): void {
       this.submitted = true;
 
       // stop here if form is invalid

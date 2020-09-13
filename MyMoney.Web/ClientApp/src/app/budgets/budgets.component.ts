@@ -15,18 +15,18 @@ import { DeleteResponse } from '../models/delete.response';
 })
 export class BudgetsComponent implements OnInit {
 
-   budgets: Array<BudgetViewModel> = [];
-   year: Number;
-   month: Number;
-   monthIdForm: FormGroup;
-   loading: Boolean = false;
-   submitted: Boolean = false;
+   public budgets: Array<BudgetViewModel> = [];
+   public year: Number;
+   public month: Number;
+   public monthIdForm: FormGroup;
+   public loading: Boolean = false;
+   public submitted: Boolean = false;
 
    constructor(
-      private formBuilder: FormBuilder,
-      private authenticationService: AuthenticationService,
-      private router: Router,
-      private http: HttpClient
+      private readonly formBuilder: FormBuilder,
+      private readonly authenticationService: AuthenticationService,
+      private readonly router: Router,
+      private readonly http: HttpClient
    ) {
       if (!this.authenticationService.isLoggedIn) {
          this.router.navigate(['/login']);
@@ -35,7 +35,7 @@ export class BudgetsComponent implements OnInit {
       this.defaultMonth();
    }
 
-   defaultMonth(): void {
+   private defaultMonth(): void {
 
       const today = new Date();
 
@@ -43,7 +43,7 @@ export class BudgetsComponent implements OnInit {
       this.month = today.getMonth() + 1;
    }
 
-   ngOnInit() {
+   public ngOnInit(): void {
       this.monthIdForm = this.formBuilder.group({
          year: [this.year, Validators.required],
          month: [this.month, Validators.required]
@@ -52,9 +52,9 @@ export class BudgetsComponent implements OnInit {
       this.fetchBudgets();
    }
 
-   get f() { return this.monthIdForm.controls; }
+   public get f() { return this.monthIdForm.controls; }
 
-   delete(id: Number) {
+   public delete(id: Number): void {
 
       this.loading = true;
 
@@ -74,7 +74,7 @@ export class BudgetsComponent implements OnInit {
             });
    }
 
-   onSubmit() {
+   public onSubmit(): void {
       this.submitted = true;
 
       if (this.monthIdForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
@@ -89,7 +89,7 @@ export class BudgetsComponent implements OnInit {
       this.fetchBudgets();
    }
 
-   fetchBudgets(): void {
+   private fetchBudgets(): void {
 
       const monthStr = this.month < 10 ? '0' + this.month : this.month;
 

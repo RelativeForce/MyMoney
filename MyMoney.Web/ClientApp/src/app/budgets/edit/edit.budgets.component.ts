@@ -11,17 +11,17 @@ import { BudgetModel } from '../../models/budget.model';
 })
 export class EditBudgetsComponent implements OnInit {
 
-   editBudgetForm: FormGroup;
-   loading = false;
-   submitted = false;
-   id: Number;
+   public editBudgetForm: FormGroup;
+   public loading = false;
+   public submitted = false;
+   public id: Number;
 
    constructor(
-      private formBuilder: FormBuilder,
-      private authenticationService: AuthenticationService,
-      private router: Router,
-      private activatedRoute: ActivatedRoute,
-      private http: HttpClient
+      private readonly formBuilder: FormBuilder,
+      private readonly authenticationService: AuthenticationService,
+      private readonly router: Router,
+      private readonly activatedRoute: ActivatedRoute,
+      private readonly http: HttpClient
    ) {
 
       if (!this.authenticationService.isLoggedIn) {
@@ -29,7 +29,7 @@ export class EditBudgetsComponent implements OnInit {
       }
    }
 
-   ngOnInit() {
+   public ngOnInit(): void {
 
       this.activatedRoute.params.subscribe(params => {
          const idStr = params['id'];
@@ -66,9 +66,9 @@ export class EditBudgetsComponent implements OnInit {
       });
    }
 
-   get f() { return this.editBudgetForm.controls; }
+   public get f() { return this.editBudgetForm.controls; }
 
-   onSubmit() {
+   public onSubmit(): void {
       this.submitted = true;
 
       // stop here if form is invalid

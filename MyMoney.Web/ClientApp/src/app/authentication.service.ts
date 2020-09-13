@@ -8,10 +8,10 @@ import { LoginResponse } from './models/login.response';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-   currentUserSubject: BehaviorSubject<User>;
-   currentUser: Observable<User>;
+   public currentUserSubject: BehaviorSubject<User>;
+   public currentUser: Observable<User>;
 
-   constructor(private http: HttpClient) {
+   constructor(private readonly http: HttpClient) {
       this.currentUserSubject = new BehaviorSubject<User>(
          JSON.parse(localStorage.getItem('currentUser'))
       );
@@ -22,11 +22,11 @@ export class AuthenticationService {
       }
    }
 
-   get currentUserValue(): User {
+   public get currentUserValue(): User {
       return this.currentUserSubject.value;
    }
 
-   login(email: string, password: string): Observable<LoginResponse> {
+   public login(email: string, password: string): Observable<LoginResponse> {
       return this.http
          .post<LoginResponse>(`/User/Login`, { email, password })
          .pipe(
@@ -40,7 +40,7 @@ export class AuthenticationService {
          );
    }
 
-   get isLoggedIn(): Boolean {
+   public get isLoggedIn(): Boolean {
       if (!this.currentUserValue) {
          return false;
       }
@@ -57,14 +57,14 @@ export class AuthenticationService {
       return false;
    }
 
-   setUser(email: string, token: string, validTo: string): void {
+   public setUser(email: string, token: string, validTo: string): void {
       const user: User = { email, token, validTo };
 
       localStorage.setItem('currentUser', JSON.stringify(user));
       this.currentUserSubject.next(user);
    }
 
-   logout(): void {
+   public logout(): void {
       // remove user from local storage and set current user to null
       localStorage.removeItem('currentUser');
       this.currentUserSubject.next(null);

@@ -11,20 +11,20 @@ import { BudgetModel } from '../../models/budget.model';
 })
 export class AddBudgetsComponent implements OnInit {
 
-   addBudgetForm: FormGroup;
-   loading = false;
-   submitted = false;
-   year: Number;
-   month: Number;
-   name: string;
-   notes: string;
-   amount: Number;
+   public addBudgetForm: FormGroup;
+   public loading = false;
+   public submitted = false;
+   public year: Number;
+   public month: Number;
+   public name: string;
+   public notes: string;
+   public amount: Number;
 
    constructor(
-      private formBuilder: FormBuilder,
-      private authenticationService: AuthenticationService,
-      private router: Router,
-      private http: HttpClient
+      private readonly formBuilder: FormBuilder,
+      private readonly authenticationService: AuthenticationService,
+      private readonly router: Router,
+      private readonly http: HttpClient
    ) {
 
       if (!this.authenticationService.isLoggedIn) {
@@ -34,7 +34,7 @@ export class AddBudgetsComponent implements OnInit {
       this.defaultMonth();
    }
 
-   ngOnInit() {
+   public ngOnInit(): void {
       this.addBudgetForm = this.formBuilder.group({
          year: [this.year, Validators.required],
          month: [this.month, Validators.required],
@@ -44,7 +44,7 @@ export class AddBudgetsComponent implements OnInit {
       });
    }
 
-   defaultMonth(): void {
+   private defaultMonth(): void {
 
       const today = new Date();
 
@@ -52,9 +52,9 @@ export class AddBudgetsComponent implements OnInit {
       this.month = today.getMonth() + 1;
    }
 
-   get f() { return this.addBudgetForm.controls; }
+   public get f() { return this.addBudgetForm.controls; }
 
-   onSubmit() {
+   public onSubmit(): void {
       this.submitted = true;
 
       // stop here if form is invalid

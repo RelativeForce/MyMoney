@@ -5,18 +5,18 @@ import { AuthenticationService } from './authentication.service';
 
 @Component({ selector: 'mymoney-root', templateUrl: 'app.component.html' })
 export class AppComponent {
-   isLoggedIn: Boolean;
+   public isLoggedIn: Boolean;
 
    constructor(
-      private router: Router,
-      private authenticationService: AuthenticationService
+      private readonly router: Router,
+      private readonly authenticationService: AuthenticationService
    ) {
       this.authenticationService.currentUser.subscribe(
          (x) => (this.isLoggedIn = this.authenticationService.isLoggedIn)
       );
    }
 
-   logout() {
+   public logout(): void {
       this.authenticationService.logout();
       this.router.navigate(['/login']);
    }

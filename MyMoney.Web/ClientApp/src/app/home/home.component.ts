@@ -9,8 +9,8 @@ import { AuthenticationService } from '../authentication.service';
 export class HomeComponent {
 
    constructor(
-      private authenticationService: AuthenticationService,
-      private router: Router
+      private readonly authenticationService: AuthenticationService,
+      private readonly router: Router
    ) {
       // redirect to home if already logged in
       if (!this.authenticationService.isLoggedIn) {

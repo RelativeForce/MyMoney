@@ -14,17 +14,17 @@ import { DeleteResponse } from '../models/delete.response';
 })
 export class TransactionsComponent implements OnInit {
 
-   transactions: Array<TransactionViewModel> = [];
-   dateRange: DateRangeModel;
-   dateRangeForm: FormGroup;
-   loading: Boolean = false;
-   submitted: Boolean = false;
+   public transactions: Array<TransactionViewModel> = [];
+   public dateRange: DateRangeModel;
+   public dateRangeForm: FormGroup;
+   public loading: Boolean = false;
+   public submitted: Boolean = false;
 
    constructor(
-      private formBuilder: FormBuilder,
-      private authenticationService: AuthenticationService,
-      private router: Router,
-      private http: HttpClient
+      private readonly formBuilder: FormBuilder,
+      private readonly authenticationService: AuthenticationService,
+      private readonly router: Router,
+      private readonly http: HttpClient
    ) {
       if (!this.authenticationService.isLoggedIn) {
          this.router.navigate(['/login']);
@@ -33,7 +33,7 @@ export class TransactionsComponent implements OnInit {
       this.dateRange = this.defaultDateRange;
    }
 
-   get defaultDateRange(): DateRangeModel {
+   public get defaultDateRange(): DateRangeModel {
 
       const end: Date = new Date();
 
@@ -43,7 +43,7 @@ export class TransactionsComponent implements OnInit {
       return { end, start };
    }
 
-   ngOnInit() {
+   public ngOnInit(): void {
       this.dateRangeForm = this.formBuilder.group({
          start: [this.start, Validators.required],
          end: [this.end, Validators.required]
@@ -52,7 +52,7 @@ export class TransactionsComponent implements OnInit {
       this.fetchTransactions();
    }
 
-   formatDate(date: Date): string {
+   private formatDate(date: Date): string {
 
       const parsedDate = new Date(date);
 
@@ -67,17 +67,17 @@ export class TransactionsComponent implements OnInit {
       return parsedDate.getFullYear() + '-' + monthStr + '-' + dayStr;
    }
 
-   get start(): string {
+   public get start(): string {
       return this.formatDate(this.dateRange.start);
    }
 
-   get end(): string {
+   public get end(): string {
       return this.formatDate(this.dateRange.end);
    }
 
-   get f() { return this.dateRangeForm.controls; }
+   public get f() { return this.dateRangeForm.controls; }
 
-   delete(id: Number) {
+   public delete(id: Number): void {
 
       this.loading = true;
 
@@ -97,7 +97,7 @@ export class TransactionsComponent implements OnInit {
             });
    }
 
-   onSubmit() {
+   public onSubmit(): void {
       this.submitted = true;
 
       if (this.dateRangeForm.invalid) {
@@ -111,7 +111,7 @@ export class TransactionsComponent implements OnInit {
       this.fetchTransactions();
    }
 
-   fetchTransactions(): void {
+   public fetchTransactions(): void {
       this.http
          .post<TransactionListResponse>(`/Transaction/List`, this.dateRange)
          .subscribe(response => {

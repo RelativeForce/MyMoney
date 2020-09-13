@@ -12,15 +12,15 @@ import { LoginResponse } from '../models/login.response';
    templateUrl: 'register.component.html'
 })
 export class RegisterComponent implements OnInit {
-   registerForm: FormGroup;
-   loading = false;
-   submitted = false;
+   public registerForm: FormGroup;
+   public loading = false;
+   public submitted = false;
 
    constructor(
-      private formBuilder: FormBuilder,
-      private router: Router,
-      private authenticationService: AuthenticationService,
-      private http: HttpClient
+      private readonly formBuilder: FormBuilder,
+      private readonly router: Router,
+      private readonly authenticationService: AuthenticationService,
+      private readonly http: HttpClient
    ) {
       // redirect to home if already logged in
       if (this.authenticationService.isLoggedIn) {
@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
       }
    }
 
-   ngOnInit() {
+   public ngOnInit(): void {
       this.registerForm = this.formBuilder.group({
          email: ['', Validators.required],
          fullName: ['', Validators.required],
@@ -39,9 +39,9 @@ export class RegisterComponent implements OnInit {
 
 
    // convenience getter for easy access to form fields
-   get f() { return this.registerForm.controls; }
+   public get f() { return this.registerForm.controls; }
 
-   onSubmit() {
+   public onSubmit(): void {
       this.submitted = true;
 
       // stop here if form is invalid

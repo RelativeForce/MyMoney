@@ -13,19 +13,19 @@ import { BudgetListResponse } from '../../models/budget.list.response';
 })
 export class EditTransactionsComponent implements OnInit {
 
-   editTransactionForm: FormGroup;
-   selectedBudgets: Set<Number> = new Set();
-   budgets: Array<BudgetViewModel> = [];
-   id: Number;
-   loading = false;
-   submitted = false;
+   public editTransactionForm: FormGroup;
+   public selectedBudgets: Set<Number> = new Set();
+   public budgets: Array<BudgetViewModel> = [];
+   public id: Number;
+   public loading = false;
+   public submitted = false;
 
    constructor(
-      private formBuilder: FormBuilder,
-      private authenticationService: AuthenticationService,
-      private router: Router,
-      private activatedRoute: ActivatedRoute,
-      private http: HttpClient
+      private readonly formBuilder: FormBuilder,
+      private readonly authenticationService: AuthenticationService,
+      private readonly router: Router,
+      private readonly activatedRoute: ActivatedRoute,
+      private readonly http: HttpClient
    ) {
 
       if (!this.authenticationService.isLoggedIn) {
@@ -33,7 +33,7 @@ export class EditTransactionsComponent implements OnInit {
       }
    }
 
-   ngOnInit() {
+   public ngOnInit(): void {
 
       this.activatedRoute.params.subscribe(params => {
          const idStr = params['id'];
@@ -64,9 +64,9 @@ export class EditTransactionsComponent implements OnInit {
       });
    }
 
-   get f() { return this.editTransactionForm.controls; }
+   public get f() { return this.editTransactionForm.controls; }
 
-   onCheckboxChange(e, id) {
+   public onCheckboxChange(e, id: number): void {
       if (e.target.checked) {
          this.selectedBudgets.add(id);
       } else {
@@ -74,14 +74,14 @@ export class EditTransactionsComponent implements OnInit {
       }
    }
 
-   onDateChange(e) {
+   public onDateChange(e): void {
 
       this.selectedBudgets.clear();
 
       this.fetchBudgets();
    }
 
-   toInputDateString(text): string {
+   public toInputDateString(text: string): string {
       const date = new Date(text);
 
       const month = date.getMonth() + 1;
@@ -95,7 +95,7 @@ export class EditTransactionsComponent implements OnInit {
       return date.getFullYear() + '-' + monthStr + '-' + dayStr;
    }
 
-   fetchBudgets(): void {
+   public fetchBudgets(): void {
 
       this.loading = false;
 
@@ -120,7 +120,7 @@ export class EditTransactionsComponent implements OnInit {
             });
    }
 
-   onSubmit() {
+   public onSubmit(): void {
       this.submitted = true;
 
       // stop here if form is invalid
