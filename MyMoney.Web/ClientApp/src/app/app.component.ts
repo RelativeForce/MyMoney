@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthenticationService } from './authentication.service';
 
-@Component({ selector: 'app-root', templateUrl: 'app.component.html' })
+@Component({ selector: 'mymoney-root', templateUrl: 'app.component.html' })
 export class AppComponent {
    isLoggedIn: Boolean;
 

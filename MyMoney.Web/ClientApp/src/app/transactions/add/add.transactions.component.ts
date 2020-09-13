@@ -5,12 +5,10 @@ import { HttpClient } from '@angular/common/http';
 
 import { AuthenticationService } from '../../authentication.service';
 import { TransactionModel } from '../../models/transaction.model';
-import { BudgetModel } from '../../models/budget.model';
 import { BudgetViewModel } from '../../models/budget.view.model';
 import { BudgetListResponse } from '../../models/budget.list.response';
 
 @Component({
-   selector: 'add-transactions-component',
    templateUrl: './add.transactions.component.html'
 })
 export class AddTransactionsComponent implements OnInit {

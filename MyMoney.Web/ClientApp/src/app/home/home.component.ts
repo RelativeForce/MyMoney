@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 
 @Component({
-   selector: 'app-home',
    templateUrl: './home.component.html',
 })
 export class HomeComponent {

@@ -11,7 +11,6 @@ import { BudgetListResponse } from '../models/budget.list.response';
 import { DeleteResponse } from '../models/delete.response';
 
 @Component({
-   selector: 'budgets-component',
    templateUrl: './budgets.component.html'
 })
 export class BudgetsComponent implements OnInit {
@@ -64,7 +63,7 @@ export class BudgetsComponent implements OnInit {
          .subscribe(response => {
 
             if (response.success) {
-               this.budgets = this.budgets.filter(v => v.id != id);
+               this.budgets = this.budgets.filter(v => v.id !== id);
             }
 
             this.loading = false;

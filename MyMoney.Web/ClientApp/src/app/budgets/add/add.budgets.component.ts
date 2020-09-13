@@ -7,7 +7,6 @@ import { AuthenticationService } from '../../authentication.service';
 import { BudgetModel } from '../../models/budget.model';
 
 @Component({
-   selector: 'add-budgets-component',
    templateUrl: './add.budgets.component.html'
 })
 export class AddBudgetsComponent implements OnInit {

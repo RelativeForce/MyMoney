@@ -8,7 +8,9 @@ import { AuthenticationService } from '../authentication.service';
 import { RegisterRequest } from '../models/register.request';
 import { LoginResponse } from '../models/login.response';
 
-@Component({ templateUrl: 'register.component.html' })
+@Component({
+   templateUrl: 'register.component.html'
+})
 export class RegisterComponent implements OnInit {
    registerForm: FormGroup;
    loading = false;

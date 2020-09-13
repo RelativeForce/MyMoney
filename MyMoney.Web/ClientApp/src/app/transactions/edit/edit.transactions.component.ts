@@ -9,7 +9,6 @@ import { BudgetViewModel } from '../../models/budget.view.model';
 import { BudgetListResponse } from '../../models/budget.list.response';
 
 @Component({
-   selector: 'edit-transactions-component',
    templateUrl: './edit.transactions.component.html'
 })
 export class EditTransactionsComponent implements OnInit {
@@ -141,7 +140,7 @@ export class EditTransactionsComponent implements OnInit {
       this.http
          .post<TransactionModel>(`/Transaction/Update`, transaction)
          .subscribe(response => {
-            if (response.id != 0) {
+            if (response.id !== 0) {
                this.router.navigate(['/transactions']);
             }
          },

@@ -10,7 +10,6 @@ import { TransactionViewModel } from '../models/transaction.view.model';
 import { DeleteResponse } from '../models/delete.response';
 
 @Component({
-   selector: 'transactions-component',
    templateUrl: './transactions.component.html'
 })
 export class TransactionsComponent implements OnInit {
