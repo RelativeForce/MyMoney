@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
-import { AuthenticationService } from '../../../shared/services';
 import { TransactionModel, BudgetListResponse } from '../../../shared/interfaces';
 import { BudgetViewModel } from '../../../shared/classes';
 
@@ -20,14 +18,9 @@ export class AddTransactionsComponent implements OnInit {
 
    constructor(
       private readonly formBuilder: FormBuilder,
-      private readonly authenticationService: AuthenticationService,
       private readonly router: Router,
       private readonly http: HttpClient
    ) {
-
-      if (!this.authenticationService.isLoggedIn) {
-         this.router.navigate(['/login']);
-      }
    }
 
    public ngOnInit(): void {

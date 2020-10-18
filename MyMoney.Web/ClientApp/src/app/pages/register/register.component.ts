@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../shared/services';
-import { RegisterRequest, LoginResponse } from '../../shared/interfaces';
+import { RegisterRequest } from '../../shared/interfaces';
 
 @Component({
    templateUrl: 'register.component.html'
@@ -19,12 +18,7 @@ export class RegisterComponent implements OnInit {
       private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly authenticationService: AuthenticationService,
-      private readonly http: HttpClient
    ) {
-      // redirect to home if already logged in
-      if (this.authenticationService.isLoggedIn) {
-         this.router.navigate(['/']);
-      }
    }
 
    public ngOnInit(): void {
@@ -35,7 +29,6 @@ export class RegisterComponent implements OnInit {
          password: ['', [Validators.required, Validators.minLength(6)]]
       });
    }
-
 
    // convenience getter for easy access to form fields
    public get f() { return this.registerForm.controls; }
@@ -52,14 +45,14 @@ export class RegisterComponent implements OnInit {
 
       const user: RegisterRequest = this.registerForm.value;
 
-      this.http.post<LoginResponse>(`/User/Register`, user)
+      this.authenticationService.register(user)
          .pipe(first())
          .subscribe(
-            response => {
-               if (response.success) {
+            success => {
 
-                  this.authenticationService.setUser(user.email, response.token, response.validTo);
+               this.loading = false;
 
+               if (success) {
                   this.router.navigate(['/']);
                }
             },

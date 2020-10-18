@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
-import { AuthenticationService, TransactionService } from '../../shared/services';
+import { TransactionService } from '../../shared/services';
 import { DateRangeModel } from '../../shared/interfaces';
 import { TransactionViewModel } from '../../shared/classes';
 
@@ -19,14 +18,9 @@ export class TransactionsComponent implements OnInit {
 
    constructor(
       private readonly formBuilder: FormBuilder,
-      private readonly authenticationService: AuthenticationService,
       private readonly transactionService: TransactionService,
       private readonly router: Router
    ) {
-      if (!this.authenticationService.isLoggedIn) {
-         this.router.navigate(['/login']);
-      }
-
       this.dateRange = this.defaultDateRange;
    }
 

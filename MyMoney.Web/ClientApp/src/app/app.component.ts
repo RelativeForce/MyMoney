@@ -1,23 +1,17 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService } from './shared/services';
 
 @Component({ selector: 'mymoney-root', templateUrl: 'app.component.html' })
-export class AppComponent {
-   public isLoggedIn: Boolean;
+export class AppComponent implements OnInit {
 
-   constructor(
-      private readonly router: Router,
-      private readonly authenticationService: AuthenticationService
-   ) {
-      this.authenticationService.currentUser.subscribe(
-         (x) => (this.isLoggedIn = this.authenticationService.isLoggedIn)
-      );
+   public isLoggedIn: boolean;
+
+   constructor(private readonly authenticationService: AuthenticationService) {
+      this.isLoggedIn = false;
    }
 
-   public logout(): void {
-      this.authenticationService.logout();
-      this.router.navigate(['/login']);
+   ngOnInit(): void {
+      this.authenticationService.isLoggedIn().subscribe((isLoggedIn) => this.isLoggedIn = isLoggedIn);
    }
 }

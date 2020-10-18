@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
-import { AuthenticationService, TransactionService } from '../../../shared/services';
+import { TransactionService } from '../../../shared/services';
 import { TransactionModel, BudgetListResponse } from '../../../shared/interfaces';
 import { BudgetViewModel } from '../../../shared/classes';
 
@@ -21,16 +21,11 @@ export class EditTransactionsComponent implements OnInit {
 
    constructor(
       private readonly formBuilder: FormBuilder,
-      private readonly authenticationService: AuthenticationService,
       private readonly transactionService: TransactionService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
       private readonly http: HttpClient
    ) {
-
-      if (!this.authenticationService.isLoggedIn) {
-         this.router.navigate(['/login']);
-      }
    }
 
    public ngOnInit(): void {

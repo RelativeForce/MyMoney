@@ -17,14 +17,8 @@ export class LoginComponent implements OnInit {
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly authenticationService: AuthenticationService,
-      private readonly router: Router,
-   ) {
-
-      // redirect to home if already logged in
-      if (this.authenticationService.isLoggedIn) {
-         this.router.navigate(['/']);
-      }
-   }
+      private readonly router: Router
+   ) { }
 
    public ngOnInit(): void {
       this.loginForm = this.formBuilder.group({
@@ -52,9 +46,9 @@ export class LoginComponent implements OnInit {
       this.authenticationService.login(email, password)
          .pipe(first())
          .subscribe(
-            response => {
-
-               if (response.success) {
+            success => {
+               this.loading = false;
+               if (success) {
                   this.router.navigate(['/']);
                } else {
                   console.log('Failed login');

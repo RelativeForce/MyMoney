@@ -17,6 +17,9 @@ import {
    EditTransactionsComponent,
    EditBudgetsComponent,
 } from './pages';
+import { StoreModule } from '@ngrx/store';
+import { appReducer } from './shared/state/app-state';
+import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 
 @NgModule({
    declarations: [
@@ -36,6 +39,7 @@ import {
       HttpClientModule,
       FormsModule,
       ReactiveFormsModule,
+      StoreModule.forRoot(appReducer),
       RouterModule.forRoot([
          { path: 'login', component: LoginComponent },
          { path: 'register', component: RegisterComponent },
@@ -43,29 +47,38 @@ import {
             path: 'transactions',
             component: TransactionsComponent,
             pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
          },
          {
             path: 'transactions/add',
             component: AddTransactionsComponent,
             pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
          },
          {
             path: 'transactions/edit/:id',
             component: EditTransactionsComponent,
             pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
          },
          { path: 'budgets', component: BudgetsComponent, pathMatch: 'full' },
          {
             path: 'budgets/add',
             component: AddBudgetsComponent,
             pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
          },
          {
             path: 'budgets/edit/:id',
             component: EditBudgetsComponent,
             pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
          },
-         { path: '', component: HomeComponent, pathMatch: 'full' },
+         {
+            path: '', component: HomeComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard]
+         },
          // otherwise redirect to home
          { path: '**', redirectTo: '' },
       ]),

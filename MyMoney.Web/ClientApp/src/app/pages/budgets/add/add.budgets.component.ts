@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
-import { AuthenticationService } from '../../../shared/services';
 import { BudgetModel } from '../../../shared/interfaces';
 
 @Component({
@@ -22,15 +20,9 @@ export class AddBudgetsComponent implements OnInit {
 
    constructor(
       private readonly formBuilder: FormBuilder,
-      private readonly authenticationService: AuthenticationService,
       private readonly router: Router,
       private readonly http: HttpClient
    ) {
-
-      if (!this.authenticationService.isLoggedIn) {
-         this.router.navigate(['/login']);
-      }
-
       this.defaultMonth();
    }
 

@@ -1,72 +1,49 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { User } from '../interfaces/user.interface';
 import { LoginResponse } from '../interfaces/login-response.interface';
+import { Store } from '@ngrx/store';
+import { IAppState } from '../state/app-state';
+import { ClearSessionAction, StartSessionAction } from '../state/actions';
+import { RegisterRequest } from '../interfaces';
+import { selectCurrentSession } from '../state/selectors/session.selector';
+import { ISessionModel } from '../state/types';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-   private currentUserSubject: BehaviorSubject<User | null>;
-   public currentUser: Observable<User | null>;
+   constructor(private readonly http: HttpClient, private readonly store: Store<IAppState>) { }
 
-   constructor(private readonly http: HttpClient) {
-      this.currentUserSubject = new BehaviorSubject<User>(
-         JSON.parse(localStorage.getItem('currentUser'))
-      );
-      this.currentUser = this.currentUserSubject.asObservable();
-
-      if (!this.isLoggedIn) {
-         this.logout();
-      }
-   }
-
-   public get currentUserValue(): User {
-      return this.currentUserSubject.value;
-   }
-
-   public login(email: string, password: string): Observable<LoginResponse> {
+   public login(email: string, password: string): Observable<boolean> {
       return this.http
          .post<LoginResponse>(`/User/Login`, { email, password })
-         .pipe(
-            map((response) => {
-               if (response.success) {
-                  this.setUser(email, response.token, response.validTo);
-               }
+         .pipe(map((response) => {
+            if (response.success) {
+               this.store.dispatch(new StartSessionAction(response.token, response.validTo));
+            }
 
-               return response;
-            })
+            return response.success;
+         })
          );
    }
 
-   public get isLoggedIn(): Boolean {
-      if (!this.currentUserValue) {
-         return false;
-      }
+   public register(newUserData: RegisterRequest): Observable<boolean> {
+      return this.http
+         .post<LoginResponse>(`/User/Register`, newUserData)
+         .pipe(map(response => {
+            if (response.success) {
+               this.store.dispatch(new StartSessionAction(response.token, response.validTo));
+            }
 
-      const now = new Date(Date.now()).getTime();
-      const validTo = Date.parse(this.currentUserValue.validTo);
-
-      if (validTo > now) {
-         return true;
-      }
-
-      this.logout();
-
-      return false;
+            return response.success;
+         }));
    }
 
-   public setUser(email: string, token: string, validTo: string): void {
-      const user: User = { email, token, validTo };
-
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      this.currentUserSubject.next(user);
+   public isLoggedIn(): Observable<boolean> {
+      return this.store.select(selectCurrentSession).pipe(map((s: ISessionModel | null) => s !== null));
    }
 
    public logout(): void {
-      // remove user from local storage and set current user to null
-      localStorage.removeItem('currentUser');
-      this.currentUserSubject.next(null);
+      this.store.dispatch(new ClearSessionAction());
    }
 }
