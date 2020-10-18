@@ -8,7 +8,7 @@ import { LoginResponse } from '../interfaces/login-response.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  private currentUserSubject: BehaviorSubject<User | null>;
+   private currentUserSubject: BehaviorSubject<User | null>;
    public currentUser: Observable<User | null>;
 
    constructor(private readonly http: HttpClient) {
