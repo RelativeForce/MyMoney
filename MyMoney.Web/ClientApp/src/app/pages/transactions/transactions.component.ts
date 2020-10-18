@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
-import { AuthenticationService } from '../../shared/services';
-import { DateRangeModel, TransactionListResponse, DeleteResponse } from '../../shared/interfaces';
+import { AuthenticationService, TransactionService } from '../../shared/services';
+import { DateRangeModel } from '../../shared/interfaces';
 import { TransactionViewModel } from '../../shared/classes';
 
 @Component({
@@ -21,8 +20,8 @@ export class TransactionsComponent implements OnInit {
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly authenticationService: AuthenticationService,
-      private readonly router: Router,
-      private readonly http: HttpClient
+      private readonly transactionService: TransactionService,
+      private readonly router: Router
    ) {
       if (!this.authenticationService.isLoggedIn) {
          this.router.navigate(['/login']);
@@ -75,15 +74,15 @@ export class TransactionsComponent implements OnInit {
 
    public get f() { return this.dateRangeForm.controls; }
 
-   public delete(id: Number): void {
+   public delete(id: number): void {
 
       this.loading = true;
 
-      this.http
-         .post<DeleteResponse>(`/Transaction/Delete`, { id })
-         .subscribe(response => {
+      this.transactionService
+         .deleteTransaction(id)
+         .subscribe((isDeleted: boolean) => {
 
-            if (response.success) {
+            if (isDeleted) {
                this.transactions = this.transactions.filter(v => v.id !== id);
             }
 
@@ -109,12 +108,12 @@ export class TransactionsComponent implements OnInit {
       this.fetchTransactions();
    }
 
-   public fetchTransactions(): void {
-      this.http
-         .post<TransactionListResponse>(`/Transaction/List`, this.dateRange)
-         .subscribe(response => {
+   private fetchTransactions(): void {
+      this.transactionService
+         .listTransactions(this.dateRange)
+         .subscribe(transactions => {
 
-            this.transactions = response.transactions.map(t => new TransactionViewModel(t));
+            this.transactions = transactions;
             this.loading = false;
          },
             error => {

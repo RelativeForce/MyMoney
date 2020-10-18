@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
-import { AuthenticationService } from '../../../shared/services';
+import { AuthenticationService, TransactionService } from '../../../shared/services';
 import { TransactionModel, BudgetListResponse } from '../../../shared/interfaces';
 import { BudgetViewModel } from '../../../shared/classes';
 
@@ -15,13 +15,14 @@ export class EditTransactionsComponent implements OnInit {
    public editTransactionForm: FormGroup;
    public selectedBudgets: Set<Number> = new Set();
    public budgets: Array<BudgetViewModel> = [];
-   public id: Number;
+   public id: number;
    public loading = false;
    public submitted = false;
 
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly authenticationService: AuthenticationService,
+      private readonly transactionService: TransactionService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
       private readonly http: HttpClient
@@ -43,9 +44,9 @@ export class EditTransactionsComponent implements OnInit {
 
          this.id = Number.parseInt(idStr, 10);
 
-         this.http
-            .post<TransactionModel>(`/Transaction/Find`, { id: this.id })
-            .subscribe(response => {
+         this.transactionService
+            .findTransaction(this.id)
+            .subscribe((response: TransactionModel) => {
 
                response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
 
@@ -119,6 +120,14 @@ export class EditTransactionsComponent implements OnInit {
             });
    }
 
+   private get asTransactionModel(): TransactionModel {
+      const date = this.f.date.value;
+      const description = this.f.description.value;
+      const amount = this.f.amount.value;
+
+      return { date, description, amount, id: this.id, budgetIds: Array.from(this.selectedBudgets) };
+   }
+
    public onSubmit(): void {
       this.submitted = true;
 
@@ -129,17 +138,10 @@ export class EditTransactionsComponent implements OnInit {
 
       this.loading = true;
 
-      // Login here
-      const date = this.f.date.value;
-      const description = this.f.description.value;
-      const amount = this.f.amount.value;
-
-      const transaction: TransactionModel = { date, description, amount, id: this.id, budgetIds: Array.from(this.selectedBudgets) };
-
-      this.http
-         .post<TransactionModel>(`/Transaction/Update`, transaction)
-         .subscribe(response => {
-            if (response.id !== 0) {
+      this.transactionService
+         .editTransaction(this.asTransactionModel)
+         .subscribe(success => {
+            if (success) {
                this.router.navigate(['/transactions']);
             }
          },

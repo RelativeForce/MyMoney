@@ -62,7 +62,7 @@ namespace MyMoney.Core.Services
             return user.Budgets.Where(b => monthId == b.MonthId).ToList();
         }
 
-        public bool Update(long budgetId, string name, decimal amount, string notes)
+        public bool Update(long budgetId, string monthId, string name, decimal amount, string notes)
         {
             if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(notes))
                 return false;
@@ -76,6 +76,7 @@ namespace MyMoney.Core.Services
             budget.Amount = amount;
             budget.Notes = notes;
             budget.Name = name;
+            budget.MonthId = monthId;
 
             return _repository.Update(budget);
         }

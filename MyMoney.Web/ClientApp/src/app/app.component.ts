@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from './shared/services/authentication-service.service';
+import { AuthenticationService } from './shared/services';
 
 @Component({ selector: 'mymoney-root', templateUrl: 'app.component.html' })
 export class AppComponent {

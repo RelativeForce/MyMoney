@@ -10,6 +10,6 @@ namespace MyMoney.Core.Interfaces.Service
         bool Delete(long budgetId);
         IBudget Find(long budgetId);
         List<IBudget> List(string monthId);
-        bool Update(long budgetId, string name, decimal amount, string notes);
+        bool Update(long budgetId, string monthId, string name, decimal amount, string notes);
     }
 }

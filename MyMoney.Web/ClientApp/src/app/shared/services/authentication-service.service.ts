@@ -8,8 +8,8 @@ import { LoginResponse } from '../interfaces/login-response.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-   public currentUserSubject: BehaviorSubject<User>;
-   public currentUser: Observable<User>;
+  private currentUserSubject: BehaviorSubject<User | null>;
+   public currentUser: Observable<User | null>;
 
    constructor(private readonly http: HttpClient) {
       this.currentUserSubject = new BehaviorSubject<User>(
