@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { BudgetApi, IDeleteResponseDto, IBudgetListResponseDto, UpdateResponse } from '../api';
+import { BudgetApi, IDeleteResponseDto, IBudgetListResponseDto, IUpdateResponseDto } from '../api';
 import {
    DeleteBudgetAction,
    RefreshBudgetsAction,
@@ -65,7 +65,7 @@ export class BudgetService {
    public editBudget(budget: IBudgetModel): Observable<boolean> {
       return this.budgetApi
          .update(budget)
-         .pipe(map((status: UpdateResponse) => {
+         .pipe(map((status: IUpdateResponseDto) => {
             if (status.success) {
                this.store.dispatch(new UpdateBudgetAction(budget));
             }

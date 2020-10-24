@@ -1,4 +1,4 @@
-export interface UpdateResponse {
+export interface IUpdateResponseDto {
    success: boolean;
    error: string;
 }

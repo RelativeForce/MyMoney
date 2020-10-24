@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { TransactionApi, IDeleteResponseDto, ITransactionListResponseDto, UpdateResponse } from '../api';
+import { TransactionApi, IDeleteResponseDto, ITransactionListResponseDto, IUpdateResponseDto } from '../api';
 import { DeleteTransactionAction, RefreshTransactionsAction, SetTransactionsAction, UpdateDataRangeAction, UpdateTransactionAction } from '../state/actions';
 import { IAppState } from '../state/app-state';
 import { selectTransactionsSearchParameters, selectTransaction } from '../state/selectors/transaction.selector';
@@ -50,7 +50,7 @@ export class TransactionService {
    public editTransaction(transaction: ITransactionModel): Observable<boolean> {
       return this.transactionApi
          .update(transaction)
-         .pipe(map((status: UpdateResponse) => {
+         .pipe(map((status: IUpdateResponseDto) => {
             if (status.success) {
                this.store.dispatch(new UpdateTransactionAction(transaction));
             }
