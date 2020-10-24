@@ -27,7 +27,7 @@ export class TransactionService {
 
    public deleteTransaction(transactionId: number): void {
       this.transactionApi
-         .delete(transactionId)
+         .delete({ id: transactionId })
          .subscribe((status: DeleteResponse) => {
             if (status.success) {
                this.store.dispatch(new DeleteTransactionAction(transactionId));
@@ -65,7 +65,7 @@ export class TransactionService {
             return of(transaction);
          }
 
-         return this.transactionApi.find(transactionId);
+         return this.transactionApi.find({ id: transactionId });
       }), concatAll());
    }
 

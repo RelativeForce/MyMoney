@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { DeleteResponse, TransactionListResponse, UpdateResponse } from '../interfaces';
+import { DeleteResponse, IdRequest, TransactionListResponse, UpdateResponse } from '../interfaces';
 import { APIService } from '../services';
 import { IDateRangeModel, ITransactionModel } from '../state/types';
 
@@ -16,9 +16,9 @@ export class TransactionApi {
          .pipe(first());
    }
 
-   public delete(transactionId: number): Observable<DeleteResponse> {
+   public delete(id: IdRequest): Observable<DeleteResponse> {
       return this.api
-         .post<DeleteResponse>('/Transaction/Delete', { id: transactionId })
+         .post<DeleteResponse>('/Transaction/Delete', id)
          .pipe(first());
    }
 
@@ -34,9 +34,9 @@ export class TransactionApi {
          .pipe(first());
    }
 
-   public find(transactionId: number): Observable<ITransactionModel> {
+   public find(id: IdRequest): Observable<ITransactionModel> {
       return this.api
-         .post<ITransactionModel>('/Transaction/Find', { id: transactionId })
+         .post<ITransactionModel>('/Transaction/Find', id)
          .pipe(first());
    }
 }
