@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { concatAll, first, map } from 'rxjs/operators';
+import { concatAll, map } from 'rxjs/operators';
+import { BudgetApi } from '../api/budget.api';
 import { DeleteResponse, BudgetListResponse, UpdateResponse } from '../interfaces';
 import {
    DeleteBudgetAction,
@@ -13,13 +14,12 @@ import {
 import { IAppState } from '../state/app-state';
 import { selectBudgetsSearchParameters, selectBudget } from '../state/selectors/budget.selector';
 import { IBudgetModel, IBudgetsSearch } from '../state/types';
-import { APIService } from './api-service.service';
 
 
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
 
-   constructor(private readonly api: APIService, private readonly store: Store<IAppState>) {
+   constructor(private readonly api: BudgetApi, private readonly store: Store<IAppState>) {
       this.store.select(selectBudgetsSearchParameters).subscribe((search: IBudgetsSearch) => {
          if (!search.refresh) {
             return;
@@ -33,15 +33,12 @@ export class BudgetService {
    public getBudgetsForMonth(month: number, year: number) {
       const monthId = this.toMonthId(month, year);
 
-      return this.api
-         .post<BudgetListResponse>(`/Budget/List`, { monthId })
-         .pipe(first());
+      return this.api.list({ monthId });
    }
 
    public deleteBudget(budgetId: number): void {
       this.api
-         .post<DeleteResponse>(`/Budget/Delete`, { id: budgetId })
-         .pipe(first())
+         .delete({ id: budgetId })
          .subscribe((status: DeleteResponse) => {
             if (status.success) {
                this.store.dispatch(new DeleteBudgetAction(budgetId));
@@ -59,8 +56,8 @@ export class BudgetService {
 
    public addBudget(budget: IBudgetModel): Observable<boolean> {
       return this.api
-         .post<IBudgetModel>(`/Budget/Add`, budget)
-         .pipe(first(), map((t) => {
+         .add(budget)
+         .pipe(map(() => {
             this.store.dispatch(new RefreshBudgetsAction());
             return true;
          }));
@@ -68,8 +65,8 @@ export class BudgetService {
 
    public editBudget(budget: IBudgetModel): Observable<boolean> {
       return this.api
-         .post<UpdateResponse>(`/Budget/Update`, budget)
-         .pipe(first(), map((status: UpdateResponse) => {
+         .update(budget)
+         .pipe(map((status: UpdateResponse) => {
             if (status.success) {
                this.store.dispatch(new UpdateBudgetAction(budget));
             }
@@ -83,7 +80,7 @@ export class BudgetService {
             return of(budget);
          }
 
-         return this.api.post<IBudgetModel>(`/Budget/Find`, { id: budgetId }).pipe(first());
+         return this.api.find({ id: budgetId });
       }), concatAll());
    }
 
