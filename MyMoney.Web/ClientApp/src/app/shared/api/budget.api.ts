@@ -12,31 +12,31 @@ export class BudgetApi {
 
    public list(request: BudgetRequest): Observable<BudgetListResponse> {
       return this.api
-         .post<BudgetListResponse>('/Budget/List', request)
+         .post<BudgetRequest, BudgetListResponse>('/Budget/List', request)
          .pipe(first());
    }
 
    public delete(id: IdRequest): Observable<DeleteResponse> {
       return this.api
-         .post<DeleteResponse>('/Budget/Delete', id)
+         .post<IdRequest, DeleteResponse>('/Budget/Delete', id)
          .pipe(first());
    }
 
    public add(budget: IBudgetModel): Observable<IBudgetModel> {
       return this.api
-         .post<IBudgetModel>('/Budget/Add', budget)
+         .post<IBudgetModel, IBudgetModel>('/Budget/Add', budget)
          .pipe(first());
    }
 
    public update(budget: IBudgetModel): Observable<UpdateResponse> {
       return this.api
-         .post<UpdateResponse>('/Budget/Update', budget)
+         .post<IBudgetModel, UpdateResponse>('/Budget/Update', budget)
          .pipe(first());
    }
 
    public find(id: IdRequest): Observable<IBudgetModel> {
       return this.api
-         .post<IBudgetModel>('/Budget/Find', id)
+         .post<IdRequest, IBudgetModel>('/Budget/Find', id)
          .pipe(first());
    }
 }

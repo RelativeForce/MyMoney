@@ -12,31 +12,31 @@ export class TransactionApi {
 
    public list(dateRange: IDateRangeModel): Observable<TransactionListResponse> {
       return this.api
-         .post<TransactionListResponse>('/Transaction/List', dateRange)
+         .post<IDateRangeModel, TransactionListResponse>('/Transaction/List', dateRange)
          .pipe(first());
    }
 
    public delete(id: IdRequest): Observable<DeleteResponse> {
       return this.api
-         .post<DeleteResponse>('/Transaction/Delete', id)
+         .post<IdRequest, DeleteResponse>('/Transaction/Delete', id)
          .pipe(first());
    }
 
    public add(transaction: ITransactionModel): Observable<ITransactionModel> {
       return this.api
-         .post<ITransactionModel>('/Transaction/Add', transaction)
+         .post<ITransactionModel, ITransactionModel>('/Transaction/Add', transaction)
          .pipe(first());
    }
 
    public update(transaction: ITransactionModel): Observable<UpdateResponse> {
       return this.api
-         .post<UpdateResponse>('/Transaction/Update', transaction)
+         .post<ITransactionModel, UpdateResponse>('/Transaction/Update', transaction)
          .pipe(first());
    }
 
    public find(id: IdRequest): Observable<ITransactionModel> {
       return this.api
-         .post<ITransactionModel>('/Transaction/Find', id)
+         .post<IdRequest, ITransactionModel>('/Transaction/Find', id)
          .pipe(first());
    }
 }

@@ -8,7 +8,7 @@ export class APIService {
 
    constructor(private readonly http: HttpClient) { }
 
-   public post<T>(url: string, payload: any): Observable<T> {
-      return this.http.post<T>(url, payload);
+   public post<Req, Res>(url: string, payload: Req): Observable<Res> {
+      return this.http.post<Res>(url, payload);
    }
 }
