@@ -25,8 +25,8 @@ export class BudgetsComponent implements OnInit {
    public ngOnInit(): void {
       this.store
          .select(selectBudgets)
-         .subscribe((transactions) => {
-            this.budgets = transactions.map(b => new BudgetViewModel(b));
+         .subscribe((budgets) => {
+            this.budgets = budgets.map(b => new BudgetViewModel(b));
             this.loading = false;
          });
 
