@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BudgetViewModel } from '../../shared/classes';
-import { BudgetService } from 'src/app/shared/services/budget-service.service';
+import { BudgetService } from 'src/app/shared/services';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/shared/state/app-state';
 import { selectBudgets, selectBudgetsSearchParameters } from 'src/app/shared/state/selectors/budget.selector';

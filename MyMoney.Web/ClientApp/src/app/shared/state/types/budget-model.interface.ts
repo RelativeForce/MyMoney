@@ -1,8 +1,8 @@
 export interface IBudgetModel {
-   id: Number;
-   amount: Number;
+   id: number;
+   amount: number;
    notes: string;
    monthId: string;
    name: string;
-   remaining: Number;
+   remaining: number;
 }

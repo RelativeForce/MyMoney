@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BudgetService } from 'src/app/shared/services/budget-service.service';
+import { BudgetService } from 'src/app/shared/services';
 import { IBudgetModel } from 'src/app/shared/state/types';
 
 @Component({
