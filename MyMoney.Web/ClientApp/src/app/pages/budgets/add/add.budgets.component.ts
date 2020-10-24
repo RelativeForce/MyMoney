@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { BudgetModel } from '../../../shared/interfaces';
+import { BudgetService } from 'src/app/shared/services/budget-service.service';
+import { IBudgetModel } from 'src/app/shared/state/types';
 
 @Component({
    templateUrl: './add.budgets.component.html'
@@ -12,36 +12,27 @@ export class AddBudgetsComponent implements OnInit {
    public addBudgetForm: FormGroup;
    public loading = false;
    public submitted = false;
-   public year: Number;
-   public month: Number;
-   public name: string;
-   public notes: string;
-   public amount: Number;
 
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly router: Router,
-      private readonly http: HttpClient
-   ) {
-      this.defaultMonth();
-   }
+      private readonly budgetService: BudgetService,
+   ) { }
 
    public ngOnInit(): void {
-      this.addBudgetForm = this.formBuilder.group({
-         year: [this.year, Validators.required],
-         month: [this.month, Validators.required],
-         amount: [this.amount, Validators.required],
-         name: [this.name, Validators.required],
-         notes: [this.notes, Validators.required]
-      });
-   }
-
-   private defaultMonth(): void {
 
       const today = new Date();
 
-      this.year = today.getFullYear();
-      this.month = today.getMonth() + 1;
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+
+      this.addBudgetForm = this.formBuilder.group({
+         year: [year, Validators.required],
+         month: [month, Validators.required],
+         amount: ['', Validators.required],
+         name: ['', Validators.required],
+         notes: ['', Validators.required]
+      });
    }
 
    public get f() { return this.addBudgetForm.controls; }
@@ -56,33 +47,31 @@ export class AddBudgetsComponent implements OnInit {
 
       this.loading = true;
 
-      this.year = this.f.year.value;
-      this.month = this.f.month.value;
-      this.amount = this.f.amount.value;
-      this.name = this.f.name.value;
-      this.notes = this.f.notes.value;
+      const year = this.f.year.value;
+      const month = this.f.month.value;
+      const amount = this.f.amount.value;
+      const name = this.f.name.value;
+      const notes = this.f.notes.value;
 
-      const monthId: string = '' + this.year + (this.month < 10 ? '0' + this.month : this.month);
+      const monthId: string = this.budgetService.toMonthId(month, year);
 
-      const budget: BudgetModel = {
+      const budget: IBudgetModel = {
          monthId,
-         name: this.name,
-         amount: this.amount,
-         remaining: this.amount,
-         notes: this.notes,
+         name: name,
+         amount: amount,
+         remaining: amount,
+         notes: notes,
          id: 0
       };
 
-      this.http
-         .post<BudgetModel>(`/Budget/Add`, budget)
-         .subscribe(response => {
-            if (response.id !== 0) {
-               this.router.navigate(['/budgets']);
-            }
-         },
-            error => {
-               // Show error
-               this.loading = false;
-            });
+      this.budgetService.addBudget(budget).subscribe((success: boolean) => {
+         if (success) {
+            this.router.navigate(['/budgets']);
+         }
+      },
+         error => {
+            // Show error
+            this.loading = false;
+         });
    }
 }

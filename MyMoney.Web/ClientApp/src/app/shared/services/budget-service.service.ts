@@ -38,13 +38,17 @@ export class BudgetService {
             return;
          }
 
-         const monthId = `${search.year}${search.month < 10 ? '0' + search.month : search.month}`;
+         const monthId = this.toMonthId(search.month, search.year);
 
          this.api
             .post<BudgetListResponse>(`/Budget/List`, { monthId })
             .pipe(first())
             .subscribe((response: BudgetListResponse) => this.store.dispatch(new SetBudgetsAction(response.budgets)));
       });
+   }
+
+   public toMonthId(month: number, year: number): string {
+      return `${year}${month < 10 ? '0' + month : month}`;
    }
 
    public updateMonthId(month: number, year: number): void {

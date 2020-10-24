@@ -20,8 +20,7 @@ export class BudgetsComponent implements OnInit {
       private readonly formBuilder: FormBuilder,
       private readonly budgetService: BudgetService,
       private readonly store: Store<IAppState>
-   ) {
-   }
+   ) { }
 
    public ngOnInit(): void {
       this.budgetService.subscribeToSearchParameters();
