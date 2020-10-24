@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { DeleteResponse, IdRequest, TransactionListResponse, UpdateResponse } from './dtos';
-import { APIService } from '../services';
+import { HttpHelper } from './http-helper.class';
 import { IDateRangeModel, ITransactionModel } from '../state/types';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionApi {
 
-   constructor(private readonly api: APIService) { }
+   constructor(private readonly api: HttpHelper) { }
 
    public list(dateRange: IDateRangeModel): Observable<TransactionListResponse> {
       return this.api

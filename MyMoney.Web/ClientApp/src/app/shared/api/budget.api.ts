@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { BudgetListResponse, BudgetRequest, DeleteResponse, IdRequest, UpdateResponse } from './dtos';
-import { APIService } from '../services';
+import { HttpHelper } from './http-helper.class';
 import { IBudgetModel } from '../state/types';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetApi {
 
-   constructor(private readonly api: APIService) { }
+   constructor(private readonly api: HttpHelper) { }
 
    public list(request: BudgetRequest): Observable<BudgetListResponse> {
       return this.api

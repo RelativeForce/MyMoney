@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 
 @Injectable({ providedIn: 'root' })
-export class APIService {
+export class HttpHelper {
 
    constructor(private readonly http: HttpClient) { }
 
