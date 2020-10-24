@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { DeleteResponse, IdRequest, TransactionListResponse, UpdateResponse } from '../interfaces';
+import { DeleteResponse, IdRequest, TransactionListResponse, UpdateResponse } from './dtos';
 import { APIService } from '../services';
 import { IDateRangeModel, ITransactionModel } from '../state/types';
 

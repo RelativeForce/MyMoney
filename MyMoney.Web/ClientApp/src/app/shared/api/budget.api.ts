@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { BudgetListResponse, BudgetRequest, DeleteResponse, IdRequest, UpdateResponse } from '../interfaces';
+import { BudgetListResponse, BudgetRequest, DeleteResponse, IdRequest, UpdateResponse } from './dtos';
 import { APIService } from '../services';
 import { IBudgetModel } from '../state/types';
 
