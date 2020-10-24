@@ -38,15 +38,17 @@ export class BudgetService {
             return;
          }
 
+         const monthId = `${search.year}${search.month < 10 ? '0' + search.month : search.month}`;
+
          this.api
-            .post<BudgetListResponse>(`/Budget/List`, search.monthId)
+            .post<BudgetListResponse>(`/Budget/List`, { monthId })
             .pipe(first())
             .subscribe((response: BudgetListResponse) => this.store.dispatch(new SetBudgetsAction(response.budgets)));
       });
    }
 
    public updateMonthId(month: number, year: number): void {
-      this.store.dispatch(new UpdateSearchMonthIdAction(`${year}${month < 10 ? '0' + month : month}`));
+      this.store.dispatch(new UpdateSearchMonthIdAction(month, year));
    }
 
    public addBudget(budget: IBudgetModel): Observable<boolean> {

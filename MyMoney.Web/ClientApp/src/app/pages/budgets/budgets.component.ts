@@ -1,65 +1,56 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { BudgetViewModel } from '../../shared/classes';
-import { BudgetListResponse, DeleteResponse } from '../../shared/interfaces';
+import { BudgetService } from 'src/app/shared/services/budget-service.service';
+import { Store } from '@ngrx/store';
+import { IAppState } from 'src/app/shared/state/app-state';
+import { selectBudgets, selectBudgetsSearchParameters } from 'src/app/shared/state/selectors/budget.selector';
 
 @Component({
    templateUrl: './budgets.component.html'
 })
 export class BudgetsComponent implements OnInit {
 
-   public budgets: Array<BudgetViewModel> = [];
-   public year: Number;
-   public month: Number;
+   public budgets: BudgetViewModel[] = [];
    public monthIdForm: FormGroup;
    public loading: Boolean = false;
    public submitted: Boolean = false;
 
    constructor(
       private readonly formBuilder: FormBuilder,
-      private readonly http: HttpClient
+      private readonly budgetService: BudgetService,
+      private readonly store: Store<IAppState>
    ) {
-      this.defaultMonth();
-   }
-
-   private defaultMonth(): void {
-
-      const today = new Date();
-
-      this.year = today.getFullYear();
-      this.month = today.getMonth() + 1;
    }
 
    public ngOnInit(): void {
-      this.monthIdForm = this.formBuilder.group({
-         year: [this.year, Validators.required],
-         month: [this.month, Validators.required]
-      });
+      this.budgetService.subscribeToSearchParameters();
 
-      this.fetchBudgets();
+      this.store
+         .select(selectBudgets)
+         .subscribe((transactions) => {
+            this.budgets = transactions.map(b => new BudgetViewModel(b));
+            this.loading = false;
+         });
+
+      this.store
+         .select(selectBudgetsSearchParameters)
+         .subscribe((searchParams) => {
+            const month = searchParams.month;
+            const year = searchParams.year;
+
+            this.monthIdForm = this.formBuilder.group({
+               year: [year, Validators.required],
+               month: [month, Validators.required]
+            });
+         });
    }
 
    public get f() { return this.monthIdForm.controls; }
 
-   public delete(id: Number): void {
+   public delete(id: number): void {
 
-      this.loading = true;
-
-      this.http
-         .post<DeleteResponse>(`/Budget/Delete`, { id })
-         .subscribe(response => {
-
-            if (response.success) {
-               this.budgets = this.budgets.filter(v => v.id !== id);
-            }
-
-            this.loading = false;
-         },
-            error => {
-               // TODO: Show error
-               this.loading = false;
-            });
+      this.budgetService.deleteBudget(id);
    }
 
    public onSubmit(): void {
@@ -69,28 +60,11 @@ export class BudgetsComponent implements OnInit {
          return;
       }
 
-      this.year = this.f.year.value;
-      this.month = this.f.month.value;
+      const year = this.f.year.value as number;
+      const month = this.f.month.value as number;
 
       this.loading = true;
 
-      this.fetchBudgets();
-   }
-
-   private fetchBudgets(): void {
-
-      const monthStr = this.month < 10 ? '0' + this.month : this.month;
-
-      this.http
-         .post<BudgetListResponse>(`/Budget/List`, { monthId: '' + this.year + monthStr })
-         .subscribe(response => {
-
-            this.budgets = response.budgets.map(t => new BudgetViewModel(t));
-            this.loading = false;
-         },
-            error => {
-               // TODO: Show error
-               this.loading = false;
-            });
+      this.budgetService.updateMonthId(month, year);
    }
 }

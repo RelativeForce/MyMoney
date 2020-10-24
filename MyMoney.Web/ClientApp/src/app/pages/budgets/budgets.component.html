@@ -26,7 +26,7 @@
          </button>
       </div>
       <div class="input-group mb-3">
-         <a class="btn btn-success" href="/budgets/add">
+         <a class="btn btn-success" routerLink="./add">
             Add
          </a>
       </div>
@@ -50,7 +50,7 @@
             <td>{{budget.remaining}}</td>
             <td>{{budget.notes}}</td>
             <td style="min-width:120px">
-               <a class="btn btn-primary" href="budgets/edit/{{budget.id}}">🖉</a>
+               <a class="btn btn-primary" routerLink="./edit/{{budget.id}}">🖉</a>
                <button class="btn btn-danger" (click)="delete(budget.id)">✕</button>
             </td>
          </tr>

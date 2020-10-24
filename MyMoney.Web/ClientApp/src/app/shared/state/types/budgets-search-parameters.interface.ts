@@ -1,4 +1,5 @@
 export interface IBudgetsSearch {
-   monthId: string;
+   year: number;
+   month: number;
    refresh: boolean;
 }

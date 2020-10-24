@@ -30,7 +30,7 @@ export class DeleteBudgetAction implements Action {
 export class UpdateSearchMonthIdAction implements Action {
    public type: string = BudgetActionTypes.UpdateMonthId;
 
-   constructor(public readonly monthId: string) { }
+   constructor(public readonly month: number, public readonly year: number) { }
 }
 
 export class RefreshBudgetsAction implements Action {

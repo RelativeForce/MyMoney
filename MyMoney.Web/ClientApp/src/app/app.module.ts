@@ -61,7 +61,12 @@ import { AuthenticationGuard } from './shared/guards/authenticated.guard';
             pathMatch: 'full',
             canActivate: [AuthenticationGuard],
          },
-         { path: 'budgets', component: BudgetsComponent, pathMatch: 'full' },
+         {
+            path: 'budgets',
+            component: BudgetsComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
          {
             path: 'budgets/add',
             component: AddBudgetsComponent,

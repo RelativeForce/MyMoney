@@ -16,7 +16,8 @@ export interface IBudgetState {
 export const initialBudgetState: IBudgetState = {
    budgets: [],
    searchParameters: {
-      monthId: defaultMonth(),
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
       refresh: true,
    }
 };
@@ -92,24 +93,16 @@ function DeleteBudget(state: IBudgetState, action: DeleteBudgetAction): IBudgetS
 }
 
 function UpdateDataRange(state: IBudgetState, action: UpdateSearchMonthIdAction): IBudgetState {
-   const monthId: string = action.monthId;
+   const month: number = action.month;
+   const year: number = action.year;
 
    return {
       ...state,
       searchParameters: {
          ...state.searchParameters,
-         monthId,
+         month,
+         year,
          refresh: true
       }
    };
-}
-
-function defaultMonth(): string {
-
-   const today = new Date();
-
-   const year = today.getFullYear();
-   const month = today.getMonth();
-
-   return `${year}${month < 10 ? '0' + month : month}`;
 }
