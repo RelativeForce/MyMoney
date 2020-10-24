@@ -25,13 +25,17 @@ export class BudgetService {
             return;
          }
 
-         const monthId = this.toMonthId(search.month, search.year);
-
-         this.api
-            .post<BudgetListResponse>(`/Budget/List`, { monthId })
-            .pipe(first())
-            .subscribe((response: BudgetListResponse) => this.store.dispatch(new SetBudgetsAction(response.budgets)));
+         this.getBudgetsForMonth(search.month, search.year)
+            .subscribe((response: BudgetListResponse) => this.store.dispatch(new SetBudgetsAction(response.budgets)));;
       });
+   }
+
+   public getBudgetsForMonth(month: number, year: number) {
+      const monthId = this.toMonthId(month, year);
+
+      return this.api
+         .post<BudgetListResponse>(`/Budget/List`, { monthId })
+         .pipe(first());
    }
 
    public deleteBudget(budgetId: number): void {
@@ -81,5 +85,9 @@ export class BudgetService {
 
          return this.api.post<IBudgetModel>(`/Budget/Find`, { id: budgetId }).pipe(first());
       }), concatAll());
+   }
+
+   public refreshBudgets(): void {
+      this.store.dispatch(new RefreshBudgetsAction());
    }
 }

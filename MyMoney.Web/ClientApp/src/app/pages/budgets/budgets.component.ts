@@ -41,6 +41,8 @@ export class BudgetsComponent implements OnInit {
                month: [month, Validators.required]
             });
          });
+
+      this.budgetService.refreshBudgets();
    }
 
    public get f() { return this.monthIdForm.controls; }

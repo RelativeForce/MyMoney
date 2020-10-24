@@ -44,6 +44,8 @@ export class TransactionsComponent implements OnInit {
                end: [this.end, Validators.required]
             });
          });
+
+      this.transactionService.refreshTransactions();
    }
 
    private formatDate(date: Date): string {

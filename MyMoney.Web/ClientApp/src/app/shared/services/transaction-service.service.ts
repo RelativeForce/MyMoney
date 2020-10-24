@@ -70,4 +70,8 @@ export class TransactionService {
          return this.api.post<ITransactionModel>(`/Transaction/Find`, { id: transactionId }).pipe(first());
       }), concatAll());
    }
+
+   public refreshTransactions(): void {
+      this.store.dispatch(new RefreshTransactionsAction());
+   }
 }

@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-
-import { TransactionService } from '../../../shared/services';
-import { BudgetListResponse } from '../../../shared/interfaces';
+import { BudgetService, TransactionService } from '../../../shared/services';
 import { BudgetViewModel } from '../../../shared/classes';
 import { ITransactionModel } from 'src/app/shared/state/types';
 
@@ -25,7 +22,7 @@ export class EditTransactionsComponent implements OnInit {
       private readonly transactionService: TransactionService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
-      private readonly http: HttpClient
+      private readonly budgetService: BudgetService
    ) {
    }
 
@@ -54,7 +51,7 @@ export class EditTransactionsComponent implements OnInit {
 
                this.fetchBudgets();
             },
-               error => {
+               () => {
                   this.router.navigate(['/transactions']);
                });
       });
@@ -62,15 +59,15 @@ export class EditTransactionsComponent implements OnInit {
 
    public get f() { return this.editTransactionForm.controls; }
 
-   public onCheckboxChange(e, id: number): void {
-      if (e.target.checked) {
+   public onCheckboxChange(event: any, id: number): void {
+      if (event.target.checked) {
          this.selectedBudgets.add(id);
       } else {
          this.selectedBudgets.delete(id);
       }
    }
 
-   public onDateChange(e): void {
+   public onDateChange(): void {
 
       this.selectedBudgets.clear();
 
@@ -90,28 +87,11 @@ export class EditTransactionsComponent implements OnInit {
    }
 
    public fetchBudgets(): void {
-
-      this.loading = false;
-
       const date = new Date(this.f.date.value);
 
-      const month = date.getMonth() + 1;
-
-      const monthStr = month < 10 ? '0' + month : month;
-
-      const monthId = '' + date.getFullYear() + monthStr;
-
-      this.http
-         .post<BudgetListResponse>(`/Budget/List`, { monthId })
-         .subscribe(response => {
-
-            this.budgets = response.budgets.map(t => new BudgetViewModel(t));
-            this.loading = false;
-         },
-            error => {
-               // TODO: Show error
-               this.loading = false;
-            });
+      this.budgetService.getBudgetsForMonth(date.getMonth() + 1, date.getFullYear()).subscribe(response => {
+         this.budgets = response.budgets.map(t => new BudgetViewModel(t));
+      });
    }
 
    private get asTransactionModel(): ITransactionModel {
@@ -139,11 +119,12 @@ export class EditTransactionsComponent implements OnInit {
       this.transactionService
          .editTransaction(this.asTransactionModel)
          .subscribe(success => {
+            this.loading = false;
             if (success) {
                this.router.navigate(['/transactions']);
             }
          },
-            error => {
+            () => {
                // Show error
                this.loading = false;
             });
