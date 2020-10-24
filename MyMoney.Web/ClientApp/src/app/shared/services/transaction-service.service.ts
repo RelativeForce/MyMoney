@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { TransactionApi, IDeleteResponseDto, TransactionListResponse, UpdateResponse } from '../api';
+import { TransactionApi, IDeleteResponseDto, ITransactionListResponseDto, UpdateResponse } from '../api';
 import { DeleteTransactionAction, RefreshTransactionsAction, SetTransactionsAction, UpdateDataRangeAction, UpdateTransactionAction } from '../state/actions';
 import { IAppState } from '../state/app-state';
 import { selectTransactionsSearchParameters, selectTransaction } from '../state/selectors/transaction.selector';
@@ -20,7 +20,7 @@ export class TransactionService {
 
          this.transactionApi
             .list(search.dateRange)
-            .subscribe((response: TransactionListResponse) => this.store.dispatch(new SetTransactionsAction(response.transactions)));
+            .subscribe((response: ITransactionListResponseDto) => this.store.dispatch(new SetTransactionsAction(response.transactions)));
       });
    }
 

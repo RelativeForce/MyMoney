@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IDeleteResponseDto, IIdDto, ITransactionDto, TransactionListResponse, UpdateResponse } from './dtos';
+import { IDeleteResponseDto, IIdDto, ITransactionDto, ITransactionListResponseDto, UpdateResponse } from './dtos';
 import { HttpHelper } from './http-helper.class';
 import { IDateRangeModel } from '../state/types';
 
@@ -10,9 +10,9 @@ export class TransactionApi {
 
    constructor(private readonly api: HttpHelper) { }
 
-   public list(dateRange: IDateRangeModel): Observable<TransactionListResponse> {
+   public list(dateRange: IDateRangeModel): Observable<ITransactionListResponseDto> {
       return this.api
-         .post<IDateRangeModel, TransactionListResponse>('/Transaction/List', dateRange)
+         .post<IDateRangeModel, ITransactionListResponseDto>('/Transaction/List', dateRange)
          .pipe(first());
    }
 

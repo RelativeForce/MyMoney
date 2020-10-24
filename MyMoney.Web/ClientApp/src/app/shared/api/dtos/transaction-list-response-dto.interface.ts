@@ -1,5 +1,5 @@
 import { ITransactionDto } from '.';
 
-export interface TransactionListResponse {
+export interface ITransactionListResponseDto {
    transactions: ITransactionDto[];
 }
