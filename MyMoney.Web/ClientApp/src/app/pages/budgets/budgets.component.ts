@@ -23,8 +23,6 @@ export class BudgetsComponent implements OnInit {
    ) { }
 
    public ngOnInit(): void {
-      this.budgetService.subscribeToSearchParameters();
-
       this.store
          .select(selectBudgets)
          .subscribe((transactions) => {

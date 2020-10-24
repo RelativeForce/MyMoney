@@ -13,20 +13,7 @@ import { APIService } from './api-service.service';
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
 
-   constructor(private readonly api: APIService, private readonly store: Store<IAppState>) { }
-
-   public deleteTransaction(transactionId: number): void {
-      this.api
-         .post<DeleteResponse>(`/Transaction/Delete`, { id: transactionId })
-         .pipe(first())
-         .subscribe((status: DeleteResponse) => {
-            if (status.success) {
-               this.store.dispatch(new DeleteTransactionAction(transactionId));
-            }
-         });
-   }
-
-   public subscribeToSearchParameters(): void {
+   constructor(private readonly api: APIService, private readonly store: Store<IAppState>) {
       this.store.select(selectTransactionsSearchParameters).subscribe((search: ITransactionsSearch) => {
          if (!search.refresh) {
             return;
@@ -37,6 +24,17 @@ export class TransactionService {
             .pipe(first())
             .subscribe((response: TransactionListResponse) => this.store.dispatch(new SetTransactionsAction(response.transactions)));
       });
+   }
+
+   public deleteTransaction(transactionId: number): void {
+      this.api
+         .post<DeleteResponse>(`/Transaction/Delete`, { id: transactionId })
+         .pipe(first())
+         .subscribe((status: DeleteResponse) => {
+            if (status.success) {
+               this.store.dispatch(new DeleteTransactionAction(transactionId));
+            }
+         });
    }
 
    public updateDateRange(dateRange: IDateRangeModel): void {

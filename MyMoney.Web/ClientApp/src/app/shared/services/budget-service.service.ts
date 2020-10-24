@@ -19,20 +19,7 @@ import { APIService } from './api-service.service';
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
 
-   constructor(private readonly api: APIService, private readonly store: Store<IAppState>) { }
-
-   public deleteBudget(budgetId: number): void {
-      this.api
-         .post<DeleteResponse>(`/Budget/Delete`, { id: budgetId })
-         .pipe(first())
-         .subscribe((status: DeleteResponse) => {
-            if (status.success) {
-               this.store.dispatch(new DeleteBudgetAction(budgetId));
-            }
-         });
-   }
-
-   public subscribeToSearchParameters(): void {
+   constructor(private readonly api: APIService, private readonly store: Store<IAppState>) {
       this.store.select(selectBudgetsSearchParameters).subscribe((search: IBudgetsSearch) => {
          if (!search.refresh) {
             return;
@@ -45,6 +32,17 @@ export class BudgetService {
             .pipe(first())
             .subscribe((response: BudgetListResponse) => this.store.dispatch(new SetBudgetsAction(response.budgets)));
       });
+   }
+
+   public deleteBudget(budgetId: number): void {
+      this.api
+         .post<DeleteResponse>(`/Budget/Delete`, { id: budgetId })
+         .pipe(first())
+         .subscribe((status: DeleteResponse) => {
+            if (status.success) {
+               this.store.dispatch(new DeleteBudgetAction(budgetId));
+            }
+         });
    }
 
    public toMonthId(month: number, year: number): string {

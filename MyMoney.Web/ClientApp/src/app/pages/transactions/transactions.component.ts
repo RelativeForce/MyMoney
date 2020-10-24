@@ -27,8 +27,6 @@ export class TransactionsComponent implements OnInit {
    ) { }
 
    public ngOnInit(): void {
-      this.transactionService.subscribeToSearchParameters();
-
       this.store
          .select(selectTransactions)
          .subscribe((transactions) => {
