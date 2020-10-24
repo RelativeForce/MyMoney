@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IBudgetListResponseDto, IBudgetListRequestDto, IDeleteResponseDto, IBudgetDto, IdRequest, UpdateResponse } from './dtos';
+import { IBudgetListResponseDto, IBudgetListRequestDto, IDeleteResponseDto, IBudgetDto, IIdDto, UpdateResponse } from './dtos';
 import { HttpHelper } from './http-helper.class';
 
 @Injectable({ providedIn: 'root' })
@@ -15,9 +15,9 @@ export class BudgetApi {
          .pipe(first());
    }
 
-   public delete(id: IdRequest): Observable<IDeleteResponseDto> {
+   public delete(id: IIdDto): Observable<IDeleteResponseDto> {
       return this.api
-         .post<IdRequest, IDeleteResponseDto>('/Budget/Delete', id)
+         .post<IIdDto, IDeleteResponseDto>('/Budget/Delete', id)
          .pipe(first());
    }
 
@@ -33,9 +33,9 @@ export class BudgetApi {
          .pipe(first());
    }
 
-   public find(id: IdRequest): Observable<IBudgetDto> {
+   public find(id: IIdDto): Observable<IBudgetDto> {
       return this.api
-         .post<IdRequest, IBudgetDto>('/Budget/Find', id)
+         .post<IIdDto, IBudgetDto>('/Budget/Find', id)
          .pipe(first());
    }
 }

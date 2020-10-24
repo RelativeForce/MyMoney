@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IDeleteResponseDto, IdRequest, ITransactionDto, TransactionListResponse, UpdateResponse } from './dtos';
+import { IDeleteResponseDto, IIdDto, ITransactionDto, TransactionListResponse, UpdateResponse } from './dtos';
 import { HttpHelper } from './http-helper.class';
 import { IDateRangeModel } from '../state/types';
 
@@ -16,9 +16,9 @@ export class TransactionApi {
          .pipe(first());
    }
 
-   public delete(id: IdRequest): Observable<IDeleteResponseDto> {
+   public delete(id: IIdDto): Observable<IDeleteResponseDto> {
       return this.api
-         .post<IdRequest, IDeleteResponseDto>('/Transaction/Delete', id)
+         .post<IIdDto, IDeleteResponseDto>('/Transaction/Delete', id)
          .pipe(first());
    }
 
@@ -34,9 +34,9 @@ export class TransactionApi {
          .pipe(first());
    }
 
-   public find(id: IdRequest): Observable<ITransactionDto> {
+   public find(id: IIdDto): Observable<ITransactionDto> {
       return this.api
-         .post<IdRequest, ITransactionDto>('/Transaction/Find', id)
+         .post<IIdDto, ITransactionDto>('/Transaction/Find', id)
          .pipe(first());
    }
 }
