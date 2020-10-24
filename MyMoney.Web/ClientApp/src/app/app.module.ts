@@ -5,16 +5,21 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { JwtInterceptor } from './helpers/jwt.interceptor';
-import { RegisterComponent } from './register/register.component';
-import { AddTransactionsComponent } from './transactions/add/add.transactions.component';
-import { TransactionsComponent } from './transactions/transactions.component';
-import { BudgetsComponent } from './budgets/budgets.component';
-import { AddBudgetsComponent } from './budgets/add/add.budgets.component';
-import { EditTransactionsComponent } from './transactions/edit/edit.transactions.component';
-import { EditBudgetsComponent } from './budgets/edit/edit.budgets.component';
+import { JwtInterceptor } from './shared/classes/jwt-interceptor.class';
+import {
+   HomeComponent,
+   LoginComponent,
+   RegisterComponent,
+   TransactionsComponent,
+   AddTransactionsComponent,
+   BudgetsComponent,
+   AddBudgetsComponent,
+   EditTransactionsComponent,
+   EditBudgetsComponent,
+} from './pages';
+import { StoreModule } from '@ngrx/store';
+import { appReducer } from './shared/state/app-state';
+import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 
 @NgModule({
    declarations: [
@@ -27,31 +32,65 @@ import { EditBudgetsComponent } from './budgets/edit/edit.budgets.component';
       TransactionsComponent,
       BudgetsComponent,
       AddBudgetsComponent,
-      EditBudgetsComponent
+      EditBudgetsComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
       HttpClientModule,
       FormsModule,
       ReactiveFormsModule,
+      StoreModule.forRoot(appReducer),
       RouterModule.forRoot([
-
          { path: 'login', component: LoginComponent },
          { path: 'register', component: RegisterComponent },
-         { path: 'transactions', component: TransactionsComponent, pathMatch: 'full' },
-         { path: 'transactions/add', component: AddTransactionsComponent, pathMatch: 'full' },
-         { path: 'transactions/edit/:id', component: EditTransactionsComponent, pathMatch: 'full' },
-         { path: 'budgets', component: BudgetsComponent, pathMatch: 'full' },
-         { path: 'budgets/add', component: AddBudgetsComponent, pathMatch: 'full' },
-         { path: 'budgets/edit/:id', component: EditBudgetsComponent, pathMatch: 'full' },
-         { path: '', component: HomeComponent, pathMatch: 'full' },
+         {
+            path: 'transactions',
+            component: TransactionsComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'transactions/add',
+            component: AddTransactionsComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'transactions/edit/:id',
+            component: EditTransactionsComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'budgets',
+            component: BudgetsComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'budgets/add',
+            component: AddBudgetsComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'budgets/edit/:id',
+            component: EditBudgetsComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: '', component: HomeComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard]
+         },
          // otherwise redirect to home
-         { path: '**', redirectTo: '' }
-      ])
+         { path: '**', redirectTo: '' },
+      ]),
    ],
    providers: [
-      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
    ],
-   bootstrap: [AppComponent]
+   bootstrap: [AppComponent],
 })
 export class AppModule { }

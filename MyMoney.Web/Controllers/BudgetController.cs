@@ -111,7 +111,7 @@ namespace MyMoney.Web.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                var success = _budgetService.Update(model.Id, model.Name, model.Amount, model.Notes);
+                var success = _budgetService.Update(model.Id, model.MonthId, model.Name, model.Amount, model.Notes);
 
                 return Ok(new UpdateResponse
                 {
