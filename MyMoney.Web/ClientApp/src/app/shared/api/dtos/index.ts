@@ -9,3 +9,4 @@ export * from './id-request.interface';
 export * from './login-request.interface';
 export * from './transaction-dto.interface';
 export * from './budget-dto.interface';
+export * from './date-range-dto.interface';

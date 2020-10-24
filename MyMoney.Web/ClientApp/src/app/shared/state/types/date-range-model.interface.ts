@@ -1,4 +1,3 @@
-export interface IDateRangeModel {
-   start: Date;
-   end: Date;
-}
+import { IDateRangeDto } from '../../api';
+
+export type IDateRangeModel = {} & IDateRangeDto;
