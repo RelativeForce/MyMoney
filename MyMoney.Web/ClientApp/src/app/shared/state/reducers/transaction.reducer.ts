@@ -5,7 +5,7 @@ import {
    TransactionActionTypes,
    DeleteTransactionAction,
    UpdateDataRangeAction
-} from '../actions/transactions.actions';
+} from '../actions';
 import { ITransactionModel, IDateRangeModel, ITransactionsSearch } from '../types';
 
 export interface ITransactionState {
