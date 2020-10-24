@@ -6,7 +6,7 @@ export * from './register-request.interface';
 export * from './transaction-list-response.interface';
 export * from './update.response.interface';
 export * from './id-dto.interface';
-export * from './login-request.interface';
+export * from './login-request-dto.interface';
 export * from './transaction-dto.interface';
 export * from './budget-dto.interface';
 export * from './date-range-dto.interface';
