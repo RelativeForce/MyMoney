@@ -1,6 +1,6 @@
 export * from './budget-list-response-dto.interface';
 export * from './budget-list-request-dto.interface';
-export * from './delete-response.interface';
+export * from './delete-response-dto.interface';
 export * from './login-response.interface';
 export * from './register-request.interface';
 export * from './transaction-list-response.interface';

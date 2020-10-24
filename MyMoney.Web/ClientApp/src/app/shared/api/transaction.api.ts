@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { DeleteResponse, IdRequest, ITransactionDto, TransactionListResponse, UpdateResponse } from './dtos';
+import { IDeleteResponseDto, IdRequest, ITransactionDto, TransactionListResponse, UpdateResponse } from './dtos';
 import { HttpHelper } from './http-helper.class';
 import { IDateRangeModel } from '../state/types';
 
@@ -16,9 +16,9 @@ export class TransactionApi {
          .pipe(first());
    }
 
-   public delete(id: IdRequest): Observable<DeleteResponse> {
+   public delete(id: IdRequest): Observable<IDeleteResponseDto> {
       return this.api
-         .post<IdRequest, DeleteResponse>('/Transaction/Delete', id)
+         .post<IdRequest, IDeleteResponseDto>('/Transaction/Delete', id)
          .pipe(first());
    }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { TransactionApi, DeleteResponse, TransactionListResponse, UpdateResponse } from '../api';
+import { TransactionApi, IDeleteResponseDto, TransactionListResponse, UpdateResponse } from '../api';
 import { DeleteTransactionAction, RefreshTransactionsAction, SetTransactionsAction, UpdateDataRangeAction, UpdateTransactionAction } from '../state/actions';
 import { IAppState } from '../state/app-state';
 import { selectTransactionsSearchParameters, selectTransaction } from '../state/selectors/transaction.selector';
@@ -27,7 +27,7 @@ export class TransactionService {
    public deleteTransaction(transactionId: number): void {
       this.transactionApi
          .delete({ id: transactionId })
-         .subscribe((status: DeleteResponse) => {
+         .subscribe((status: IDeleteResponseDto) => {
             if (status.success) {
                this.store.dispatch(new DeleteTransactionAction(transactionId));
             }
