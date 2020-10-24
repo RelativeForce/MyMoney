@@ -1,5 +1,5 @@
-import { BudgetModel } from './budget-model.interface';
+import { IBudgetModel } from '../state/types';
 
 export interface BudgetListResponse {
-   budgets: Array<BudgetModel>;
+   budgets: IBudgetModel[];
 }
