@@ -18,7 +18,7 @@ import { IBudgetModel, IBudgetsSearch } from '../state/types';
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
 
-   constructor(private readonly api: BudgetApi, private readonly store: Store<IAppState>) {
+   constructor(private readonly budgetApi: BudgetApi, private readonly store: Store<IAppState>) {
       this.store.select(selectBudgetsSearchParameters).subscribe((search: IBudgetsSearch) => {
          if (!search.refresh) {
             return;
@@ -32,11 +32,11 @@ export class BudgetService {
    public getBudgetsForMonth(month: number, year: number) {
       const monthId = this.toMonthId(month, year);
 
-      return this.api.list({ monthId });
+      return this.budgetApi.list({ monthId });
    }
 
    public deleteBudget(budgetId: number): void {
-      this.api
+      this.budgetApi
          .delete({ id: budgetId })
          .subscribe((status: DeleteResponse) => {
             if (status.success) {
@@ -54,7 +54,7 @@ export class BudgetService {
    }
 
    public addBudget(budget: IBudgetModel): Observable<boolean> {
-      return this.api
+      return this.budgetApi
          .add(budget)
          .pipe(map(() => {
             this.store.dispatch(new RefreshBudgetsAction());
@@ -63,7 +63,7 @@ export class BudgetService {
    }
 
    public editBudget(budget: IBudgetModel): Observable<boolean> {
-      return this.api
+      return this.budgetApi
          .update(budget)
          .pipe(map((status: UpdateResponse) => {
             if (status.success) {
@@ -79,7 +79,7 @@ export class BudgetService {
             return of(budget);
          }
 
-         return this.api.find({ id: budgetId });
+         return this.budgetApi.find({ id: budgetId });
       }), concatAll());
    }
 

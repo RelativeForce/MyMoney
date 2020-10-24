@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../shared/services';
-import { RegisterRequest } from '../../shared/interfaces';
+import { RegisterRequest } from '../../shared/api';
 
 @Component({
    templateUrl: 'register.component.html'
