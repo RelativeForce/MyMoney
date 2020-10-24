@@ -31,7 +31,7 @@ export function budgetReducer(state: IBudgetState = initialBudgetState, action: 
       case BudgetActionTypes.DeleteBudget:
          return DeleteBudget(state, action as DeleteBudgetAction);
       case BudgetActionTypes.UpdateMonthId:
-         return UpdateDataRange(state, action as UpdateSearchMonthIdAction);
+         return UpdateSelectedMonth(state, action as UpdateSearchMonthIdAction);
       case BudgetActionTypes.RefreshBudgets:
          return RefreshBudgets(state);
       default:
@@ -92,7 +92,7 @@ function DeleteBudget(state: IBudgetState, action: DeleteBudgetAction): IBudgetS
    };
 }
 
-function UpdateDataRange(state: IBudgetState, action: UpdateSearchMonthIdAction): IBudgetState {
+function UpdateSelectedMonth(state: IBudgetState, action: UpdateSearchMonthIdAction): IBudgetState {
    const month: number = action.month;
    const year: number = action.year;
 
