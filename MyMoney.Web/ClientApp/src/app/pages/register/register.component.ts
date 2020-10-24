@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../shared/services';
-import { RegisterRequest } from '../../shared/api';
+import { IRegisterRequestDto } from '../../shared/api';
 
 @Component({
    templateUrl: 'register.component.html'
@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit {
 
       this.loading = true;
 
-      const user: RegisterRequest = this.registerForm.value;
+      const user: IRegisterRequestDto = this.registerForm.value;
 
       this.authenticationService.register(user)
          .pipe(first())

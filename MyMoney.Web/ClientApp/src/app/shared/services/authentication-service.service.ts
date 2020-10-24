@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ILoginResponseDto, RegisterRequest } from '../api';
+import { ILoginResponseDto, IRegisterRequestDto } from '../api';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';
 import { ClearSessionAction, StartSessionAction } from '../state/actions';
@@ -26,7 +26,7 @@ export class AuthenticationService {
          }));
    }
 
-   public register(newUserData: RegisterRequest): Observable<boolean> {
+   public register(newUserData: IRegisterRequestDto): Observable<boolean> {
       return this.userApi
          .register(newUserData)
          .pipe(map(response => {
