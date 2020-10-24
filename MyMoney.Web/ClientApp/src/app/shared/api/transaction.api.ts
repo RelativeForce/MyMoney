@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { DeleteResponse, IdRequest, TransactionListResponse, UpdateResponse } from './dtos';
+import { DeleteResponse, IdRequest, ITransactionDto, TransactionListResponse, UpdateResponse } from './dtos';
 import { HttpHelper } from './http-helper.class';
-import { IDateRangeModel, ITransactionModel } from '../state/types';
+import { IDateRangeModel } from '../state/types';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionApi {
@@ -22,21 +22,21 @@ export class TransactionApi {
          .pipe(first());
    }
 
-   public add(transaction: ITransactionModel): Observable<ITransactionModel> {
+   public add(transaction: ITransactionDto): Observable<ITransactionDto> {
       return this.api
-         .post<ITransactionModel, ITransactionModel>('/Transaction/Add', transaction)
+         .post<ITransactionDto, ITransactionDto>('/Transaction/Add', transaction)
          .pipe(first());
    }
 
-   public update(transaction: ITransactionModel): Observable<UpdateResponse> {
+   public update(transaction: ITransactionDto): Observable<UpdateResponse> {
       return this.api
-         .post<ITransactionModel, UpdateResponse>('/Transaction/Update', transaction)
+         .post<ITransactionDto, UpdateResponse>('/Transaction/Update', transaction)
          .pipe(first());
    }
 
-   public find(id: IdRequest): Observable<ITransactionModel> {
+   public find(id: IdRequest): Observable<ITransactionDto> {
       return this.api
-         .post<IdRequest, ITransactionModel>('/Transaction/Find', id)
+         .post<IdRequest, ITransactionDto>('/Transaction/Find', id)
          .pipe(first());
    }
 }

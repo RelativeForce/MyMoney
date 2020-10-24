@@ -1,5 +1,5 @@
-import { ITransactionModel } from '../../state/types';
+import { ITransactionDto } from '.';
 
 export interface TransactionListResponse {
-   transactions: ITransactionModel[];
+   transactions: ITransactionDto[];
 }

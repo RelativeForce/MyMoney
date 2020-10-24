@@ -1,5 +1,5 @@
-import { IBudgetModel } from '../../state/types';
+import { IBudgetDto } from '.';
 
 export interface BudgetListResponse {
-   budgets: IBudgetModel[];
+   budgets: IBudgetDto[];
 }

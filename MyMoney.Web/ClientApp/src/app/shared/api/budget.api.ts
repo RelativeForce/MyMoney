@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { BudgetListResponse, BudgetRequest, DeleteResponse, IdRequest, UpdateResponse } from './dtos';
+import { BudgetListResponse, IBudgetListRequestDto, DeleteResponse, IBudgetDto, IdRequest, UpdateResponse } from './dtos';
 import { HttpHelper } from './http-helper.class';
-import { IBudgetModel } from '../state/types';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetApi {
 
    constructor(private readonly api: HttpHelper) { }
 
-   public list(request: BudgetRequest): Observable<BudgetListResponse> {
+   public list(request: IBudgetListRequestDto): Observable<BudgetListResponse> {
       return this.api
-         .post<BudgetRequest, BudgetListResponse>('/Budget/List', request)
+         .post<IBudgetListRequestDto, BudgetListResponse>('/Budget/List', request)
          .pipe(first());
    }
 
@@ -22,21 +21,21 @@ export class BudgetApi {
          .pipe(first());
    }
 
-   public add(budget: IBudgetModel): Observable<IBudgetModel> {
+   public add(budget: IBudgetDto): Observable<IBudgetDto> {
       return this.api
-         .post<IBudgetModel, IBudgetModel>('/Budget/Add', budget)
+         .post<IBudgetDto, IBudgetDto>('/Budget/Add', budget)
          .pipe(first());
    }
 
-   public update(budget: IBudgetModel): Observable<UpdateResponse> {
+   public update(budget: IBudgetDto): Observable<UpdateResponse> {
       return this.api
-         .post<IBudgetModel, UpdateResponse>('/Budget/Update', budget)
+         .post<IBudgetDto, UpdateResponse>('/Budget/Update', budget)
          .pipe(first());
    }
 
-   public find(id: IdRequest): Observable<IBudgetModel> {
+   public find(id: IdRequest): Observable<IBudgetDto> {
       return this.api
-         .post<IdRequest, IBudgetModel>('/Budget/Find', id)
+         .post<IdRequest, IBudgetDto>('/Budget/Find', id)
          .pipe(first());
    }
 }
