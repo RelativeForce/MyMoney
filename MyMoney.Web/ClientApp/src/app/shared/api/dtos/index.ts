@@ -1,4 +1,4 @@
-export * from './budget-list-response.interface';
+export * from './budget-list-response-dto.interface';
 export * from './budget-list-request-dto.interface';
 export * from './delete-response.interface';
 export * from './login-response.interface';

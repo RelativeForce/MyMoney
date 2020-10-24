@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { BudgetApi, DeleteResponse, BudgetListResponse, UpdateResponse } from '../api';
+import { BudgetApi, DeleteResponse, IBudgetListResponseDto, UpdateResponse } from '../api';
 import {
    DeleteBudgetAction,
    RefreshBudgetsAction,
@@ -25,7 +25,7 @@ export class BudgetService {
          }
 
          this.getBudgetsForMonth(search.month, search.year)
-            .subscribe((response: BudgetListResponse) => this.store.dispatch(new SetBudgetsAction(response.budgets)));
+            .subscribe((response: IBudgetListResponseDto) => this.store.dispatch(new SetBudgetsAction(response.budgets)));
       });
    }
 

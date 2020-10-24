@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { BudgetListResponse, IBudgetListRequestDto, DeleteResponse, IBudgetDto, IdRequest, UpdateResponse } from './dtos';
+import { IBudgetListResponseDto, IBudgetListRequestDto, DeleteResponse, IBudgetDto, IdRequest, UpdateResponse } from './dtos';
 import { HttpHelper } from './http-helper.class';
 
 @Injectable({ providedIn: 'root' })
@@ -9,9 +9,9 @@ export class BudgetApi {
 
    constructor(private readonly api: HttpHelper) { }
 
-   public list(request: IBudgetListRequestDto): Observable<BudgetListResponse> {
+   public list(request: IBudgetListRequestDto): Observable<IBudgetListResponseDto> {
       return this.api
-         .post<IBudgetListRequestDto, BudgetListResponse>('/Budget/List', request)
+         .post<IBudgetListRequestDto, IBudgetListResponseDto>('/Budget/List', request)
          .pipe(first());
    }
 
