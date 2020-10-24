@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { TransactionService } from '../../shared/services';
-import { DateRangeModel } from '../../shared/interfaces';
 import { TransactionViewModel } from '../../shared/classes';
+import { Store } from '@ngrx/store';
+import { IAppState } from 'src/app/shared/state/app-state';
+import { selectTransactions, selectTransactionsDateRange } from 'src/app/shared/state/selectors/transaction.selector';
+import { IDateRangeModel } from '../../shared/state/types';
+import { Router } from '@angular/router';
 
 @Component({
    templateUrl: './transactions.component.html'
 })
 export class TransactionsComponent implements OnInit {
 
-   public transactions: Array<TransactionViewModel> = [];
-   public dateRange: DateRangeModel;
+   public transactions: TransactionViewModel[] = [];
+   public dateRange: IDateRangeModel;
    public dateRangeForm: FormGroup;
    public loading: Boolean = false;
    public submitted: Boolean = false;
@@ -19,28 +22,30 @@ export class TransactionsComponent implements OnInit {
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
-      private readonly router: Router
-   ) {
-      this.dateRange = this.defaultDateRange;
-   }
-
-   public get defaultDateRange(): DateRangeModel {
-
-      const end: Date = new Date();
-
-      const start: Date = new Date();
-      start.setMonth(start.getMonth() - 1);
-
-      return { end, start };
-   }
+      private readonly store: Store<IAppState>,
+      private readonly router: Router,
+   ) { }
 
    public ngOnInit(): void {
-      this.dateRangeForm = this.formBuilder.group({
-         start: [this.start, Validators.required],
-         end: [this.end, Validators.required]
-      });
+      this.transactionService.subscribeToSearchParameters();
 
-      this.fetchTransactions();
+      this.store
+         .select(selectTransactions)
+         .subscribe((transactions) => {
+            this.transactions = transactions.map(t => new TransactionViewModel(t));
+            this.loading = false;
+         });
+
+      this.store
+         .select(selectTransactionsDateRange)
+         .subscribe((dateRange) => {
+            this.dateRange = dateRange;
+
+            this.dateRangeForm = this.formBuilder.group({
+               start: [this.start, Validators.required],
+               end: [this.end, Validators.required]
+            });
+         });
    }
 
    private formatDate(date: Date): string {
@@ -68,24 +73,8 @@ export class TransactionsComponent implements OnInit {
 
    public get f() { return this.dateRangeForm.controls; }
 
-   public delete(id: number): void {
-
-      this.loading = true;
-
-      this.transactionService
-         .deleteTransaction(id)
-         .subscribe((isDeleted: boolean) => {
-
-            if (isDeleted) {
-               this.transactions = this.transactions.filter(v => v.id !== id);
-            }
-
-            this.loading = false;
-         },
-            error => {
-               // TODO: Show error
-               this.loading = false;
-            });
+   public deleteTransaction(id: number): void {
+      this.transactionService.deleteTransaction(id);
    }
 
    public onSubmit(): void {
@@ -99,20 +88,6 @@ export class TransactionsComponent implements OnInit {
 
       this.dateRange = { start: this.f.start.value, end: this.f.end.value };
 
-      this.fetchTransactions();
-   }
-
-   private fetchTransactions(): void {
-      this.transactionService
-         .listTransactions(this.dateRange)
-         .subscribe(transactions => {
-
-            this.transactions = transactions;
-            this.loading = false;
-         },
-            error => {
-               // TODO: Show error
-               this.loading = false;
-            });
+      this.transactionService.updateDateRange(this.dateRange);
    }
 }

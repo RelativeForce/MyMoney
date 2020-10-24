@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { ClearSessionAction } from '../state/actions';
 import { IAppState } from '../state/app-state';
 import { selectCurrentSession } from '../state/selectors/session.selector';
@@ -14,7 +14,7 @@ export class AuthenticationGuard implements CanActivate {
    constructor(private readonly store: Store<IAppState>, private readonly router: Router) { }
 
    public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
-      return this.store.select(selectCurrentSession).pipe(map((session: ISessionModel | null) => {
+      return this.store.select(selectCurrentSession).pipe(first(), map((session: ISessionModel | null) => {
 
          if (this.IsValid(session)) {
             return true;

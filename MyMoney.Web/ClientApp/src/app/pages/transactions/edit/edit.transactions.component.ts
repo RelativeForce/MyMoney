@@ -4,8 +4,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { TransactionService } from '../../../shared/services';
-import { TransactionModel, BudgetListResponse } from '../../../shared/interfaces';
+import { BudgetListResponse } from '../../../shared/interfaces';
 import { BudgetViewModel } from '../../../shared/classes';
+import { ITransactionModel } from 'src/app/shared/state/types';
 
 @Component({
    templateUrl: './edit.transactions.component.html'
@@ -13,8 +14,8 @@ import { BudgetViewModel } from '../../../shared/classes';
 export class EditTransactionsComponent implements OnInit {
 
    public editTransactionForm: FormGroup;
-   public selectedBudgets: Set<Number> = new Set();
-   public budgets: Array<BudgetViewModel> = [];
+   public selectedBudgets: Set<number> = new Set();
+   public budgets: BudgetViewModel[] = [];
    public id: number;
    public loading = false;
    public submitted = false;
@@ -41,7 +42,7 @@ export class EditTransactionsComponent implements OnInit {
 
          this.transactionService
             .findTransaction(this.id)
-            .subscribe((response: TransactionModel) => {
+            .subscribe((response: ITransactionModel) => {
 
                response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
 
@@ -77,17 +78,15 @@ export class EditTransactionsComponent implements OnInit {
    }
 
    public toInputDateString(text: string): string {
-      const date = new Date(text);
-
-      const month = date.getMonth() + 1;
+      const month = Number.parseInt(text.split('/')[1], 10);
 
       const monthStr = month < 10 ? '0' + month : month;
 
-      const day = date.getDate();
+      const day = Number.parseInt(text.split('/')[0], 10);
 
       const dayStr = day < 10 ? '0' + day : day;
 
-      return date.getFullYear() + '-' + monthStr + '-' + dayStr;
+      return text.split('/')[2] + '-' + monthStr + '-' + dayStr;
    }
 
    public fetchBudgets(): void {
@@ -115,12 +114,16 @@ export class EditTransactionsComponent implements OnInit {
             });
    }
 
-   private get asTransactionModel(): TransactionModel {
-      const date = this.f.date.value;
+   private get asTransactionModel(): ITransactionModel {
+
+      const date = new Date(this.f.date.value);
+
+      const dateString: string = date.toLocaleDateString();
+
       const description = this.f.description.value;
       const amount = this.f.amount.value;
 
-      return { date, description, amount, id: this.id, budgetIds: Array.from(this.selectedBudgets) };
+      return { date: dateString, description, amount, id: this.id, budgetIds: Array.from(this.selectedBudgets) };
    }
 
    public onSubmit(): void {

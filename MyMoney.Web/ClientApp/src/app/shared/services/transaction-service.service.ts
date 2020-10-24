@@ -1,42 +1,75 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { TransactionViewModel } from '../classes';
-import { DateRangeModel, DeleteResponse, TransactionListResponse, TransactionModel, UpdateResponse } from '../interfaces';
+import { Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
+import { concatAll, first, map } from 'rxjs/operators';
+import { DeleteResponse, TransactionListResponse, UpdateResponse } from '../interfaces';
+import { DeleteTransactionAction, RefreshTransactionsAction, SetTransactionsAction, UpdateDataRangeAction, UpdateTransactionAction } from '../state/actions';
+import { IAppState } from '../state/app-state';
+import { selectTransactionsSearchParameters, selectTransaction } from '../state/selectors/transaction.selector';
+import { IDateRangeModel, ITransactionModel, ITransactionsSearch } from '../state/types';
 import { APIService } from './api-service.service';
 
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
 
-   constructor(private readonly api: APIService) { }
+   constructor(private readonly api: APIService, private readonly store: Store<IAppState>) { }
 
-   public deleteTransaction(transactionId: number): Observable<boolean> {
-      return this.api
+   public deleteTransaction(transactionId: number): void {
+      this.api
          .post<DeleteResponse>(`/Transaction/Delete`, { id: transactionId })
-         .pipe(map((status: DeleteResponse) => status.success));
+         .pipe(first())
+         .subscribe((status: DeleteResponse) => {
+            if (status.success) {
+               this.store.dispatch(new DeleteTransactionAction(transactionId));
+            }
+         });
    }
 
-   public listTransactions(dateRange: DateRangeModel): Observable<TransactionViewModel[]> {
+   public subscribeToSearchParameters(): void {
+      this.store.select(selectTransactionsSearchParameters).subscribe((search: ITransactionsSearch) => {
+         if (!search.refresh) {
+            return;
+         }
+
+         this.api
+            .post<TransactionListResponse>(`/Transaction/List`, search.dateRange)
+            .pipe(first())
+            .subscribe((response: TransactionListResponse) => this.store.dispatch(new SetTransactionsAction(response.transactions)));
+      });
+   }
+
+   public updateDateRange(dateRange: IDateRangeModel): void {
+      this.store.dispatch(new UpdateDataRangeAction(dateRange));
+   }
+
+   public addTransaction(transaction: ITransactionModel): Observable<boolean> {
       return this.api
-         .post<TransactionListResponse>(`/Transaction/List`, dateRange)
-         .pipe(map((transactions: TransactionListResponse) => transactions.transactions.map(t => new TransactionViewModel(t))));
+         .post<ITransactionModel>(`/Transaction/Add`, transaction)
+         .pipe(first(), map((t) => {
+            this.store.dispatch(new RefreshTransactionsAction());
+            return true;
+         }));
    }
 
-   public addTransaction(transaction: TransactionModel): Observable<boolean> {
-      return this.api
-         .post<TransactionModel>(`/Transaction/Add`, transaction)
-         .pipe(map(() => true));
-   }
-
-   public editTransaction(transaction: TransactionModel): Observable<boolean> {
+   public editTransaction(transaction: ITransactionModel): Observable<boolean> {
       return this.api
          .post<UpdateResponse>(`/Transaction/Update`, transaction)
-         .pipe(map((status: UpdateResponse) => status.success));
+         .pipe(first(), map((status: UpdateResponse) => {
+            if (status.success) {
+               this.store.dispatch(new UpdateTransactionAction(transaction));
+            }
+            return status.success;
+         }));
    }
 
-   public findTransaction(transactionId: number): Observable<TransactionModel> {
-      return this.api
-         .post<TransactionModel>(`/Transaction/Find`, { id: transactionId });
+   public findTransaction(transactionId: number): Observable<ITransactionModel> {
+      return this.store.select(selectTransaction(transactionId)).pipe(map((transaction: ITransactionModel | undefined) => {
+         if (transaction !== undefined) {
+            return of(transaction);
+         }
+
+         return this.api.post<ITransactionModel>(`/Transaction/Find`, { id: transactionId }).pipe(first());
+      }), concatAll());
    }
 }

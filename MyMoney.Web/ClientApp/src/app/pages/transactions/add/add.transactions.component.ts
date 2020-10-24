@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { TransactionModel, BudgetListResponse } from '../../../shared/interfaces';
+import { BudgetListResponse } from '../../../shared/interfaces';
 import { BudgetViewModel } from '../../../shared/classes';
+import { ITransactionModel } from 'src/app/shared/state/types';
+import { TransactionService } from 'src/app/shared/services';
 
 @Component({
    templateUrl: './add.transactions.component.html'
@@ -11,15 +13,16 @@ import { BudgetViewModel } from '../../../shared/classes';
 export class AddTransactionsComponent implements OnInit {
 
    public addTransactionForm: FormGroup;
-   public selectedBudgets: Set<Number> = new Set();
-   public budgets: Array<BudgetViewModel> = [];
+   public selectedBudgets: Set<number> = new Set();
+   public budgets: BudgetViewModel[] = [];
    public loading = false;
    public submitted = false;
 
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly router: Router,
-      private readonly http: HttpClient
+      private readonly http: HttpClient,
+      private readonly transactionService: TransactionService
    ) {
    }
 
@@ -88,18 +91,17 @@ export class AddTransactionsComponent implements OnInit {
       const description = this.f.description.value;
       const amount = this.f.amount.value;
 
-      const transaction: TransactionModel = { date, description, amount, id: 0, budgetIds: Array.from(this.selectedBudgets) };
+      const transaction: ITransactionModel = { date, description, amount, id: 0, budgetIds: Array.from(this.selectedBudgets) };
 
-      this.http
-         .post<TransactionModel>(`/Transaction/Add`, transaction)
-         .subscribe(response => {
-            if (response.id !== 0) {
-               this.router.navigate(['/transactions']);
-            }
-         },
-            error => {
-               // Show error
-               this.loading = false;
-            });
+      this.transactionService.addTransaction(transaction).subscribe(success => {
+         if (success) {
+            this.router.navigate(['/transactions']);
+         }
+         this.loading = false;
+      },
+         error => {
+            // Show error
+            this.loading = false;
+         });
    }
 }

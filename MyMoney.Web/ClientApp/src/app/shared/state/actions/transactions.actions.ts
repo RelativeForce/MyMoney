@@ -6,6 +6,7 @@ export enum TransactionActionTypes {
    UpdateTransaction = 'Update transaction',
    DeleteTransaction = 'Delete transaction',
    UpdateDataRange = 'Update Data Range',
+   RefreshTransactions = 'Refresh Transactions',
 }
 
 export class SetTransactionsAction implements Action {
@@ -30,4 +31,10 @@ export class UpdateDataRangeAction implements Action {
    public type: string = TransactionActionTypes.UpdateDataRange;
 
    constructor(public readonly dateRange: IDateRangeModel) { }
+}
+
+export class RefreshTransactionsAction implements Action {
+   public type: string = TransactionActionTypes.RefreshTransactions;
+
+   constructor() { }
 }

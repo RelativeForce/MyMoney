@@ -6,6 +6,5 @@ export * from './delete-response.interface';
 export * from './login-response.interface';
 export * from './register-request.interface';
 export * from './transaction-list-response.interface';
-export * from './transaction-model.interface';
 export * from './update.response.interface';
 export * from './user.interface';

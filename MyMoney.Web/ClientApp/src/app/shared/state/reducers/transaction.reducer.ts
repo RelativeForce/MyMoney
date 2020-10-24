@@ -6,18 +6,19 @@ import {
    DeleteTransactionAction,
    UpdateDataRangeAction
 } from '../actions/transactions.actions';
-import { ITransactionModel, IDateRangeModel } from '../types';
+import { ITransactionModel, IDateRangeModel, ITransactionsSearch } from '../types';
 
 export interface ITransactionState {
    transactions: ITransactionModel[];
-   dateRange: IDateRangeModel;
-   refresh: boolean;
+   searchParameters: ITransactionsSearch;
 }
 
 export const initialTransactionState: ITransactionState = {
    transactions: [],
-   dateRange: defaultDateRange(),
-   refresh: true,
+   searchParameters: {
+      dateRange: defaultDateRange(),
+      refresh: true,
+   }
 };
 
 export function transactionReducer(state: ITransactionState = initialTransactionState, action: Action): ITransactionState {
@@ -30,6 +31,8 @@ export function transactionReducer(state: ITransactionState = initialTransaction
          return DeleteTransaction(state, action as DeleteTransactionAction);
       case TransactionActionTypes.UpdateDataRange:
          return UpdateDataRange(state, action as UpdateDataRangeAction);
+      case TransactionActionTypes.RefreshTransactions:
+         return RefreshTransactions(state);
       default:
          return state;
    }
@@ -41,7 +44,20 @@ function SetTransactions(state: ITransactionState, action: SetTransactionsAction
    return {
       ...state,
       transactions,
-      refresh: false
+      searchParameters: {
+         ...state.searchParameters,
+         refresh: false
+      }
+   };
+}
+
+function RefreshTransactions(state: ITransactionState): ITransactionState {
+   return {
+      ...state,
+      searchParameters: {
+         ...state.searchParameters,
+         refresh: true
+      }
    };
 }
 
@@ -50,11 +66,13 @@ function UpdateTransaction(state: ITransactionState, action: UpdateTransactionAc
 
    const index = state.transactions.findIndex(t => t.id === transaction.id);
 
-   state.transactions[index] = transaction;
+   const transactions = state.transactions.map(t => t);
+
+   transactions[index] = transaction;
 
    return {
       ...state,
-      transactions: state.transactions
+      transactions
    };
 }
 
@@ -63,11 +81,13 @@ function DeleteTransaction(state: ITransactionState, action: DeleteTransactionAc
 
    const index = state.transactions.findIndex(t => t.id === transactionId);
 
-   state.transactions.splice(index, 1);
+   const transactions = state.transactions.map(t => t);
+
+   transactions.splice(index, 1);
 
    return {
       ...state,
-      transactions: state.transactions
+      transactions
    };
 }
 
@@ -76,8 +96,11 @@ function UpdateDataRange(state: ITransactionState, action: UpdateDataRangeAction
 
    return {
       ...state,
-      dateRange,
-      refresh: true
+      searchParameters: {
+         ...state.searchParameters,
+         dateRange,
+         refresh: true
+      }
    };
 }
 
