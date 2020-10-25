@@ -39,7 +39,7 @@ namespace MyMoney.Core.Services
          notes = notes ?? "";
          name = name ?? $"Budget for {month}/{year}";
 
-         if (month <= 0 || year <= 0)
+         if (month <= 0 || year <= 0 || month > 12)
          {
             return null;
          }
@@ -71,7 +71,7 @@ namespace MyMoney.Core.Services
          var budget = _repository.FindById<IBudget>(budgetId);
          var userId = _currentUserProvider.CurrentUserId;
 
-         if (budget == null || budget.UserId != userId || month <= 0 || year <= 0)
+         if (budget == null || budget.UserId != userId || month <= 0 || year <= 0 || month > 12)
             return false;
 
          budget.Month = month;
