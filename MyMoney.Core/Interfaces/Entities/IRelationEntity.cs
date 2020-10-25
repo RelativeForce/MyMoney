@@ -1,6 +1,6 @@
 ﻿namespace MyMoney.Core.Interfaces.Entities
 {
-    public interface IRelationEntity
-    {
-    }
+   public interface IRelationEntity
+   {
+   }
 }

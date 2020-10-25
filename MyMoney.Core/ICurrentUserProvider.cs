@@ -2,9 +2,9 @@
 
 namespace MyMoney.Core
 {
-    public interface ICurrentUserProvider
-    {
-        long CurrentUserId { get; }
-        IUser CurrentUser { get; }
-    }
+   public interface ICurrentUserProvider
+   {
+      long CurrentUserId { get; }
+      IUser CurrentUser { get; }
+   }
 }

@@ -8,40 +8,40 @@ using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Infrastructure
 {
-    public sealed class CurrentUserProvider : ICurrentUserProvider
-    {
+   public sealed class CurrentUserProvider : ICurrentUserProvider
+   {
 
-        private readonly IRepository _repository;
-        private readonly IHttpContextAccessor _accessor;
+      private readonly IRepository _repository;
+      private readonly IHttpContextAccessor _accessor;
 
-        public CurrentUserProvider(IHttpContextAccessor accessor, IRepository repository)
-        {
-            _repository = repository;
-            _accessor = accessor;
-        }
+      public CurrentUserProvider(IHttpContextAccessor accessor, IRepository repository)
+      {
+         _repository = repository;
+         _accessor = accessor;
+      }
 
-        public long CurrentUserId
-        {
-            get
-            {
-                var claim = _accessor.HttpContext.User.Claims.First(c => c.Type.Equals(ClaimTypes.Name));
+      public long CurrentUserId
+      {
+         get
+         {
+            var claim = _accessor.HttpContext.User.Claims.First(c => c.Type.Equals(ClaimTypes.Name));
 
-                return long.Parse(claim.Value);
-            }
-        }
+            return long.Parse(claim.Value);
+         }
+      }
 
-        public IUser CurrentUser
-        {
-            get
-            {
-                var user = _repository.FindById<IUser>(CurrentUserId);
+      public IUser CurrentUser
+      {
+         get
+         {
+            var user = _repository.FindById<IUser>(CurrentUserId);
 
 
-                if (user == null)
-                    throw new Exception("Current user does not exist");
+            if (user == null)
+               throw new Exception("Current user does not exist");
 
-                return user;
-            }
-        }
-    }
+            return user;
+         }
+      }
+   }
 }

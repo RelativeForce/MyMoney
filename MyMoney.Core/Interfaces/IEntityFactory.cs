@@ -2,10 +2,10 @@
 
 namespace MyMoney.Core.Interfaces
 {
-    public interface IEntityFactory
-    {
-        IBudget NewBudget { get; }
-        ITransaction NewTransaction { get; }
-        IUser NewUser { get; }
-    }
+   public interface IEntityFactory
+   {
+      IBudget NewBudget { get; }
+      ITransaction NewTransaction { get; }
+      IUser NewUser { get; }
+   }
 }

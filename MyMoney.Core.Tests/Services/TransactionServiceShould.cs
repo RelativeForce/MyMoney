@@ -85,8 +85,8 @@ namespace MyMoney.Core.Tests.Services
                  t.Description == description)))
              .Returns((ITransaction t) =>
              {
-                   // Set the Id
-                   t.Id = transactionId;
+                // Set the Id
+                t.Id = transactionId;
 
                 return t;
              })
