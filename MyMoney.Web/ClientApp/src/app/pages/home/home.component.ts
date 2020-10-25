@@ -13,24 +13,13 @@ import { IBudgetModel, IDateRangeModel, ITransactionModel } from 'src/app/shared
    templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-   // options
-   legend = true;
-   showLabels = false;
-   animations = true;
-   xAxis = true;
-   yAxis = true;
-   showYAxisLabel = true;
-   showXAxisLabel = true;
-   xAxisLabel = 'Transactions';
-   yAxisLabel = 'Remaining in budget (£)';
-   timeline = true;
-
-   colorScheme = {
-      domain: ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5']
-   };
+   public xAxisLabel: string;
+   public yAxisLabel: string;
+   public colorScheme: { domain: string[] };
    public xAxisTicks: BudgetSeriesDataPoint[];
    public seriesData: BudgetSeries[];
-   public loading: boolean;
+   public legendTitle: string;
+
    private budgets: IBudgetModel[];
    private transactions: ITransactionModel[];
 
@@ -40,18 +29,30 @@ export class HomeComponent implements OnInit {
       private readonly store: Store<IAppState>,
       private readonly router: Router,
    ) {
-      this.loading = false;
       this.budgets = [];
       this.transactions = [];
       this.seriesData = [];
       this.xAxisTicks = [];
+      this.xAxisLabel = 'Transactions';
+      this.yAxisLabel = 'Remaining in budget (£)';
+      this.colorScheme = {
+         domain: ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5']
+      };
+      this.legendTitle = new Date().toLocaleString('default', { month: 'long' });
    }
+
    ngOnInit(): void {
+
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+
+      this.budgetService.updateMonthId(month, year);
+
       this.store
          .select(selectBudgets)
          .subscribe((budgets) => {
             this.budgets = budgets;
-            this.updateCharts();
+            this.transactionService.updateDateRange(this.defaultDateRange());
          });
 
       this.store
@@ -60,12 +61,6 @@ export class HomeComponent implements OnInit {
             this.transactions = transactions.map(t => t).reverse();
             this.updateCharts();
          });
-
-      const month = new Date().getMonth() + 1;
-      const year = new Date().getFullYear();
-
-      this.budgetService.updateMonthId(month, year);
-      this.transactionService.updateDateRange(this.defaultDateRange());
    }
 
    defaultDateRange(): IDateRangeModel {
@@ -81,12 +76,16 @@ export class HomeComponent implements OnInit {
 
    updateCharts() {
 
-      this.seriesData = this.budgets.map(b => new BudgetSeries(b));
+      this.seriesData = [];
 
-      for (const transaction of this.transactions) {
-         for (const budget of this.budgets) {
-            this.seriesData.find(s => s.id === budget.id)?.addTransaction(transaction);
+      for (const budget of this.budgets) {
+         const bs = new BudgetSeries(budget);
+
+         for (const transaction of this.transactions) {
+            bs.addTransaction(transaction);
          }
+
+         this.seriesData[this.seriesData.length] = bs;
       }
    }
 

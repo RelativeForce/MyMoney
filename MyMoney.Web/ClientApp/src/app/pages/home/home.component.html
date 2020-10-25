@@ -1,6 +1,6 @@
 <div style="min-height: 500px;">
-   <ngx-charts-line-chart [scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
-      [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="seriesData"
+   <ngx-charts-line-chart [scheme]="colorScheme" [legend]="true" [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxis]="true"
+      [yAxis]="true" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [results]="seriesData" [legendTitle]="legendTitle"
       (select)="onSelect($event)">
       <ng-template #tooltipTemplate let-model="model">
          {{ (model.id === -1 ? model.series : model.date) }} • {{ model.name }} • £{{ model.amount }}
