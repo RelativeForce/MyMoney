@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IBudgetListResponseDto, IBudgetListRequestDto, IDeleteResponseDto, IBudgetDto, IIdDto, IUpdateResponseDto } from './dtos';
+import { IBudgetListResponseDto, IBudgetListRequestDto, IDeleteResponseDto, IBudgetDto, IIdDto, IUpdateResponseDto } from './dtos.interface';
 import { HttpHelper } from './http-helper.class';
 
 @Injectable({ providedIn: 'root' })
