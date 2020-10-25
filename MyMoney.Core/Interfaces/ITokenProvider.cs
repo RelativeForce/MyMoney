@@ -3,10 +3,10 @@ using System;
 
 namespace MyMoney.Core.Interfaces
 {
-    public interface ITokenProvider
-    {
-        DateTime TokenTimeOut { get; }
+   public interface ITokenProvider
+   {
+      DateTime TokenTimeOut { get; }
 
-        string NewToken(IUser user);
-    }
+      string NewToken(IUser user);
+   }
 }

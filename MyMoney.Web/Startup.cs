@@ -17,119 +17,119 @@ using MyMoney.Web.Utility;
 
 namespace MyMoney.Web
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+   public class Startup
+   {
+      public Startup(IConfiguration configuration)
+      {
+         Configuration = configuration;
+      }
 
-        public IConfiguration Configuration { get; }
+      public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddHttpContextAccessor();
+      // This method gets called by the runtime. Use this method to add services to the container.
+      public void ConfigureServices(IServiceCollection services)
+      {
+         services.AddHttpContextAccessor();
 
-            services.AddScoped<ITokenProvider, TokenProvider>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IRepository, Repository>();
-            services.AddScoped<IRelationRepository, RelationRepository>();
-            services.AddScoped<IBudgetService, BudgetService>();
-            services.AddScoped<ITransactionService, TransactionService>();
-            services.AddScoped<IEntityFactory, EntityFactory>();
-            services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
+         services.AddScoped<ITokenProvider, TokenProvider>();
+         services.AddScoped<IUserService, UserService>();
+         services.AddScoped<IRepository, Repository>();
+         services.AddScoped<IRelationRepository, RelationRepository>();
+         services.AddScoped<IBudgetService, BudgetService>();
+         services.AddScoped<ITransactionService, TransactionService>();
+         services.AddScoped<IEntityFactory, EntityFactory>();
+         services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
 
-            services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+         services.AddControllersWithViews();
+         // In production, the Angular files will be served from this directory
+         services.AddSpaStaticFiles(configuration =>
+         {
+            configuration.RootPath = "ClientApp/dist";
+         });
+
+         services.AddAuthentication(x =>
+         {
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+         })
+         .AddJwtBearer(x =>
+         {
+            x.RequireHttpsMetadata = false;
+            x.SaveToken = true;
+            x.TokenValidationParameters = new TokenValidationParameters
             {
-                configuration.RootPath = "ClientApp/dist";
-            });
+               ValidateIssuerSigningKey = true,
+               IssuerSigningKey = new SymmetricSecurityKey(TokenProvider.Key),
+               ValidateIssuer = false,
+               ValidateAudience = false
+            };
+         });
 
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(TokenProvider.Key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+         services.AddCors();
+         services.AddDbContext<DatabaseContext>(options =>
+             options
+                 .UseLazyLoadingProxies()
+                 .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+      }
 
-            services.AddCors();
-            services.AddDbContext<DatabaseContext>(options =>
-                options
-                    .UseLazyLoadingProxies()
-                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-        }
+      // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+      public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+      {
+         if (env.IsDevelopment())
+         {
+            app.UseDeveloperExceptionPage();
+         }
+         else
+         {
+            app.UseExceptionHandler("/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
+         app.UseHttpsRedirection();
+         app.UseStaticFiles();
+         if (!env.IsDevelopment())
+         {
+            app.UseSpaStaticFiles();
+         }
+
+         UpdateDatabase(app);
+
+         app.UseRouting();
+         app.UseAuthentication();
+         app.UseAuthorization();
+         app.UseEndpoints(endpoints =>
+         {
+            endpoints.MapControllerRoute(
+                   name: "default",
+                   pattern: "{controller}/{action=Index}/{id?}");
+         });
+
+         app.UseSpa(spa =>
+         {
+               // To learn more about options for serving an Angular SPA from ASP.NET Core,
+               // see https://go.microsoft.com/fwlink/?linkid=864501
+
+               spa.Options.SourcePath = "ClientApp";
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+               spa.UseAngularCliServer(npmScript: "start");
             }
-            else
+         });
+      }
+
+      private static void UpdateDatabase(IApplicationBuilder app)
+      {
+         using (var serviceScope = app.ApplicationServices
+             .GetRequiredService<IServiceScopeFactory>()
+             .CreateScope())
+         {
+            using (var context = serviceScope.ServiceProvider.GetService<DatabaseContext>())
             {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+               context.Database.Migrate();
             }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
-
-            UpdateDatabase(app);
-
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
-            });
-
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
-        }
-
-        private static void UpdateDatabase(IApplicationBuilder app)
-        {
-            using (var serviceScope = app.ApplicationServices
-                .GetRequiredService<IServiceScopeFactory>()
-                .CreateScope())
-            {
-                using (var context = serviceScope.ServiceProvider.GetService<DatabaseContext>())
-                {
-                    context.Database.Migrate();
-                }
-            }
-        }
-    }
+         }
+      }
+   }
 }

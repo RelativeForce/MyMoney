@@ -8,29 +8,29 @@ using System.Text;
 
 namespace MyMoney.Web.Utility
 {
-    public class TokenProvider : ITokenProvider
-    {
-        public const string Secret = "dqSRHqsruH3U75hFSg1Y5LCOcON7G90iXGomYbaFuH4G10f2PIexSes3QlyidLC";
+   public class TokenProvider : ITokenProvider
+   {
+      public const string Secret = "dqSRHqsruH3U75hFSg1Y5LCOcON7G90iXGomYbaFuH4G10f2PIexSes3QlyidLC";
 
-        public static readonly byte[] Key = Encoding.ASCII.GetBytes(Secret);
+      public static readonly byte[] Key = Encoding.ASCII.GetBytes(Secret);
 
-        public DateTime TokenTimeOut => DateTime.Now.AddHours(1);
+      public DateTime TokenTimeOut => DateTime.Now.AddHours(1);
 
-        public string NewToken(IUser user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
+      public string NewToken(IUser user)
+      {
+         var tokenHandler = new JwtSecurityTokenHandler();
+         var tokenDescriptor = new SecurityTokenDescriptor
+         {
+            Subject = new ClaimsIdentity(new Claim[]
+             {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = TokenTimeOut,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+             }),
+            Expires = TokenTimeOut,
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256Signature)
+         };
+         var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
-        }
-    }
+         return tokenHandler.WriteToken(token);
+      }
+   }
 }

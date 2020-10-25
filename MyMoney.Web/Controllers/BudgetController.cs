@@ -9,140 +9,140 @@ using System.Linq;
 
 namespace MyMoney.Web.Controllers
 {
-    [ApiController]
-    [Authorize]
-    [Route("[controller]")]
-    public class BudgetController : ControllerBase
-    {
-        private readonly IBudgetService _budgetService;
+   [ApiController]
+   [Authorize]
+   [Route("[controller]")]
+   public class BudgetController : ControllerBase
+   {
+      private readonly IBudgetService _budgetService;
 
-        public BudgetController(IBudgetService budgetService)
-        {
-            _budgetService = budgetService;
-        }
+      public BudgetController(IBudgetService budgetService)
+      {
+         _budgetService = budgetService;
+      }
 
-        [HttpPost(nameof(Find))]
-        public IActionResult Find([FromBody] FindRequest findParameters)
-        {
-            try
+      [HttpPost(nameof(Find))]
+      public IActionResult Find([FromBody] FindRequest findParameters)
+      {
+         try
+         {
+            if (findParameters == null || !ModelState.IsValid)
             {
-                if (findParameters == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
-
-                var budget =_budgetService.Find(findParameters.Id);
-
-                if (budget != null)
-                {
-                    return Ok(new BudgetModel(budget));
-                }
-
-                return NotFound("Transaction does not exist");
+               return BadRequest("Invalid State");
             }
-            catch (Exception)
+
+            var budget = _budgetService.Find(findParameters.Id);
+
+            if (budget != null)
             {
-                return BadRequest("Error while creating");
+               return Ok(new BudgetModel(budget));
             }
-        }
 
-        [HttpPost(nameof(List))]
-        public IActionResult List([FromBody] BudgetRequest findParameters)
-        {
-            try
+            return NotFound("Transaction does not exist");
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
+      }
+
+      [HttpPost(nameof(List))]
+      public IActionResult List([FromBody] BudgetRequest findParameters)
+      {
+         try
+         {
+            if (findParameters == null || !ModelState.IsValid)
             {
-                if (findParameters == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
-
-                var budgets = _budgetService.List(findParameters.MonthId);
-
-                if (budgets == null)
-                    return NotFound();
-
-                return Ok(new BudgetListResponse
-                {
-                    Budgets = budgets.Select(t => new BudgetModel(t)).ToList()
-                });
+               return BadRequest("Invalid State");
             }
-            catch (Exception)
+
+            var budgets = _budgetService.List(findParameters.MonthId);
+
+            if (budgets == null)
+               return NotFound();
+
+            return Ok(new BudgetListResponse
             {
-                return BadRequest("Error while creating");
-            }
-        }
+               Budgets = budgets.Select(t => new BudgetModel(t)).ToList()
+            });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
+      }
 
-        [HttpPost(nameof(Add))]
-        public IActionResult Add([FromBody] BudgetModel model)
-        {
-            try
+      [HttpPost(nameof(Add))]
+      public IActionResult Add([FromBody] BudgetModel model)
+      {
+         try
+         {
+            if (model == null || !ModelState.IsValid)
             {
-                if (model == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
-
-                var result = _budgetService.Add(
-                    model.MonthId,
-                    model.Name,
-                    model.Amount,
-                    model.Notes
-                );
-
-                if (result == null)
-                    return BadRequest("Invalid budget data");
-
-                return Ok(new BudgetModel(result));
-
+               return BadRequest("Invalid State");
             }
-            catch (Exception)
+
+            var result = _budgetService.Add(
+                model.MonthId,
+                model.Name,
+                model.Amount,
+                model.Notes
+            );
+
+            if (result == null)
+               return BadRequest("Invalid budget data");
+
+            return Ok(new BudgetModel(result));
+
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while registering");
+         }
+      }
+
+      [HttpPost(nameof(Update))]
+      public IActionResult Update([FromBody] BudgetModel model)
+      {
+         try
+         {
+            if (model == null || !ModelState.IsValid)
             {
-                return BadRequest("Error while registering");
+               return BadRequest("Invalid State");
             }
-        }
 
-        [HttpPost(nameof(Update))]
-        public IActionResult Update([FromBody] BudgetModel model)
-        {
-            try
+            var success = _budgetService.Update(model.Id, model.MonthId, model.Name, model.Amount, model.Notes);
+
+            return Ok(new UpdateResponse
             {
-                if (model == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
+               Success = success,
+               Error = success ? "" : "Invalid budget information"
+            });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while updating");
+         }
+      }
 
-                var success = _budgetService.Update(model.Id, model.MonthId, model.Name, model.Amount, model.Notes);
-
-                return Ok(new UpdateResponse
-                {
-                    Success = success,
-                    Error = success ? "" : "Invalid budget information"
-                });
-            }
-            catch (Exception)
+      [HttpPost(nameof(Delete))]
+      public IActionResult Delete([FromBody] DeleteRequest deleteParameters)
+      {
+         try
+         {
+            if (deleteParameters == null || !ModelState.IsValid)
             {
-                return BadRequest("Error while updating");
+               return BadRequest("Invalid State");
             }
-        }
 
-        [HttpPost(nameof(Delete))]
-        public IActionResult Delete([FromBody] DeleteRequest deleteParameters)
-        {
-            try
-            {
-                if (deleteParameters == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
+            var result = _budgetService.Delete(deleteParameters.Id);
 
-                var result = _budgetService.Delete(deleteParameters.Id);
-
-                return Ok(new DeleteResponse { Success = result });
-            }
-            catch (Exception)
-            {
-                return BadRequest("Error while deleting");
-            }
-        }
-    }
+            return Ok(new DeleteResponse { Success = result });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while deleting");
+         }
+      }
+   }
 }

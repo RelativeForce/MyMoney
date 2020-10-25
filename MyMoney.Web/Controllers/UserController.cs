@@ -7,63 +7,63 @@ using System;
 
 namespace MyMoney.Web.Controllers
 {
-    [ApiController]
-    [AllowAnonymous]
-    [Route("[controller]")]
-    public class UserController : ControllerBase
-    {
+   [ApiController]
+   [AllowAnonymous]
+   [Route("[controller]")]
+   public class UserController : ControllerBase
+   {
 
-        private readonly IUserService _userService;
+      private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
-        {
-            _userService = userService;
-        }
+      public UserController(IUserService userService)
+      {
+         _userService = userService;
+      }
 
-        [HttpPost(nameof(Login))]
-        public IActionResult Login([FromBody] LoginRequest loginParameters)
-        {
-            try
+      [HttpPost(nameof(Login))]
+      public IActionResult Login([FromBody] LoginRequest loginParameters)
+      {
+         try
+         {
+            if (loginParameters == null || !ModelState.IsValid)
             {
-                if (loginParameters == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
-
-                var result = _userService.Login(loginParameters.Email, loginParameters.Password);
-
-                return Ok(new LoginResponse(result));
+               return BadRequest("Invalid State");
             }
-            catch (Exception)
+
+            var result = _userService.Login(loginParameters.Email, loginParameters.Password);
+
+            return Ok(new LoginResponse(result));
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
+      }
+
+      [HttpPost(nameof(Register))]
+      public IActionResult Register([FromBody] RegisterRequest registerParameters)
+      {
+         try
+         {
+            if (registerParameters == null || !ModelState.IsValid)
             {
-                return BadRequest("Error while creating");
+               return BadRequest("Invalid State");
             }
-        }
 
-        [HttpPost(nameof(Register))]
-        public IActionResult Register([FromBody] RegisterRequest registerParameters)
-        {
-            try
-            {
-                if (registerParameters == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
+            var result = _userService.Register(
+                registerParameters.Email,
+                registerParameters.Password,
+                registerParameters.DateOfBirth,
+                registerParameters.FullName
+                );
 
-                var result = _userService.Register(
-                    registerParameters.Email,
-                    registerParameters.Password,
-                    registerParameters.DateOfBirth,
-                    registerParameters.FullName
-                    );
+            return Ok(new LoginResponse(result));
 
-                return Ok(new LoginResponse(result));
-
-            }
-            catch (Exception)
-            {
-                return BadRequest("Error while registering");
-            }
-        }
-    }
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while registering");
+         }
+      }
+   }
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace MyMoney.Web.Models.Response
 {
-    public class TransactionListResponse
-    {
-        public List<TransactionModel> Transactions { get; set; } = new List<TransactionModel>();
-    }
+   public class TransactionListResponse
+   {
+      public List<TransactionModel> Transactions { get; set; } = new List<TransactionModel>();
+   }
 }

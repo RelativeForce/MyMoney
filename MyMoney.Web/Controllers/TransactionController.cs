@@ -13,131 +13,131 @@ using System.Linq;
 
 namespace MyMoney.Web.Controllers
 {
-    [ApiController]
-    [Authorize]
-    [Route("[controller]")]
-    public class TransactionController : ControllerBase
-    {
-        private readonly ITransactionService _transactionService;
+   [ApiController]
+   [Authorize]
+   [Route("[controller]")]
+   public class TransactionController : ControllerBase
+   {
+      private readonly ITransactionService _transactionService;
 
-        public TransactionController(ITransactionService transactionService)
-        {
-            _transactionService = transactionService;
-        }
+      public TransactionController(ITransactionService transactionService)
+      {
+         _transactionService = transactionService;
+      }
 
-        [HttpPost(nameof(Find))]
-        public IActionResult Find([FromBody] FindRequest findParameters)
-        {
-            try
+      [HttpPost(nameof(Find))]
+      public IActionResult Find([FromBody] FindRequest findParameters)
+      {
+         try
+         {
+            if (findParameters == null || !ModelState.IsValid)
             {
-                if (findParameters == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
-
-                var transaction = _transactionService.Find(findParameters.Id);
-
-                if(transaction != null)
-                {
-                    return Ok(new TransactionModel(transaction, useJavaScriptDate: true));
-                }
-
-                return NotFound("Transaction does not exist");
+               return BadRequest("Invalid State");
             }
-            catch (Exception)
+
+            var transaction = _transactionService.Find(findParameters.Id);
+
+            if (transaction != null)
             {
-                return BadRequest("Error while creating");
+               return Ok(new TransactionModel(transaction, useJavaScriptDate: true));
             }
-        }
 
-        [HttpPost(nameof(List))]
-        public IActionResult List([FromBody] DateRangeModel listParameters)
-        {
-            try
+            return NotFound("Transaction does not exist");
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
+      }
+
+      [HttpPost(nameof(List))]
+      public IActionResult List([FromBody] DateRangeModel listParameters)
+      {
+         try
+         {
+            if (listParameters == null || !ModelState.IsValid)
             {
-                if (listParameters == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
-
-                var transactions = _transactionService.Between(listParameters.Start, listParameters.End);
-
-                return Ok(new TransactionListResponse
-                {
-                    Transactions = transactions.Select(t => new TransactionModel(t)).ToList()
-                });
+               return BadRequest("Invalid State");
             }
-            catch (Exception)
+
+            var transactions = _transactionService.Between(listParameters.Start, listParameters.End);
+
+            return Ok(new TransactionListResponse
             {
-                return BadRequest("Error while creating");
-            }
-        }
+               Transactions = transactions.Select(t => new TransactionModel(t)).ToList()
+            });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
+      }
 
-        [HttpPost(nameof(Update))]
-        public IActionResult Update([FromBody] TransactionModel model)
-        {
-            try
+      [HttpPost(nameof(Update))]
+      public IActionResult Update([FromBody] TransactionModel model)
+      {
+         try
+         {
+            if (model == null || !ModelState.IsValid)
             {
-                if (model == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
-
-                var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
-
-                return Ok(new UpdateResponse
-                {
-                    Success = success,
-                    Error = success ? "" : "Invalid transaction information"
-                });
+               return BadRequest("Invalid State");
             }
-            catch (Exception)
+
+            var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
+
+            return Ok(new UpdateResponse
             {
-                return BadRequest("Error while updating");
-            }
-        }
+               Success = success,
+               Error = success ? "" : "Invalid transaction information"
+            });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while updating");
+         }
+      }
 
-        [HttpPost(nameof(Add))]
-        public IActionResult Add([FromBody] TransactionModel model)
-        {
-            try
+      [HttpPost(nameof(Add))]
+      public IActionResult Add([FromBody] TransactionModel model)
+      {
+         try
+         {
+            if (model == null || !ModelState.IsValid)
             {
-                if (model == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
-
-                var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
-
-                if (result == null)
-                    return BadRequest("Invalid State");
-
-                return Ok(new TransactionModel(result));
+               return BadRequest("Invalid State");
             }
-            catch (Exception)
+
+            var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
+
+            if (result == null)
+               return BadRequest("Invalid State");
+
+            return Ok(new TransactionModel(result));
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
+      }
+
+      [HttpPost(nameof(Delete))]
+      public IActionResult Delete([FromBody] DeleteRequest deleteParameters)
+      {
+         try
+         {
+            if (deleteParameters == null || !ModelState.IsValid)
             {
-                return BadRequest("Error while creating");
+               return BadRequest("Invalid State");
             }
-        }
 
-        [HttpPost(nameof(Delete))]
-        public IActionResult Delete([FromBody] DeleteRequest deleteParameters)
-        {
-            try
-            {
-                if (deleteParameters == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid State");
-                }
+            var result = _transactionService.Delete(deleteParameters.Id);
 
-                var result = _transactionService.Delete(deleteParameters.Id);
-
-                return Ok(new DeleteResponse { Success = result });
-            }
-            catch (Exception)
-            {
-                return BadRequest("Error while deleting");
-            }
-        }
-    }
+            return Ok(new DeleteResponse { Success = result });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while deleting");
+         }
+      }
+   }
 }
