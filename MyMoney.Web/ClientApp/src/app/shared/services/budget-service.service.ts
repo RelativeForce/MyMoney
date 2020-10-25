@@ -30,9 +30,7 @@ export class BudgetService {
    }
 
    public getBudgetsForMonth(month: number, year: number) {
-      const monthId = this.toMonthId(month, year);
-
-      return this.budgetApi.list({ monthId });
+      return this.budgetApi.list({ month, year });
    }
 
    public deleteBudget(budgetId: number): void {
@@ -43,10 +41,6 @@ export class BudgetService {
                this.store.dispatch(new DeleteBudgetAction(budgetId));
             }
          });
-   }
-
-   public toMonthId(month: number, year: number): string {
-      return `${year}${month < 10 ? '0' + month : month}`;
    }
 
    public updateMonthId(month: number, year: number): void {

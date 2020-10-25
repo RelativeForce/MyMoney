@@ -34,15 +34,9 @@ export class EditBudgetsComponent implements OnInit {
          this.id = Number.parseInt(idStr, 10);
 
          this.budgetService.findBudget(this.id).subscribe(response => {
-
-            const monthId = response.monthId;
-
-            const year = Number.parseInt(monthId.slice(0, 4), 10);
-            const month = Number.parseInt(monthId.slice(3, 6), 10);
-
             this.editBudgetForm = this.formBuilder.group({
-               year: [year, Validators.required],
-               month: [month, Validators.required],
+               year: [response.year, Validators.required],
+               month: [response.month, Validators.required],
                amount: [response.amount, Validators.required],
                name: [response.name, Validators.required],
                notes: [response.notes, Validators.required]
@@ -66,10 +60,9 @@ export class EditBudgetsComponent implements OnInit {
 
       this.loading = true;
 
-      const monthId = this.budgetService.toMonthId(this.f.month.value, this.f.year.value);
-
       const budget: IBudgetModel = {
-         monthId,
+         month: this.f.month.value,
+         year: this.f.year.value,
          name: this.f.name.value,
          amount: this.f.amount.value,
          remaining: this.f.amount.value,

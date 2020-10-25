@@ -32,23 +32,17 @@ namespace MyMoney.Core.Services
          return budget;
       }
 
-      public IBudget Add(string monthId, string name, decimal amount, string notes)
+      public IBudget Add(int month, int year, string name, decimal amount, string notes)
       {
          var user = _currentUserProvider.CurrentUser;
 
          notes = notes ?? "";
-         name = name ?? "Budget for " + monthId;
+         name = name ?? $"Budget for {month}/{year}";
 
-         if (!Regex.Match(monthId, "^[0-9]{6}$").Success)
+         if (month <= 0 || year <= 0 || month > 12)
          {
             return null;
          }
-
-         var monthStr = monthId.Substring(4, 2);
-         var yearStr = monthId.Substring(0, 4);
-
-         var month = int.Parse(monthStr);
-         var year = int.Parse(yearStr);
 
          var budget = _entityFactory.NewBudget;
          budget.UserId = user.Id;
@@ -62,20 +56,14 @@ namespace MyMoney.Core.Services
          return _repository.Add(budget);
       }
 
-      public List<IBudget> List(string monthId)
+      public List<IBudget> List(int month, int year)
       {
          var user = _currentUserProvider.CurrentUser;
-
-         var monthStr = monthId.Substring(4, 2);
-         var yearStr = monthId.Substring(0, 4);
-
-         var month = int.Parse(monthStr);
-         var year = int.Parse(yearStr);
 
          return user.Budgets.Where(b => month == b.Month && year == b.Year).ToList();
       }
 
-      public bool Update(long budgetId, string monthId, string name, decimal amount, string notes)
+      public bool Update(long budgetId, int month, int year, string name, decimal amount, string notes)
       {
          if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(notes))
             return false;
@@ -83,14 +71,8 @@ namespace MyMoney.Core.Services
          var budget = _repository.FindById<IBudget>(budgetId);
          var userId = _currentUserProvider.CurrentUserId;
 
-         if (budget == null || budget.UserId != userId)
+         if (budget == null || budget.UserId != userId || month <= 0 || year <= 0 || month > 12)
             return false;
-
-         var monthStr = monthId.Substring(4, 2);
-         var yearStr = monthId.Substring(0, 4);
-
-         var month = int.Parse(monthStr);
-         var year = int.Parse(yearStr);
 
          budget.Month = month;
          budget.Year = year;
