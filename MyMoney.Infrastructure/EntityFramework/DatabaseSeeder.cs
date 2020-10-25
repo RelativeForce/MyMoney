@@ -1,7 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyMoney.Infrastructure.Entities;
-using System;
-using System.Linq;
 
 namespace MyMoney.Infrastructure.EntityFramework
 {

@@ -4,7 +4,8 @@ namespace MyMoney.Core.Interfaces.Entities
 {
    public interface IBudget : IBaseEntity
    {
-      string MonthId { get; set; }
+      int Year { get; set; }
+      int Month { get; set; }
       decimal Amount { get; set; }
       string Name { get; set; }
       string Notes { get; set; }
