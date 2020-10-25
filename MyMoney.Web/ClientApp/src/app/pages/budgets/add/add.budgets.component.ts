@@ -53,14 +53,13 @@ export class AddBudgetsComponent implements OnInit {
       const name = this.f.name.value;
       const notes = this.f.notes.value;
 
-      const monthId: string = this.budgetService.toMonthId(month, year);
-
       const budget: IBudgetModel = {
-         monthId,
-         name: name,
-         amount: amount,
+         month,
+         year,
+         name,
+         amount,
          remaining: amount,
-         notes: notes,
+         notes,
          id: 0
       };
 

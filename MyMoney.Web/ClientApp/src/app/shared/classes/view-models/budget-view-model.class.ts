@@ -4,12 +4,14 @@ export class BudgetViewModel {
    id: number;
    amount: string;
    notes: string;
-   monthId: string;
+   month: number;
+   year: number;
    name: string;
    remaining: string;
 
    constructor(model: IBudgetModel) {
-      this.monthId = model.monthId;
+      this.month = model.month;
+      this.year = model.year;
       this.name = model.name;
       this.notes = model.notes;
       this.amount = '£' + model.amount;
