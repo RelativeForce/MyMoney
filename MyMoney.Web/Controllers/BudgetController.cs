@@ -56,7 +56,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var budgets = _budgetService.List(findParameters.MonthId);
+            var budgets = _budgetService.List(findParameters.Month, findParameters.Year);
 
             if (budgets == null)
                return NotFound();
@@ -83,7 +83,8 @@ namespace MyMoney.Web.Controllers
             }
 
             var result = _budgetService.Add(
-                model.MonthId,
+                model.Month,
+                model.Year,
                 model.Name,
                 model.Amount,
                 model.Notes
@@ -111,7 +112,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var success = _budgetService.Update(model.Id, model.MonthId, model.Name, model.Amount, model.Notes);
+            var success = _budgetService.Update(model.Id, model.Month, model.Year, model.Name, model.Amount, model.Notes);
 
             return Ok(new UpdateResponse
             {
