@@ -5,7 +5,8 @@
          <div class="input-group-prepend">
             <span class="input-group-text">Start</span>
          </div>
-         <input type="date" formControlName="start" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
+         <input type="date" formControlName="start" class="form-control" (change)="updateTransactions($event)"
+            [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
          <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
             <div *ngIf="f.start.errors.required">start is required</div>
          </div>
@@ -14,18 +15,17 @@
          <div class="input-group-prepend">
             <span class="input-group-text">End</span>
          </div>
-         <input type="date" formControlName="end" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
+         <input type="date" formControlName="end" class="form-control" (change)="updateTransactions($event)"
+            [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
          <div *ngIf="submitted && f.end.errors" class="invalid-feedback">
             <div *ngIf="f.end.errors.required">end is required</div>
          </div>
       </div>
-      <div class="input-group mb-3 pr-2">
+      <div class="input-group mb-3 pr-2 btn-group">
          <button [disabled]="loading" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Update
+            <div *ngIf="!loading" class="spin">↻</div>
          </button>
-      </div>
-      <div class="input-group mb-3">
          <a class="btn btn-success" routerLink="./add">Add</a>
       </div>
    </div>
@@ -46,8 +46,10 @@
             <td>{{transaction.description}}</td>
             <td>{{transaction.amount}}</td>
             <td>
-               <a class="btn btn-primary" routerLink="./edit/{{transaction.id}}">🖉</a>
-               <button class="btn btn-danger" (click)="deleteTransaction(transaction.id)">✕</button>
+               <div class="btn-group">
+                  <a class="btn btn-primary" routerLink="./edit/{{transaction.id}}">🖉</a>
+                  <button class="btn btn-danger" (click)="deleteTransaction(transaction.id)">✕</button>
+               </div>
             </td>
          </tr>
       </tbody>

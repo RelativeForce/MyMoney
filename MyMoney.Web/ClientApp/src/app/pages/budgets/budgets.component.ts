@@ -45,16 +45,7 @@ export class BudgetsComponent implements OnInit {
       this.budgetService.refreshBudgets();
    }
 
-   public get f() { return this.monthIdForm.controls; }
-
-   public delete(id: number): void {
-
-      this.budgetService.deleteBudget(id);
-   }
-
-   public onSubmit(): void {
-      this.submitted = true;
-
+   public updateBudgets(): void {
       if (this.monthIdForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
          return;
       }
@@ -65,5 +56,17 @@ export class BudgetsComponent implements OnInit {
       this.loading = true;
 
       this.budgetService.updateMonthId(month, year);
+   }
+
+   public get f() { return this.monthIdForm.controls; }
+
+   public delete(id: number): void {
+      this.budgetService.deleteBudget(id);
+   }
+
+   public onSubmit(): void {
+      this.submitted = true;
+
+      this.updateBudgets();
    }
 }

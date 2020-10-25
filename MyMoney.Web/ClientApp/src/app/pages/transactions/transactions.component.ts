@@ -63,6 +63,15 @@ export class TransactionsComponent implements OnInit {
       return parsedDate.getFullYear() + '-' + monthStr + '-' + dayStr;
    }
 
+   public updateTransactions(): void {
+
+      this.loading = true;
+
+      this.dateRange = { start: this.f.start.value, end: this.f.end.value };
+
+      this.transactionService.updateDateRange(this.dateRange);
+   }
+
    public get start(): string {
       return this.formatDate(this.dateRange.start);
    }
@@ -84,10 +93,6 @@ export class TransactionsComponent implements OnInit {
          return;
       }
 
-      this.loading = true;
-
-      this.dateRange = { start: this.f.start.value, end: this.f.end.value };
-
-      this.transactionService.updateDateRange(this.dateRange);
+      this.updateTransactions();
    }
 }
