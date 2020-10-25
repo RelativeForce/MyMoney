@@ -24,7 +24,7 @@
       <div class="input-group mb-3 pr-2 btn-group">
          <button [disabled]="loading" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Refresh
+            <div *ngIf="!loading" class="spin">↻</div>
          </button>
          <a class="btn btn-success" routerLink="./add">Add</a>
       </div>
