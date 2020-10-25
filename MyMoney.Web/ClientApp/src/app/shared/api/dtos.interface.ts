@@ -2,13 +2,15 @@ export interface IBudgetDto {
    id: number;
    amount: number;
    notes: string;
-   monthId: string;
+   month: number;
+   year: number;
    name: string;
    remaining: number;
 }
 
 export class IBudgetListRequestDto {
-   monthId: string;
+   month: number;
+   year: number;
 }
 
 export interface IBudgetListResponseDto {

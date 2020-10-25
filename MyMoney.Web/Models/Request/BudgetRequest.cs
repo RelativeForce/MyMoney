@@ -2,6 +2,7 @@
 {
    public class BudgetRequest
    {
-      public string MonthId { get; set; }
+      public int Month { get; set; }
+      public int Year { get; set; }
    }
 }

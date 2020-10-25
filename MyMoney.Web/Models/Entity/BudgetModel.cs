@@ -6,7 +6,8 @@ namespace MyMoney.Web.Models.Entity
    public class BudgetModel : EntityModel
    {
       public decimal Amount { get; set; }
-      public string MonthId { get; set; }
+      public int Month { get; set; }
+      public int Year { get; set; }
       public string Name { get; set; }
       public string Notes { get; set; }
       public decimal Remaining { get; set; }
@@ -19,7 +20,8 @@ namespace MyMoney.Web.Models.Entity
       public BudgetModel(IBudget model) : base(model.Id)
       {
          Amount = model.Amount;
-         MonthId = $"{model.Year}{(model.Month < 10 ? $"0{model.Month}" : $"{model.Month}")}";
+         Month = model.Month;
+         Year = model.Year;
          Name = model.Name;
          Notes = model.Notes;
          Remaining = model.Amount - model.Transactions.Select(b => b.Amount).Sum();
