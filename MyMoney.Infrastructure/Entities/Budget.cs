@@ -14,6 +14,8 @@ namespace MyMoney.Infrastructure.Entities
       public string Notes { get; set; }
       public long UserId { get; set; }
       public string MonthId { get; set; }
+      public int Year { get; set; }
+      public int Month { get; set; }
       public string Name { get; set; }
 
       [NotMapped]

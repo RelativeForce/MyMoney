@@ -127,7 +127,8 @@ namespace MyMoney.Web
          {
             using (var context = serviceScope.ServiceProvider.GetService<DatabaseContext>())
             {
-               context.Database.Migrate();
+               DatabaseSeeder.Setup(context);
+               DatabaseSeeder.Seed(context);
             }
          }
       }
