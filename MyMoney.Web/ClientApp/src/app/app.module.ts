@@ -21,6 +21,7 @@ import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
 import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
    declarations: [
@@ -39,6 +40,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
       HttpClientModule,
       FormsModule,
+      BrowserAnimationsModule,
       NgxChartsModule,
       ReactiveFormsModule,
       StoreModule.forRoot(appReducer),

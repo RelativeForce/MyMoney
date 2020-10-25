@@ -1,10 +1,9 @@
-<h1>Home</h1>
-
-
-<ul>
-   <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for
-      cross-platform server-side code</li>
-   <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for
-      client-side code</li>
-   <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
+<div style="min-height: 500px;">
+   <ngx-charts-line-chart [scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="seriesData"
+      (select)="onSelect($event)">
+      <ng-template #tooltipTemplate let-model="model">
+         {{ (model.id === -1 ? model.series : model.date) }} • {{ model.name }} • £{{ model.amount }}
+      </ng-template>
+   </ngx-charts-line-chart>
+</div>
