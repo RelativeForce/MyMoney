@@ -44,11 +44,18 @@ namespace MyMoney.Core.Services
             return null;
          }
 
+         var monthStr = monthId.Substring(4, 2);
+         var yearStr = monthId.Substring(0, 4);
+
+         var month = int.Parse(monthStr);
+         var year = int.Parse(yearStr);
+
          var budget = _entityFactory.NewBudget;
          budget.UserId = user.Id;
          budget.User = user;
          budget.Amount = amount;
-         budget.MonthId = monthId;
+         budget.Month = month;
+         budget.Year = year;
          budget.Notes = notes;
          budget.Name = name;
 
@@ -59,7 +66,13 @@ namespace MyMoney.Core.Services
       {
          var user = _currentUserProvider.CurrentUser;
 
-         return user.Budgets.Where(b => monthId == b.MonthId).ToList();
+         var monthStr = monthId.Substring(4, 2);
+         var yearStr = monthId.Substring(0, 4);
+
+         var month = int.Parse(monthStr);
+         var year = int.Parse(yearStr);
+
+         return user.Budgets.Where(b => month == b.Month && year == b.Year).ToList();
       }
 
       public bool Update(long budgetId, string monthId, string name, decimal amount, string notes)
@@ -73,10 +86,17 @@ namespace MyMoney.Core.Services
          if (budget == null || budget.UserId != userId)
             return false;
 
+         var monthStr = monthId.Substring(4, 2);
+         var yearStr = monthId.Substring(0, 4);
+
+         var month = int.Parse(monthStr);
+         var year = int.Parse(yearStr);
+
+         budget.Month = month;
+         budget.Year = year;
          budget.Amount = amount;
          budget.Notes = notes;
          budget.Name = name;
-         budget.MonthId = monthId;
 
          return _repository.Update(budget);
       }

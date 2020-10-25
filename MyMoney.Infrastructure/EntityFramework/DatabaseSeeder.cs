@@ -1,15 +1,17 @@
-﻿namespace MyMoney.Infrastructure.EntityFramework
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace MyMoney.Infrastructure.EntityFramework
 {
-   public sealed class DatabaseSeeder
+   public static class DatabaseSeeder
    {
-      public void EnsureCreated(DatabaseContext context)
+      public static void Setup(DatabaseContext context)
       {
          context.Database.EnsureCreated();
+         context.Database.Migrate();
       }
 
-      public void Seed(DatabaseContext context)
+      public static void Seed(DatabaseContext context)
       {
-
       }
    }
 }

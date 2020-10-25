@@ -19,7 +19,7 @@ namespace MyMoney.Web.Models.Entity
       public BudgetModel(IBudget model) : base(model.Id)
       {
          Amount = model.Amount;
-         MonthId = model.MonthId;
+         MonthId = $"{model.Year}{(model.Month < 10 ? $"0{model.Month}" : $"{model.Month}")}";
          Name = model.Name;
          Notes = model.Notes;
          Remaining = model.Amount - model.Transactions.Select(b => b.Amount).Sum();
