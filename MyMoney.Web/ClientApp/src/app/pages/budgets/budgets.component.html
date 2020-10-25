@@ -21,16 +21,12 @@
             <div *ngIf="f.month.errors.required">month is required</div>
          </div>
       </div>
-      <div class="input-group mb-3 pr-2">
+      <div class="input-group mb-3 pr-2 btn-group">
          <button [disabled]="loading" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Refresh
          </button>
-      </div>
-      <div class="input-group mb-3">
-         <a class="btn btn-success" routerLink="./add">
-            Add
-         </a>
+         <a class="btn btn-success" routerLink="./add">Add</a>
       </div>
    </div>
 </form>
@@ -52,8 +48,10 @@
             <td>{{budget.remaining}}</td>
             <td>{{budget.notes}}</td>
             <td style="min-width:120px">
-               <a class="btn btn-primary" routerLink="./edit/{{budget.id}}">🖉</a>
-               <button class="btn btn-danger" (click)="delete(budget.id)">✕</button>
+               <div class="btn-group">
+                  <a class="btn btn-primary" routerLink="./edit/{{budget.id}}">🖉</a>
+                  <button class="btn btn-danger" (click)="delete(budget.id)">✕</button>
+               </div>
             </td>
          </tr>
       </tbody>
