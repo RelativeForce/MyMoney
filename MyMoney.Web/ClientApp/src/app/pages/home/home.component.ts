@@ -67,9 +67,11 @@ export class HomeComponent implements OnInit {
       const end: Date = new Date();
       end.setDate(1);
       end.setMonth(end.getMonth() + 1);
+      end.setHours(0, 0, 0, 0);
 
       const start: Date = new Date();
       start.setDate(1);
+      start.setHours(0, 0, 0, 0);
 
       return { end, start };
    }
