@@ -6,7 +6,6 @@ import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/shared/state/app-state';
 import { selectTransactions, selectTransactionsDateRange } from 'src/app/shared/state/selectors/transaction.selector';
 import { IDateRangeModel } from '../../shared/state/types';
-import { Router } from '@angular/router';
 
 @Component({
    templateUrl: './transactions.component.html'
@@ -22,8 +21,7 @@ export class TransactionsComponent implements OnInit {
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
-      private readonly store: Store<IAppState>,
-      private readonly router: Router,
+      private readonly store: Store<IAppState>
    ) { }
 
    public ngOnInit(): void {

@@ -20,6 +20,7 @@
    "prettier.printWidth": 140,
    "html.format.wrapLineLength": 140,
    "cSpell.words": [
-      "mymoney"
+      "mymoney",
+      "swimlane"
    ]
 }
