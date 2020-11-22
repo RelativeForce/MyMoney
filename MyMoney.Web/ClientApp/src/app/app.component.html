@@ -6,25 +6,11 @@
          <li class="nav-item">
             <a class="nav-link" routerLink="/">Home</a>
          </li>
-         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="transactionsMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true"
-               aria-expanded="false">
-               Transactions
-            </a>
-            <div class="dropdown-menu" aria-labelledby="transactionsMenuLink">
-               <a class="dropdown-item" routerLink="/transactions">View</a>
-               <a class="dropdown-item" routerLink="/transactions/add">Add</a>
-            </div>
+         <li class="nav-item">
+            <a class="nav-link" routerLink="/transactions">Transactions</a>
          </li>
-         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="budgetsMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true"
-               aria-expanded="false">
-               Budgets
-            </a>
-            <div class="dropdown-menu" aria-labelledby="budgetsMenuLink">
-               <a class="dropdown-item" routerLink="/budgets">View</a>
-               <a class="dropdown-item" routerLink="/budgets/add">Add</a>
-            </div>
+         <li class="nav-item">
+            <a class="nav-link" routerLink="/budgets">Budgets</a>
          </li>
          <li class="nav-item">
             <a class="nav-link" (click)="logout()">Logout</a>
