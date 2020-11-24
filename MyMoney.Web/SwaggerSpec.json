@@ -1,0 +1,16 @@
+{
+  "x-generator": "NSwag v13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v12.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "MyMoney.Web.Api.0",
+    "version": "0.0.0"
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "description": "JWT Authorization header using the Bearer scheme.",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}
