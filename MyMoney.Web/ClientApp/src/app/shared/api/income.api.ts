@@ -28,15 +28,15 @@ export class IncomeApi {
          .pipe(first());
    }
 
-   public add(budget: IIncomeDto): Observable<IIncomeDto> {
+   public add(income: IIncomeDto): Observable<IIncomeDto> {
       return this.api
-         .post<IIncomeDto, IIncomeDto>('/Income/Add', budget)
+         .post<IIncomeDto, IIncomeDto>('/Income/Add', income)
          .pipe(first());
    }
 
-   public update(budget: IIncomeDto): Observable<IUpdateResultDto> {
+   public update(income: IIncomeDto): Observable<IUpdateResultDto> {
       return this.api
-         .post<IIncomeDto, IUpdateResultDto>('/Income/Update', budget)
+         .post<IIncomeDto, IUpdateResultDto>('/Income/Update', income)
          .pipe(first());
    }
 
