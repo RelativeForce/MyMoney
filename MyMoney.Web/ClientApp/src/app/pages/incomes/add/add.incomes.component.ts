@@ -49,6 +49,7 @@ export class AddIncomesComponent implements OnInit {
          date,
          name,
          amount,
+         remaining: amount,
          id: 0,
       };
 

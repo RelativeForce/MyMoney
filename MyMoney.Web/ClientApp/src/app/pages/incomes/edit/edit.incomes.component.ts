@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BudgetService, IncomeService } from '../../../shared/services';
+import { IncomeService } from '../../../shared/services';
 import { BudgetViewModel } from '../../../shared/classes';
 import { IIncomeModel } from 'src/app/shared/state/types';
 
@@ -98,6 +98,7 @@ export class EditIncomesComponent implements OnInit {
          date: dateString,
          name,
          amount,
+         remaining: 0,
          id: this.id,
       };
    }

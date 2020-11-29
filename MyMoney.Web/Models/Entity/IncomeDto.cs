@@ -8,6 +8,7 @@ namespace MyMoney.Web.Models.Entity
       public string Date { get; set; }
       public string Name { get; set; }
       public decimal Amount { get; set; }
+      public decimal Remaining { get; set; }
 
       public IncomeDto()
       {
@@ -19,6 +20,7 @@ namespace MyMoney.Web.Models.Entity
          Date = model.Date.ToShortDateString();
          Name = model.Name;
          Amount = model.Amount;
+         Remaining = model.Amount - model.Transactions.Select(t => t.Amount).Sum();
       }
    }
 }

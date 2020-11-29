@@ -11,6 +11,7 @@ export interface IBudgetDto {
 export interface IIncomeDto {
    id: number;
    amount: number;
+   remaining: number;
    date: string;
    name: string;
 }
