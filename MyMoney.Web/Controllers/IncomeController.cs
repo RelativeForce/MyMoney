@@ -68,7 +68,7 @@ namespace MyMoney.Web.Controllers
          }
          catch (Exception)
          {
-            return BadRequest("Error while creating");
+            return BadRequest("Error while listing incomes");
          }
       }
 
@@ -95,7 +95,7 @@ namespace MyMoney.Web.Controllers
          }
          catch (Exception)
          {
-            return BadRequest("Error while registering");
+            return BadRequest("Error while adding income");
          }
       }
 
