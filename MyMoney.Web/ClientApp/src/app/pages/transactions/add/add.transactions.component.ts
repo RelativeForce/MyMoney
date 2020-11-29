@@ -28,7 +28,8 @@ export class AddTransactionsComponent implements OnInit {
       this.addTransactionForm = this.formBuilder.group({
          date: ['', Validators.required],
          description: ['', Validators.required],
-         amount: ['', Validators.required]
+         amount: ['', Validators.required],
+         notes: ['']
       });
    }
 
@@ -67,6 +68,7 @@ export class AddTransactionsComponent implements OnInit {
       const date = this.f.date.value;
       const description = this.f.description.value;
       const amount = this.f.amount.value;
+      const notes = this.f.notes.value;
 
       const transaction: ITransactionModel = {
          date,
@@ -74,7 +76,7 @@ export class AddTransactionsComponent implements OnInit {
          amount,
          id: 0,
          budgetIds: Array.from(this.selectedBudgets),
-         notes: ''
+         notes
       };
 
       this.transactionService.addTransaction(transaction).subscribe(success => {

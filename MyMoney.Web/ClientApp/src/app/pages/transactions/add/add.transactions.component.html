@@ -25,6 +25,12 @@
                <div *ngIf="f.amount.errors.required">amount is required</div>
             </div>
          </div>
+         <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea formControlName="notes" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }"
+               rows="3"></textarea>
+            <div *ngIf="submitted && f.notes.errors" class="invalid-feedback"></div>
+         </div>
          <div class="form-group btn-group">
             <a class="btn btn-warning" routerLink="/transactions">
                Cancel

@@ -46,7 +46,8 @@ export class EditTransactionsComponent implements OnInit {
                this.editTransactionForm = this.formBuilder.group({
                   date: [this.toInputDateString(response.date), Validators.required],
                   description: [response.description, Validators.required],
-                  amount: [response.amount, Validators.required]
+                  amount: [response.amount, Validators.required],
+                  notes: [response.notes]
                });
 
                this.fetchBudgets();
@@ -102,6 +103,7 @@ export class EditTransactionsComponent implements OnInit {
 
       const description = this.f.description.value;
       const amount = this.f.amount.value;
+      const notes = this.f.notes.value;
 
       return {
          date: dateString,
@@ -109,7 +111,7 @@ export class EditTransactionsComponent implements OnInit {
          amount,
          id: this.id,
          budgetIds: Array.from(this.selectedBudgets),
-         notes: ''
+         notes
       };
    }
 
