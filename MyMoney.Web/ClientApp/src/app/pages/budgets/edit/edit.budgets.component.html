@@ -45,7 +45,7 @@
       <a class="btn btn-warning" routerLink="/budgets">
          Cancel
       </a>
-      <button class="btn btn-success">
+      <button [disabled]="loading" class="btn btn-success">
          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
          Save changes
       </button>
