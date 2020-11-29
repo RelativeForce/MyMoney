@@ -42,7 +42,7 @@ namespace MyMoney.Web.Controllers
          }
          catch (Exception)
          {
-            return BadRequest("Error while creating");
+            return BadRequest("Error while finding budget");
          }
       }
 
