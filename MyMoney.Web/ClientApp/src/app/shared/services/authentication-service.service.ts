@@ -9,7 +9,7 @@ import { selectCurrentSession } from '../state/selectors/session.selector';
 import { ISessionModel } from '../state/types';
 import { Router } from '@angular/router';
 import { UserApi } from '../api/user.api';
-import { SESSION_LOCAL_STORAGE_KEY } from '../constants';
+import { LOGIN_PAGE_PATH, SESSION_LOCAL_STORAGE_KEY } from '../constants';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -45,7 +45,7 @@ export class AuthenticationService {
 
    public logout(): void {
       this.store.dispatch(new ClearSessionAction());
-      this.router.navigate(['/login']);
+      this.router.navigate(['/' + LOGIN_PAGE_PATH]);
    }
 
    public checkSession(): Observable<boolean> {
