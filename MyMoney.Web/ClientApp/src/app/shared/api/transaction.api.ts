@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IDeleteResponseDto, IIdDto, ITransactionDto, ITransactionListResponseDto, IUpdateResponseDto } from './dtos.interface';
+import { IDeleteResultDto, IIdDto, ITransactionDto, ITransactionListDto, IUpdateResultDto } from './dtos.interface';
 import { HttpHelper } from './http-helper.class';
 import { IDateRangeModel } from '../state/types';
 
@@ -10,15 +10,15 @@ export class TransactionApi {
 
    constructor(private readonly api: HttpHelper) { }
 
-   public list(dateRange: IDateRangeModel): Observable<ITransactionListResponseDto> {
+   public list(dateRange: IDateRangeModel): Observable<ITransactionListDto> {
       return this.api
-         .post<IDateRangeModel, ITransactionListResponseDto>('/Transaction/List', dateRange)
+         .post<IDateRangeModel, ITransactionListDto>('/Transaction/List', dateRange)
          .pipe(first());
    }
 
-   public delete(id: IIdDto): Observable<IDeleteResponseDto> {
+   public delete(id: IIdDto): Observable<IDeleteResultDto> {
       return this.api
-         .post<IIdDto, IDeleteResponseDto>('/Transaction/Delete', id)
+         .post<IIdDto, IDeleteResultDto>('/Transaction/Delete', id)
          .pipe(first());
    }
 
@@ -28,9 +28,9 @@ export class TransactionApi {
          .pipe(first());
    }
 
-   public update(transaction: ITransactionDto): Observable<IUpdateResponseDto> {
+   public update(transaction: ITransactionDto): Observable<IUpdateResultDto> {
       return this.api
-         .post<ITransactionDto, IUpdateResponseDto>('/Transaction/Update', transaction)
+         .post<ITransactionDto, IUpdateResultDto>('/Transaction/Update', transaction)
          .pipe(first());
    }
 

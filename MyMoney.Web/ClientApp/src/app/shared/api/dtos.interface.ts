@@ -8,12 +8,12 @@ export interface IBudgetDto {
    remaining: number;
 }
 
-export class IBudgetListRequestDto {
+export class IBudgetSearchDto {
    month: number;
    year: number;
 }
 
-export interface IBudgetListResponseDto {
+export interface IBudgetListDto {
    budgets: IBudgetDto[];
 }
 
@@ -22,7 +22,7 @@ export interface IDateRangeDto {
    end: Date;
 }
 
-export interface IDeleteResponseDto {
+export interface IDeleteResultDto {
    success: boolean;
 }
 
@@ -30,19 +30,19 @@ export class IIdDto {
    id: number;
 }
 
-export interface ILoginRequestDto {
+export interface ILoginDto {
    email: string;
    password: string;
 }
 
-export interface ILoginResponseDto {
+export interface ILoginResultDto {
    success: boolean;
    error: string;
    token: string;
    validTo: string;
 }
 
-export interface IRegisterRequestDto {
+export interface IRegisterDto {
    email: string;
    password: string;
    dateOfBirth: Date;
@@ -57,11 +57,11 @@ export interface ITransactionDto {
    id: number;
 }
 
-export interface ITransactionListResponseDto {
+export interface ITransactionListDto {
    transactions: ITransactionDto[];
 }
 
-export interface IUpdateResponseDto {
+export interface IUpdateResultDto {
    success: boolean;
    error: string;
 }

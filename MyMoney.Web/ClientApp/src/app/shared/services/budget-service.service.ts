@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { BudgetApi, IDeleteResponseDto, IBudgetListResponseDto, IUpdateResponseDto } from '../api';
+import { BudgetApi, IDeleteResultDto, IBudgetListDto, IUpdateResultDto } from '../api';
 import {
    DeleteBudgetAction,
    RefreshBudgetsAction,
@@ -25,7 +25,7 @@ export class BudgetService {
          }
 
          this.getBudgetsForMonth(search.month, search.year)
-            .subscribe((response: IBudgetListResponseDto) => this.store.dispatch(new SetBudgetsAction(response.budgets)));
+            .subscribe((response: IBudgetListDto) => this.store.dispatch(new SetBudgetsAction(response.budgets)));
       });
    }
 
@@ -36,7 +36,7 @@ export class BudgetService {
    public deleteBudget(budgetId: number): void {
       this.budgetApi
          .delete({ id: budgetId })
-         .subscribe((status: IDeleteResponseDto) => {
+         .subscribe((status: IDeleteResultDto) => {
             if (status.success) {
                this.store.dispatch(new DeleteBudgetAction(budgetId));
             }
@@ -59,7 +59,7 @@ export class BudgetService {
    public editBudget(budget: IBudgetModel): Observable<boolean> {
       return this.budgetApi
          .update(budget)
-         .pipe(map((status: IUpdateResponseDto) => {
+         .pipe(map((status: IUpdateResultDto) => {
             if (status.success) {
                this.store.dispatch(new UpdateBudgetAction(budget));
             }
