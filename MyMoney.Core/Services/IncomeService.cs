@@ -50,6 +50,9 @@ namespace MyMoney.Core.Services
 
       public IList<IIncome> From(DateTime start, int count)
       {
+         if (count <= 0)
+            return new List<IIncome>();
+
          var user = _currentUserProvider.CurrentUser;
 
          return user.Incomes.Where(b => b.Date <= start).Take(count).ToList();

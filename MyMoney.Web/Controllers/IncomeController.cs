@@ -12,30 +12,30 @@ namespace MyMoney.Web.Controllers
    [ApiController]
    [Authorize]
    [Route("[controller]")]
-   public class BudgetController : ControllerBase
+   public class IncomeController : ControllerBase
    {
-      private readonly IBudgetService _budgetService;
+      private readonly IIncomeService _incomeService;
 
-      public BudgetController(IBudgetService budgetService)
+      public IncomeController(IIncomeService incomeService)
       {
-         _budgetService = budgetService;
+         _incomeService = incomeService;
       }
 
       [HttpPost(nameof(Find))]
-      public IActionResult Find([FromBody] IdDto findParameters)
+      public IActionResult Find([FromBody] IdDto dto)
       {
          try
          {
-            if (findParameters == null || !ModelState.IsValid)
+            if (dto == null || !ModelState.IsValid)
             {
                return BadRequest("Invalid State");
             }
 
-            var budget = _budgetService.Find(findParameters.Id);
+            var income = _incomeService.Find(dto.Id);
 
-            if (budget != null)
+            if (income != null)
             {
-               return Ok(new BudgetDto(budget));
+               return Ok(new IncomeDto(income));
             }
 
             return NotFound("Income does not exist");
@@ -47,23 +47,23 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(List))]
-      public IActionResult List([FromBody] BudgetSearchDto findParameters)
+      public IActionResult List([FromBody] IncomeSearchDto dto)
       {
          try
          {
-            if (findParameters == null || !ModelState.IsValid)
+            if (dto == null || !ModelState.IsValid)
             {
                return BadRequest("Invalid State");
             }
 
-            var budgets = _budgetService.List(findParameters.Month, findParameters.Year);
+            var incomes = _incomeService.From(dto.Date, dto.Count);
 
-            if (budgets == null)
+            if (incomes == null)
                return NotFound();
 
-            return Ok(new BudgetListDto
+            return Ok(new IncomeListDto
             {
-               Budgets = budgets.Select(t => new BudgetDto(t)).ToList()
+               Incomes = incomes.Select(t => new IncomeDto(t)).ToList()
             });
          }
          catch (Exception)
@@ -73,27 +73,25 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Add))]
-      public IActionResult Add([FromBody] BudgetDto model)
+      public IActionResult Add([FromBody] IncomeDto dto)
       {
          try
          {
-            if (model == null || !ModelState.IsValid)
+            if (dto == null || !ModelState.IsValid)
             {
                return BadRequest("Invalid State");
             }
 
-            var result = _budgetService.Add(
-                model.Month,
-                model.Year,
-                model.Name,
-                model.Amount,
-                model.Notes
+            var result = _incomeService.Add(
+                DateTime.Parse(dto.Date),
+                dto.Name,
+                dto.Amount
             );
 
             if (result == null)
-               return BadRequest("Invalid budget data");
+               return BadRequest("Invalid income data");
 
-            return Ok(new BudgetDto(result));
+            return Ok(new IncomeDto(result));
 
          }
          catch (Exception)
@@ -103,21 +101,21 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Update))]
-      public IActionResult Update([FromBody] BudgetDto model)
+      public IActionResult Update([FromBody] IncomeDto dto)
       {
          try
          {
-            if (model == null || !ModelState.IsValid)
+            if (dto == null || !ModelState.IsValid)
             {
                return BadRequest("Invalid State");
             }
 
-            var success = _budgetService.Update(model.Id, model.Month, model.Year, model.Name, model.Amount, model.Notes);
+            var success = _incomeService.Update(dto.Id, DateTime.Parse(dto.Date), dto.Name, dto.Amount);
 
             return Ok(new UpdateResultDto
             {
                Success = success,
-               Error = success ? "" : "Invalid budget information"
+               Error = success ? "" : "Invalid income information"
             });
          }
          catch (Exception)
@@ -136,7 +134,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _budgetService.Delete(deleteParameters.Id);
+            var result = _incomeService.Delete(deleteParameters.Id);
 
             return Ok(new DeleteResultDto { Success = result });
          }
