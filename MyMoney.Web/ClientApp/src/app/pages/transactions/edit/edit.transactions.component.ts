@@ -12,7 +12,7 @@ export class EditTransactionsComponent implements OnInit {
 
    public editTransactionForm: FormGroup;
    public id: number;
-   public loading = false;
+   public loading = true;
    public submitted = false;
 
    public selectedBudgets: Set<number> = new Set();
@@ -63,6 +63,7 @@ export class EditTransactionsComponent implements OnInit {
                this.f.description.patchValue(response.description);
                this.f.amount.patchValue(response.amount);
                this.f.notes.patchValue(response.notes);
+               this.loading = false;
 
                this.fetchBudgets();
             },
