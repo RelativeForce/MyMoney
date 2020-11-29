@@ -103,7 +103,14 @@ export class EditTransactionsComponent implements OnInit {
       const description = this.f.description.value;
       const amount = this.f.amount.value;
 
-      return { date: dateString, description, amount, id: this.id, budgetIds: Array.from(this.selectedBudgets) };
+      return {
+         date: dateString,
+         description,
+         amount,
+         id: this.id,
+         budgetIds: Array.from(this.selectedBudgets),
+         notes: ''
+      };
    }
 
    public onSubmit(): void {

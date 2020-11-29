@@ -68,7 +68,14 @@ export class AddTransactionsComponent implements OnInit {
       const description = this.f.description.value;
       const amount = this.f.amount.value;
 
-      const transaction: ITransactionModel = { date, description, amount, id: 0, budgetIds: Array.from(this.selectedBudgets) };
+      const transaction: ITransactionModel = {
+         date,
+         description,
+         amount,
+         id: 0,
+         budgetIds: Array.from(this.selectedBudgets),
+         notes: ''
+      };
 
       this.transactionService.addTransaction(transaction).subscribe(success => {
          if (success) {
