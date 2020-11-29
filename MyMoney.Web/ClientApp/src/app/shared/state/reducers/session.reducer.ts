@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { SESSION_LOCAL_STORAGE_KEY } from '../../constants';
 import { SessionActionTypes, StartSessionAction, ClearSessionAction } from '../actions';
 import { ISessionModel } from '../types';
 
@@ -32,6 +33,9 @@ function StartSession(state: ISessionState, action: StartSessionAction) {
       sessionEnd
    };
 
+   localStorage.setItem(SESSION_LOCAL_STORAGE_KEY, JSON.stringify(newSession));
+   console.log('Session: Cached in local storage');
+
    return {
       ...state,
       currentSession: newSession
@@ -39,6 +43,10 @@ function StartSession(state: ISessionState, action: StartSessionAction) {
 }
 
 function ClearSession(state: ISessionState, action: ClearSessionAction) {
+
+   localStorage.removeItem(SESSION_LOCAL_STORAGE_KEY);
+   console.log('Session: Cleared local storage');
+
    return {
       ...state,
       currentSession: null
