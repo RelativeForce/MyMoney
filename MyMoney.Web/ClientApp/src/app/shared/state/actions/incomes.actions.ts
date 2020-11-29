@@ -18,13 +18,13 @@ export class SetIncomesAction implements Action {
 export class UpdateIncomeAction implements Action {
    public type: string = IncomeActionTypes.UpdateIncome;
 
-   constructor(public readonly budget: IIncomeModel) { }
+   constructor(public readonly income: IIncomeModel) { }
 }
 
 export class DeleteIncomeAction implements Action {
    public type: string = IncomeActionTypes.DeleteIncome;
 
-   constructor(public readonly budgetId: number) { }
+   constructor(public readonly incomeId: number) { }
 }
 
 export class UpdateSearchDateAction implements Action {

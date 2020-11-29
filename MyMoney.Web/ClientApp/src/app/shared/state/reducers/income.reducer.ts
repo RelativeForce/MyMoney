@@ -63,13 +63,13 @@ function RefreshIncomes(state: IIncomeState): IIncomeState {
 }
 
 function UpdateIncome(state: IIncomeState, action: UpdateIncomeAction): IIncomeState {
-   const budget: IIncomeModel = action.budget;
+   const income: IIncomeModel = action.income;
 
-   const index = state.incomes.findIndex(t => t.id === budget.id);
+   const index = state.incomes.findIndex(t => t.id === income.id);
 
    const incomes = state.incomes.map(t => t);
 
-   incomes[index] = budget;
+   incomes[index] = income;
 
    return {
       ...state,
@@ -78,9 +78,9 @@ function UpdateIncome(state: IIncomeState, action: UpdateIncomeAction): IIncomeS
 }
 
 function DeleteIncome(state: IIncomeState, action: DeleteIncomeAction): IIncomeState {
-   const budgetId: number = action.budgetId;
+   const incomeId: number = action.incomeId;
 
-   const index = state.incomes.findIndex(t => t.id === budgetId);
+   const index = state.incomes.findIndex(t => t.id === incomeId);
 
    const incomes = state.incomes.map(t => t);
 
