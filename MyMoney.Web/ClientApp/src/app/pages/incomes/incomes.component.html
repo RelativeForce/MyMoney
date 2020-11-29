@@ -1,0 +1,49 @@
+<h2>Incomes</h2>
+<form [formGroup]="dateForm" (ngSubmit)="onSubmit()">
+   <div class="form-inline">
+      <div class="input-group mb-3 pr-2">
+         <div class="input-group-prepend">
+            <span class="input-group-text">Date</span>
+         </div>
+         <input type="date" formControlName="date" class="form-control" (change)="updateIncomes($event)"
+            [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
+         <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
+            <div *ngIf="f.date.errors.required">date is required</div>
+         </div>
+      </div>
+      <div class="input-group mb-3 pr-2 btn-group">
+         <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            <div *ngIf="!loading" class="spin">↻</div>
+         </button>
+         <a class="btn btn-success" routerLink="./add">Add</a>
+      </div>
+   </div>
+</form>
+<div class="container-fluid">
+   <table class="table">
+      <thead>
+         <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Name</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Remaining</th>
+            <th scope="col"></th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr *ngFor="let income of incomes; let i = index">
+            <td>{{income.date}}</td>
+            <td>{{income.name}}</td>
+            <td>{{income.amount}}</td>
+            <td>{{income.remaining}}</td>
+            <td>
+               <div class="btn-group">
+                  <a class="btn btn-primary" routerLink="./edit/{{income.id}}">🖉</a>
+                  <button class="btn btn-danger" (click)="deleteIncome(income.id)">✕</button>
+               </div>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>

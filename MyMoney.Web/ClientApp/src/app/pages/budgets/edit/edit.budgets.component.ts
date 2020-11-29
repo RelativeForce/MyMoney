@@ -33,19 +33,44 @@ export class EditBudgetsComponent implements OnInit {
 
          this.id = Number.parseInt(idStr, 10);
 
+         this.editBudgetForm = this.formBuilder.group({
+            year: [0, Validators.required],
+            month: [0, Validators.required],
+            amount: [0, Validators.required],
+            name: ['', Validators.required],
+            notes: ['', Validators.required]
+         });
+
+         this.disableForm();
+
          this.budgetService.findBudget(this.id).subscribe(response => {
-            this.editBudgetForm = this.formBuilder.group({
-               year: [response.year, Validators.required],
-               month: [response.month, Validators.required],
-               amount: [response.amount, Validators.required],
-               name: [response.name, Validators.required],
-               notes: [response.notes, Validators.required]
-            });
+            this.f.year.patchValue(response.year);
+            this.f.month.patchValue(response.month);
+            this.f.amount.patchValue(response.amount);
+            this.f.name.patchValue(response.name);
+            this.f.notes.patchValue(response.notes);
+            this.enableForm();
          },
             error => {
                this.router.navigate(['/budgets']);
             });
       });
+   }
+
+   private disableForm() {
+      this.f.year.disable();
+      this.f.month.disable();
+      this.f.amount.disable();
+      this.f.name.disable();
+      this.f.notes.disable();
+   }
+
+   private enableForm() {
+      this.f.year.enable();
+      this.f.month.enable();
+      this.f.amount.enable();
+      this.f.name.enable();
+      this.f.notes.enable();
    }
 
    public get f() { return this.editBudgetForm.controls; }

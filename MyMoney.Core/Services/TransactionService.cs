@@ -38,7 +38,7 @@ namespace MyMoney.Core.Services
          return _currentUserProvider.CurrentUser.Between(start, end);
       }
 
-      public ITransaction Add(DateTime date, string description, decimal amount, string notes, long[] budgetIds)
+      public ITransaction Add(DateTime date, string description, decimal amount, string notes, long[] budgetIds, long[] incomeIds)
       {
          if (string.IsNullOrWhiteSpace(description))
             return null;
@@ -63,6 +63,7 @@ namespace MyMoney.Core.Services
             return null;
          }
 
+         // Budgets
          var budgets = user.Budgets.Where(b => budgetIds.Contains(b.Id)).ToList();
 
          foreach (var budget in budgets)
@@ -70,10 +71,18 @@ namespace MyMoney.Core.Services
             budget.AddTransaction(_relationRepository, addedTransaction);
          }
 
+         // Incomes
+         var incomes = user.Incomes.Where(i => incomeIds.Contains(i.Id)).ToList();
+
+         foreach (var income in incomes)
+         {
+            income.AddTransaction(_relationRepository, addedTransaction);
+         }
+
          return _repository.Update(addedTransaction) ? addedTransaction : null;
       }
 
-      public bool Update(long transactionId, DateTime date, string description, decimal amount, string notes, long[] budgetIds)
+      public bool Update(long transactionId, DateTime date, string description, decimal amount, string notes, long[] budgetIds, long[] incomeIds)
       {
          if (string.IsNullOrWhiteSpace(description))
             return false;
@@ -92,11 +101,7 @@ namespace MyMoney.Core.Services
          transaction.Description = description;
          transaction.Notes = notes;
 
-         if (!_repository.Update(transaction))
-         {
-            return false;
-         }
-
+         // Budgets
          foreach (var budget in transaction.Budgets.ToList())
          {
             budget.RemoveTransaction(_relationRepository, transaction);
@@ -109,7 +114,20 @@ namespace MyMoney.Core.Services
             budget.AddTransaction(_relationRepository, transaction);
          }
 
-         return true;
+         // Incomes
+         foreach (var income in transaction.Incomes.ToList())
+         {
+            income.RemoveTransaction(_relationRepository, transaction);
+         }
+
+         var incomes = user.Incomes.Where(i => incomeIds.Contains(i.Id)).ToList();
+
+         foreach (var income in incomes)
+         {
+            income.AddTransaction(_relationRepository, transaction);
+         }
+
+         return _repository.Update(transaction);
       }
 
       public bool Delete(long transactionId)

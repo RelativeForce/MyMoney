@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { IDateRangeModel, IBudgetModel } from '../types';
+import { IBudgetModel } from '../types';
 
 export enum BudgetActionTypes {
    SetBudgets = 'Set Budgets',

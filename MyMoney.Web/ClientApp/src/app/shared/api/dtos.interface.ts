@@ -8,6 +8,19 @@ export interface IBudgetDto {
    remaining: number;
 }
 
+export interface IIncomeDto {
+   id: number;
+   amount: number;
+   remaining: number;
+   date: string;
+   name: string;
+}
+
+export class IIncomeSearchDto {
+   date: Date;
+   count: number;
+}
+
 export class IBudgetSearchDto {
    month: number;
    year: number;
@@ -15,6 +28,10 @@ export class IBudgetSearchDto {
 
 export interface IBudgetListDto {
    budgets: IBudgetDto[];
+}
+
+export interface IIncomeListDto {
+   incomes: IIncomeDto[];
 }
 
 export interface IDateRangeDto {
@@ -55,6 +72,7 @@ export interface ITransactionDto {
    notes: string;
    amount: number;
    budgetIds: number[];
+   incomeIds: number[];
    id: number;
 }
 

@@ -16,6 +16,9 @@ import {
    AddBudgetsComponent,
    EditTransactionsComponent,
    EditBudgetsComponent,
+   IncomesComponent,
+   EditIncomesComponent,
+   AddIncomesComponent,
 } from './pages';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
@@ -36,6 +39,9 @@ import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
       BudgetsComponent,
       AddBudgetsComponent,
       EditBudgetsComponent,
+      IncomesComponent,
+      AddIncomesComponent,
+      EditIncomesComponent
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -98,6 +104,24 @@ import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
             path: '', component: HomeComponent,
             pathMatch: 'full',
             canActivate: [AuthenticationGuard]
+         },
+         {
+            path: 'incomes',
+            component: IncomesComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'incomes/add',
+            component: AddIncomesComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'incomes/edit/:id',
+            component: EditIncomesComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
          },
          // otherwise redirect to home
          { path: '**', redirectTo: '' },

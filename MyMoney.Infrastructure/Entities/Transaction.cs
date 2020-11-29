@@ -32,6 +32,10 @@ namespace MyMoney.Infrastructure.Entities
       public IQueryable<IBudget> Budgets => BudgetsProxy.Select(tb => tb.Budget).Cast<IBudget>().AsQueryable();
       public virtual ICollection<TransactionBudget> BudgetsProxy { get; set; } = new List<TransactionBudget>();
 
+      [NotMapped]
+      public IQueryable<IIncome> Incomes => IncomesProxy.Select(tb => tb.Income).Cast<IIncome>().AsQueryable();
+      public virtual ICollection<TransactionIncome> IncomesProxy { get; set; } = new List<TransactionIncome>();
+
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<Transaction>().HasIndex(t => new { t.UserId, t.Date, t.Description }).IsUnique();

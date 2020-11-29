@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BudgetService, TransactionService } from '../../../shared/services';
-import { BudgetViewModel } from '../../../shared/classes';
+import { BudgetService, IncomeService, TransactionService } from '../../../shared/services';
+import { BudgetViewModel, IncomeViewModel } from '../../../shared/classes';
 import { ITransactionModel } from 'src/app/shared/state/types';
 
 @Component({
@@ -11,18 +11,24 @@ import { ITransactionModel } from 'src/app/shared/state/types';
 export class EditTransactionsComponent implements OnInit {
 
    public editTransactionForm: FormGroup;
-   public selectedBudgets: Set<number> = new Set();
-   public budgets: BudgetViewModel[] = [];
    public id: number;
    public loading = false;
    public submitted = false;
+
+   public selectedBudgets: Set<number> = new Set();
+   public budgets: BudgetViewModel[] = [];
+
+   public selectedIncomes: Set<number> = new Set();
+   public incomes: IncomeViewModel[] = [];
+
 
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
-      private readonly budgetService: BudgetService
+      private readonly budgetService: BudgetService,
+      private readonly incomeService: IncomeService
    ) {
    }
 
@@ -37,20 +43,30 @@ export class EditTransactionsComponent implements OnInit {
 
          this.id = Number.parseInt(idStr, 10);
 
+         this.editTransactionForm = this.formBuilder.group({
+            date: ['', Validators.required],
+            description: ['', Validators.required],
+            amount: [0, Validators.required],
+            notes: ['']
+         });
+
+         this.disableForm();
+
          this.transactionService
             .findTransaction(this.id)
             .subscribe((response: ITransactionModel) => {
 
                response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
+               response.incomeIds.forEach(iid => this.selectedIncomes.add(iid));
 
-               this.editTransactionForm = this.formBuilder.group({
-                  date: [this.toInputDateString(response.date), Validators.required],
-                  description: [response.description, Validators.required],
-                  amount: [response.amount, Validators.required],
-                  notes: [response.notes]
-               });
+               this.f.date.patchValue(this.toInputDateString(response.date));
+               this.f.description.patchValue(response.description);
+               this.f.amount.patchValue(response.amount);
+               this.f.notes.patchValue(response.notes);
 
-               this.fetchBudgets();
+               this.enableForm();
+
+               this.fetchBudgetsAndIncomes();
             },
                () => {
                   this.router.navigate(['/transactions']);
@@ -58,9 +74,23 @@ export class EditTransactionsComponent implements OnInit {
       });
    }
 
+   private disableForm() {
+      this.f.date.disable();
+      this.f.description.disable();
+      this.f.amount.disable();
+      this.f.notes.disable();
+   }
+
+   private enableForm() {
+      this.f.date.enable();
+      this.f.description.enable();
+      this.f.amount.enable();
+      this.f.notes.enable();
+   }
+
    public get f() { return this.editTransactionForm.controls; }
 
-   public onCheckboxChange(event: any, id: number): void {
+   public onBudgetCheckboxChange(event: any, id: number): void {
       if (event.target.checked) {
          this.selectedBudgets.add(id);
       } else {
@@ -68,11 +98,19 @@ export class EditTransactionsComponent implements OnInit {
       }
    }
 
+   public onIncomeCheckboxChange(e, id): void {
+      if (e.target.checked) {
+         this.selectedIncomes.add(id);
+      } else {
+         this.selectedIncomes.delete(id);
+      }
+   }
+
    public onDateChange(): void {
 
       this.selectedBudgets.clear();
 
-      this.fetchBudgets();
+      this.fetchBudgetsAndIncomes();
    }
 
    public toInputDateString(text: string): string {
@@ -87,11 +125,15 @@ export class EditTransactionsComponent implements OnInit {
       return text.split('/')[2] + '-' + monthStr + '-' + dayStr;
    }
 
-   public fetchBudgets(): void {
+   public fetchBudgetsAndIncomes(): void {
       const date = new Date(this.f.date.value);
 
       this.budgetService.getBudgetsForMonth(date.getMonth() + 1, date.getFullYear()).subscribe(response => {
          this.budgets = response.budgets.map(t => new BudgetViewModel(t));
+      });
+
+      this.incomeService.getIncomes(date).subscribe(response => {
+         this.incomes = response.incomes.map(t => new IncomeViewModel(t));
       });
    }
 
@@ -111,6 +153,7 @@ export class EditTransactionsComponent implements OnInit {
          amount,
          id: this.id,
          budgetIds: Array.from(this.selectedBudgets),
+         incomeIds: Array.from(this.selectedIncomes),
          notes
       };
    }

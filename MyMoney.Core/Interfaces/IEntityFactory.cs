@@ -7,5 +7,6 @@ namespace MyMoney.Core.Interfaces
       IBudget NewBudget { get; }
       ITransaction NewTransaction { get; }
       IUser NewUser { get; }
+      IIncome NewIncome { get; }
    }
 }

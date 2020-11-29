@@ -38,11 +38,11 @@ namespace MyMoney.Web.Controllers
                return Ok(new BudgetDto(budget));
             }
 
-            return NotFound("Transaction does not exist");
+            return NotFound("Budget does not exist");
          }
          catch (Exception)
          {
-            return BadRequest("Error while creating");
+            return BadRequest("Error while finding budget");
          }
       }
 
@@ -68,7 +68,7 @@ namespace MyMoney.Web.Controllers
          }
          catch (Exception)
          {
-            return BadRequest("Error while creating");
+            return BadRequest("Error while listing budgets");
          }
       }
 
@@ -98,7 +98,7 @@ namespace MyMoney.Web.Controllers
          }
          catch (Exception)
          {
-            return BadRequest("Error while registering");
+            return BadRequest("Error while adding budget");
          }
       }
 

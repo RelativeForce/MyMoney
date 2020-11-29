@@ -151,6 +151,9 @@ namespace MyMoney.Infrastructure
          if (typeof(T) == typeof(IBudget))
             return _model.Set<Budget>().Cast<IBudget>().AsQueryable() as IQueryable<T>;
 
+         if (typeof(T) == typeof(IIncome))
+            return _model.Set<Income>().Cast<IIncome>().AsQueryable() as IQueryable<T>;
+
          throw new InvalidCastException("Unsupported entity type");
       }
    }

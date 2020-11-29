@@ -23,6 +23,10 @@ namespace MyMoney.Infrastructure.Entities
       public virtual ICollection<Budget> BudgetsProxy { get; set; } = new List<Budget>();
 
       [NotMapped]
+      public IQueryable<IIncome> Incomes => IncomesProxy.Cast<IIncome>().AsQueryable();
+      public virtual ICollection<Income> IncomesProxy { get; set; } = new List<Income>();
+
+      [NotMapped]
       public IQueryable<ITransaction> Transactions => TransactionsProxy.Cast<ITransaction>().AsQueryable();
       public virtual ICollection<Transaction> TransactionsProxy { get; set; } = new List<Transaction>();
 

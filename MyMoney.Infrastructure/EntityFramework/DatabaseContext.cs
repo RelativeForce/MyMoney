@@ -13,12 +13,15 @@ namespace MyMoney.Infrastructure.EntityFramework
       {
          Budget.Configure(modelBuilder);
          Transaction.Configure(modelBuilder);
+         Income.Configure(modelBuilder);
          User.Configure(modelBuilder);
          TransactionBudget.Configure(modelBuilder);
+         TransactionIncome.Configure(modelBuilder);
       }
 
       public virtual DbSet<Transaction> Transactions { get; set; }
       public virtual DbSet<Budget> Budgets { get; set; }
       public virtual DbSet<User> Users { get; set; }
+      public virtual DbSet<Income> Incomes { get; set; }
    }
 }

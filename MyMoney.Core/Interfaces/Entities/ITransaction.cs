@@ -13,5 +13,6 @@ namespace MyMoney.Core.Interfaces.Entities
 
       IUser User { get; set; }
       IQueryable<IBudget> Budgets { get; }
+      IQueryable<IIncome> Incomes { get; }
    }
 }

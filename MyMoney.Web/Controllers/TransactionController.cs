@@ -39,7 +39,7 @@ namespace MyMoney.Web.Controllers
 
             if (transaction != null)
             {
-               return Ok(new TransactionDto(transaction, useJavaScriptDate: true));
+               return Ok(new TransactionDto(transaction));
             }
 
             return NotFound("Transaction does not exist");
@@ -83,7 +83,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, model.Notes, model.BudgetIds);
+            var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, model.Notes, model.BudgetIds, model.IncomeIds);
 
             return Ok(new UpdateResultDto
             {
@@ -107,7 +107,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.Notes, model.BudgetIds);
+            var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.Notes, model.BudgetIds, model.IncomeIds);
 
             if (result == null)
                return BadRequest("Invalid State");

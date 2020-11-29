@@ -44,6 +44,27 @@ namespace MyMoney.Infrastructure.Migrations
                     b.ToTable("Budgets");
                 });
 
+            modelBuilder.Entity("MyMoney.Infrastructure.Entities.Income", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.Property<long>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Incomes");
+                });
+
             modelBuilder.Entity("MyMoney.Infrastructure.Entities.Transaction", b =>
                 {
                     b.Property<long>("Id")
@@ -83,6 +104,19 @@ namespace MyMoney.Infrastructure.Migrations
                     b.ToTable("TransactionBudget");
                 });
 
+            modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionIncome", b =>
+                {
+                    b.Property<long>("IncomeId");
+
+                    b.Property<long>("TransactionId");
+
+                    b.HasKey("IncomeId", "TransactionId");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("TransactionIncome");
+                });
+
             modelBuilder.Entity("MyMoney.Infrastructure.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -116,6 +150,14 @@ namespace MyMoney.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MyMoney.Infrastructure.Entities.Income", b =>
+                {
+                    b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
+                        .WithMany("IncomesProxy")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyMoney.Infrastructure.Entities.Transaction", b =>
                 {
                     b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
@@ -133,6 +175,19 @@ namespace MyMoney.Infrastructure.Migrations
 
                     b.HasOne("MyMoney.Infrastructure.Entities.Transaction", "Transaction")
                         .WithMany("BudgetsProxy")
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionIncome", b =>
+                {
+                    b.HasOne("MyMoney.Infrastructure.Entities.Income", "Income")
+                        .WithMany("TransactionsProxy")
+                        .HasForeignKey("IncomeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MyMoney.Infrastructure.Entities.Transaction", "Transaction")
+                        .WithMany("IncomesProxy")
                         .HasForeignKey("TransactionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

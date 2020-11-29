@@ -61,6 +61,10 @@ export class BudgetsComponent implements OnInit {
    public get f() { return this.monthIdForm.controls; }
 
    public delete(id: number): void {
+      if (!confirm(`Delete budget ${id}?`)) {
+         return;
+      }
+
       this.budgetService.deleteBudget(id);
    }
 

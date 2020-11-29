@@ -7,3 +7,6 @@ export * from './budgets/budgets.component';
 export * from './budgets/add/add.budgets.component';
 export * from './transactions/edit/edit.transactions.component';
 export * from './budgets/edit/edit.budgets.component';
+export * from './incomes/incomes.component';
+export * from './incomes/add/add.incomes.component';
+export * from './incomes/edit/edit.incomes.component';
