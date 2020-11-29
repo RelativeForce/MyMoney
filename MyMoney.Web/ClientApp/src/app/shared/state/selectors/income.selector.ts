@@ -8,6 +8,6 @@ export const selectIncomes = (state: IAppState): IIncomeModel[] => selectIncomeS
 
 export const selectIncomesSearchParameters = (state: IAppState): IIncomesSearch => selectIncomeState(state).searchParameters;
 
-export function selectIncome(budgetId: number): (state: IAppState) => IIncomeModel | undefined {
-   return (state: IAppState): IIncomeModel | undefined => selectIncomes(state).find((t) => t.id === budgetId);
+export function selectIncome(incomeId: number): (state: IAppState) => IIncomeModel | undefined {
+   return (state: IAppState): IIncomeModel | undefined => selectIncomes(state).find((t) => t.id === incomeId);
 }
