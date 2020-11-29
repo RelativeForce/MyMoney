@@ -1,4 +1,4 @@
 export interface ISessionModel {
-   token: String;
+   token: string;
    sessionEnd: string;
 }
