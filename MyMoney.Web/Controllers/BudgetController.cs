@@ -38,7 +38,7 @@ namespace MyMoney.Web.Controllers
                return Ok(new BudgetDto(budget));
             }
 
-            return NotFound("Income does not exist");
+            return NotFound("Budget does not exist");
          }
          catch (Exception)
          {
