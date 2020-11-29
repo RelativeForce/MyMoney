@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace MyMoney.Web.Models.Response
 {
-   public class BudgetListResponse
+   public class BudgetListDto
    {
-      public List<BudgetModel> Budgets { get; set; } = new List<BudgetModel>();
+      public List<BudgetDto> Budgets { get; set; } = new List<BudgetDto>();
    }
 }

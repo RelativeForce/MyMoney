@@ -26,7 +26,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Find))]
-      public IActionResult Find([FromBody] FindRequest findParameters)
+      public IActionResult Find([FromBody] IdDto findParameters)
       {
          try
          {
@@ -39,7 +39,7 @@ namespace MyMoney.Web.Controllers
 
             if (transaction != null)
             {
-               return Ok(new TransactionModel(transaction, useJavaScriptDate: true));
+               return Ok(new TransactionDto(transaction, useJavaScriptDate: true));
             }
 
             return NotFound("Transaction does not exist");
@@ -51,7 +51,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(List))]
-      public IActionResult List([FromBody] DateRangeModel listParameters)
+      public IActionResult List([FromBody] DateRangeDto listParameters)
       {
          try
          {
@@ -62,9 +62,9 @@ namespace MyMoney.Web.Controllers
 
             var transactions = _transactionService.Between(listParameters.Start, listParameters.End);
 
-            return Ok(new TransactionListResponse
+            return Ok(new TransactionListDto
             {
-               Transactions = transactions.Select(t => new TransactionModel(t)).ToList()
+               Transactions = transactions.Select(t => new TransactionDto(t)).ToList()
             });
          }
          catch (Exception)
@@ -74,7 +74,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Update))]
-      public IActionResult Update([FromBody] TransactionModel model)
+      public IActionResult Update([FromBody] TransactionDto model)
       {
          try
          {
@@ -83,9 +83,9 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
+            var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, model.Notes, model.BudgetIds);
 
-            return Ok(new UpdateResponse
+            return Ok(new UpdateResultDto
             {
                Success = success,
                Error = success ? "" : "Invalid transaction information"
@@ -98,7 +98,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Add))]
-      public IActionResult Add([FromBody] TransactionModel model)
+      public IActionResult Add([FromBody] TransactionDto model)
       {
          try
          {
@@ -107,12 +107,12 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
+            var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.Notes, model.BudgetIds);
 
             if (result == null)
                return BadRequest("Invalid State");
 
-            return Ok(new TransactionModel(result));
+            return Ok(new TransactionDto(result));
          }
          catch (Exception)
          {
@@ -121,7 +121,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Delete))]
-      public IActionResult Delete([FromBody] DeleteRequest deleteParameters)
+      public IActionResult Delete([FromBody] IdDto deleteParameters)
       {
          try
          {
@@ -132,7 +132,7 @@ namespace MyMoney.Web.Controllers
 
             var result = _transactionService.Delete(deleteParameters.Id);
 
-            return Ok(new DeleteResponse { Success = result });
+            return Ok(new DeleteResultDto { Success = result });
          }
          catch (Exception)
          {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { TransactionApi, IDeleteResponseDto, ITransactionListResponseDto, IUpdateResponseDto } from '../api';
+import { TransactionApi, IDeleteResultDto, ITransactionListDto, IUpdateResultDto } from '../api';
 import { DeleteTransactionAction, RefreshTransactionsAction, SetTransactionsAction, UpdateDataRangeAction, UpdateTransactionAction } from '../state/actions';
 import { IAppState } from '../state/app-state';
 import { selectTransactionsSearchParameters, selectTransaction } from '../state/selectors/transaction.selector';
@@ -20,14 +20,14 @@ export class TransactionService {
 
          this.transactionApi
             .list(search.dateRange)
-            .subscribe((response: ITransactionListResponseDto) => this.store.dispatch(new SetTransactionsAction(response.transactions)));
+            .subscribe((response: ITransactionListDto) => this.store.dispatch(new SetTransactionsAction(response.transactions)));
       });
    }
 
    public deleteTransaction(transactionId: number): void {
       this.transactionApi
          .delete({ id: transactionId })
-         .subscribe((status: IDeleteResponseDto) => {
+         .subscribe((status: IDeleteResultDto) => {
             if (status.success) {
                this.store.dispatch(new DeleteTransactionAction(transactionId));
             }
@@ -50,7 +50,7 @@ export class TransactionService {
    public editTransaction(transaction: ITransactionModel): Observable<boolean> {
       return this.transactionApi
          .update(transaction)
-         .pipe(map((status: IUpdateResponseDto) => {
+         .pipe(map((status: IUpdateResultDto) => {
             if (status.success) {
                this.store.dispatch(new UpdateTransactionAction(transaction));
             }

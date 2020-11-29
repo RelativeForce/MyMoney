@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace MyMoney.Web.Models.Entity
 {
-   public class BudgetModel : EntityModel
+   public class BudgetDto : EntityDto
    {
       public decimal Amount { get; set; }
       public int Month { get; set; }
@@ -12,12 +12,12 @@ namespace MyMoney.Web.Models.Entity
       public string Notes { get; set; }
       public decimal Remaining { get; set; }
 
-      public BudgetModel()
+      public BudgetDto()
       {
 
       }
 
-      public BudgetModel(IBudget model) : base(model.Id)
+      public BudgetDto(IBudget model) : base(model.Id)
       {
          Amount = model.Amount;
          Month = model.Month;

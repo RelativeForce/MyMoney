@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ILoginResponseDto, IRegisterRequestDto } from '../api';
+import { ILoginResultDto, IRegisterDto } from '../api';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';
 import { ClearSessionAction, StartSessionAction } from '../state/actions';
@@ -17,7 +17,7 @@ export class AuthenticationService {
    public login(email: string, password: string): Observable<boolean> {
       return this.userApi
          .login({ email, password })
-         .pipe(map((response: ILoginResponseDto) => {
+         .pipe(map((response: ILoginResultDto) => {
             if (response.success) {
                this.store.dispatch(new StartSessionAction(response.token, response.validTo));
             }
@@ -26,7 +26,7 @@ export class AuthenticationService {
          }));
    }
 
-   public register(newUserData: IRegisterRequestDto): Observable<boolean> {
+   public register(newUserData: IRegisterDto): Observable<boolean> {
       return this.userApi
          .register(newUserData)
          .pipe(map(response => {

@@ -1,15 +1,15 @@
 ﻿namespace MyMoney.Web.Models.Entity
 {
-   public abstract class EntityModel
+   public abstract class EntityDto
    {
       public long Id { get; set; }
 
-      public EntityModel()
+      public EntityDto()
       {
          Id = 0;
       }
 
-      public EntityModel(long id)
+      public EntityDto(long id)
       {
          Id = id;
       }
