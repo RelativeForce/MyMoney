@@ -22,6 +22,7 @@ import { appReducer } from './shared/state/app-state';
 import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
 
 @NgModule({
    declarations: [
@@ -45,8 +46,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       ReactiveFormsModule,
       StoreModule.forRoot(appReducer),
       RouterModule.forRoot([
-         { path: 'login', component: LoginComponent },
-         { path: 'register', component: RegisterComponent },
+         {
+            path: LOGIN_PAGE_PATH,
+            component: LoginComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard]
+         },
+         {
+            path: REGISTER_PAGE_PATH,
+            component: RegisterComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard]
+         },
          {
             path: 'transactions',
             component: TransactionsComponent,
