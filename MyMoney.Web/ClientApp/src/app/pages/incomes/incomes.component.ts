@@ -76,6 +76,10 @@ export class IncomesComponent implements OnInit {
    public get f() { return this.dateForm.controls; }
 
    public deleteIncome(id: number): void {
+      if (!confirm(`Delete income ${id}?`)) {
+         return;
+      }
+
       this.incomeService.deleteIncome(id);
    }
 

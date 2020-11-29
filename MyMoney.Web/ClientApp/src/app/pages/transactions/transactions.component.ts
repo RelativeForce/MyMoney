@@ -81,6 +81,10 @@ export class TransactionsComponent implements OnInit {
    public get f() { return this.dateRangeForm.controls; }
 
    public deleteTransaction(id: number): void {
+      if (!confirm(`Delete transaction ${id}?`)) {
+         return;
+      }
+
       this.transactionService.deleteTransaction(id);
    }
 
