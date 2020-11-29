@@ -16,7 +16,7 @@ export interface IIncomeDto {
 }
 
 export class IIncomeSearchDto {
-   date: string;
+   date: Date;
    count: number;
 }
 
