@@ -13,12 +13,14 @@ namespace MyMoney.Core.Services
       private readonly IRepository _repository;
       private readonly IEntityFactory _entityFactory;
       private readonly ICurrentUserProvider _currentUserProvider;
+      private readonly IRelationRepository _relationRepository;
 
-      public BudgetService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider)
+      public BudgetService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider, IRelationRepository relationRepository)
       {
          _repository = repository;
          _entityFactory = entityFactory;
          _currentUserProvider = currentUserProvider;
+         _relationRepository = relationRepository;
       }
 
       public IBudget Find(long budgetId)
@@ -90,6 +92,8 @@ namespace MyMoney.Core.Services
 
          if (budget == null || budget.UserId != userId)
             return false;
+
+         budget.RemoveAllTransactions(_relationRepository);
 
          return _repository.Delete(budget);
       }

@@ -47,6 +47,14 @@ namespace MyMoney.Infrastructure.Entities
          }
       }
 
+      public void RemoveAllTransactions(IRelationRepository relationRepository)
+      {
+         foreach (var transaction in TransactionsProxy.ToList())
+         {
+            relationRepository.Delete(transaction);
+         }
+      }
+
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<Income>().HasOne(t => t.UserProxy).WithMany(t => t.IncomesProxy).IsRequired();

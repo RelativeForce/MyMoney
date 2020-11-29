@@ -12,12 +12,14 @@ namespace MyMoney.Core.Services
       private readonly IRepository _repository;
       private readonly IEntityFactory _entityFactory;
       private readonly ICurrentUserProvider _currentUserProvider;
+      private readonly IRelationRepository _relationRepository;
 
-      public IncomeService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider)
+      public IncomeService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider, IRelationRepository relationRepository)
       {
          _repository = repository;
          _entityFactory = entityFactory;
          _currentUserProvider = currentUserProvider;
+         _relationRepository = relationRepository;
       }
 
       public IIncome Find(long incomeId)
@@ -78,11 +80,13 @@ namespace MyMoney.Core.Services
 
       public bool Delete(long incomeId)
       {
-         var income = _repository.FindById<IBudget>(incomeId);
+         var income = _repository.FindById<IIncome>(incomeId);
          var userId = _currentUserProvider.CurrentUserId;
 
          if (income == null || income.UserId != userId)
             return false;
+
+         income.RemoveAllTransactions(_relationRepository);
 
          return _repository.Delete(income);
       }
