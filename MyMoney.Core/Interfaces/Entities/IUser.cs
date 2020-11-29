@@ -13,6 +13,7 @@ namespace MyMoney.Core.Interfaces.Entities
 
       IQueryable<ITransaction> Transactions { get; }
       IQueryable<IBudget> Budgets { get; }
+      IQueryable<IIncome> Incomes { get; }
       IList<ITransaction> Between(DateTime start, DateTime end);
       decimal Total(DateTime start, DateTime end);
    }
