@@ -22,7 +22,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Find))]
-      public IActionResult Find([FromBody] FindRequest findParameters)
+      public IActionResult Find([FromBody] IdDto findParameters)
       {
          try
          {
@@ -35,7 +35,7 @@ namespace MyMoney.Web.Controllers
 
             if (budget != null)
             {
-               return Ok(new BudgetModel(budget));
+               return Ok(new BudgetDto(budget));
             }
 
             return NotFound("Transaction does not exist");
@@ -47,7 +47,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(List))]
-      public IActionResult List([FromBody] BudgetRequest findParameters)
+      public IActionResult List([FromBody] BudgetSearchDto findParameters)
       {
          try
          {
@@ -61,9 +61,9 @@ namespace MyMoney.Web.Controllers
             if (budgets == null)
                return NotFound();
 
-            return Ok(new BudgetListResponse
+            return Ok(new BudgetListDto
             {
-               Budgets = budgets.Select(t => new BudgetModel(t)).ToList()
+               Budgets = budgets.Select(t => new BudgetDto(t)).ToList()
             });
          }
          catch (Exception)
@@ -73,7 +73,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Add))]
-      public IActionResult Add([FromBody] BudgetModel model)
+      public IActionResult Add([FromBody] BudgetDto model)
       {
          try
          {
@@ -93,7 +93,7 @@ namespace MyMoney.Web.Controllers
             if (result == null)
                return BadRequest("Invalid budget data");
 
-            return Ok(new BudgetModel(result));
+            return Ok(new BudgetDto(result));
 
          }
          catch (Exception)
@@ -103,7 +103,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Update))]
-      public IActionResult Update([FromBody] BudgetModel model)
+      public IActionResult Update([FromBody] BudgetDto model)
       {
          try
          {
@@ -114,7 +114,7 @@ namespace MyMoney.Web.Controllers
 
             var success = _budgetService.Update(model.Id, model.Month, model.Year, model.Name, model.Amount, model.Notes);
 
-            return Ok(new UpdateResponse
+            return Ok(new UpdateResultDto
             {
                Success = success,
                Error = success ? "" : "Invalid budget information"
@@ -127,7 +127,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Delete))]
-      public IActionResult Delete([FromBody] DeleteRequest deleteParameters)
+      public IActionResult Delete([FromBody] IdDto deleteParameters)
       {
          try
          {
@@ -138,7 +138,7 @@ namespace MyMoney.Web.Controllers
 
             var result = _budgetService.Delete(deleteParameters.Id);
 
-            return Ok(new DeleteResponse { Success = result });
+            return Ok(new DeleteResultDto { Success = result });
          }
          catch (Exception)
          {

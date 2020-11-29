@@ -1,8 +1,7 @@
 ﻿namespace MyMoney.Web.Models.Response
 {
-   public class UpdateResponse
+   public class DeleteResultDto
    {
       public bool Success { get; set; }
-      public string Error { get; set; }
    }
 }

@@ -21,7 +21,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Login))]
-      public IActionResult Login([FromBody] LoginRequest loginParameters)
+      public IActionResult Login([FromBody] LoginDto loginParameters)
       {
          try
          {
@@ -32,7 +32,7 @@ namespace MyMoney.Web.Controllers
 
             var result = _userService.Login(loginParameters.Email, loginParameters.Password);
 
-            return Ok(new LoginResponse(result));
+            return Ok(new LoginResultDto(result));
          }
          catch (Exception)
          {
@@ -41,7 +41,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Register))]
-      public IActionResult Register([FromBody] RegisterRequest registerParameters)
+      public IActionResult Register([FromBody] RegisterDto registerParameters)
       {
          try
          {
@@ -57,7 +57,7 @@ namespace MyMoney.Web.Controllers
                 registerParameters.FullName
                 );
 
-            return Ok(new LoginResponse(result));
+            return Ok(new LoginResultDto(result));
 
          }
          catch (Exception)
