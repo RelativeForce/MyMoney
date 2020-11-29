@@ -81,7 +81,6 @@ export class AddTransactionsComponent implements OnInit {
 
       this.loading = true;
 
-      // Login here
       const date = this.f.date.value;
       const description = this.f.description.value;
       const amount = this.f.amount.value;

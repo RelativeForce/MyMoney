@@ -40,7 +40,6 @@ export class AddIncomesComponent implements OnInit {
 
       this.loading = true;
 
-      // Login here
       const date = this.f.date.value;
       const name = this.f.name.value;
       const amount = this.f.amount.value;
