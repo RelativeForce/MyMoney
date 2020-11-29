@@ -14,7 +14,7 @@ export class EditIncomesComponent implements OnInit {
    public selectedBudgets: Set<number> = new Set();
    public budgets: BudgetViewModel[] = [];
    public id: number;
-   public loading = true;
+   public loading = false;
    public submitted = false;
 
    constructor(
@@ -42,18 +42,33 @@ export class EditIncomesComponent implements OnInit {
             amount: ['', Validators.required],
          });
 
+         this.disableForm();
+
          this.incomeService
             .findIncome(this.id)
             .subscribe((response: IIncomeModel) => {
-               this.loading = false;
+
                this.f.date.patchValue(this.toInputDateString(response.date));
                this.f.name.patchValue(response.name);
                this.f.amount.patchValue(response.amount);
+               this.enableForm();
             },
                () => {
                   this.router.navigate(['/incomes']);
                });
       });
+   }
+
+   private disableForm() {
+      this.f.amount.disable();
+      this.f.name.disable();
+      this.f.date.disable();
+   }
+
+   private enableForm() {
+      this.f.amount.enable();
+      this.f.name.enable();
+      this.f.date.enable();
    }
 
    public get f() { return this.editIncomeForm.controls; }

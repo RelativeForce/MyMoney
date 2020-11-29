@@ -12,7 +12,7 @@ export class EditTransactionsComponent implements OnInit {
 
    public editTransactionForm: FormGroup;
    public id: number;
-   public loading = true;
+   public loading = false;
    public submitted = false;
 
    public selectedBudgets: Set<number> = new Set();
@@ -50,20 +50,21 @@ export class EditTransactionsComponent implements OnInit {
             notes: ['']
          });
 
+         this.disableForm();
 
          this.transactionService
             .findTransaction(this.id)
             .subscribe((response: ITransactionModel) => {
 
                response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
-
                response.incomeIds.forEach(iid => this.selectedIncomes.add(iid));
 
                this.f.date.patchValue(this.toInputDateString(response.date));
                this.f.description.patchValue(response.description);
                this.f.amount.patchValue(response.amount);
                this.f.notes.patchValue(response.notes);
-               this.loading = false;
+
+               this.enableForm();
 
                this.fetchBudgets();
             },
@@ -71,6 +72,20 @@ export class EditTransactionsComponent implements OnInit {
                   this.router.navigate(['/transactions']);
                });
       });
+   }
+
+   private disableForm() {
+      this.f.date.disable();
+      this.f.description.disable();
+      this.f.amount.disable();
+      this.f.notes.disable();
+   }
+
+   private enableForm() {
+      this.f.date.enable();
+      this.f.description.enable();
+      this.f.amount.enable();
+      this.f.notes.enable();
    }
 
    public get f() { return this.editTransactionForm.controls; }
