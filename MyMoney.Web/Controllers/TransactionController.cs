@@ -83,7 +83,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, "", model.BudgetIds);
+            var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
 
             return Ok(new UpdateResponse
             {
@@ -107,7 +107,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, "", model.BudgetIds);
+            var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.BudgetIds);
 
             if (result == null)
                return BadRequest("Invalid State");

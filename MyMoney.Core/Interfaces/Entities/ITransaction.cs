@@ -7,7 +7,6 @@ namespace MyMoney.Core.Interfaces.Entities
    {
       DateTime Date { get; set; }
       string Description { get; set; }
-      string Notes { get; set; }
       decimal Amount { get; set; }
       long UserId { get; set; }
 

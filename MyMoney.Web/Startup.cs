@@ -14,22 +14,6 @@ using MyMoney.Core.Services;
 using MyMoney.Infrastructure;
 using MyMoney.Infrastructure.EntityFramework;
 using MyMoney.Web.Utility;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Connections;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System.Threading.Tasks;
-using System.Security.Cryptography;
 
 namespace MyMoney.Web
 {
@@ -56,42 +40,11 @@ namespace MyMoney.Web
          services.AddScoped<IEntityFactory, EntityFactory>();
          services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
 
-         services.AddControllers();
+         services.AddControllersWithViews();
          // In production, the Angular files will be served from this directory
          services.AddSpaStaticFiles(configuration =>
          {
             configuration.RootPath = "ClientApp/dist";
-         });
-
-         services.AddSwaggerDocument(settings =>
-         {
-            settings.Title = "MyMoney.Web.Api.0";
-            settings.DocumentName = "v0";
-            settings.ApiGroupNames = new[] { "0" };
-            settings.Version = "0.0.0";
-
-            settings.SerializerSettings = new JsonSerializerSettings
-            {
-               ContractResolver = new CamelCasePropertyNamesContractResolver
-               {
-                  NamingStrategy = new CamelCaseNamingStrategy
-                  {
-                     ProcessDictionaryKeys = false
-                  }
-               }
-            };
-
-            settings.AddSecurity(
-               "Bearer",
-               new NSwag.OpenApiSecurityScheme
-               {
-                  Name = "Authorization",
-                  Type = NSwag.OpenApiSecuritySchemeType.ApiKey,
-                  Scheme = "Bearer",
-                  BearerFormat = "JWT",
-                  In = NSwag.OpenApiSecurityApiKeyLocation.Header,
-                  Description = "JWT Authorization header using the Bearer scheme."
-               });
          });
 
          services.AddAuthentication(x =>
@@ -142,13 +95,9 @@ namespace MyMoney.Web
 
          UpdateDatabase(app);
 
-         app.UseOpenApi();
-         app.UseSwaggerUi3();
-
          app.UseRouting();
          app.UseAuthentication();
          app.UseAuthorization();
-
          app.UseEndpoints(endpoints =>
          {
             endpoints.MapControllerRoute(

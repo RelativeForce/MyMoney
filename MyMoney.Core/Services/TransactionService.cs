@@ -38,13 +38,10 @@ namespace MyMoney.Core.Services
          return _currentUserProvider.CurrentUser.Between(start, end);
       }
 
-      public ITransaction Add(DateTime date, string description, decimal amount, string notes, long[] budgetIds)
+      public ITransaction Add(DateTime date, string description, decimal amount, long[] budgetIds)
       {
          if (string.IsNullOrWhiteSpace(description))
             return null;
-
-         if (notes == null)
-            notes = "";
 
          var user = _currentUserProvider.CurrentUser;
 
@@ -54,7 +51,6 @@ namespace MyMoney.Core.Services
          transaction.Amount = amount;
          transaction.UserId = user.Id;
          transaction.User = user;
-         transaction.Notes = notes;
 
          var addedTransaction = _repository.Add(transaction);
 
@@ -73,13 +69,10 @@ namespace MyMoney.Core.Services
          return _repository.Update(addedTransaction) ? addedTransaction : null;
       }
 
-      public bool Update(long transactionId, DateTime date, string description, decimal amount, string notes, long[] budgetIds)
+      public bool Update(long transactionId, DateTime date, string description, decimal amount, long[] budgetIds)
       {
          if (string.IsNullOrWhiteSpace(description))
             return false;
-
-         if (notes == null)
-            notes = "";
 
          var transaction = _repository.FindById<ITransaction>(transactionId);
          var user = _currentUserProvider.CurrentUser;
@@ -90,7 +83,6 @@ namespace MyMoney.Core.Services
          transaction.Amount = amount;
          transaction.Date = date;
          transaction.Description = description;
-         transaction.Notes = notes;
 
          if (!_repository.Update(transaction))
          {
