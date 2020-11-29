@@ -7,6 +7,7 @@ namespace MyMoney.Web.Models.Entity
    {
       public string Date { get; set; }
       public string Description { get; set; }
+      public string Notes { get; set; }
       public decimal Amount { get; set; }
       public long[] BudgetIds { get; set; }
 
@@ -19,6 +20,7 @@ namespace MyMoney.Web.Models.Entity
       {
          Date = useJavaScriptDate ? model.Date.ToString("yyyy-MM-dd") : model.Date.ToShortDateString();
          Description = model.Description;
+         Notes = model.Notes;
          Amount = model.Amount;
          BudgetIds = model.Budgets.Select(t => t.Id).ToArray();
       }

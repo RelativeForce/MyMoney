@@ -52,6 +52,7 @@ export interface IRegisterDto {
 export interface ITransactionDto {
    date: string;
    description: string;
+   notes: string;
    amount: number;
    budgetIds: number[];
    id: number;
