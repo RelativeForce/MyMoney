@@ -14,9 +14,9 @@ namespace MyMoney.Web.Models.Entity
 
       }
 
-      public IncomeDto(IIncome model, bool useJavaScriptDate = false) : base(model.Id)
+      public IncomeDto(IIncome model) : base(model.Id)
       {
-         Date = useJavaScriptDate ? model.Date.ToString("yyyy-MM-dd") : model.Date.ToShortDateString();
+         Date = model.Date.ToShortDateString();
          Name = model.Name;
          Amount = model.Amount;
       }

@@ -43,6 +43,7 @@
       </form>
    </div>
    <div class="col-6">
+      <h4>Budgets</h4>
       <table class="table">
          <thead>
             <tr>
@@ -56,11 +57,33 @@
             <tr *ngFor="let budget of budgets; let i = index">
                <td>
                   <input type="checkbox" [value]="budget.id" [checked]="selectedBudgets.has(budget.id)"
-                     (change)="onCheckboxChange($event, budget.id)" />
+                     (change)="onBudgetCheckboxChange($event, budget.id)" />
                </td>
                <td>{{budget.name}}</td>
                <td>{{budget.amount}}</td>
                <td>{{budget.remaining}}</td>
+            </tr>
+         </tbody>
+      </table>
+      <h4>Incomes</h4>
+      <table class="table">
+         <thead>
+            <tr>
+               <th scope="col"></th>
+               <th scope="col">Date</th>
+               <th scope="col">Name</th>
+               <th scope="col">Amount</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr *ngFor="let income of incomes; let i = index">
+               <td>
+                  <input type="checkbox" [value]="income.id" [checked]="selectedIncomes.has(income.id)"
+                     (change)="onIncomeCheckboxChange($event, income.id)" />
+               </td>
+               <td>{{income.date}}</td>
+               <td>{{income.name}}</td>
+               <td>{{income.amount}}</td>
             </tr>
          </tbody>
       </table>

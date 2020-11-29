@@ -47,7 +47,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Add(now, invalidDescription, amount, "", new long[0]);
+         var result = service.Add(now, invalidDescription, amount, "", new long[0], new long[0]);
 
          Assert.Null(result);
 
@@ -109,7 +109,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Add(now, description, amount, "", new long[0]);
+         var result = service.Add(now, description, amount, "", new long[0], new long[0]);
 
          Assert.NotNull(result);
          Assert.Equal(now, result.Date);
@@ -150,7 +150,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Update(transactionId, now, invalidDescription, amount, "", new long[0]);
+         var result = service.Update(transactionId, now, invalidDescription, amount, "", new long[0], new long[0]);
 
          Assert.False(result);
 
@@ -186,7 +186,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Update(transactionId, now, description, amount, "", new long[0]);
+         var result = service.Update(transactionId, now, description, amount, "", new long[0], new long[0]);
 
          Assert.False(result);
 
@@ -217,7 +217,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Update(transactionId, now, description, amount, "", new long[0]);
+         var result = service.Update(transactionId, now, description, amount, "", new long[0], new long[0]);
 
          Assert.False(result);
 
@@ -255,7 +255,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Update(transactionId, now, description, amount, "", new long[0]);
+         var result = service.Update(transactionId, now, description, amount, "", new long[0], new long[0]);
 
          Assert.Equal(expectedResult, result);
 

@@ -71,6 +71,7 @@ export interface ITransactionDto {
    notes: string;
    amount: number;
    budgetIds: number[];
+   incomeIds: number[];
    id: number;
 }
 

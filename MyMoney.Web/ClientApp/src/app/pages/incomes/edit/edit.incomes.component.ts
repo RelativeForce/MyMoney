@@ -36,14 +36,18 @@ export class EditIncomesComponent implements OnInit {
 
          this.id = Number.parseInt(idStr, 10);
 
+         this.editIncomeForm = this.formBuilder.group({
+            date: ['', Validators.required],
+            name: ['', Validators.required],
+            amount: ['', Validators.required],
+         });
+
          this.incomeService
             .findIncome(this.id)
             .subscribe((response: IIncomeModel) => {
-               this.editIncomeForm = this.formBuilder.group({
-                  date: [this.toInputDateString(response.date), Validators.required],
-                  name: [response.name, Validators.required],
-                  amount: [response.amount, Validators.required],
-               });
+               this.f.date.patchValue(this.toInputDateString(response.date));
+               this.f.name.patchValue(response.name);
+               this.f.amount.patchValue(response.amount);
             },
                () => {
                   this.router.navigate(['/incomes']);

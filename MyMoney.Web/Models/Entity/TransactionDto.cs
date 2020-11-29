@@ -10,19 +10,21 @@ namespace MyMoney.Web.Models.Entity
       public string Notes { get; set; }
       public decimal Amount { get; set; }
       public long[] BudgetIds { get; set; }
+      public long[] IncomeIds { get; set; }
 
       public TransactionDto()
       {
 
       }
 
-      public TransactionDto(ITransaction model, bool useJavaScriptDate = false) : base(model.Id)
+      public TransactionDto(ITransaction model) : base(model.Id)
       {
-         Date = useJavaScriptDate ? model.Date.ToString("yyyy-MM-dd") : model.Date.ToShortDateString();
+         Date = model.Date.ToShortDateString();
          Description = model.Description;
          Notes = model.Notes;
          Amount = model.Amount;
          BudgetIds = model.Budgets.Select(t => t.Id).ToArray();
+         IncomeIds = model.Incomes.Select(t => t.Id).ToArray();
       }
    }
 }
