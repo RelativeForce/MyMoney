@@ -101,11 +101,6 @@ namespace MyMoney.Core.Services
          transaction.Description = description;
          transaction.Notes = notes;
 
-         if (!_repository.Update(transaction))
-         {
-            return false;
-         }
-
          // Budgets
          foreach (var budget in transaction.Budgets.ToList())
          {
@@ -118,7 +113,6 @@ namespace MyMoney.Core.Services
          {
             budget.AddTransaction(_relationRepository, transaction);
          }
-
 
          // Incomes
          foreach (var income in transaction.Incomes.ToList())

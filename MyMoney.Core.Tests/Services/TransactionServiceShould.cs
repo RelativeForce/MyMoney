@@ -67,6 +67,7 @@ namespace MyMoney.Core.Tests.Services
          var mockUser = new Mock<IUser>(MockBehavior.Strict);
          mockUser.Setup(m => m.Id).Returns(userId);
          mockUser.Setup(m => m.Budgets).Returns(new List<IBudget>().AsQueryable());
+         mockUser.Setup(m => m.Incomes).Returns(new List<IIncome>().AsQueryable());
 
          _currentUserProvider
              .Setup(m => m.CurrentUser)
@@ -167,6 +168,16 @@ namespace MyMoney.Core.Tests.Services
          const long userId = 9;
          const string description = "test";
 
+         var mockUser = new Mock<IUser>(MockBehavior.Strict);
+         mockUser.Setup(m => m.Id).Returns(userId);
+         mockUser.Setup(m => m.Budgets).Returns(new List<IBudget>().AsQueryable());
+         mockUser.Setup(m => m.Incomes).Returns(new List<IIncome>().AsQueryable());
+
+         _currentUserProvider
+             .Setup(m => m.CurrentUser)
+             .Returns(mockUser.Object)
+             .Verifiable();
+
          var mockTransaction = new Mock<ITransaction>(MockBehavior.Strict);
          mockTransaction.Setup(m => m.Id).Returns(transactionId);
          mockTransaction.Setup(m => m.UserId).Returns(userId + 4);
@@ -203,6 +214,16 @@ namespace MyMoney.Core.Tests.Services
          const long userId = 9;
          const string description = "test";
 
+         var mockUser = new Mock<IUser>(MockBehavior.Strict);
+         mockUser.Setup(m => m.Id).Returns(userId);
+         mockUser.Setup(m => m.Budgets).Returns(new List<IBudget>().AsQueryable());
+         mockUser.Setup(m => m.Incomes).Returns(new List<IIncome>().AsQueryable());
+
+         _currentUserProvider
+             .Setup(m => m.CurrentUser)
+             .Returns(mockUser.Object)
+             .Verifiable();
+
          _repositoryMock
              .Setup(m => m.Update(It.IsAny<ITransaction>()))
              .Returns(false)
@@ -235,6 +256,16 @@ namespace MyMoney.Core.Tests.Services
          const long transactionId = 7;
          const long userId = 9;
          const string description = "test";
+
+         var mockUser = new Mock<IUser>(MockBehavior.Strict);
+         mockUser.Setup(m => m.Id).Returns(userId);
+         mockUser.Setup(m => m.Budgets).Returns(new List<IBudget>().AsQueryable());
+         mockUser.Setup(m => m.Incomes).Returns(new List<IIncome>().AsQueryable());
+
+         _currentUserProvider
+             .Setup(m => m.CurrentUser)
+             .Returns(mockUser.Object)
+             .Verifiable();
 
          var mockTransaction = new Mock<ITransaction>(MockBehavior.Strict);
          mockTransaction.SetupAllProperties();
