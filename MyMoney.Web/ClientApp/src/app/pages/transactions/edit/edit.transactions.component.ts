@@ -66,7 +66,7 @@ export class EditTransactionsComponent implements OnInit {
 
                this.enableForm();
 
-               this.fetchBudgets();
+               this.fetchBudgetsAndIncomes();
             },
                () => {
                   this.router.navigate(['/transactions']);
@@ -110,7 +110,7 @@ export class EditTransactionsComponent implements OnInit {
 
       this.selectedBudgets.clear();
 
-      this.fetchBudgets();
+      this.fetchBudgetsAndIncomes();
    }
 
    public toInputDateString(text: string): string {
@@ -125,7 +125,7 @@ export class EditTransactionsComponent implements OnInit {
       return text.split('/')[2] + '-' + monthStr + '-' + dayStr;
    }
 
-   public fetchBudgets(): void {
+   public fetchBudgetsAndIncomes(): void {
       const date = new Date(this.f.date.value);
 
       this.budgetService.getBudgetsForMonth(date.getMonth() + 1, date.getFullYear()).subscribe(response => {
