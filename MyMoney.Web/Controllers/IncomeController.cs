@@ -92,7 +92,6 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid income data");
 
             return Ok(new IncomeDto(result));
-
          }
          catch (Exception)
          {

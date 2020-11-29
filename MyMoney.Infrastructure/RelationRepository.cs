@@ -36,7 +36,6 @@ namespace MyMoney.Infrastructure
             Console.WriteLine(e);
             return null;
          }
-
       }
 
       public bool Delete<T>(T item) where T : class, IRelationEntity
