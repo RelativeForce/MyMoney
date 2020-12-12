@@ -1,7 +1,7 @@
 import { IChartDataProvider } from './chart/chart-data-provider.interface';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BudgetSeries, BudgetSeriesDataPoint } from 'src/app/shared/classes';
+import { BudgetSeries } from 'src/app/shared/classes';
 import { ISeriesItem } from 'src/app/shared/interfaces';
 import { BudgetService, TransactionService } from 'src/app/shared/services';
 import { IAppState } from 'src/app/shared/state/app-state';
@@ -11,7 +11,7 @@ import { IBudgetModel, IDateRangeModel, ITransactionModel } from 'src/app/shared
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { ISeries } from 'src/app/shared/interfaces/series.interface';
 
-export class TransactionsChartDataProvider implements IChartDataProvider<Date> {
+export class TransactionsChartDataProvider implements IChartDataProvider<undefined> {
    public xAxisLabel: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
@@ -41,7 +41,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider<Date> {
 
    public init(): void {
       combineLatest([this.store.select(selectBudgets), this.store.select(selectTransactions)])
-         .subscribe(([budgets, transactions]) => this.updateCharts(budgets, transactions));
+         .subscribe(([budgets, transactions]) => this.updateCharts(budgets, transactions.map(t => t).reverse()));
    }
 
    public destroy(): void {
@@ -53,23 +53,25 @@ export class TransactionsChartDataProvider implements IChartDataProvider<Date> {
       this.router.navigate(['/transactions', 'edit', data.id]);
    }
 
-   public search(now: Date): void {
-      const month = now.getMonth() + 1;
-      const year = now.getFullYear();
+   public search(): void {
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
 
       this.budgetService.updateMonthId(month, year);
-      this.transactionService.updateDateRange(this.defaultDateRange(now));
+      this.transactionService.updateDateRange(this.defaultDateRange());
    }
 
-   private defaultDateRange(now: Date): IDateRangeModel {
-      const end: Date = new Date(now);
+   private defaultDateRange(): IDateRangeModel {
+      const end: Date = new Date();
       end.setDate(1);
       end.setMonth(end.getMonth() + 1);
       end.setHours(0, 0, 0, 0);
 
-      const start: Date = new Date(now);
+      const start: Date = new Date();
       start.setDate(1);
       start.setHours(0, 0, 0, 0);
+
+      console.log({ end, start });
 
       return { end, start };
    }
