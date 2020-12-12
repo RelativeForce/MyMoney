@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { ISeriesItem } from 'src/app/shared/interfaces';
 import { ISeries } from 'src/app/shared/interfaces/series.interface';
 
-export interface IChartDataProvider<T> {
+export interface IChartDataProvider {
    xAxisLabel: string;
    yAxisLabel: string;
    colorScheme: { domain: string[] };
@@ -11,5 +11,4 @@ export interface IChartDataProvider<T> {
    onSelect(data: ISeriesItem): void;
    init(): void;
    destroy(): void;
-   search(searchParameters: T): void;
 }

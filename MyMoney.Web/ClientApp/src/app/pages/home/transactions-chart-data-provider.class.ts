@@ -7,7 +7,7 @@ import { IBudgetModel, IDateRangeModel, ITransactionModel } from 'src/app/shared
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { ISeries } from 'src/app/shared/interfaces/series.interface';
 
-export class TransactionsChartDataProvider implements IChartDataProvider<undefined> {
+export class TransactionsChartDataProvider implements IChartDataProvider {
    public xAxisLabel: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
@@ -15,7 +15,6 @@ export class TransactionsChartDataProvider implements IChartDataProvider<undefin
    public legendTitle: string;
 
    private seriesDataSubject: BehaviorSubject<ISeries[]>;
-   private unsubscribe: Subject<void>;
 
    constructor(
       private readonly transactionService: TransactionService,
@@ -24,7 +23,6 @@ export class TransactionsChartDataProvider implements IChartDataProvider<undefin
    ) {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
       this.seriesData = this.seriesDataSubject.asObservable();
-      this.unsubscribe = new Subject();
 
       this.xAxisLabel = 'Transactions';
       this.yAxisLabel = 'Remaining in budget (£)';
@@ -35,24 +33,19 @@ export class TransactionsChartDataProvider implements IChartDataProvider<undefin
    }
 
    public init(): void {
-
-   }
-
-   public destroy(): void {
-      this.unsubscribe.next();
-      this.unsubscribe.complete();
-   }
-
-   public onSelect(item: ISeriesItem): void {
-      this.router.navigate(item.link);
-   }
-
-   public search(): void {
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
 
       combineLatest([this.budgetService.getBudgetsForMonth(month, year), this.transactionService.getTransactionsInRange(this.defaultDateRange())])
-         .subscribe(([budgetList, transactionList]) => this.updateCharts(budgetList.budgets, transactionList.transactions.reverse()));
+         .subscribe(([budgetList, transactionList]) => this.updateChart(budgetList.budgets, transactionList.transactions.reverse()));
+   }
+
+   public destroy(): void {
+      // Do nothing
+   }
+
+   public onSelect(item: ISeriesItem): void {
+      this.router.navigate(item.link);
    }
 
    private defaultDateRange(): IDateRangeModel {
@@ -68,7 +61,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider<undefin
       return { end, start };
    }
 
-   private updateCharts(budgets: IBudgetModel[], transactions: ITransactionModel[]): void {
+   private updateChart(budgets: IBudgetModel[], transactions: ITransactionModel[]): void {
 
       const seriesData = [];
 

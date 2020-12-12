@@ -8,7 +8,7 @@ import { ISeries } from 'src/app/shared/interfaces/series.interface';
 import { IRunningTotalDto } from 'src/app/shared/api';
 import { RunningTotalSeries } from 'src/app/shared/classes/running-total-series.class';
 
-export class RunningTotalChartDataProvider implements IChartDataProvider<undefined> {
+export class RunningTotalChartDataProvider implements IChartDataProvider {
    public xAxisLabel: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
@@ -33,20 +33,16 @@ export class RunningTotalChartDataProvider implements IChartDataProvider<undefin
    }
 
    public init(): void {
-
+      this.budgetService.getRunningTotal(0, this.defaultDateRange())
+         .subscribe((runningTotalList) => this.updateChart(runningTotalList.runningTotals));
    }
 
    public destroy(): void {
-
+      // Do nothing
    }
 
    public onSelect(item: ISeriesItem): void {
       this.router.navigate(item.link);
-   }
-
-   public search(): void {
-      this.budgetService.getRunningTotal(0, this.defaultDateRange())
-         .subscribe((runningTotalList) => this.updateCharts(runningTotalList.runningTotals));
    }
 
    private defaultDateRange(): IDateRangeModel {
@@ -64,7 +60,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider<undefin
       return { end, start };
    }
 
-   private updateCharts(runningTotals: IRunningTotalDto[]): void {
+   private updateChart(runningTotals: IRunningTotalDto[]): void {
 
       const initialTotal = 0;
 

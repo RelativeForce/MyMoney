@@ -6,9 +6,9 @@ import { IChartDataProvider } from './chart-data-provider.interface';
    templateUrl: './chart.component.html',
    selector: 'mymoney-chart'
 })
-export class ChartComponent<T> {
+export class ChartComponent {
    @Input()
-   public dataProvider!: IChartDataProvider<T>;
+   public dataProvider!: IChartDataProvider;
 
    @Input()
    public showXAxis: boolean = true;

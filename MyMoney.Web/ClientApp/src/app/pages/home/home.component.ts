@@ -9,8 +9,8 @@ import { TransactionsChartDataProvider } from './transactions-chart-data-provide
    templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit, OnDestroy {
-   public transactionsChart: IChartDataProvider<undefined>;
-   public runningTotalChart: IChartDataProvider<undefined>;
+   public transactionsChart: IChartDataProvider;
+   public runningTotalChart: IChartDataProvider;
 
    constructor(
       transactionService: TransactionService,
@@ -24,10 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
    ngOnInit(): void {
       this.transactionsChart.init();
-      this.transactionsChart.search(undefined);
-
       this.runningTotalChart.init();
-      this.runningTotalChart.search(undefined)
    }
 
    ngOnDestroy(): void {
