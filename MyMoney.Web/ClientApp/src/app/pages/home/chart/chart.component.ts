@@ -11,14 +11,15 @@ export class ChartComponent {
    public dataProvider!: IChartDataProvider;
 
    @Input()
-   public showXAxis: boolean = true;
-
-   @Input()
    public showLegend: boolean = true;
 
    constructor() { }
 
    public onSelect(item: ISeriesItem): void {
       this.dataProvider.onSelect(item);
+   }
+
+   public getXAxisTickLabel(val: string): string {
+      return '';
    }
 }

@@ -24,7 +24,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
       this.seriesData = this.seriesDataSubject.asObservable();
 
-      this.xAxisLabel = 'Total savings';
+      this.xAxisLabel = 'Total savings this year';
       this.yAxisLabel = 'Balance (£)';
       this.colorScheme = {
          domain: ['#7aa3e5']
@@ -61,10 +61,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
    }
 
    private updateChart(runningTotals: IRunningTotalDto[]): void {
-
-      const initialTotal = 0;
-
-      const series = new RunningTotalSeries(initialTotal);
+      const series = new RunningTotalSeries(0);
 
       for (const runningTotal of runningTotals) {
          series.addEntry(runningTotal);
