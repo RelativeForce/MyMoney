@@ -72,6 +72,32 @@ namespace MyMoney.Web.Controllers
          }
       }
 
+      [HttpPost(nameof(RunningTotal))]
+      public IActionResult RunningTotal([FromBody] RunningTotalSearchDto dto)
+      {
+         try
+         {
+            if (dto == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var runningTotals = _incomeService.RunningTotal(dto.InitialTotal, dto.dateRange.Start, dto.dateRange.End);
+
+            if (runningTotals == null)
+               return NotFound();
+
+            return Ok(new RunningTotalListDto
+            {
+               RunningTotals = runningTotals.Select(t => new RunningTotalDto(t)).ToList()
+            });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while listing running total");
+         }
+      }
+
       [HttpPost(nameof(Add))]
       public IActionResult Add([FromBody] IncomeDto dto)
       {
