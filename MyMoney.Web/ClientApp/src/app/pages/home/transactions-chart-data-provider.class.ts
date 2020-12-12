@@ -43,8 +43,8 @@ export class TransactionsChartDataProvider implements IChartDataProvider<undefin
       this.unsubscribe.complete();
    }
 
-   public onSelect(data: ISeriesItem): void {
-      this.router.navigate(['/transactions', 'edit', data.id]);
+   public onSelect(item: ISeriesItem): void {
+      this.router.navigate(item.link);
    }
 
    public search(): void {

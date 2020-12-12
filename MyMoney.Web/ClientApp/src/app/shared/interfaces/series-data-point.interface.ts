@@ -9,4 +9,5 @@ export interface ISeriesDataPoint {
    readonly value: number;
    readonly amount: number;
    readonly date: string;
+   readonly link: (string | number)[] | null;
 }

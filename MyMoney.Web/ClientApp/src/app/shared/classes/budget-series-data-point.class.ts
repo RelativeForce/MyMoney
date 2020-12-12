@@ -10,6 +10,7 @@ export class BudgetSeriesDataPoint implements ISeriesDataPoint {
    public readonly value: number;
    public readonly amount: number;
    public readonly date: string;
+   public readonly link: (string | number)[] | null;
 
    constructor(transaction: ITransactionModel | null, remaining: number) {
       this.id = transaction?.id ?? -1;
@@ -20,8 +21,10 @@ export class BudgetSeriesDataPoint implements ISeriesDataPoint {
 
       if (transaction !== null) {
          this.name = `Transaction ${transaction.id}`;
+         this.link = ['/transactions', 'edit', transaction.id];
       } else {
          this.name = DEFAULT_TEXT;
+         this.link = null;
       }
    }
 }

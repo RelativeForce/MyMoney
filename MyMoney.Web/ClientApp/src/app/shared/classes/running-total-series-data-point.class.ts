@@ -10,6 +10,7 @@ export class RunningTotalSeriesDataPoint implements ISeriesDataPoint {
    public readonly value: number;
    public readonly amount: number;
    public readonly date: string;
+   public readonly link: (string | number)[] | null;
 
    constructor(runningTotal: IRunningTotalDto | null, initialTotal: number) {
       this.id = runningTotal?.id ?? -1;
@@ -22,14 +23,16 @@ export class RunningTotalSeriesDataPoint implements ISeriesDataPoint {
 
          if (runningTotal.isIncome) {
             this.name = `Income ${runningTotal.id}`;
+            this.link = ['/incomes', 'edit', runningTotal.id];
          }
 
          if (runningTotal.isTransaction) {
             this.name = `Transaction ${runningTotal.id}`;
+            this.link = ['/transactions', 'edit', runningTotal.id];
          }
-
       } else {
          this.name = DEFAULT_TEXT;
+         this.link = null;
       }
    }
 }
