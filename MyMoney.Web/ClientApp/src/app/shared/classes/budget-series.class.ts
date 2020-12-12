@@ -1,7 +1,8 @@
+import { ISeries } from '../interfaces/series.interface';
 import { IBudgetModel, ITransactionModel } from '../state/types';
 import { BudgetSeriesDataPoint } from './budget-series-data-point.class';
 
-export class BudgetSeries {
+export class BudgetSeries implements ISeries {
 
    public id: number;
    public name: string;

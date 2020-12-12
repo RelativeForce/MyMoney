@@ -1,0 +1,7 @@
+<ngx-charts-line-chart [scheme]="dataProvider.colorScheme" [legend]="true" [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxis]="true"
+   [yAxis]="true" [xAxisLabel]="dataProvider.xAxisLabel" [yAxisLabel]="dataProvider.yAxisLabel" [results]="dataProvider.seriesData | async"
+   [legendTitle]="dataProvider.legendTitle" (select)="onSelect($event)">
+   <ng-template #tooltipTemplate let-model="model">
+      {{ (model.id === -1 ? model.series : model.date) }} • {{ model.name }} • £{{ model.amount }}
+   </ng-template>
+</ngx-charts-line-chart>

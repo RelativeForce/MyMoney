@@ -1,6 +1,7 @@
+import { ISeriesDataPoint } from '../interfaces/series-data-point.interface';
 import { ITransactionModel } from '../state/types';
 
-export class BudgetSeriesDataPoint {
+export class BudgetSeriesDataPoint implements ISeriesDataPoint {
    public readonly id: number;
    public readonly name: string;
    public readonly value: number;
