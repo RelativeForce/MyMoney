@@ -60,6 +60,30 @@ namespace MyMoney.Core.Services
          return user.Incomes.Where(b => b.Date <= start).Take(count).ToList();
       }
 
+      public IList<RunningTotal> RunningTotal(decimal initialTotal, DateTime start, DateTime end)
+      {
+         var user = _currentUserProvider.CurrentUser;
+
+         var transactions = _currentUserProvider.CurrentUser.Transactions
+            .Where(t => t.Date >= start && t.Date <= end)
+            .AsEnumerable()
+            .Select(t => new RunningTotal(t));
+
+         var incomes = _currentUserProvider.CurrentUser.Incomes
+            .Where(i => i.Date >= start && i.Date <= end)
+            .AsEnumerable()
+            .Select(i => new RunningTotal(i));
+
+         var runningTotals = transactions.Concat(incomes).OrderBy(rt => rt.Date).ToList();
+
+         foreach (var rt in runningTotals)
+         {
+            initialTotal = rt.AdjustTotal(initialTotal);
+         }
+
+         return runningTotals;
+      }
+
       public bool Update(long incomeId, DateTime date, string name, decimal amount)
       {
          if (string.IsNullOrWhiteSpace(name) || amount <= 0)

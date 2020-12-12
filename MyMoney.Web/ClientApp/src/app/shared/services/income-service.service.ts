@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { IncomeApi, IDeleteResultDto, IIncomeListDto, IUpdateResultDto } from '../api';
+import { IncomeApi, IDeleteResultDto, IIncomeListDto, IUpdateResultDto, IDateRangeDto, IRunningTotalListDto } from '../api';
 import {
    DeleteIncomeAction,
    RefreshIncomesAction,
@@ -29,8 +29,12 @@ export class IncomeService {
       });
    }
 
-   public getIncomes(date: Date) {
+   public getIncomes(date: Date): Observable<IIncomeListDto> {
       return this.incomeApi.list({ date, count: 10 });
+   }
+
+   public getRunningTotal(initialTotal: number, dateRange: IDateRangeDto): Observable<IRunningTotalListDto> {
+      return this.incomeApi.runningTotal({ dateRange, initialTotal });
    }
 
    public deleteIncome(incomeId: number): void {

@@ -26,6 +26,7 @@ import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
+import { ChartComponent } from './pages/home/chart/chart.component';
 
 @NgModule({
    declarations: [
@@ -41,7 +42,8 @@ import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
       EditBudgetsComponent,
       IncomesComponent,
       AddIncomesComponent,
-      EditIncomesComponent
+      EditIncomesComponent,
+      ChartComponent
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

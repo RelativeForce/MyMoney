@@ -84,3 +84,22 @@ export interface IUpdateResultDto {
    success: boolean;
    error: string;
 }
+
+export interface IRunningTotalSearchDto {
+   initialTotal: number;
+   dateRange: IDateRangeDto;
+}
+
+export interface IRunningTotalDto {
+   id: number;
+   isTransaction: boolean;
+   isIncome: boolean;
+   text: string;
+   date: string;
+   delta: number;
+   value: number;
+}
+
+export interface IRunningTotalListDto {
+   runningTotals: IRunningTotalDto[];
+}

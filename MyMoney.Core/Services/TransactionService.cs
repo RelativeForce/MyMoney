@@ -35,7 +35,10 @@ namespace MyMoney.Core.Services
 
       public IList<ITransaction> Between(DateTime start, DateTime end)
       {
-         return _currentUserProvider.CurrentUser.Between(start, end);
+         return _currentUserProvider.CurrentUser.Transactions
+            .Where(t => t.Date >= start && t.Date <= end)
+            .OrderByDescending(t => t.Date)
+            .ToList(); ;
       }
 
       public ITransaction Add(DateTime date, string description, decimal amount, string notes, long[] budgetIds, long[] incomeIds)

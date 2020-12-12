@@ -1,8 +1,3 @@
-export interface ISeriesItem {
-   name: string;
-   value: number;
-   series: string;
-   id: number;
-   amount: number;
-   date: string;
-}
+import { ISeriesDataPoint } from './series-data-point.interface';
+
+export type ISeriesItem = ISeriesDataPoint & { series: string; }

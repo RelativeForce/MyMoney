@@ -30,22 +30,6 @@ namespace MyMoney.Infrastructure.Entities
       public IQueryable<ITransaction> Transactions => TransactionsProxy.Cast<ITransaction>().AsQueryable();
       public virtual ICollection<Transaction> TransactionsProxy { get; set; } = new List<Transaction>();
 
-      public IList<ITransaction> Between(DateTime start, DateTime end)
-      {
-         return TransactionsProxy
-             .Where(t => t.Date >= start && t.Date <= end)
-             .OrderByDescending(t => t.Date)
-             .Cast<ITransaction>()
-             .ToList();
-      }
-
-      public decimal Total(DateTime start, DateTime end)
-      {
-         return TransactionsProxy
-             .Where(t => t.Date >= start && t.Date <= end)
-             .Aggregate((decimal)0, (total, transaction) => total + transaction.Amount);
-      }
-
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<User>().HasIndex(t => new { t.Email }).IsUnique();
