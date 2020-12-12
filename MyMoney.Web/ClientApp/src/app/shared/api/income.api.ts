@@ -7,7 +7,9 @@ import {
    IDeleteResultDto,
    IIncomeDto,
    IIdDto,
-   IUpdateResultDto
+   IUpdateResultDto,
+   IRunningTotalSearchDto,
+   IRunningTotalListDto
 } from './dtos.interface';
 import { HttpHelper } from './http-helper.class';
 
@@ -37,6 +39,12 @@ export class IncomeApi {
    public update(income: IIncomeDto): Observable<IUpdateResultDto> {
       return this.api
          .post<IIncomeDto, IUpdateResultDto>('/Income/Update', income)
+         .pipe(first());
+   }
+
+   public runningTotal(request: IRunningTotalSearchDto): Observable<IRunningTotalListDto> {
+      return this.api
+         .post<IRunningTotalSearchDto, IRunningTotalListDto>('/Income/RunningTotal', request)
          .pipe(first());
    }
 

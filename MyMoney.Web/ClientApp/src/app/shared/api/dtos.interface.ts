@@ -99,3 +99,7 @@ export interface IRunningTotalDto {
    delta: number;
    value: number;
 }
+
+export interface IRunningTotalListDto {
+   runningTotals: IRunningTotalDto[];
+}
