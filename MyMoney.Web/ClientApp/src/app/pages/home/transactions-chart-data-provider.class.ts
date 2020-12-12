@@ -69,7 +69,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
          const bs = new BudgetSeries(budget);
 
          for (const transaction of transactions) {
-            bs.addTransaction(transaction);
+            bs.addEntry(transaction);
          }
 
          seriesData[seriesData.length] = bs as ISeries;

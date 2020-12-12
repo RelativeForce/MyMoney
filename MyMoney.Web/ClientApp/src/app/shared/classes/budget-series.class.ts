@@ -17,7 +17,7 @@ export class BudgetSeries implements ISeries {
       this.id = budget.id;
    }
 
-   public addTransaction(transaction: ITransactionModel) {
+   public addEntry(transaction: ITransactionModel) {
       if (transaction.budgetIds.includes(this.id)) {
          this.remaining -= transaction.amount;
       }
