@@ -1,12 +1,8 @@
 import { IChartDataProvider } from './chart/chart-data-provider.interface';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { BudgetSeries } from 'src/app/shared/classes';
 import { ISeriesItem } from 'src/app/shared/interfaces';
 import { BudgetService, TransactionService } from 'src/app/shared/services';
-import { IAppState } from 'src/app/shared/state/app-state';
-import { selectBudgets } from 'src/app/shared/state/selectors/budget.selector';
-import { selectTransactions } from 'src/app/shared/state/selectors/transaction.selector';
 import { IBudgetModel, IDateRangeModel, ITransactionModel } from 'src/app/shared/state/types';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { ISeries } from 'src/app/shared/interfaces/series.interface';
@@ -24,7 +20,6 @@ export class TransactionsChartDataProvider implements IChartDataProvider<undefin
    constructor(
       private readonly transactionService: TransactionService,
       private readonly budgetService: BudgetService,
-      private readonly store: Store<IAppState>,
       private readonly router: Router,
    ) {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
@@ -40,8 +35,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider<undefin
    }
 
    public init(): void {
-      combineLatest([this.store.select(selectBudgets), this.store.select(selectTransactions)])
-         .subscribe(([budgets, transactions]) => this.updateCharts(budgets, transactions.map(t => t).reverse()));
+
    }
 
    public destroy(): void {
@@ -57,8 +51,8 @@ export class TransactionsChartDataProvider implements IChartDataProvider<undefin
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
 
-      this.budgetService.updateMonthId(month, year);
-      this.transactionService.updateDateRange(this.defaultDateRange());
+      combineLatest([this.budgetService.getBudgetsForMonth(month, year), this.transactionService.getTransactionsInRange(this.defaultDateRange())])
+         .subscribe(([budgetList, transactionList]) => this.updateCharts(budgetList.budgets, transactionList.transactions.reverse()));
    }
 
    private defaultDateRange(): IDateRangeModel {

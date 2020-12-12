@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       store: Store<IAppState>,
       router: Router,
    ) {
-      this.transactionsChart = new TransactionsChartDataProvider(transactionService, budgetService, store, router);
+      this.transactionsChart = new TransactionsChartDataProvider(transactionService, budgetService, router);
    }
 
    ngOnInit(): void {

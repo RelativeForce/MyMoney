@@ -18,10 +18,13 @@ export class TransactionService {
             return;
          }
 
-         this.transactionApi
-            .list(search.dateRange)
+         this.getTransactionsInRange(search.dateRange)
             .subscribe((response: ITransactionListDto) => this.store.dispatch(new SetTransactionsAction(response.transactions)));
       });
+   }
+
+   public getTransactionsInRange(dateRange: IDateRangeModel): Observable<ITransactionListDto> {
+      return this.transactionApi.list(dateRange);
    }
 
    public deleteTransaction(transactionId: number): void {
