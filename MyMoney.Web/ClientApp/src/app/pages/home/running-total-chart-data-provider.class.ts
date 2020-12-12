@@ -27,7 +27,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider<undefin
       this.xAxisLabel = 'Total savings';
       this.yAxisLabel = 'Balance (£)';
       this.colorScheme = {
-         domain: ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5']
+         domain: ['#7aa3e5']
       };
       this.legendTitle = '';
    }

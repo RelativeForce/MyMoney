@@ -1,12 +1,10 @@
 import { IRunningTotalDto } from '../api';
 import { ISeries } from '../interfaces/series.interface';
-import { BudgetSeriesDataPoint } from './budget-series-data-point.class';
 import { RunningTotalSeriesDataPoint } from './running-total-series-data-point.class';
 
 export class RunningTotalSeries implements ISeries {
-
    public name: string;
-   public series: BudgetSeriesDataPoint[];
+   public series: RunningTotalSeriesDataPoint[];
 
    private initialTotal: number;
 
