@@ -65,8 +65,6 @@ export class TransactionsChartDataProvider implements IChartDataProvider<undefin
       start.setDate(1);
       start.setHours(0, 0, 0, 0);
 
-      console.log({ end, start });
-
       return { end, start };
    }
 

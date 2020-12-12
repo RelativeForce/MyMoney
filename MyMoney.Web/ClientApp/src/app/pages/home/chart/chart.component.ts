@@ -10,6 +10,12 @@ export class ChartComponent<T> {
    @Input()
    public dataProvider!: IChartDataProvider<T>;
 
+   @Input()
+   public showXAxis: boolean = true;
+
+   @Input()
+   public showLegend: boolean = true;
+
    constructor() { }
 
    public onSelect(item: ISeriesItem): void {
