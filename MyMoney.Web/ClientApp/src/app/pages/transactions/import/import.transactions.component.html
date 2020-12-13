@@ -28,11 +28,13 @@
          <td *ngFor="let element of row.data; let elementIndex = index">
             <input type='{{headings[elementIndex].inputType}}' class="form-control" [value]="headings[elementIndex].format(element)"
                (change)='changeElementValue($event.target.value, row.id, elementIndex)' [readonly]="headings[elementIndex].isIgnored"
-               [ngClass]="{ 'is-invalid': headings[elementIndex].format(element) === null }" />
+               [disabled]="loading" [ngClass]="{ 'is-invalid': headings[elementIndex].format(element) === null }" />
          </td>
          <td>
             <div class="btn-group">
-               <button class="btn btn-danger" (click)="deleteRow(row.id)">✕</button>
+               <button class="btn btn-danger" (click)="deleteRow(row.id)" *ngIf="!loading">✕</button>
+               <div class="btn btn-success" *ngIf="row.success">✔</div>
+               <div class="btn btn-danger" *ngIf="row.failure">!</div>
             </div>
          </td>
       </tr>

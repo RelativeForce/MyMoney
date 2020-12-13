@@ -1,25 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { element } from 'protractor';
-import { BudgetService, IncomeService, TransactionService } from 'src/app/shared/services';
+import { ITransactionDto } from 'src/app/shared/api';
+import { TransactionService } from 'src/app/shared/services';
 
 @Component({
    templateUrl: './import.transactions.component.html'
 })
 export class ImportTransactionsComponent implements OnInit {
 
-   public importTransactionsForm: FormGroup;
    public rows: Row[];
    public headings: Heading[];
    public fields: Field[];
    public loading: boolean;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
-      private readonly transactionService: TransactionService,
-      private readonly router: Router
-   ) {
+      private readonly transactionService: TransactionService) {
       this.rows = [];
       this.headings = [];
       this.loading = false;
@@ -27,9 +22,7 @@ export class ImportTransactionsComponent implements OnInit {
    }
 
    public ngOnInit(): void {
-      this.importTransactionsForm = this.formBuilder.group({
-         file: [null, Validators.required],
-      });
+
    }
 
    public openFile(event: any) {
@@ -132,11 +125,52 @@ export class ImportTransactionsComponent implements OnInit {
 
       this.loading = true;
 
-      // TODO: Send to server
+      const dateIndex = this.headings.findIndex(h => h.type === Field.Date);
+      const descriptionIndex = this.headings.findIndex(h => h.type === Field.Description);
+      const amountIndex = this.headings.findIndex(h => h.type === Field.Amount);
+      const notesIndex = this.headings.findIndex(h => h.type === Field.Notes);
 
+      function toTransaction(row: Row): { transaction: ITransactionDto, rowId: number } | null {
 
-      this.router.navigate(['/transactions']);
+         const date: string | null = Heading.formatWithType(Field.Date, row.data[dateIndex]);
+         const amount: number | null = Heading.formatWithType(Field.Amount, row.data[amountIndex]);
+         const description: string | null = Heading.formatWithType(Field.Description, row.data[descriptionIndex]);
+         const notes: string | null = Heading.formatWithType(Field.Notes, row.data[notesIndex]);
+
+         if (date === null || amount === null || description === null) {
+            return null;
+         }
+
+         return {
+            transaction: {
+               date: date,
+               description,
+               amount,
+               id: 0,
+               budgetIds: [],
+               incomeIds: [],
+               notes: notes ?? ''
+            },
+            rowId: row.id
+         };
+      }
+
+      const transactionRows = this.rows.map(toTransaction).filter(t => t !== null);
+
+      console.log(transactionRows)
+      return;
+
+      for (const transactionRow of transactionRows) {
+         this.transactionService.addTransaction(transactionRow.transaction).subscribe(() => {
+            // Success
+            this.rows.find(r => r.id === transactionRow.rowId)?.setCreated(true);
+         }, () => {
+            // Error
+            this.rows.find(r => r.id === transactionRow.rowId)?.setCreated(false);
+         });
+      }
    }
+
 
    private isRowValid(row: Row) {
 
@@ -157,11 +191,20 @@ export class ImportTransactionsComponent implements OnInit {
 }
 
 class Row {
+
+   public success: boolean = false;
+   public failure: boolean = false;
+
    constructor(public data: string[], public id: number) {
    }
 
    public setValue(index: number, value: string) {
       this.data[index] = value;
+   }
+
+   public setCreated(success: boolean) {
+      this.success = success;
+      this.failure = !success;
    }
 }
 
@@ -181,14 +224,18 @@ class Heading {
    }
 
    public format(input: string): any | null {
-      switch (this.type) {
-         case Field.Amount: return this.formatAmount(input);
-         case Field.Date: return this.formatDate(input);
+      return Heading.formatWithType(this.type, input);
+   }
+
+   public static formatWithType(type: Field, input: string): any | null {
+      switch (type) {
+         case Field.Amount: return Heading.formatAmount(input);
+         case Field.Date: return Heading.formatDate(input);
          default: return input;
       }
    }
 
-   private formatAmount(input: string): any {
+   private static formatAmount(input: string): number | null {
       const result = /-?[0-9][0-9,\.]+/g.exec(input) as RegExpExecArray | null;
 
       if (result === null)
@@ -197,7 +244,7 @@ class Heading {
       return Number.parseFloat(result[0]);
    }
 
-   private formatDate(input: string): any {
+   private static formatDate(input: string): string | null {
       try {
          return new Date(Date.parse(input)).toISOString().split('T')[0];
       } catch (error) {
