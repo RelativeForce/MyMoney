@@ -118,7 +118,7 @@ export class ImportTransactionsComponent {
          .reduce((a, b) => a || b, false);
 
       if (anyInvalidRows) {
-         if (!confirm('Warning: Some rows have invalid data, these rows will be ignored.\nContinue?'))
+         if (!confirm('Warning:\nSome rows have invalid data, these rows will be ignored.\nContinue?'))
             return;
       }
 
@@ -205,7 +205,6 @@ export class ImportTransactionsComponent {
          'Return to transactions page?'
       );
    }
-
 }
 
 class Row {
