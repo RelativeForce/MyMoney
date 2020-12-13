@@ -1,0 +1,27 @@
+<h2>Import transactions</h2>
+<form [formGroup]="importTransactionsForm" (ngSubmit)="onSubmit()">
+   <div class="form-group">
+      <input type='file' formControlName="file" accept='.txt,.csv' multiple (change)='openFile($event)'
+         [ngClass]="{ 'is-invalid': submitted && f.file.errors }">
+      <div *ngIf="submitted && f.file.errors" class="invalid-feedback">
+         <div *ngIf="f.file.errors.required">File is required</div>
+      </div>
+   </div>
+</form>
+<table class="table">
+   <thead>
+      <tr>
+         <th scope="col"></th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr *ngFor="let row of rows; let i = index">
+         <td *ngFor="let element of row">{{ element }}</td>
+         <td>
+            <div class="btn-group">
+               <button class="btn btn-danger" (click)="deleteRow(i)">✕</button>
+            </div>
+         </td>
+      </tr>
+   </tbody>
+</table>

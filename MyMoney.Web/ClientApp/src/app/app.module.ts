@@ -19,6 +19,8 @@ import {
    IncomesComponent,
    EditIncomesComponent,
    AddIncomesComponent,
+   ChartComponent,
+   ImportTransactionsComponent,
 } from './pages';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
@@ -26,7 +28,6 @@ import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
-import { ChartComponent } from './pages/home/chart/chart.component';
 
 @NgModule({
    declarations: [
@@ -43,7 +44,8 @@ import { ChartComponent } from './pages/home/chart/chart.component';
       IncomesComponent,
       AddIncomesComponent,
       EditIncomesComponent,
-      ChartComponent
+      ChartComponent,
+      ImportTransactionsComponent
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -75,6 +77,12 @@ import { ChartComponent } from './pages/home/chart/chart.component';
          {
             path: 'transactions/add',
             component: AddTransactionsComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'transactions/import',
+            component: ImportTransactionsComponent,
             pathMatch: 'full',
             canActivate: [AuthenticationGuard],
          },
