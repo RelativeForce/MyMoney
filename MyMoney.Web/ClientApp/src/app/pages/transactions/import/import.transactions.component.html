@@ -28,11 +28,11 @@
          <td *ngFor="let element of row.data; let elementIndex = index">
             <input type='{{headings[elementIndex].inputType}}' class="form-control" [value]="headings[elementIndex].format(element)"
                (change)='changeElementValue($event.target.value, row.id, elementIndex)' [readonly]="headings[elementIndex].isIgnored"
-               [disabled]="loading" [ngClass]="{ 'is-invalid': headings[elementIndex].format(element) === null }" />
+               [disabled]="isLoading" [ngClass]="{ 'is-invalid': headings[elementIndex].format(element) === null }" />
          </td>
          <td>
             <div class="btn-group">
-               <button class="btn btn-danger" (click)="deleteRow(row.id)" *ngIf="!loading">✕</button>
+               <button class="btn btn-danger" (click)="deleteRow(row.id)" *ngIf="!isLoading && !isDone">✕</button>
                <div class="btn btn-success" *ngIf="row.success">✔</div>
                <div class="btn btn-danger" *ngIf="row.failure">!</div>
             </div>
@@ -41,7 +41,10 @@
    </tbody>
 </table>
 
-<button class="btn btn-success" (click)="onSubmit()" [hidden]="this.rows.length === 0">
-   <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-   Import
-</button>
+<div class="form-group btn-group">
+   <a class="btn btn-warning" routerLink="/transactions">Cancel</a>
+   <button class="btn btn-success" (click)="onSubmit()" [disabled]="isDone" [hidden]="this.rows.length === 0">
+      <span *ngIf="isLoading && !isDone" class="spinner-border spinner-border-sm mr-1"></span>
+      Import
+   </button>
+</div>

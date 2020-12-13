@@ -6,23 +6,20 @@ import { TransactionService } from 'src/app/shared/services';
 @Component({
    templateUrl: './import.transactions.component.html'
 })
-export class ImportTransactionsComponent implements OnInit {
+export class ImportTransactionsComponent {
 
    public rows: Row[];
    public headings: Heading[];
    public fields: Field[];
-   public loading: boolean;
+   public isLoading: boolean;
+   public isDone: boolean;
 
-   constructor(
-      private readonly transactionService: TransactionService) {
+   constructor(private readonly transactionService: TransactionService, private readonly router: Router) {
       this.rows = [];
       this.headings = [];
-      this.loading = false;
+      this.isLoading = false;
+      this.isDone = false;
       this.fields = Object.keys(Field).map(k => Field[k] as Field);
-   }
-
-   public ngOnInit(): void {
-
    }
 
    public openFile(event: any) {
@@ -53,6 +50,8 @@ export class ImportTransactionsComponent implements OnInit {
 
    public resetHeadings(): void {
       this.headings = [];
+      this.isLoading = false;
+      this.isDone = false;
 
       let columnCount = 0;
       for (const row of this.rows) {
@@ -123,14 +122,14 @@ export class ImportTransactionsComponent implements OnInit {
             return;
       }
 
-      this.loading = true;
+      this.isLoading = true;
 
       const dateIndex = this.headings.findIndex(h => h.type === Field.Date);
       const descriptionIndex = this.headings.findIndex(h => h.type === Field.Description);
       const amountIndex = this.headings.findIndex(h => h.type === Field.Amount);
       const notesIndex = this.headings.findIndex(h => h.type === Field.Notes);
 
-      function toTransaction(row: Row): { transaction: ITransactionDto, rowId: number } | null {
+      function toTransaction(row: Row): { transaction: ITransactionDto, row: Row } | null {
 
          const date: string | null = Heading.formatWithType(Field.Date, row.data[dateIndex]);
          const amount: number | null = Heading.formatWithType(Field.Amount, row.data[amountIndex]);
@@ -151,26 +150,36 @@ export class ImportTransactionsComponent implements OnInit {
                incomeIds: [],
                notes: notes ?? ''
             },
-            rowId: row.id
+            row: row
          };
       }
 
       const transactionRows = this.rows.map(toTransaction).filter(t => t !== null);
 
-      console.log(transactionRows)
-      return;
-
       for (const transactionRow of transactionRows) {
          this.transactionService.addTransaction(transactionRow.transaction).subscribe(() => {
             // Success
-            this.rows.find(r => r.id === transactionRow.rowId)?.setCreated(true);
+            transactionRow.row.setCreated(true);
+            this.checkIsDone(transactionRows);
          }, () => {
             // Error
-            this.rows.find(r => r.id === transactionRow.rowId)?.setCreated(false);
+            transactionRow.row.setCreated(false);
+            this.checkIsDone(transactionRows);
          });
       }
    }
 
+   private checkIsDone(transactionRows: { transaction: ITransactionDto, row: Row }[]) {
+      this.isDone = transactionRows.filter(tr => !(tr.row.success || tr.row.failure)).length === 0;
+
+      if (this.isDone) {
+         this.isLoading = false;
+
+         if (this.doneConfirmation()) {
+            this.router.navigate(['/transactions']);
+         }
+      }
+   }
 
    private isRowValid(row: Row) {
 
@@ -188,6 +197,15 @@ export class ImportTransactionsComponent implements OnInit {
    private multipleFieldErrorMessage(field: Field): void {
       alert(`Error:\nError: Multiple '${field}' fields present, please pick one`);
    }
+
+   private doneConfirmation(): boolean {
+      return confirm(
+         `Transactions created: ${this.rows.filter(r => r.success).length}\n` +
+         `Transactions failed: ${this.rows.filter(r => r.failure).length}\n\n` +
+         'Return to transactions page?'
+      );
+   }
+
 }
 
 class Row {
