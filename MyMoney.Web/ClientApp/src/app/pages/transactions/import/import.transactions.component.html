@@ -1,13 +1,16 @@
 <h2>Import transactions</h2>
-<form [formGroup]="importTransactionsForm" (ngSubmit)="onSubmit()">
-   <div class="form-group">
-      <input type='file' formControlName="file" accept='.txt,.csv' multiple (change)='openFile($event)'
-         [ngClass]="{ 'is-invalid': submitted && f.file.errors }" />
+
+<div class="form-group">
+   <div class="custom-file">
+      <input type="file" class="custom-file-input" id="customFile" accept='.txt,.csv' multiple (change)='openFile($event)'
+         [ngClass]="{ 'is-invalid': submitted && f.file.errors }">
+      <label class="custom-file-label" for="customFile">Choose file</label>
       <div *ngIf="submitted && f.file.errors" class="invalid-feedback">
          <div *ngIf="f.file.errors.required">File is required</div>
       </div>
    </div>
-</form>
+</div>
+
 <table class="table">
    <thead>
       <tr>
@@ -35,3 +38,8 @@
       </tr>
    </tbody>
 </table>
+
+<button class="btn btn-success" (click)="onSubmit()" [hidden]="this.rows.length === 0">
+   <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+   Import
+</button>

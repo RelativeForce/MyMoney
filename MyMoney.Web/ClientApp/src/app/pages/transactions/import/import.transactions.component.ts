@@ -13,13 +13,16 @@ export class ImportTransactionsComponent implements OnInit {
    public rows: Row[];
    public headings: Heading[];
    public fields: Field[];
+   public loading: boolean;
 
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
+      private readonly router: Router
    ) {
       this.rows = [];
       this.headings = [];
+      this.loading = false;
       this.fields = Object.keys(Field).map(k => Field[k] as Field);
    }
 
@@ -28,8 +31,6 @@ export class ImportTransactionsComponent implements OnInit {
          file: [null, Validators.required],
       });
    }
-
-   public get f() { return this.importTransactionsForm.controls; }
 
    public openFile(event: any) {
       const input = event.target;
@@ -68,6 +69,17 @@ export class ImportTransactionsComponent implements OnInit {
       for (let index = 0; index < columnCount; index++) {
          this.headings[index] = new Heading(Field.Description);
       }
+
+      for (const row of this.rows) {
+         if (row.data.length === columnCount) continue;
+
+         for (let index = 0; index < columnCount; index++) {
+
+            if (row.data[index] === undefined) {
+               row.data[index] = '';
+            }
+         }
+      }
    }
 
    public deleteRow(rowId: number): void {
@@ -81,13 +93,74 @@ export class ImportTransactionsComponent implements OnInit {
    public onColumnChange(value: Field, elementIndex: number) {
       this.headings[elementIndex].type = value;
    }
+
+   public onSubmit(): void {
+      const amountFieldCount = this.headings.filter(h => h.type === Field.Amount).length;
+      const dateFieldCount = this.headings.filter(h => h.type === Field.Date).length;
+      const descriptionFieldCount = this.headings.filter(h => h.type === Field.Description).length;
+      const notesFieldCount = this.headings.filter(h => h.type === Field.Notes).length;
+
+      if (amountFieldCount === 0)
+         return this.missingFieldErrorMessage(Field.Amount);
+
+      if (amountFieldCount > 1)
+         return this.multipleFieldErrorMessage(Field.Amount);
+
+      if (dateFieldCount === 0)
+         return this.missingFieldErrorMessage(Field.Date);
+
+      if (dateFieldCount > 1)
+         return this.multipleFieldErrorMessage(Field.Date);
+
+      if (descriptionFieldCount === 0)
+         return this.missingFieldErrorMessage(Field.Description);
+
+      if (descriptionFieldCount > 1)
+         return this.multipleFieldErrorMessage(Field.Description);
+
+      if (notesFieldCount > 1)
+         return this.multipleFieldErrorMessage(Field.Notes);
+
+      const anyInvalidRows: boolean = this.rows
+         .map(r => this.isRowValid(r))
+         .reduce((a, b) => a || b, false);
+
+      if (anyInvalidRows) {
+         if (!confirm('Warning: Some rows have invalid data, these rows will be ignored.\nContinue?'))
+            return;
+      }
+
+      this.loading = true;
+
+      // TODO: Send to server
+
+
+      this.router.navigate(['/transactions']);
+   }
+
+   private isRowValid(row: Row) {
+
+      const allDataValid = row.data
+         .map((d, index) => this.headings[index].format(d) === null)
+         .reduce((a, b) => a || b, false);
+
+      return allDataValid;
+   }
+
+   private missingFieldErrorMessage(field: Field): void {
+      alert(`Error:\n'${field}' field is missing, set on column as '${field}'`);
+   }
+
+   private multipleFieldErrorMessage(field: Field): void {
+      alert(`Error:\nError: Multiple '${field}' fields present, please pick one`);
+   }
 }
 
 class Row {
    constructor(public data: string[], public id: number) {
    }
 
-   setValue(index: number, value: string) {
+   public setValue(index: number, value: string) {
       this.data[index] = value;
    }
 }
