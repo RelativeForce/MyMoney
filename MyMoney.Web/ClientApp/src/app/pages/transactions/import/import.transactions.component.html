@@ -2,7 +2,7 @@
 <form [formGroup]="importTransactionsForm" (ngSubmit)="onSubmit()">
    <div class="form-group">
       <input type='file' formControlName="file" accept='.txt,.csv' multiple (change)='openFile($event)'
-         [ngClass]="{ 'is-invalid': submitted && f.file.errors }">
+         [ngClass]="{ 'is-invalid': submitted && f.file.errors }" />
       <div *ngIf="submitted && f.file.errors" class="invalid-feedback">
          <div *ngIf="f.file.errors.required">File is required</div>
       </div>
@@ -11,15 +11,25 @@
 <table class="table">
    <thead>
       <tr>
-         <th scope="col"></th>
+         <th scope="col" *ngFor="let heading of headings; let i = index">
+            <div class="form-group">
+               <select class="form-control" style="min-width: 130px;" (change)="onColumnChange($event.target.value, i)">
+                  <option *ngFor="let field of fields" value="{{field}}">{{ field }}</option>
+               </select>
+            </div>
+         </th>
       </tr>
    </thead>
    <tbody>
-      <tr *ngFor="let row of rows; let i = index">
-         <td *ngFor="let element of row">{{ element }}</td>
+      <tr *ngFor="let row of rows">
+         <td *ngFor="let element of row.data; let elementIndex = index">
+            <input type='{{headings[elementIndex].inputType}}' class="form-control" [value]="headings[elementIndex].format(element)"
+               (change)='changeElementValue($event.target.value, row.id, elementIndex)' [readonly]="headings[elementIndex].isIgnored"
+               [ngClass]="{ 'is-invalid': headings[elementIndex].format(element) === null }" />
+         </td>
          <td>
             <div class="btn-group">
-               <button class="btn btn-danger" (click)="deleteRow(i)">✕</button>
+               <button class="btn btn-danger" (click)="deleteRow(row.id)">✕</button>
             </div>
          </td>
       </tr>
