@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ITransactionDto } from 'src/app/shared/api';
 import { TransactionService } from 'src/app/shared/services';
+import { Field } from './field.enum';
+import { Heading } from './heading.class';
+import { Row } from './row.class';
 
 @Component({
    templateUrl: './import.transactions.component.html'
@@ -216,75 +219,4 @@ export class ImportTransactionsComponent {
          'Return to transactions page?'
       );
    }
-}
-
-class Row {
-
-   public success: boolean = false;
-   public failure: boolean = false;
-
-   constructor(public data: string[], public id: number) {
-   }
-
-   public setValue(index: number, value: string) {
-      this.data[index] = value;
-   }
-
-   public setCreated(success: boolean) {
-      this.success = success;
-      this.failure = !success;
-   }
-}
-
-class Heading {
-   constructor(public type: Field) { }
-
-   public get inputType() {
-      switch (this.type) {
-         case Field.Amount: return 'number';
-         case Field.Date: return 'date';
-         default: return 'text';
-      }
-   }
-
-   public get isIgnored() {
-      return this.type === Field.Ignore;
-   }
-
-   public format(input: string): any | null {
-      return Heading.formatWithType(this.type, input);
-   }
-
-   public static formatWithType(type: Field, input: string): any | null {
-      switch (type) {
-         case Field.Amount: return Heading.formatAmount(input);
-         case Field.Date: return Heading.formatDate(input);
-         default: return input;
-      }
-   }
-
-   private static formatAmount(input: string): number | null {
-      const result = /-?[0-9][0-9,\.]+/g.exec(input) as RegExpExecArray | null;
-
-      if (result === null)
-         return null;
-
-      return Number.parseFloat(result[0]);
-   }
-
-   private static formatDate(input: string): string | null {
-      try {
-         return new Date(Date.parse(input)).toISOString().split('T')[0];
-      } catch (error) {
-         return null;
-      }
-   }
-}
-
-enum Field {
-   Description = 'Description',
-   Notes = 'Notes',
-   Amount = 'Amount',
-   Date = 'Date',
-   Ignore = 'Ignore'
 }
