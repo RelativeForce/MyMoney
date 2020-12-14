@@ -5,6 +5,7 @@ import { TransactionService } from 'src/app/shared/services';
 import { Field } from './field.enum';
 import { Heading } from './heading.class';
 import { Row } from './row.class';
+import { groupBy } from '../../../shared/functions';
 
 @Component({
    templateUrl: './import.transactions.component.html'
@@ -46,6 +47,7 @@ export class ImportTransactionsComponent {
             }
 
             this.resetHeadings();
+            this.checkRows();
          }
          reader.readAsText(input.files[index]);
       };
@@ -79,14 +81,48 @@ export class ImportTransactionsComponent {
 
    public deleteRow(rowId: number): void {
       this.rows = this.rows.filter(r => r.id !== rowId);
+
+      this.checkRows();
    }
 
    public changeElementValue(value: string, rowId: number, elementIndex: number) {
       this.rows.find(r => r.id === rowId)?.setValue(elementIndex, value);
+
+      this.checkRows();
    }
 
    public onColumnChange(value: Field, elementIndex: number) {
       this.headings[elementIndex].type = value;
+
+      this.checkRows();
+   }
+
+   public checkRows() {
+
+      if (this.columnErrorMessage() !== null)
+         return; // Skip if the columns are not valid
+
+      const dateIndex = this.headings.findIndex(h => h.type === Field.Date);
+      const descriptionIndex = this.headings.findIndex(h => h.type === Field.Description);
+
+      const duplicateTransactions = groupBy(this.rows,
+         (row: Row) => `${Heading.formatWithType(Field.Date, row.data[dateIndex])}${Heading.formatWithType(Field.Description, row.data[descriptionIndex])}`)
+         .entries();
+
+      for (const [_, rows] of duplicateTransactions) {
+
+         if (rows.length === 1) {
+            // Clear the error
+            rows.forEach(row => row.clearDuplicateError());
+            continue;
+         }
+
+         rows.forEach(row => row.setDuplicateError());
+      }
+   }
+
+   public alert(text: string): void {
+      alert(text);
    }
 
    public onSubmit(): void {
@@ -141,9 +177,9 @@ export class ImportTransactionsComponent {
       const transactionRows = this.rows.map(toTransaction).filter(t => t !== null);
 
       for (const transactionRow of transactionRows) {
-         this.transactionService.addTransaction(transactionRow.transaction).subscribe(() => {
+         this.transactionService.addTransaction(transactionRow.transaction).subscribe((success: boolean) => {
             // Success
-            transactionRow.row.setCreated(true);
+            transactionRow.row.setCreated(success);
             this.checkIsDone(transactionRows);
          }, () => {
             // Error
@@ -154,14 +190,19 @@ export class ImportTransactionsComponent {
    }
 
    private checkIsDone(transactionRows: { transaction: ITransactionDto, row: Row }[]) {
-      this.isDone = transactionRows.filter(tr => !(tr.row.success || tr.row.failure)).length === 0;
+
+      const remainingCount = transactionRows.filter(tr => tr.row.success === null).length;
+
+      this.isDone = remainingCount === 0;
 
       if (this.isDone) {
          this.isLoading = false;
 
-         if (this.doneConfirmation()) {
-            this.router.navigate(['/transactions']);
-         }
+         setTimeout(() => {
+            if (this.doneConfirmation()) {
+               this.router.navigate(['/transactions']);
+            }
+         }, 1000)
       }
    }
 
@@ -214,8 +255,8 @@ export class ImportTransactionsComponent {
 
    private doneConfirmation(): boolean {
       return confirm(
-         `Transactions created: ${this.rows.filter(r => r.success).length}\n` +
-         `Transactions failed: ${this.rows.filter(r => r.failure).length}\n\n` +
+         `Transactions created: ${this.rows.filter(r => r.success === true).length}\n` +
+         `Transactions failed: ${this.rows.filter(r => r.success === false).length}\n\n` +
          'Return to transactions page?'
       );
    }
