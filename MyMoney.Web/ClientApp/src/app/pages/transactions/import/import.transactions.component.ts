@@ -87,31 +87,12 @@ export class ImportTransactionsComponent {
    }
 
    public onSubmit(): void {
-      const amountFieldCount = this.headings.filter(h => h.type === Field.Amount).length;
-      const dateFieldCount = this.headings.filter(h => h.type === Field.Date).length;
-      const descriptionFieldCount = this.headings.filter(h => h.type === Field.Description).length;
-      const notesFieldCount = this.headings.filter(h => h.type === Field.Notes).length;
 
-      if (amountFieldCount === 0)
-         return this.missingFieldErrorMessage(Field.Amount);
+      const columnErrorMessage = this.columnErrorMessage();
 
-      if (amountFieldCount > 1)
-         return this.multipleFieldErrorMessage(Field.Amount);
-
-      if (dateFieldCount === 0)
-         return this.missingFieldErrorMessage(Field.Date);
-
-      if (dateFieldCount > 1)
-         return this.multipleFieldErrorMessage(Field.Date);
-
-      if (descriptionFieldCount === 0)
-         return this.missingFieldErrorMessage(Field.Description);
-
-      if (descriptionFieldCount > 1)
-         return this.multipleFieldErrorMessage(Field.Description);
-
-      if (notesFieldCount > 1)
-         return this.multipleFieldErrorMessage(Field.Notes);
+      if (columnErrorMessage !== null) {
+         return alert(columnErrorMessage);
+      }
 
       const anyInvalidRows: boolean = this.rows
          .map(r => this.isRowValid(r))
@@ -181,6 +162,36 @@ export class ImportTransactionsComponent {
       }
    }
 
+   private columnErrorMessage(): string | null {
+      const amountFieldCount = this.headings.filter(h => h.type === Field.Amount).length;
+      const dateFieldCount = this.headings.filter(h => h.type === Field.Date).length;
+      const descriptionFieldCount = this.headings.filter(h => h.type === Field.Description).length;
+      const notesFieldCount = this.headings.filter(h => h.type === Field.Notes).length;
+
+      if (amountFieldCount === 0)
+         return this.missingFieldErrorMessage(Field.Amount);
+
+      if (amountFieldCount > 1)
+         return this.multipleFieldErrorMessage(Field.Amount);
+
+      if (dateFieldCount === 0)
+         return this.missingFieldErrorMessage(Field.Date);
+
+      if (dateFieldCount > 1)
+         return this.multipleFieldErrorMessage(Field.Date);
+
+      if (descriptionFieldCount === 0)
+         return this.missingFieldErrorMessage(Field.Description);
+
+      if (descriptionFieldCount > 1)
+         return this.multipleFieldErrorMessage(Field.Description);
+
+      if (notesFieldCount > 1)
+         return this.multipleFieldErrorMessage(Field.Notes);
+
+      return null;
+   }
+
    private isRowValid(row: Row) {
 
       const allDataValid = row.data
@@ -190,12 +201,12 @@ export class ImportTransactionsComponent {
       return allDataValid;
    }
 
-   private missingFieldErrorMessage(field: Field): void {
-      alert(`Error:\n'${field}' field is missing, set on column as '${field}'`);
+   private missingFieldErrorMessage(field: Field): string {
+      return (`Error:\n'${field}' field is missing, set on column as '${field}'`);
    }
 
-   private multipleFieldErrorMessage(field: Field): void {
-      alert(`Error:\nError: Multiple '${field}' fields present, please pick one`);
+   private multipleFieldErrorMessage(field: Field): string {
+      return (`Error:\nError: Multiple '${field}' fields present, please pick one`);
    }
 
    private doneConfirmation(): boolean {
