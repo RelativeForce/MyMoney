@@ -12,11 +12,11 @@
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">
-         <button [disabled]="loading" class="btn btn-primary">
+         <button [disabled]="loading" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Refresh incomes">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             <div *ngIf="!loading" class="spin">↻</div>
          </button>
-         <a class="btn btn-success" routerLink="./add">Add</a>
+         <a class="btn btn-success" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new income">🗋</a>
       </div>
    </div>
 </form>
@@ -39,8 +39,10 @@
             <td>{{income.remaining}}</td>
             <td>
                <div class="btn-group">
-                  <a class="btn btn-primary" routerLink="./edit/{{income.id}}">🖉</a>
-                  <button class="btn btn-danger" (click)="deleteIncome(income.id)">✕</button>
+                  <a class="btn btn-primary" routerLink="./edit/{{income.id}}" data-toggle="tooltip" data-placement="bottom"
+                     title="Edit income {{income.id}}">🖉</a>
+                  <button class="btn btn-danger" (click)="deleteIncome(income.id)" data-toggle="tooltip" data-placement="bottom"
+                     title="Delete income {{income.id}}">✕</button>
                </div>
             </td>
          </tr>
