@@ -12,3 +12,4 @@ export * from './incomes/add/add.incomes.component';
 export * from './incomes/edit/edit.incomes.component';
 export * from './home/chart/chart.component';
 export * from './transactions/import/import.transactions.component';
+export * from './incomes/import/import.incomes.component';

@@ -21,6 +21,7 @@ import {
    AddIncomesComponent,
    ChartComponent,
    ImportTransactionsComponent,
+   ImportIncomesComponent
 } from './pages';
 import { ImportFileComponent } from './shared/components/import/import.file.component';
 import { StoreModule } from '@ngrx/store';
@@ -47,7 +48,8 @@ import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
       EditIncomesComponent,
       ChartComponent,
       ImportTransactionsComponent,
-      ImportFileComponent
+      ImportFileComponent,
+      ImportIncomesComponent
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -126,6 +128,12 @@ import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
          {
             path: 'incomes/add',
             component: AddIncomesComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'incomes/import',
+            component: ImportIncomesComponent,
             pathMatch: 'full',
             canActivate: [AuthenticationGuard],
          },
