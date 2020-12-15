@@ -1,4 +1,4 @@
-export enum Field {
+export enum TransactionProperty {
    Description = 'Description',
    Notes = 'Notes',
    Amount = 'Amount',

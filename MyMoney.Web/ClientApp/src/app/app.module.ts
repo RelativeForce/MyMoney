@@ -22,6 +22,7 @@ import {
    ChartComponent,
    ImportTransactionsComponent,
 } from './pages';
+import { ImportFileComponent } from './shared/components/import/import.file.component';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
 import { AuthenticationGuard } from './shared/guards/authenticated.guard';
@@ -45,7 +46,8 @@ import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
       AddIncomesComponent,
       EditIncomesComponent,
       ChartComponent,
-      ImportTransactionsComponent
+      ImportTransactionsComponent,
+      ImportFileComponent
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
