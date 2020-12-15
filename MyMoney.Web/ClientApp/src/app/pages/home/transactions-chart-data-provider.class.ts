@@ -1,10 +1,10 @@
-import { IChartDataProvider } from './chart/chart-data-provider.interface';
+import { IChartDataProvider } from '../../shared/components/chart/chart-data-provider.interface';
 import { Router } from '@angular/router';
 import { BudgetSeries } from 'src/app/shared/classes';
 import { ISeriesItem } from 'src/app/shared/interfaces';
 import { BudgetService, TransactionService } from 'src/app/shared/services';
 import { IBudgetModel, IDateRangeModel, ITransactionModel } from 'src/app/shared/state/types';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { ISeries } from 'src/app/shared/interfaces/series.interface';
 
 export class TransactionsChartDataProvider implements IChartDataProvider {

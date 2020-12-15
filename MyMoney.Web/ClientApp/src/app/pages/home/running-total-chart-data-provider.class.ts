@@ -1,4 +1,4 @@
-import { IChartDataProvider } from './chart/chart-data-provider.interface';
+import { IChartDataProvider } from '../../shared/components/chart/chart-data-provider.interface';
 import { Router } from '@angular/router';
 import { ISeriesItem } from 'src/app/shared/interfaces';
 import { IncomeService } from 'src/app/shared/services';

@@ -19,11 +19,11 @@ import {
    IncomesComponent,
    EditIncomesComponent,
    AddIncomesComponent,
-   ChartComponent,
    ImportTransactionsComponent,
    ImportIncomesComponent
 } from './pages';
-import { ImportFileComponent } from './shared/components/import/import.file.component';
+import { ImportFileComponent } from './shared/components/import';
+import { ChartComponent } from './shared/components/chart';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
 import { AuthenticationGuard } from './shared/guards/authenticated.guard';
@@ -34,6 +34,8 @@ import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
 @NgModule({
    declarations: [
       AppComponent,
+
+      // Pages
       HomeComponent,
       LoginComponent,
       RegisterComponent,
@@ -46,10 +48,12 @@ import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
       IncomesComponent,
       AddIncomesComponent,
       EditIncomesComponent,
-      ChartComponent,
       ImportTransactionsComponent,
+      ImportIncomesComponent,
+
+      // Shared
       ImportFileComponent,
-      ImportIncomesComponent
+      ChartComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
