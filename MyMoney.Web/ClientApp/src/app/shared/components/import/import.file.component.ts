@@ -133,7 +133,7 @@ export class ImportFileComponent<T> {
          .reduce((a, b) => a || b, false);
 
       if (anyInvalidRows) {
-         if (!confirm('Warning:\nSome rows have invalid data, these rows will be ignored.\nContinue?'))
+         if (!confirm('Warning:\nSome rows have invalid data and will be ignored.\nContinue?'))
             return;
       }
 
@@ -147,7 +147,7 @@ export class ImportFileComponent<T> {
             if (this.doneConfirmation()) {
                this.router.navigate([this.dataProvider.homeLink]);
             }
-         }, 1000)
+         }, 2000)
       });
    }
 
