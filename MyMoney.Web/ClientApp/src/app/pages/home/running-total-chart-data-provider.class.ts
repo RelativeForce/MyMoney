@@ -1,9 +1,9 @@
-import { IChartDataProvider } from '../../shared/components/chart/chart-data-provider.interface';
+import { IChartDataProvider } from '../../shared/components/chart';
 import { Router } from '@angular/router';
 import { ISeriesItem } from 'src/app/shared/interfaces';
 import { IncomeService } from 'src/app/shared/services';
 import { IDateRangeModel } from 'src/app/shared/state/types';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ISeries } from 'src/app/shared/interfaces/series.interface';
 import { IRunningTotalDto } from 'src/app/shared/api';
 import { RunningTotalSeries } from 'src/app/shared/classes/running-total-series.class';
