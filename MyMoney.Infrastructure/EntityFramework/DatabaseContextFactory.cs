@@ -8,7 +8,7 @@ namespace MyMoney.Infrastructure.EntityFramework
       public DatabaseContext CreateDbContext(string[] args)
       {
          var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-         optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Initial Catalog=MyMoney;Trusted_Connection=True;MultipleActiveResultSets=true;Integrated Security=True");
+         optionsBuilder.UseSqlServer(DatabaseConstants.DatabaseConnection);
 
          return new DatabaseContext(optionsBuilder.Options);
       }

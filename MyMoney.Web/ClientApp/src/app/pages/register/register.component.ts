@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../shared/services';
-import { IRegisterDto } from '../../shared/api';
+import { ILoginResultDto, IRegisterDto } from '../../shared/api';
 
 @Component({
    templateUrl: 'register.component.html'
@@ -13,6 +13,7 @@ export class RegisterComponent implements OnInit {
    public registerForm: FormGroup;
    public loading = false;
    public submitted = false;
+   public error: string | null = null;
 
    constructor(
       private readonly formBuilder: FormBuilder,
@@ -25,38 +26,42 @@ export class RegisterComponent implements OnInit {
       this.registerForm = this.formBuilder.group({
          email: ['', Validators.required],
          fullName: ['', Validators.required],
-         dateOfBirth: [Date.now(), Validators.required],
-         password: ['', [Validators.required, Validators.minLength(6)]]
+         dateOfBirth: [new Date().toISOString().split('T')[0], Validators.required],
+         password: ['', [Validators.required, Validators.minLength(8)]]
       });
    }
 
-   // convenience getter for easy access to form fields
-   public get f() { return this.registerForm.controls; }
+   public get f() {
+      return this.registerForm.controls;
+   }
 
    public onSubmit(): void {
       this.submitted = true;
 
-      // stop here if form is invalid
       if (this.registerForm.invalid) {
          return;
       }
 
       this.loading = true;
+      this.error = null;
 
       const user: IRegisterDto = this.registerForm.value;
 
       this.authenticationService.register(user)
          .pipe(first())
          .subscribe(
-            success => {
+            (result: ILoginResultDto) => {
 
                this.loading = false;
 
-               if (success) {
+               if (result.success) {
                   this.router.navigate(['/']);
+               } else {
+                  this.error = result.error;
                }
             },
             error => {
+               this.error = 'Unknown error';
                this.loading = false;
             });
    }

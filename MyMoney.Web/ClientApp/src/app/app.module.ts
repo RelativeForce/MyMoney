@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
 import { JwtInterceptor } from './shared/classes/jwt-interceptor.class';
 import {
@@ -26,10 +25,9 @@ import { ImportFileComponent } from './shared/components/import';
 import { ChartComponent } from './shared/components/chart';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
-import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
+import { routes } from './app.routing';
 
 @NgModule({
    declarations: [
@@ -63,93 +61,7 @@ import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
       NgxChartsModule,
       ReactiveFormsModule,
       StoreModule.forRoot(appReducer),
-      RouterModule.forRoot([
-         {
-            path: LOGIN_PAGE_PATH,
-            component: LoginComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard]
-         },
-         {
-            path: REGISTER_PAGE_PATH,
-            component: RegisterComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard]
-         },
-         {
-            path: 'transactions',
-            component: TransactionsComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         {
-            path: 'transactions/add',
-            component: AddTransactionsComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         {
-            path: 'transactions/import',
-            component: ImportTransactionsComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         {
-            path: 'transactions/edit/:id',
-            component: EditTransactionsComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         {
-            path: 'budgets',
-            component: BudgetsComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         {
-            path: 'budgets/add',
-            component: AddBudgetsComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         {
-            path: 'budgets/edit/:id',
-            component: EditBudgetsComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         {
-            path: '', component: HomeComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard]
-         },
-         {
-            path: 'incomes',
-            component: IncomesComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         {
-            path: 'incomes/add',
-            component: AddIncomesComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         {
-            path: 'incomes/import',
-            component: ImportIncomesComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         {
-            path: 'incomes/edit/:id',
-            component: EditIncomesComponent,
-            pathMatch: 'full',
-            canActivate: [AuthenticationGuard],
-         },
-         // otherwise redirect to home
-         { path: '**', redirectTo: '' },
-      ]),
+      RouterModule.forRoot(routes),
    ],
    providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

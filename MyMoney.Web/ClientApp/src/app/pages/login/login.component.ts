@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { ILoginResultDto } from 'src/app/shared/api';
 
 import { AuthenticationService } from '../../shared/services';
 
@@ -13,6 +14,7 @@ export class LoginComponent implements OnInit {
    public loginForm: FormGroup;
    public loading = false;
    public submitted = false;
+   public error: string | null = null;
 
    constructor(
       private readonly formBuilder: FormBuilder,
@@ -27,17 +29,19 @@ export class LoginComponent implements OnInit {
       });
    }
 
-   public get f() { return this.loginForm.controls; }
+   public get f() {
+      return this.loginForm.controls;
+   }
 
    public onSubmit(): void {
       this.submitted = true;
 
-      // stop here if form is invalid
       if (this.loginForm.invalid) {
          return;
       }
 
       this.loading = true;
+      this.error = null;
 
       // Login here
       const email = this.f.email.value;
@@ -46,17 +50,18 @@ export class LoginComponent implements OnInit {
       this.authenticationService.login(email, password)
          .pipe(first())
          .subscribe(
-            success => {
+            (result: ILoginResultDto) => {
                this.loading = false;
-               if (success) {
+               if (result.success) {
                   this.router.navigate(['/']);
                } else {
-                  console.log('Failed login');
+                  this.error = result.error;
                }
             },
             error => {
                // Show error
                this.loading = false;
+               this.error = 'Unknown error';
             });
    }
 }
