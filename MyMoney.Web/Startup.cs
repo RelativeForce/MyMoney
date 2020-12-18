@@ -14,6 +14,7 @@ using MyMoney.Core.Services;
 using MyMoney.Infrastructure;
 using MyMoney.Infrastructure.EntityFramework;
 using MyMoney.Web.Utility;
+using System;
 
 namespace MyMoney.Web
 {
@@ -70,7 +71,7 @@ namespace MyMoney.Web
          services.AddDbContext<DatabaseContext>(options =>
              options
                  .UseLazyLoadingProxies()
-                 .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                 .UseSqlServer(DatabaseConstants.DatabaseConnection));
       }
 
       // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,10 +109,14 @@ namespace MyMoney.Web
 
          app.UseSpa(spa =>
          {
-
             if (env.IsDevelopment())
             {
                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+            }
+            else
+            {
+               spa.Options.SourcePath = "ClientApp";
+               spa.UseAngularCliServer(npmScript: "start");
             }
          });
       }
