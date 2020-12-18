@@ -1,0 +1,53 @@
+<div class="form-group">
+   <div class="custom-file">
+      <input type="file" class="custom-file-input" id="customFile" accept='.txt,.csv' multiple (change)='openFile($event)'
+         [ngClass]="{ 'is-invalid': submitted && f.file.errors }">
+      <label class="custom-file-label" for="customFile">Choose file</label>
+      <div *ngIf="submitted && f.file.errors" class="invalid-feedback">
+         <div *ngIf="f.file.errors.required">File is required</div>
+      </div>
+   </div>
+</div>
+
+<table class="table">
+   <thead>
+      <tr>
+         <th scope="col" *ngFor="let heading of headings; let i = index">
+            <div class="form-group">
+               <select class="form-control" style="min-width: 130px;" (change)="onColumnChange($event.target.value, i)">
+                  <option *ngFor="let field of dataProvider.fields" value="{{field}}">{{ field }}</option>
+               </select>
+            </div>
+         </th>
+      </tr>
+   </thead>
+   <tbody>
+      <ng-container *ngFor="let row of rows">
+         <tr>
+            <td *ngFor="let element of row.data; let elementIndex = index">
+               <input type='{{headings[elementIndex].inputType}}' class="form-control" [value]="headings[elementIndex].format(element)"
+                  (change)='changeElementValue($event.target.value, row.id, elementIndex)' [readonly]="headings[elementIndex].isIgnored"
+                  [disabled]="isLoading" [ngClass]="{ 'is-invalid': headings[elementIndex].format(element) === null }" />
+            </td>
+            <td>
+               <div class="btn-group">
+                  <button class="btn btn-danger" (click)="deleteRow(row.id)" *ngIf="!isLoading && !isDone" data-toggle="tooltip"
+                     data-placement="bottom" title="Delete row">✕</button>
+                  <button class="btn btn-success" (click)="alert('Import successful')" *ngIf="row.success === true" data-toggle="tooltip"
+                     data-placement="bottom" title="Import successful">✓</button>
+                  <button class="btn btn-warning" *ngIf="row.error !== null" (click)="alert(row.error)" data-toggle="tooltip"
+                     data-placement="top" title="{{row.error}}">!</button>
+               </div>
+            </td>
+         </tr>
+      </ng-container>
+   </tbody>
+</table>
+
+<div class="btn-group">
+   <a class="btn btn-warning" routerLink="{{dataProvider.homeLink}}">Back</a>
+   <button class="btn btn-success" (click)="onSubmit()" [disabled]="isDone" [hidden]="this.rows.length === 0">
+      <span *ngIf="isLoading && !isDone" class="spinner-border spinner-border-sm mr-1"></span>
+      Import
+   </button>
+</div>

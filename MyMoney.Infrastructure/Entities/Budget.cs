@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace MyMoney.Infrastructure.Entities
       public long UserId { get; set; }
       public int Year { get; set; }
       public int Month { get; set; }
+      [Required]
       public string Name { get; set; }
 
       [NotMapped]
@@ -59,6 +61,7 @@ namespace MyMoney.Infrastructure.Entities
 
       internal static void Configure(ModelBuilder model)
       {
+         model.Entity<Budget>().HasIndex(t => new { t.UserId, t.Year, t.Month, t.Name }).IsUnique();
          model.Entity<Budget>().HasOne(t => t.UserProxy).WithMany(t => t.BudgetsProxy).IsRequired();
       }
    }

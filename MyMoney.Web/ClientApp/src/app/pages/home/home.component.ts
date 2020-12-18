@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BudgetService, IncomeService, TransactionService } from 'src/app/shared/services';
-import { IChartDataProvider } from './chart/chart-data-provider.interface';
+import { IChartDataProvider } from '../../shared/components/chart';
 import { RunningTotalChartDataProvider } from './running-total-chart-data-provider.class';
 import { TransactionsChartDataProvider } from './transactions-chart-data-provider.class';
 

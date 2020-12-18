@@ -19,18 +19,23 @@ import {
    IncomesComponent,
    EditIncomesComponent,
    AddIncomesComponent,
+   ImportTransactionsComponent,
+   ImportIncomesComponent
 } from './pages';
+import { ImportFileComponent } from './shared/components/import';
+import { ChartComponent } from './shared/components/chart';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
 import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
-import { ChartComponent } from './pages/home/chart/chart.component';
 
 @NgModule({
    declarations: [
       AppComponent,
+
+      // Pages
       HomeComponent,
       LoginComponent,
       RegisterComponent,
@@ -43,7 +48,12 @@ import { ChartComponent } from './pages/home/chart/chart.component';
       IncomesComponent,
       AddIncomesComponent,
       EditIncomesComponent,
-      ChartComponent
+      ImportTransactionsComponent,
+      ImportIncomesComponent,
+
+      // Shared
+      ImportFileComponent,
+      ChartComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -75,6 +85,12 @@ import { ChartComponent } from './pages/home/chart/chart.component';
          {
             path: 'transactions/add',
             component: AddTransactionsComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'transactions/import',
+            component: ImportTransactionsComponent,
             pathMatch: 'full',
             canActivate: [AuthenticationGuard],
          },
@@ -116,6 +132,12 @@ import { ChartComponent } from './pages/home/chart/chart.component';
          {
             path: 'incomes/add',
             component: AddIncomesComponent,
+            pathMatch: 'full',
+            canActivate: [AuthenticationGuard],
+         },
+         {
+            path: 'incomes/import',
+            component: ImportIncomesComponent,
             pathMatch: 'full',
             canActivate: [AuthenticationGuard],
          },

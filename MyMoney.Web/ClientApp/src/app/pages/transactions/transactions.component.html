@@ -22,11 +22,13 @@
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">
-         <button [disabled]="loading" class="btn btn-primary">
+         <button [disabled]="loading" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Refresh transactions">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             <div *ngIf="!loading" class="spin">↻</div>
          </button>
-         <a class="btn btn-success" routerLink="./add">Add</a>
+         <a class="btn btn-success" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new transaction">🗋</a>
+         <a class="btn btn-success" routerLink="./import" data-toggle="tooltip" data-placement="bottom"
+            title="Import transactions from file">🗁</a>
       </div>
    </div>
 </form>
@@ -47,8 +49,10 @@
             <td>{{transaction.amount}}</td>
             <td>
                <div class="btn-group">
-                  <a class="btn btn-primary" routerLink="./edit/{{transaction.id}}">🖉</a>
-                  <button class="btn btn-danger" (click)="deleteTransaction(transaction.id)">✕</button>
+                  <a class="btn btn-primary" routerLink="./edit/{{transaction.id}}" data-toggle="tooltip" data-placement="bottom"
+                     title="Edit transaction {{transaction.id}}">🖉</a>
+                  <button class="btn btn-danger" (click)="deleteTransaction(transaction.id)" data-toggle="tooltip" data-placement="bottom"
+                     title="Delete transaction {{transaction.id}}">✕</button>
                </div>
             </td>
          </tr>
