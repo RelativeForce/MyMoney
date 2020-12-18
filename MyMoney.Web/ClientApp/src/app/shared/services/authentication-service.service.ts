@@ -15,7 +15,7 @@ import { LOGIN_PAGE_PATH, SESSION_LOCAL_STORAGE_KEY } from '../constants';
 export class AuthenticationService {
    constructor(private readonly userApi: UserApi, private readonly store: Store<IAppState>, private readonly router: Router) { }
 
-   public login(email: string, password: string): Observable<boolean> {
+   public login(email: string, password: string): Observable<ILoginResultDto> {
       return this.userApi
          .login({ email, password })
          .pipe(map((response: ILoginResultDto) => {
@@ -23,19 +23,20 @@ export class AuthenticationService {
                this.store.dispatch(new StartSessionAction(response.token, response.validTo));
             }
 
-            return response.success;
+            return response;
          }));
    }
 
-   public register(newUserData: IRegisterDto): Observable<boolean> {
+   public register(newUserData: IRegisterDto): Observable<ILoginResultDto> {
       return this.userApi
          .register(newUserData)
-         .pipe(map(response => {
+         .pipe(map((response: ILoginResultDto) => {
+
             if (response.success) {
                this.store.dispatch(new StartSessionAction(response.token, response.validTo));
             }
 
-            return response.success;
+            return response;
          }));
    }
 
