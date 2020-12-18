@@ -29,12 +29,13 @@ export class LoginComponent implements OnInit {
       });
    }
 
-   public get f() { return this.loginForm.controls; }
+   public get f() {
+      return this.loginForm.controls;
+   }
 
    public onSubmit(): void {
       this.submitted = true;
 
-      // stop here if form is invalid
       if (this.loginForm.invalid) {
          return;
       }
@@ -60,7 +61,7 @@ export class LoginComponent implements OnInit {
             error => {
                // Show error
                this.loading = false;
-               this.error = "Unknown error";
+               this.error = 'Unknown error';
             });
    }
 }

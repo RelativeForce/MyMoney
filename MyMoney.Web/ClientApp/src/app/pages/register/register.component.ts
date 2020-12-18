@@ -31,13 +31,13 @@ export class RegisterComponent implements OnInit {
       });
    }
 
-   // convenience getter for easy access to form fields
-   public get f() { return this.registerForm.controls; }
+   public get f() {
+      return this.registerForm.controls;
+   }
 
    public onSubmit(): void {
       this.submitted = true;
 
-      // stop here if form is invalid
       if (this.registerForm.invalid) {
          return;
       }
@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit {
                }
             },
             error => {
-               this.error = "Unknown error";
+               this.error = 'Unknown error';
                this.loading = false;
             });
    }
