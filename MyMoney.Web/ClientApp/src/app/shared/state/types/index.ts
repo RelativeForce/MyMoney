@@ -6,3 +6,4 @@ export * from './budget-model.interface';
 export * from './budgets-search-parameters.interface';
 export * from './income-model.interface';
 export * from './incomes-search-parameters.interface';
+export * from './user.interface';

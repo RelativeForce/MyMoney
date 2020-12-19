@@ -135,7 +135,7 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
    }
 
    private missingFieldErrorMessage(field: TransactionProperty): string {
-      return (`Error:\n'${field}' field is missing, set on column as '${field}'`);
+      return (`Error:\n'${field}' field is missing, set 1 column as '${field}'`);
    }
 
    private multipleFieldErrorMessage(field: TransactionProperty): string {

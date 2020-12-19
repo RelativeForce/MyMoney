@@ -14,5 +14,6 @@ namespace MyMoney.Core.Interfaces.Entities
       IQueryable<ITransaction> Transactions { get; }
       IQueryable<IBudget> Budgets { get; }
       IQueryable<IIncome> Incomes { get; }
+      IEnumerable<string> ValidationErrors();
    }
 }

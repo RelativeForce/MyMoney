@@ -11,7 +11,7 @@
       <label for="fullName">Full name</label>
       <input type="text" formControlName="fullName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fullName.errors }" />
       <div *ngIf="submitted && f.fullName.errors" class="invalid-feedback">
-         <div *ngIf="f.fullName.errors.required">Full Name is required</div>
+         <div *ngIf="f.fullName.errors.required">Full name is required</div>
       </div>
    </div>
    <div class="form-group">
@@ -19,7 +19,7 @@
       <input type="date" formControlName="dateOfBirth" class="form-control"
          [ngClass]="{ 'is-invalid': submitted && f.dateOfBirth.errors }" />
       <div *ngIf="submitted && f.dateOfBirth.errors" class="invalid-feedback">
-         <div *ngIf="f.dateOfBirth.errors.required">Date of Birth is required</div>
+         <div *ngIf="f.dateOfBirth.errors.required">Date of birth is required</div>
       </div>
    </div>
    <div class="form-group">
@@ -28,6 +28,7 @@
       <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
          <div *ngIf="f.password.errors.required">Password is required</div>
          <div *ngIf="f.password.errors.minlength">Password must be at least 8 characters</div>
+         <div *ngIf="f.password.errors.maxlength">Password cannot be longer that 15 characters</div>
       </div>
    </div>
    <div class="form-group">
@@ -35,7 +36,7 @@
          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
          Register
       </button>
-      <a routerLink="/login" class="btn btn-link">Cancel</a>
+      <a routerLink="/auth/login" class="btn btn-link">Cancel</a>
    </div>
    <div *ngIf="error !== null" class="alert alert-danger" role="alert">
       Register failed: {{ error }}

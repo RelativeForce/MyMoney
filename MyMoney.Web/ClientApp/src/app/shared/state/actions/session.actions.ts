@@ -1,8 +1,10 @@
 import { Action } from '@ngrx/store';
+import { IUserDto } from '../../api';
 
 export enum SessionActionTypes {
    StartSession = 'Start login session',
-   ClearSession = 'Clear session'
+   ClearSession = 'Clear session',
+   SetUser = 'Set User',
 }
 
 export class StartSessionAction implements Action {
@@ -17,3 +19,8 @@ export class ClearSessionAction implements Action {
    constructor() { }
 }
 
+export class SetUserAction implements Action {
+   public type: string = SessionActionTypes.SetUser;
+
+   constructor(public readonly user: IUserDto) { }
+}

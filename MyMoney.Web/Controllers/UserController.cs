@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyMoney.Core;
 using MyMoney.Core.Interfaces.Service;
+using MyMoney.Web.Models.Entity;
 using MyMoney.Web.Models.Request;
 using MyMoney.Web.Models.Response;
 using System;
@@ -8,61 +10,52 @@ using System;
 namespace MyMoney.Web.Controllers
 {
    [ApiController]
-   [AllowAnonymous]
    [Route("[controller]")]
    public class UserController : ControllerBase
    {
-
+      private readonly ICurrentUserProvider _userProvider;
       private readonly IUserService _userService;
 
-      public UserController(IUserService userService)
+      public UserController(ICurrentUserProvider userProvider, IUserService userService)
       {
+         _userProvider = userProvider;
          _userService = userService;
       }
 
-      [HttpPost(nameof(Login))]
-      public IActionResult Login([FromBody] LoginDto loginParameters)
+      [HttpPost(nameof(SignedInUser))]
+      public IActionResult SignedInUser()
       {
          try
          {
-            if (loginParameters == null || !ModelState.IsValid)
-            {
-               return BadRequest("Invalid State");
-            }
+            var result = _userProvider.CurrentUser;
 
-            var result = _userService.Login(loginParameters.Email, loginParameters.Password);
-
-            return Ok(new LoginResultDto(result));
+            return Ok(new UserDto(result));
          }
          catch (Exception)
          {
-            return BadRequest("Error while creating");
+            return BadRequest("Error while retrieving current user details");
          }
       }
 
-      [HttpPost(nameof(Register))]
-      public IActionResult Register([FromBody] RegisterDto registerParameters)
+      [HttpPost(nameof(UpdateSignedInUser))]
+      public IActionResult UpdateSignedInUser(UserDto dto)
       {
+         if (dto == null || !ModelState.IsValid)
+         {
+            return BadRequest("Invalid State");
+         }
+
          try
          {
-            if (registerParameters == null || !ModelState.IsValid)
-            {
-               return BadRequest("Invalid State");
-            }
+            var userId = _userProvider.CurrentUserId;
 
-            var result = _userService.Register(
-                registerParameters.Email,
-                registerParameters.Password,
-                registerParameters.DateOfBirth,
-                registerParameters.FullName
-                );
+            var result = _userService.Update(userId, dto.Email, dto.FullName, DateTime.Parse(dto.DateOfBirth));
 
-            return Ok(new LoginResultDto(result));
-
+            return Ok(new BasicResultDto(result));
          }
          catch (Exception)
          {
-            return BadRequest("Error while registering");
+            return BadRequest("Error while updating the current user's details");
          }
       }
    }

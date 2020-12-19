@@ -44,10 +44,10 @@
    </tbody>
 </table>
 
-<div class="btn-group">
-   <a class="btn btn-warning" routerLink="{{dataProvider.homeLink}}">Back</a>
-   <button class="btn btn-success" (click)="onSubmit()" [disabled]="isDone" [hidden]="this.rows.length === 0">
-      <span *ngIf="isLoading && !isDone" class="spinner-border spinner-border-sm mr-1"></span>
+<div class="form-group">
+   <button [disabled]="isLoading || isDone" class="btn btn-success" (click)="onSubmit()" [hidden]="this.rows.length === 0">
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
       Import
    </button>
+   <a routerLink="{{dataProvider.homeLink}}" class="btn btn-link">Cancel</a>
 </div>

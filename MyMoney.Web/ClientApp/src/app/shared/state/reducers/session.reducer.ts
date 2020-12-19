@@ -1,28 +1,33 @@
 import { Action } from '@ngrx/store';
+import { IUserDto } from '../../api';
 import { SESSION_LOCAL_STORAGE_KEY } from '../../constants';
-import { SessionActionTypes, StartSessionAction, ClearSessionAction } from '../actions';
-import { ISessionModel } from '../types';
+import { SessionActionTypes, StartSessionAction, ClearSessionAction, SetUserAction } from '../actions';
+import { ISessionModel, IUser } from '../types';
 
 export interface ISessionState {
    currentSession: ISessionModel | null;
+   currentUser: IUser | null;
 }
 
 export const initialSessionState: ISessionState = {
-   currentSession: null
+   currentSession: null,
+   currentUser: null
 };
 
 export function sessionReducer(state: ISessionState = initialSessionState, action: Action): ISessionState {
    switch (action.type) {
       case SessionActionTypes.StartSession:
-         return StartSession(state, action as StartSessionAction);
+         return startSession(state, action as StartSessionAction);
       case SessionActionTypes.ClearSession:
-         return ClearSession(state, action as ClearSessionAction);
+         return clearSession(state, action as ClearSessionAction);
+      case SessionActionTypes.SetUser:
+         return setUser(state, action as SetUserAction);
       default:
          return state;
    }
 }
 
-function StartSession(state: ISessionState, action: StartSessionAction) {
+function startSession(state: ISessionState, action: StartSessionAction) {
 
    const token: string = action.token;
    const sessionEnd: string = action.sessionEnd;
@@ -42,14 +47,29 @@ function StartSession(state: ISessionState, action: StartSessionAction) {
    };
 }
 
-function ClearSession(state: ISessionState, action: ClearSessionAction) {
+function setUser(state: ISessionState, action: SetUserAction) {
+
+   const user: IUserDto = action.user;
+
+   return {
+      ...state,
+      currentUser: {
+         email: user.email,
+         dateOfBirth: user.dateOfBirth,
+         fullName: user.fullName,
+      }
+   };
+}
+
+function clearSession(state: ISessionState, action: ClearSessionAction) {
 
    localStorage.removeItem(SESSION_LOCAL_STORAGE_KEY);
    console.log('Session: Cleared local storage');
 
    return {
       ...state,
-      currentSession: null
+      currentSession: null,
+      currentUser: null
    };
 }
 

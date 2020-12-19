@@ -1,6 +1,6 @@
 export * from './home/home.component';
-export * from './login/login.component';
-export * from './register/register.component';
+export * from './auth/login/login.component';
+export * from './auth/register/register.component';
 export * from './transactions/add/add.transactions.component';
 export * from './transactions/transactions.component';
 export * from './budgets/budgets.component';
@@ -12,3 +12,4 @@ export * from './incomes/add/add.incomes.component';
 export * from './incomes/edit/edit.incomes.component';
 export * from './transactions/import/import.transactions.component';
 export * from './incomes/import/import.incomes.component';
+export * from './user/user.component';

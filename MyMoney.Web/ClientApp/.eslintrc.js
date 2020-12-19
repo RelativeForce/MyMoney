@@ -48,7 +48,6 @@ module.exports = {
         accessibility: "explicit",
       },
     ],
-    "@typescript-eslint/indent": ["error", 3],
     "@typescript-eslint/member-delimiter-style": [
       "error",
       {
@@ -96,7 +95,6 @@ module.exports = {
     curly: "error",
     "eol-last": "error",
     eqeqeq: ["error", "smart"],
-    indent: ["error", 3],
     "guard-for-in": "error",
     "id-blacklist": "off",
     "id-match": "off",

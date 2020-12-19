@@ -3,20 +3,20 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using MyMoney.Core;
-using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Core.Interfaces.Service;
 
 namespace MyMoney.Infrastructure
 {
    public sealed class CurrentUserProvider : ICurrentUserProvider
    {
 
-      private readonly IRepository _repository;
+      private readonly IUserService _userService;
       private readonly IHttpContextAccessor _accessor;
 
-      public CurrentUserProvider(IHttpContextAccessor accessor, IRepository repository)
+      public CurrentUserProvider(IHttpContextAccessor accessor, IUserService userService)
       {
-         _repository = repository;
+         _userService = userService;
          _accessor = accessor;
       }
 
@@ -34,7 +34,7 @@ namespace MyMoney.Infrastructure
       {
          get
          {
-            var user = _repository.FindById<IUser>(CurrentUserId);
+            var user = _userService.GetById(CurrentUserId);
 
 
             if (user == null)

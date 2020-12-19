@@ -1,59 +1,57 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { ILoginResultDto } from 'src/app/shared/api';
 
-import { AuthenticationService } from '../../shared/services';
-import { ILoginResultDto, IRegisterDto } from '../../shared/api';
+import { AuthenticationService } from '../../../shared/services';
 
 @Component({
-   templateUrl: 'register.component.html'
+   templateUrl: './login.component.html'
 })
-export class RegisterComponent implements OnInit {
-   public registerForm: FormGroup;
+export class LoginComponent implements OnInit {
+
+   public loginForm: FormGroup;
    public loading = false;
    public submitted = false;
    public error: string | null = null;
 
    constructor(
       private readonly formBuilder: FormBuilder,
-      private readonly router: Router,
       private readonly authenticationService: AuthenticationService,
-   ) {
-   }
+      private readonly router: Router
+   ) { }
 
    public ngOnInit(): void {
-      this.registerForm = this.formBuilder.group({
+      this.loginForm = this.formBuilder.group({
          email: ['', Validators.required],
-         fullName: ['', Validators.required],
-         dateOfBirth: [new Date().toISOString().split('T')[0], Validators.required],
-         password: ['', [Validators.required, Validators.minLength(8)]]
+         password: ['', Validators.required]
       });
    }
 
    public get f() {
-      return this.registerForm.controls;
+      return this.loginForm.controls;
    }
 
    public onSubmit(): void {
       this.submitted = true;
 
-      if (this.registerForm.invalid) {
+      if (this.loginForm.invalid) {
          return;
       }
 
       this.loading = true;
       this.error = null;
 
-      const user: IRegisterDto = this.registerForm.value;
+      // Login here
+      const email = this.f.email.value;
+      const password = this.f.password.value;
 
-      this.authenticationService.register(user)
+      this.authenticationService.login(email, password)
          .pipe(first())
          .subscribe(
             (result: ILoginResultDto) => {
-
                this.loading = false;
-
                if (result.success) {
                   this.router.navigate(['/']);
                } else {
@@ -61,8 +59,9 @@ export class RegisterComponent implements OnInit {
                }
             },
             error => {
-               this.error = 'Unknown error';
+               // Show error
                this.loading = false;
+               this.error = 'Unknown error';
             });
    }
 }

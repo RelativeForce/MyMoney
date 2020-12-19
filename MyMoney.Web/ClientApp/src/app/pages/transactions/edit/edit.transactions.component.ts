@@ -68,27 +68,14 @@ export class EditTransactionsComponent implements OnInit {
 
                this.fetchBudgetsAndIncomes();
             },
-               () => {
-                  this.router.navigate(['/transactions']);
-               });
+               () => this.router.navigate(['/transactions'])
+            );
       });
    }
 
-   private disableForm() {
-      this.f.date.disable();
-      this.f.description.disable();
-      this.f.amount.disable();
-      this.f.notes.disable();
+   public get f() {
+      return this.editTransactionForm.controls;
    }
-
-   private enableForm() {
-      this.f.date.enable();
-      this.f.description.enable();
-      this.f.amount.enable();
-      this.f.notes.enable();
-   }
-
-   public get f() { return this.editTransactionForm.controls; }
 
    public onBudgetCheckboxChange(event: any, id: number): void {
       if (event.target.checked) {
@@ -137,27 +124,6 @@ export class EditTransactionsComponent implements OnInit {
       });
    }
 
-   private get asTransactionModel(): ITransactionModel {
-
-      const date = new Date(this.f.date.value);
-
-      const dateString: string = date.toLocaleDateString();
-
-      const description = this.f.description.value;
-      const amount = this.f.amount.value;
-      const notes = this.f.notes.value;
-
-      return {
-         date: dateString,
-         description,
-         amount,
-         id: this.id,
-         budgetIds: Array.from(this.selectedBudgets),
-         incomeIds: Array.from(this.selectedIncomes),
-         notes
-      };
-   }
-
    public onSubmit(): void {
       this.submitted = true;
 
@@ -180,5 +146,40 @@ export class EditTransactionsComponent implements OnInit {
                // Show error
                this.loading = false;
             });
+   }
+
+   private disableForm() {
+      this.f.date.disable();
+      this.f.description.disable();
+      this.f.amount.disable();
+      this.f.notes.disable();
+   }
+
+   private enableForm() {
+      this.f.date.enable();
+      this.f.description.enable();
+      this.f.amount.enable();
+      this.f.notes.enable();
+   }
+
+   private get asTransactionModel(): ITransactionModel {
+
+      const date = new Date(this.f.date.value);
+
+      const dateString: string = date.toLocaleDateString();
+
+      const description = this.f.description.value;
+      const amount = this.f.amount.value;
+      const notes = this.f.notes.value;
+
+      return {
+         date: dateString,
+         description,
+         amount,
+         id: this.id,
+         budgetIds: Array.from(this.selectedBudgets),
+         incomeIds: Array.from(this.selectedIncomes),
+         notes
+      };
    }
 }

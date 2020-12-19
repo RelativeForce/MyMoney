@@ -22,13 +22,11 @@
          <div *ngIf="f.amount.errors.required">amount is required</div>
       </div>
    </div>
-   <div class="form-group btn-group">
-      <a class="btn btn-warning" routerLink="/incomes">
-         Cancel
-      </a>
-      <button class="btn btn-success">
+   <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">
          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
          Save changes
       </button>
+      <a routerLink="/incomes" class="btn btn-link">Cancel</a>
    </div>
 </form>
