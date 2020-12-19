@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ILoginResultDto, IRegisterDto } from '../api';
+import { AuthenticationApi, ILoginResultDto, IRegisterDto } from '../api';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';
 import { ClearSessionAction, StartSessionAction } from '../state/actions';
 import { selectCurrentSession } from '../state/selectors/session.selector';
 import { ISessionModel } from '../state/types';
-import { UserApi } from '../api/user.api';
 import { SESSION_LOCAL_STORAGE_KEY } from '../constants';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-   constructor(private readonly userApi: UserApi, private readonly store: Store<IAppState>) { }
+   constructor(private readonly authenticationApi: AuthenticationApi, private readonly store: Store<IAppState>) { }
 
    public login(email: string, password: string): Observable<ILoginResultDto> {
-      return this.userApi
+      return this.authenticationApi
          .login({ email, password })
          .pipe(map((response: ILoginResultDto) => {
             if (response.success) {
@@ -27,7 +26,7 @@ export class AuthenticationService {
    }
 
    public register(newUserData: IRegisterDto): Observable<ILoginResultDto> {
-      return this.userApi
+      return this.authenticationApi
          .register(newUserData)
          .pipe(map((response: ILoginResultDto) => {
 
