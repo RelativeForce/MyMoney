@@ -51,7 +51,7 @@ namespace MyMoney.Web.Controllers
 
             var result = _userService.Update(userId, dto.Email, dto.FullName, DateTime.Parse(dto.DateOfBirth));
 
-            return Ok(result);
+            return Ok(new BasicResultDto(result));
          }
          catch (Exception)
          {

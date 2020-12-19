@@ -5,7 +5,7 @@
       public bool Success { get; set; }
       public string Error { get; set; }
 
-      protected BasicResult()
+      private BasicResult()
       {
          // Private constructor
       }
