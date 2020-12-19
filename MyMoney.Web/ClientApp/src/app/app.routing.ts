@@ -15,24 +15,29 @@ import {
    RegisterComponent,
    TransactionsComponent
 } from './pages';
-import { LOGIN_PAGE_PATH, REGISTER_PAGE_PATH } from './shared/constants';
 import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 
 export const routes: Routes = [
    {
-      path: LOGIN_PAGE_PATH,
-      component: LoginComponent,
-      canActivate: [AuthenticationGuard]
-   },
-   {
-      path: REGISTER_PAGE_PATH,
-      component: RegisterComponent,
-      canActivate: [AuthenticationGuard]
-   },
-   {
       path: '',
       component: HomeComponent,
       canActivate: [AuthenticationGuard]
+   },
+   {
+      path: 'auth',
+      children: [
+         {
+            path: 'login',
+            component: LoginComponent,
+            canActivate: [AuthenticationGuard]
+         },
+         {
+            path: 'register',
+            component: RegisterComponent,
+            canActivate: [AuthenticationGuard]
+         },
+         { path: '**', redirectTo: '/' }
+      ]
    },
    {
       path: 'transactions',
@@ -57,6 +62,7 @@ export const routes: Routes = [
             component: EditTransactionsComponent,
             canActivate: [AuthenticationGuard],
          },
+         { path: '**', redirectTo: '/' }
       ]
    },
    {
@@ -77,6 +83,7 @@ export const routes: Routes = [
             component: EditBudgetsComponent,
             canActivate: [AuthenticationGuard],
          },
+         { path: '**', redirectTo: '/' }
       ]
    },
    {
@@ -102,8 +109,8 @@ export const routes: Routes = [
             component: EditIncomesComponent,
             canActivate: [AuthenticationGuard],
          },
+         { path: '**', redirectTo: '/' }
       ]
    },
-   // otherwise redirect to home
-   { path: '**', redirectTo: '' }
+   { path: '**', redirectTo: '/' }
 ];

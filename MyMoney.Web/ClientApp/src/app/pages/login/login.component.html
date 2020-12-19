@@ -19,7 +19,7 @@
          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
          Login
       </button>
-      <a routerLink="/register" class="btn btn-link">Register</a>
+      <a routerLink="/auth/register" class="btn btn-link">Register</a>
    </div>
    <div *ngIf="error !== null" class="alert alert-danger" role="alert">
       Login failed: {{ error }}

@@ -9,7 +9,6 @@ import { selectCurrentUser, selectSessionState } from '../state/selectors/sessio
 import { IUser } from '../state/types';
 import { Router } from '@angular/router';
 import { UserApi } from '../api/user.api';
-import { LOGIN_PAGE_PATH } from '../constants';
 import { ISessionState } from '../state/reducers';
 
 @Injectable({ providedIn: 'root' })
@@ -28,6 +27,6 @@ export class CurrentUserService {
 
    public logout(): void {
       this.store.dispatch(new ClearSessionAction());
-      this.router.navigate(['/' + LOGIN_PAGE_PATH]);
+      this.router.navigate(['/auth/login']);
    }
 }
