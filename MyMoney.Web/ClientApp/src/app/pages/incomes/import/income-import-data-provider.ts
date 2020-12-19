@@ -127,7 +127,7 @@ export class IncomeImportDataProvider implements IImportDataProvider<IncomePrope
    }
 
    private missingFieldErrorMessage(field: IncomeProperty): string {
-      return (`Error:\n'${field}' field is missing, set on column as '${field}'`);
+      return (`Error:\n'${field}' field is missing, set 1 column as '${field}'`);
    }
 
    private multipleFieldErrorMessage(field: IncomeProperty): string {
