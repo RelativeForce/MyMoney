@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { ILoginResultDto } from 'src/app/shared/api';
 
-import { AuthenticationService } from '../../shared/services';
+import { AuthenticationService } from '../../../shared/services';
 
 @Component({
    templateUrl: './login.component.html'

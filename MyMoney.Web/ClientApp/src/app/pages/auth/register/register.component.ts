@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AuthenticationService } from '../../shared/services';
-import { ILoginResultDto, IRegisterDto } from '../../shared/api';
+import { AuthenticationService } from '../../../shared/services';
+import { ILoginResultDto, IRegisterDto } from '../../../shared/api';
 
 @Component({
    templateUrl: 'register.component.html'
