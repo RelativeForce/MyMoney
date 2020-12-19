@@ -98,6 +98,10 @@ namespace MyMoney.Core.Services
          if (userWithEmail.Id != user.Id)
             return BasicResult.FailResult("Email already exists");
 
+         var success = _repository.Update(user);
+         if (!success)
+            return BasicResult.FailResult("Database Error");
+
          return BasicResult.SuccessResult();
       }
 
