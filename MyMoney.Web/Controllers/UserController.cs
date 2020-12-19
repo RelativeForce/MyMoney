@@ -44,7 +44,7 @@ namespace MyMoney.Web.Controllers
          }
       }
 
-      [HttpGet(nameof(Details))]
+      [HttpPost(nameof(Details))]
       public IActionResult Details()
       {
          try

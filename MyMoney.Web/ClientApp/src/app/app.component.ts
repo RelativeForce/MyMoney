@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService } from './shared/services';
+import { IUser } from './shared/state/types';
 
 @Component({ selector: 'mymoney-root', templateUrl: 'app.component.html' })
 export class AppComponent implements OnInit {
 
-   public isLoggedIn: boolean;
+   public user: IUser | null;
 
    constructor(private readonly authenticationService: AuthenticationService) {
-      this.isLoggedIn = false;
+      this.user = null;
    }
 
    ngOnInit(): void {
-      this.authenticationService.isLoggedIn().subscribe((isLoggedIn) => this.isLoggedIn = isLoggedIn);
+      this.authenticationService.currentUser().subscribe((user) => this.user = user);
    }
 
    logout(): void {
