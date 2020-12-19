@@ -109,3 +109,8 @@ export interface IUserDto {
    dateOfBirth: string;
    fullName: string;
 }
+
+export interface IBasicResultDto {
+   success: boolean;
+   error: string;
+}

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
@@ -53,21 +55,64 @@ namespace MyMoney.Core.Services
 
       public LoginResult Register(string email, string password, DateTime dateOfBirth, string fullName)
       {
-         if (!IsValidEmail(email))
-            return LoginResult.FailResult("Invalid Email");
-
-         if (string.IsNullOrWhiteSpace(fullName))
-            return LoginResult.FailResult("Invalid Name");
-
          if (!IsValidPassword(password))
             return LoginResult.FailResult("Invalid Password (Must: contain 1 uppercase, contain 1 number and be 8-15 characters long)");
 
-         if (dateOfBirth >= DateTime.Today)
-            return LoginResult.FailResult("Invalid Date of Birth");
+         string savedPasswordHash = HashPassword(password);
+
+         var user = _entityFactory.NewUser;
+
+         user.Email = email;
+         user.FullName = fullName;
+         user.Password = savedPasswordHash;
+         user.DateOfBirth = dateOfBirth;
+
+         var validationError = user.ValidationErrors().FirstOrDefault();
+         if(validationError != null)
+            return LoginResult.FailResult(validationError);
 
          if (_repository.Find<IUser>(u => u.Email.Equals(email)) != null)
             return LoginResult.FailResult("Email already exists");
 
+         user = _repository.Add(user);
+
+         if (user == null)
+            return LoginResult.FailResult("Database Error");
+
+         return LoginResult.SuccessResult(_tokenProvider.NewToken(user), _tokenProvider.TokenTimeOut);
+      }
+
+      public BasicResult Update(long userId, string email, string fullName, DateTime dateOfBirth)
+      {
+         var user = GetById(userId);
+
+         user.Email = email;
+         user.FullName = fullName;
+         user.DateOfBirth = dateOfBirth;
+
+         var validationError = user.ValidationErrors().FirstOrDefault();
+         if (validationError != null)
+            return BasicResult.FailResult(validationError);
+
+         var userWithEmail = _repository.Find<IUser>(u => u.Email.Equals(email));
+         if (userWithEmail.Id != user.Id)
+            return BasicResult.FailResult("Email already exists");
+
+         return BasicResult.SuccessResult();
+      }
+
+      public IUser GetById(long userId)
+      {
+         return _repository.FindById<IUser>(userId);
+      }
+
+      private static bool IsValidPassword(string password)
+      {
+         return Regex.IsMatch(password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$");
+      }
+
+      private static string HashPassword(string password)
+      {
          byte[] salt;
          new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
@@ -78,45 +123,7 @@ namespace MyMoney.Core.Services
          Array.Copy(salt, 0, hashBytes, 0, 16);
          Array.Copy(hash, 0, hashBytes, 16, 20);
 
-         string savedPasswordHash = Convert.ToBase64String(hashBytes);
-
-         var user = _entityFactory.NewUser;
-
-         user.Email = email;
-         user.FullName = fullName;
-         user.Password = savedPasswordHash;
-         user.DateOfBirth = dateOfBirth;
-
-         user = _repository.Add(user);
-
-         if (user == null)
-            return LoginResult.FailResult("Database Error");
-
-         return LoginResult.SuccessResult(_tokenProvider.NewToken(user), _tokenProvider.TokenTimeOut);
-      }
-
-      public IUser GetById(long userId)
-      {
-         return _repository.FindById<IUser>(userId);
-      }
-
-      private static bool IsValidEmail(string emailAddress)
-      {
-         try
-         {
-            var m = new MailAddress(emailAddress);
-
-            return true;
-         }
-         catch (FormatException)
-         {
-            return false;
-         }
-      }
-
-      private static bool IsValidPassword(string password)
-      {
-         return Regex.IsMatch(password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$");
+         return Convert.ToBase64String(hashBytes);
       }
    }
 }

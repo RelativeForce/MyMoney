@@ -12,6 +12,11 @@ namespace MyMoney.Web.Models.Entity
       public string DateOfBirth { get; set; }
       public string FullName { get; set; }
 
+      public UserDto()
+      {
+         // Required for recieving dto
+      }
+
       public UserDto(IUser user)
       {
          Email = user.Email;

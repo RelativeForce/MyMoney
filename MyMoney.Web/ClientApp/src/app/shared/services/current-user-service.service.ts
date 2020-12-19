@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { IUserDto } from '../api';
+import { IBasicResultDto, IUserDto } from '../api';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';
 import { ClearSessionAction, SetUserAction } from '../state/actions';
@@ -23,6 +23,10 @@ export class CurrentUserService {
 
    public currentUser(): Observable<IUser | null> {
       return this.store.select(selectCurrentUser);
+   }
+
+   public updateCurrentUser(newData: IUser): Observable<IBasicResultDto> {
+      return this.userApi.updateCurrentUserDetails(newData);
    }
 
    public logout(): void {

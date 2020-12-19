@@ -4,6 +4,10 @@ import { CurrentUserService } from '../../shared/services';
 import { toInputDateString } from '../../shared/functions';
 import { filter } from 'rxjs/operators';
 import { IUser } from 'src/app/shared/state/types';
+import { IBasicResultDto, IUserDto } from 'src/app/shared/api';
+import { IAppState } from 'src/app/shared/state/app-state';
+import { Store } from '@ngrx/store';
+import { SetUserAction } from 'src/app/shared/state/actions';
 
 @Component({
    templateUrl: 'user.component.html'
@@ -16,7 +20,8 @@ export class UserComponent implements OnInit {
 
    constructor(
       private readonly formBuilder: FormBuilder,
-      private readonly currentUserService: CurrentUserService
+      private readonly currentUserService: CurrentUserService,
+      private readonly store: Store<IAppState>,
    ) {
    }
 
@@ -54,7 +59,36 @@ export class UserComponent implements OnInit {
       this.loading = true;
       this.error = null;
 
-      // TODO: Update data
+      const email: string = this.f.email.value;
+      const fullName: string = this.f.fullName.value;
+      const dateOfBirth: string = this.f.dateOfBirth.value;
+
+      const newData: IUserDto = {
+         email,
+         fullName,
+         dateOfBirth
+      };
+
+      this.currentUserService.updateCurrentUser(newData)
+         .subscribe(
+            (result: IBasicResultDto) => {
+
+               this.loading = false;
+
+               if (result.success) {
+
+                  // Fix date to match what is expected from the server
+                  newData.dateOfBirth = new Date(dateOfBirth).toLocaleDateString('en-GB');
+
+                  this.store.dispatch(new SetUserAction(newData));
+               } else {
+                  this.error = result.error;
+               }
+            },
+            error => {
+               this.error = 'Unknown error';
+               this.loading = false;
+            });
    }
 
    private disableForm() {

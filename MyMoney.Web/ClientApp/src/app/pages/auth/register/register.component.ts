@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
          email: ['', Validators.required],
          fullName: ['', Validators.required],
          dateOfBirth: [new Date().toISOString().split('T')[0], Validators.required],
-         password: ['', [Validators.required, Validators.minLength(8)]]
+         password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]]
       });
    }
 

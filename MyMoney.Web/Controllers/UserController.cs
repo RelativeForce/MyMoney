@@ -10,19 +10,20 @@ using System;
 namespace MyMoney.Web.Controllers
 {
    [ApiController]
-   [AllowAnonymous]
    [Route("[controller]")]
    public class UserController : ControllerBase
    {
       private readonly ICurrentUserProvider _userProvider;
+      private readonly IUserService _userService;
 
-      public UserController(ICurrentUserProvider userProvider)
+      public UserController(ICurrentUserProvider userProvider, IUserService userService)
       {
          _userProvider = userProvider;
+         _userService = userService;
       }
 
-      [HttpPost(nameof(Details))]
-      public IActionResult Details()
+      [HttpPost(nameof(SignedInUser))]
+      public IActionResult SignedInUser()
       {
          try
          {
@@ -33,6 +34,28 @@ namespace MyMoney.Web.Controllers
          catch (Exception)
          {
             return BadRequest("Error while retrieving current user details");
+         }
+      }
+
+      [HttpPost(nameof(UpdateSignedInUser))]
+      public IActionResult UpdateSignedInUser(UserDto dto)
+      {
+         if (dto == null || !ModelState.IsValid)
+         {
+            return BadRequest("Invalid State");
+         }
+
+         try
+         {
+            var userId = _userProvider.CurrentUserId;
+
+            var result = _userService.Update(userId, dto.Email, dto.FullName, DateTime.Parse(dto.DateOfBirth));
+
+            return Ok(result);
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while updating the current user's details");
          }
       }
    }
