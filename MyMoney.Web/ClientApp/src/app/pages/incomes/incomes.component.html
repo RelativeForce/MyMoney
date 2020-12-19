@@ -5,7 +5,7 @@
          <div class="input-group-prepend">
             <span class="input-group-text">Date</span>
          </div>
-         <input type="date" formControlName="date" class="form-control" (change)="updateIncomes($event)"
+         <input type="date" formControlName="date" class="form-control" (change)="updateIncomes()"
             [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
          <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
             <div *ngIf="f.date.errors.required">date is required</div>

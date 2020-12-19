@@ -113,11 +113,6 @@ namespace MyMoney.Web
             {
                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
             }
-            else
-            {
-               spa.Options.SourcePath = "ClientApp";
-               spa.UseAngularCliServer(npmScript: "start");
-            }
          });
       }
 
