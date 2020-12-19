@@ -1,5 +1,5 @@
-<h2>Register</h2>
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+<h2>Profile</h2>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
    <div class="form-group">
       <label for="email">Email</label>
       <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
@@ -23,21 +23,13 @@
       </div>
    </div>
    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-         <div *ngIf="f.password.errors.required">Password is required</div>
-         <div *ngIf="f.password.errors.minlength">Password must be at least 8 characters</div>
-      </div>
-   </div>
-   <div class="form-group">
       <button [disabled]="loading" class="btn btn-primary">
          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-         Register
+         Save
       </button>
-      <a routerLink="/auth/login" class="btn btn-link">Cancel</a>
+      <a routerLink="/" class="btn btn-link">Cancel</a>
    </div>
    <div *ngIf="error !== null" class="alert alert-danger" role="alert">
-      Register failed: {{ error }}
+      Save failed: {{ error }}
    </div>
 </form>

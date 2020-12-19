@@ -11,3 +11,15 @@ export function groupBy<T, K>(list: T[], toKey: (item: T) => K): Map<K, T[]> {
    });
    return map;
 }
+
+export function toInputDateString(text: string): string {
+   const month = Number.parseInt(text.split('/')[1], 10);
+
+   const monthStr = month < 10 ? '0' + month : month;
+
+   const day = Number.parseInt(text.split('/')[0], 10);
+
+   const dayStr = day < 10 ? '0' + day : day;
+
+   return text.split('/')[2] + '-' + monthStr + '-' + dayStr;
+}

@@ -13,7 +13,8 @@ import {
    IncomesComponent,
    LoginComponent,
    RegisterComponent,
-   TransactionsComponent
+   TransactionsComponent,
+   UserComponent
 } from './pages';
 import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 
@@ -107,6 +108,17 @@ export const routes: Routes = [
          {
             path: 'edit/:id',
             component: EditIncomesComponent,
+            canActivate: [AuthenticationGuard],
+         },
+         { path: '**', redirectTo: '/' }
+      ]
+   },
+   {
+      path: 'user',
+      children: [
+         {
+            path: '',
+            component: UserComponent,
             canActivate: [AuthenticationGuard],
          },
          { path: '**', redirectTo: '/' }

@@ -19,7 +19,8 @@ import {
    EditIncomesComponent,
    AddIncomesComponent,
    ImportTransactionsComponent,
-   ImportIncomesComponent
+   ImportIncomesComponent,
+   UserComponent,
 } from './pages';
 import { ImportFileComponent } from './shared/components/import';
 import { ChartComponent } from './shared/components/chart';
@@ -48,6 +49,7 @@ import { routes } from './app.routing';
       EditIncomesComponent,
       ImportTransactionsComponent,
       ImportIncomesComponent,
+      UserComponent,
 
       // Shared
       ImportFileComponent,
