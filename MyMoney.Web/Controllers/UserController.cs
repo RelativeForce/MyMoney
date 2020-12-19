@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyMoney.Core;
 using MyMoney.Core.Interfaces.Service;
+using MyMoney.Web.Models.Entity;
 using MyMoney.Web.Models.Request;
 using MyMoney.Web.Models.Response;
 using System;
@@ -14,10 +16,12 @@ namespace MyMoney.Web.Controllers
    {
 
       private readonly IUserService _userService;
+      private readonly ICurrentUserProvider _userProvider;
 
-      public UserController(IUserService userService)
+      public UserController(IUserService userService, ICurrentUserProvider userProvider)
       {
          _userService = userService;
+         _userProvider = userProvider;
       }
 
       [HttpPost(nameof(Login))]
@@ -37,6 +41,21 @@ namespace MyMoney.Web.Controllers
          catch (Exception)
          {
             return BadRequest("Error while creating");
+         }
+      }
+
+      [HttpGet(nameof(Details))]
+      public IActionResult Details()
+      {
+         try
+         {
+            var result = _userProvider.CurrentUser;
+
+            return Ok(new UserDto(result));
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while retrieving current user details");
          }
       }
 

@@ -103,3 +103,9 @@ export interface IRunningTotalDto {
 export interface IRunningTotalListDto {
    runningTotals: IRunningTotalDto[];
 }
+
+export interface IUserDto {
+   email: string;
+   dateOfBirth: string;
+   fullName: string;
+}
