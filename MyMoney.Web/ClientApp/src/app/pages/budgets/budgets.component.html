@@ -6,7 +6,7 @@
             <span class="input-group-text">Year</span>
          </div>
          <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.year.errors }"
-            (change)="updateBudgets($event)" />
+            (change)="updateBudgets()" />
          <div *ngIf="submitted && f.year.errors" class="invalid-feedback">
             <div *ngIf="f.year.errors.required">year is required</div>
          </div>
@@ -16,7 +16,7 @@
             <span class="input-group-text">Month</span>
          </div>
          <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.month.errors }"
-            (change)="updateBudgets($event)" />
+            (change)="updateBudgets()" />
          <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
             <div *ngIf="f.month.errors.required">month is required</div>
          </div>

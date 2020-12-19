@@ -5,7 +5,6 @@ import { IncomeViewModel } from '../../shared/classes';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/shared/state/app-state';
 import { selectIncomes, selectIncomesSearchParameters } from 'src/app/shared/state/selectors/income.selector';
-import { IDateRangeModel } from '../../shared/state/types';
 
 @Component({
    templateUrl: './incomes.component.html'

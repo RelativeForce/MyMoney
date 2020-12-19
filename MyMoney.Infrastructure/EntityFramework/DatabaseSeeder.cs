@@ -6,7 +6,7 @@ namespace MyMoney.Infrastructure.EntityFramework
    {
       public static void Setup(DatabaseContext context)
       {
-         context.Database.EnsureCreated();
+         // Will create database if not present
          context.Database.Migrate();
       }
 

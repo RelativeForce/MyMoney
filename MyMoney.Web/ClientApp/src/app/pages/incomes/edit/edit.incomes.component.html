@@ -2,8 +2,7 @@
 <form [formGroup]="editIncomeForm" (ngSubmit)="onSubmit()">
    <div class="form-group">
       <label for="date">Date</label>
-      <input type="date" formControlName="date" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }"
-         (change)="onDateChange($event)" />
+      <input type="date" formControlName="date" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
       <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
          <div *ngIf="f.date.errors.required">Date is required</div>
       </div>
