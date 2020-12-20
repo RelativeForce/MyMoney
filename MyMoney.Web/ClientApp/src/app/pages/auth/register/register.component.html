@@ -2,7 +2,8 @@
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
    <div class="form-group">
       <label for="email">Email</label>
-      <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+      <input type="text" name="email" formControlName="email" class="form-control"
+         [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
       <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
          <div *ngIf="f.email.errors.required">Email is required</div>
       </div>
@@ -16,7 +17,7 @@
    </div>
    <div class="form-group">
       <label for="dateOfBirth">Data of birth</label>
-      <input type="date" formControlName="dateOfBirth" class="form-control"
+      <input type="date" name="dob" formControlName="dateOfBirth" class="form-control"
          [ngClass]="{ 'is-invalid': submitted && f.dateOfBirth.errors }" />
       <div *ngIf="submitted && f.dateOfBirth.errors" class="invalid-feedback">
          <div *ngIf="f.dateOfBirth.errors.required">Date of birth is required</div>
@@ -24,7 +25,8 @@
    </div>
    <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+      <input type="password" name="password" formControlName="password" autocomplete="new-password" class="form-control"
+         [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
       <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
          <div *ngIf="f.password.errors.required">Password is required</div>
          <div *ngIf="f.password.errors.minlength">Password must be at least 8 characters</div>
