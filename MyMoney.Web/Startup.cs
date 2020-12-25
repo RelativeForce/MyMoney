@@ -14,6 +14,7 @@ using MyMoney.Core.Services;
 using MyMoney.Infrastructure;
 using MyMoney.Infrastructure.EntityFramework;
 using MyMoney.Web.Utility;
+using MySql.Data.EntityFrameworkCore;
 using System;
 
 namespace MyMoney.Web
@@ -69,9 +70,21 @@ namespace MyMoney.Web
 
          services.AddCors();
          services.AddDbContext<DatabaseContext>(options =>
-             options
-                 .UseLazyLoadingProxies()
-                 .UseSqlServer(DatabaseConstants.DatabaseConnection));
+         {
+            if (DatabaseConstants.TargetDatabaseEngine == DatabaseConstants.DatabaseEngine.SQLServer)
+            {
+               options
+                  .UseLazyLoadingProxies()
+                  .UseSqlServer(DatabaseConstants.DatabaseConnection);
+            }
+
+            if (DatabaseConstants.TargetDatabaseEngine == DatabaseConstants.DatabaseEngine.MySQL)
+            {
+               options
+                  .UseLazyLoadingProxies()
+                  .UseMySql(DatabaseConstants.DatabaseConnection);
+            }
+         });
       }
 
       // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
