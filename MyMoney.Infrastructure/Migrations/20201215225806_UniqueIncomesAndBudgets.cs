@@ -47,7 +47,23 @@ namespace MyMoney.Infrastructure.Migrations
                 table: "Budgets",
                 columns: new[] { "UserId", "Year", "Month", "Name" },
                 unique: true);
-        }
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Incomes_Users_UserId",
+                table: "Incomes",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Budgets_Users_UserId",
+                table: "Budgets",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+      }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
