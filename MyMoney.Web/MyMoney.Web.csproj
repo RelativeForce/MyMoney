@@ -18,11 +18,11 @@
     <PackageIcon>favicon-32x32.png</PackageIcon>
     <RepositoryType>Personal</RepositoryType>
     <Copyright>2020</Copyright>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <Version>1.0.2</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <Version>1.1.0</Version>
     <RepositoryUrl>https://github.com/RelativeForce/MyMoney</RepositoryUrl>
     <Product>MyMoney</Product>
-    <PackageTags>v1.0.2</PackageTags>
+    <PackageTags>v1.1.0</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <NeutralLanguage>en-GB</NeutralLanguage>
   </PropertyGroup>
