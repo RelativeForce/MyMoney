@@ -19,8 +19,8 @@ namespace MyMoney.Infrastructure.Migrations
                 table: "Budgets");
 
             migrationBuilder.DropIndex(
-                   name: "IX_Budgets_UserId",
-                   table: "Budgets");
+                name: "IX_Budgets_UserId",
+                table: "Budgets");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
