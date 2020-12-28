@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using MyMoney.Core.Email;
 using MyMoney.Core.Interfaces;
+using MyMoney.Core.Interfaces.Email;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
 
@@ -15,12 +15,14 @@ namespace MyMoney.Core.Services
       private readonly IRepository _repository;
       private readonly IEntityFactory _entityFactory;
       private readonly ITokenProvider _tokenProvider;
+      private readonly IEmailManager _emailManager;
 
-      public UserService(IRepository repository, IEntityFactory entityFactory, ITokenProvider tokenProvider)
+      public UserService(IRepository repository, IEntityFactory entityFactory, ITokenProvider tokenProvider, IEmailManager emailManager)
       {
          _repository = repository;
          _entityFactory = entityFactory;
          _tokenProvider = tokenProvider;
+         _emailManager = emailManager;
       }
 
       public LoginResult Login(string email, string passwordHash)
@@ -103,6 +105,26 @@ namespace MyMoney.Core.Services
             return BasicResult.FailResult("Database Error");
 
          return BasicResult.SuccessResult();
+      }
+
+      public void SendForgotPasswordEmail(string email)
+      {
+         var userWithEmail = _repository.Find<IUser>(u => u.Email.Equals(email));
+         if (userWithEmail == null)
+            return;
+
+         EmailSettings myConfig = new EmailSettings
+         {
+            TOs = new string[] { email },
+            From = "noreply@mymoney.com",
+            FromDisplayName = "MyMoney",
+            Subject = "Reset password"
+         };
+
+         EmailContent myContent = new EmailContent();
+         myContent.Content = "test";
+
+         _emailManager.SendMail(myConfig, myContent);
       }
 
       public IUser GetById(long userId)

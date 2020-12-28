@@ -114,3 +114,7 @@ export interface IBasicResultDto {
    success: boolean;
    error: string;
 }
+
+export interface IForgotPasswordDto {
+   email: string;
+}

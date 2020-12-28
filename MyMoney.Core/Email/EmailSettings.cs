@@ -4,11 +4,11 @@ namespace MyMoney.Core.Email
 {
    public class EmailSettings
    {
-      public string[] TOs { get; set; }
-      public string[] CCs { get; set; }
-      public string From { get; set; }
-      public string FromDisplayName { get; set; }
-      public string Subject { get; set; }
-      public MailPriority Priority { get; set; }
+      public string[] TOs { get; set; } = new string[0];
+      public string[] CCs { get; set; } = new string[0];
+      public string From { get; set; } = "";
+      public string FromDisplayName { get; set; } = "";
+      public string Subject { get; set; } = "";
+      public MailPriority Priority { get; set; } = MailPriority.Normal;
    }
 }

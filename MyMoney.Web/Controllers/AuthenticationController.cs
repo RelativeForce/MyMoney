@@ -67,5 +67,26 @@ namespace MyMoney.Web.Controllers
             return BadRequest("Error while registering");
          }
       }
+
+      [HttpPost(nameof(ForgotPassword))]
+      public IActionResult ForgotPassword([FromBody] ForgotPasswordDto dto)
+      {
+         try
+         {
+            if (dto == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            _userService.SendForgotPasswordEmail(dto.Email);
+
+            return Ok();
+
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while forgot password");
+         }
+      }
    }
 }
