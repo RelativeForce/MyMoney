@@ -13,7 +13,8 @@ namespace MyMoney.Infrastructure.Migrations
              columns: table => new
              {
                 Id = table.Column<long>(nullable: false)
-                     .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                     .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                     .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                 Email = table.Column<string>(nullable: false),
                 Password = table.Column<string>(nullable: false),
                 DateOfBirth = table.Column<DateTime>(nullable: false),
@@ -29,7 +30,8 @@ namespace MyMoney.Infrastructure.Migrations
              columns: table => new
              {
                 Id = table.Column<long>(nullable: false)
-                     .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                     .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                     .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                 Amount = table.Column<decimal>(nullable: false),
                 Notes = table.Column<string>(nullable: true),
                 UserId = table.Column<long>(nullable: false),
@@ -52,7 +54,8 @@ namespace MyMoney.Infrastructure.Migrations
              columns: table => new
              {
                 Id = table.Column<long>(nullable: false)
-                     .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                     .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                     .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                 Date = table.Column<DateTime>(nullable: false),
                 Description = table.Column<string>(nullable: false),
                 Amount = table.Column<decimal>(nullable: false),
