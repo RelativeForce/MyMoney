@@ -7,6 +7,7 @@ import {
    EditBudgetsComponent,
    EditIncomesComponent,
    EditTransactionsComponent,
+   ForgotPasswordComponent,
    HomeComponent,
    ImportIncomesComponent,
    ImportTransactionsComponent,
@@ -35,6 +36,11 @@ export const routes: Routes = [
          {
             path: 'register',
             component: RegisterComponent,
+            canActivate: [AuthenticationGuard]
+         },
+         {
+            path: 'forgotpassword',
+            component: ForgotPasswordComponent,
             canActivate: [AuthenticationGuard]
          },
          { path: '**', redirectTo: '/' }

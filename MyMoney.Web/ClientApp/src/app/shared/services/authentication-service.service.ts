@@ -38,6 +38,10 @@ export class AuthenticationService {
          }));
    }
 
+   public forgotPassword(email: string): Observable<void> {
+      return this.authenticationApi.forgotPassword({ email });
+   }
+
    public checkSession(): Observable<boolean> {
       return this.store.select(selectCurrentSession).pipe(map((session: ISessionModel | null) => {
 

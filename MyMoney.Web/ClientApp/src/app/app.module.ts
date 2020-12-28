@@ -21,6 +21,7 @@ import {
    ImportTransactionsComponent,
    ImportIncomesComponent,
    UserComponent,
+   ForgotPasswordComponent,
 } from './pages';
 import { ImportFileComponent } from './shared/components/import';
 import { ChartComponent } from './shared/components/chart';
@@ -50,6 +51,7 @@ import { routes } from './app.routing';
       ImportTransactionsComponent,
       ImportIncomesComponent,
       UserComponent,
+      ForgotPasswordComponent,
 
       // Shared
       ImportFileComponent,

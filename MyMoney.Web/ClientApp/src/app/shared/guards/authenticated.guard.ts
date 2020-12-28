@@ -6,7 +6,8 @@ import { AuthenticationService } from '../services';
 
 const anonymousRoutes: string[] = [
    '/auth/login',
-   '/auth/register'
+   '/auth/register',
+   '/auth/forgotpassword'
 ];
 
 @Injectable({ providedIn: 'root' })
