@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using MyMoney.Core;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using System;
@@ -10,9 +11,11 @@ namespace MyMoney.Web.Utility
 {
    public class TokenProvider : ITokenProvider
    {
-      public const string Secret = "dqSRHqsruH3U75hFSg1Y5LCOcON7G90iXGomYbaFuH4G10f2PIexSes3QlyidLC";
+      private const string DefaultTokenSecret = "dqSRHqsruH3U75hFSg1Y5LCOcON7G90iXGomYbaFuH4G10f2PIexSes3QlyidLC";
 
-      public static readonly byte[] Key = Encoding.ASCII.GetBytes(Secret);
+      private static string Secret => Environment.GetEnvironmentVariable(EnvironmentVariables.TokenSecret) ?? DefaultTokenSecret;
+
+      public static byte[] Key => Encoding.ASCII.GetBytes(Secret);
 
       public DateTime TokenTimeOut => DateTime.Now.AddHours(1);
 

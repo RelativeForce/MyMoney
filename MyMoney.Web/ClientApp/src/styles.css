@@ -1,11 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
-
 code {
-  color: #e01a76;
+   color: #e01a76;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+   color: #fff;
+   background-color: #1b6ec2;
+   border-color: #1861ac;
+}
+
+.plus {
+   display:inline-block;
+   position: relative;
+   top: 3px;
+   width:18px;
+   height:18px;
+   
+   background:
+     linear-gradient(#fff,#fff),
+     linear-gradient(#fff,#fff);
+   background-position:center;
+   background-size: 100% 2px, 2px 100%; /*thickness = 2px, length = 50% (25px)*/
+   background-repeat:no-repeat;
 }

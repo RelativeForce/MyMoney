@@ -26,7 +26,9 @@
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             <div *ngIf="!loading" class="spin">↻</div>
          </button>
-         <a class="btn btn-success" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new budget">🗋</a>
+         <a class="btn btn-success" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new budget">
+            <div class="plus"></div>
+         </a>
       </div>
    </div>
 </form>

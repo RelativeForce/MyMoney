@@ -46,19 +46,16 @@ export class TransactionsComponent implements OnInit {
       this.transactionService.refreshTransactions();
    }
 
-   private formatDate(date: Date): string {
+   public get start(): string {
+      return this.formatDate(this.dateRange.start);
+   }
 
-      const parsedDate = new Date(date);
+   public get end(): string {
+      return this.formatDate(this.dateRange.end);
+   }
 
-      const month = parsedDate.getMonth() + 1;
-
-      const day = parsedDate.getDate();
-
-      const monthStr = month < 10 ? '0' + month : month;
-
-      const dayStr = day < 10 ? '0' + day : day;
-
-      return parsedDate.getFullYear() + '-' + monthStr + '-' + dayStr;
+   public get f() {
+      return this.dateRangeForm.controls;
    }
 
    public updateTransactions(): void {
@@ -69,16 +66,6 @@ export class TransactionsComponent implements OnInit {
 
       this.transactionService.updateDateRange(this.dateRange);
    }
-
-   public get start(): string {
-      return this.formatDate(this.dateRange.start);
-   }
-
-   public get end(): string {
-      return this.formatDate(this.dateRange.end);
-   }
-
-   public get f() { return this.dateRangeForm.controls; }
 
    public deleteTransaction(id: number): void {
       if (!confirm(`Delete transaction ${id}?`)) {
@@ -96,5 +83,20 @@ export class TransactionsComponent implements OnInit {
       }
 
       this.updateTransactions();
+   }
+
+   private formatDate(date: Date): string {
+
+      const parsedDate = new Date(date);
+
+      const month = parsedDate.getMonth() + 1;
+
+      const day = parsedDate.getDate();
+
+      const monthStr = month < 10 ? '0' + month : month;
+
+      const dayStr = day < 10 ? '0' + day : day;
+
+      return parsedDate.getFullYear() + '-' + monthStr + '-' + dayStr;
    }
 }
