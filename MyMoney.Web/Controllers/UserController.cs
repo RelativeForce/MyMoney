@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyMoney.Core;
+using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Service;
 using MyMoney.Web.Models.Entity;
 using MyMoney.Web.Models.Request;
