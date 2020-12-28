@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyMoney.Core;
+using System;
 
 namespace MyMoney.Infrastructure.EntityFramework
 {
@@ -6,13 +7,13 @@ namespace MyMoney.Infrastructure.EntityFramework
    {
       public const string LocalDatabaseConnection = @"Server=.\SQLEXPRESS;Initial Catalog=MyMoney;Trusted_Connection=True;MultipleActiveResultSets=true;Integrated Security=True";
 
-      public static string DatabaseConnection => Environment.GetEnvironmentVariable(DatabaseConnectionEnvironmentVariable) ?? LocalDatabaseConnection;
+      public static string DatabaseConnection => Environment.GetEnvironmentVariable(EnvironmentVariables.DatabaseConnection) ?? LocalDatabaseConnection;
 
       public static DatabaseEngine TargetDatabaseEngine
       {
          get
          {
-            var engine = Environment.GetEnvironmentVariable(DatabaseEngineEnvironmentVariable) ?? string.Empty;
+            var engine = Environment.GetEnvironmentVariable(EnvironmentVariables.DatabaseEngine) ?? string.Empty;
 
             if (engine.ToUpper() == "MYSQL")
                return DatabaseEngine.MySQL;
@@ -20,7 +21,7 @@ namespace MyMoney.Infrastructure.EntityFramework
             if (engine.ToUpper() == "SQLSERVER")
                return DatabaseEngine.SQLServer;
 
-            Console.WriteLine($"'{DatabaseEngineEnvironmentVariable}' environment variable is not assigned, defaulting to {nameof(DatabaseEngine.SQLServer)}");
+            Console.WriteLine($"'{EnvironmentVariables.DatabaseEngine}' environment variable is not assigned, defaulting to {nameof(DatabaseEngine.SQLServer)}");
             return DatabaseEngine.SQLServer;
          }
       }
@@ -30,8 +31,5 @@ namespace MyMoney.Infrastructure.EntityFramework
          SQLServer,
          MySQL
       }
-
-      private const string DatabaseConnectionEnvironmentVariable = "MyMoney_Database_Connection";
-      private const string DatabaseEngineEnvironmentVariable = "MyMoney_Database_Engine";
    }
 }
