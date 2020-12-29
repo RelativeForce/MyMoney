@@ -8,36 +8,6 @@ import {
 } from '../actions';
 import { ITransactionModel, IDateRangeModel, ITransactionsSearch } from '../types';
 
-export interface ITransactionState {
-   transactions: ITransactionModel[];
-   searchParameters: ITransactionsSearch;
-}
-
-export const initialTransactionState: ITransactionState = {
-   transactions: [],
-   searchParameters: {
-      dateRange: defaultDateRange(),
-      refresh: true,
-   }
-};
-
-export function transactionReducer(state: ITransactionState = initialTransactionState, action: Action): ITransactionState {
-   switch (action.type) {
-      case TransactionActionTypes.setTransactions:
-         return setTransactions(state, action as SetTransactionsAction);
-      case TransactionActionTypes.updateTransaction:
-         return updateTransaction(state, action as UpdateTransactionAction);
-      case TransactionActionTypes.deleteTransaction:
-         return deleteTransaction(state, action as DeleteTransactionAction);
-      case TransactionActionTypes.updateDataRange:
-         return updateDataRange(state, action as UpdateDataRangeAction);
-      case TransactionActionTypes.refreshTransactions:
-         return refreshTransactions(state);
-      default:
-         return state;
-   }
-}
-
 function setTransactions(state: ITransactionState, action: SetTransactionsAction): ITransactionState {
    const transactions: ITransactionModel[] = action.transactions;
 
@@ -111,4 +81,34 @@ function defaultDateRange(): IDateRangeModel {
    start.setMonth(start.getMonth() - 1);
 
    return { end, start };
+}
+
+export interface ITransactionState {
+   transactions: ITransactionModel[];
+   searchParameters: ITransactionsSearch;
+}
+
+export const initialTransactionState: ITransactionState = {
+   transactions: [],
+   searchParameters: {
+      dateRange: defaultDateRange(),
+      refresh: true,
+   }
+};
+
+export function transactionReducer(state: ITransactionState = initialTransactionState, action: Action): ITransactionState {
+   switch (action.type) {
+      case TransactionActionTypes.setTransactions:
+         return setTransactions(state, action as SetTransactionsAction);
+      case TransactionActionTypes.updateTransaction:
+         return updateTransaction(state, action as UpdateTransactionAction);
+      case TransactionActionTypes.deleteTransaction:
+         return deleteTransaction(state, action as DeleteTransactionAction);
+      case TransactionActionTypes.updateDataRange:
+         return updateDataRange(state, action as UpdateDataRangeAction);
+      case TransactionActionTypes.refreshTransactions:
+         return refreshTransactions(state);
+      default:
+         return state;
+   }
 }
