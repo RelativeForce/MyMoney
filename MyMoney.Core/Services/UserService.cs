@@ -146,7 +146,7 @@ namespace MyMoney.Core.Services
 
          string token = _tokenProvider.NewToken(userWithEmail);
 
-         string contentString = _resourceManager.Load("forgot-password-email.html");
+         string contentString = _resourceManager.Load("reset-password-email.html");
 
          contentString = contentString
             .Replace("${site-name}", "MyMoney")

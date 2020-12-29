@@ -63,7 +63,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\**">
+    <None Update="Resources\reset-password-email.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -80,6 +80,7 @@
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Copy SourceFiles="Resources\reset-password-email.html" DestinationFolder="$(PublishDir)\Resources" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
