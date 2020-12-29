@@ -70,7 +70,11 @@ import { routes } from './app.routing';
       RouterModule.forRoot(routes),
    ],
    providers: [
-      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+      {
+         provide: HTTP_INTERCEPTORS,
+         useClass: JwtInterceptor,
+         multi: true
+      },
       Title
    ],
    bootstrap: [AppComponent],
