@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { IncomeApi, IDeleteResultDto, IIncomeListDto, IUpdateResultDto, IDateRangeDto, IRunningTotalListDto } from '../api';
+import { IncomeApi, IDeleteResultDto, IIncomeListDto, IUpdateResultDto, IRunningTotalListDto, IIncomeSearchDto } from '../api';
 import {
    DeleteIncomeAction,
    RefreshIncomesAction,
    SetIncomesAction,
    UpdateIncomeAction,
-   UpdateSearchDateAction
+   UpdateIncomesSearchAction
 } from '../state/actions';
 import { IAppState } from '../state/app-state';
 import { selectIncomesSearchParameters, selectIncome } from '../state/selectors/income.selector';
-import { IIncomeModel, IIncomesSearch } from '../state/types';
+import { IDateRangeModel, IIncomeModel, IIncomesSearch } from '../state/types';
 
 
 @Injectable({ providedIn: 'root' })
@@ -24,16 +24,20 @@ export class IncomeService {
             return;
          }
 
-         this.getIncomes(search.date)
+         this.getIncomes(search.dateRange)
             .subscribe((response: IIncomeListDto) => this.store.dispatch(new SetIncomesAction(response.incomes)));
       });
    }
 
-   public getIncomes(date: Date): Observable<IIncomeListDto> {
-      return this.incomeApi.list({ date, count: 10 });
+   public getIncomes(dateRange: IDateRangeModel): Observable<IIncomeListDto> {
+      return this.incomeApi.list(dateRange);
    }
 
-   public getRunningTotal(initialTotal: number, dateRange: IDateRangeDto): Observable<IRunningTotalListDto> {
+   public getIncomesByDate(date: Date): Observable<IIncomeListDto> {
+      return this.incomeApi.listCount({ date, count: 10 });
+   }
+
+   public getRunningTotal(initialTotal: number, dateRange: IDateRangeModel): Observable<IRunningTotalListDto> {
       return this.incomeApi.runningTotal({ dateRange, initialTotal });
    }
 
@@ -47,8 +51,8 @@ export class IncomeService {
          });
    }
 
-   public updateDate(date: Date): void {
-      this.store.dispatch(new UpdateSearchDateAction(date));
+   public updateDate(dateRange: IDateRangeModel): void {
+      this.store.dispatch(new UpdateIncomesSearchAction(dateRange));
    }
 
    public addIncome(income: IIncomeModel): Observable<boolean> {

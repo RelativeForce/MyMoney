@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyMoney.Core.Interfaces.Service;
+using MyMoney.Web.Models.Common;
 using MyMoney.Web.Models.Entity;
 using MyMoney.Web.Models.Request;
 using MyMoney.Web.Models.Response;
@@ -47,16 +48,42 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(List))]
-      public IActionResult List([FromBody] IncomeSearchDto dto)
+      public IActionResult List([FromBody] DateRangeDto listParameters)
       {
          try
          {
-            if (dto == null || !ModelState.IsValid)
+            if (listParameters == null || !ModelState.IsValid)
             {
                return BadRequest("Invalid State");
             }
 
-            var incomes = _incomeService.From(dto.Date, dto.Count);
+            var incomes = _incomeService.Between(listParameters.Start, listParameters.End);
+
+            if (incomes == null)
+               return NotFound();
+
+            return Ok(new IncomeListDto
+            {
+               Incomes = incomes.Select(t => new IncomeDto(t)).ToList()
+            });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while listing incomes");
+         }
+      }
+
+      [HttpPost(nameof(ListCount))]
+      public IActionResult ListCount([FromBody] IncomeSearchDto listParameters)
+      {
+         try
+         {
+            if (listParameters == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var incomes = _incomeService.From(listParameters.Date, listParameters.Count);
 
             if (incomes == null)
                return NotFound();

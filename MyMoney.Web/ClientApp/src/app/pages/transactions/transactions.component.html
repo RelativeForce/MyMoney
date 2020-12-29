@@ -8,7 +8,7 @@
          <input type="date" formControlName="start" class="form-control" (change)="updateTransactions()"
             [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
          <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
-            <div *ngIf="f.start.errors.required">start is required</div>
+            <div *ngIf="f.start.errors.required">Start is required</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2">
@@ -18,7 +18,7 @@
          <input type="date" formControlName="end" class="form-control" (change)="updateTransactions()"
             [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
          <div *ngIf="submitted && f.end.errors" class="invalid-feedback">
-            <div *ngIf="f.end.errors.required">end is required</div>
+            <div *ngIf="f.end.errors.required">End is required</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">

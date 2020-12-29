@@ -22,13 +22,15 @@ export class AddIncomesComponent implements OnInit {
 
    public ngOnInit(): void {
       this.addIncomeForm = this.formBuilder.group({
-         date: ['', Validators.required],
+         date: [new Date().toISOString().split('T')[0], Validators.required],
          name: ['', Validators.required],
          amount: ['', Validators.required],
       });
    }
 
-   public get f() { return this.addIncomeForm.controls; }
+   public get f() {
+      return this.addIncomeForm.controls;
+   }
 
    public onSubmit(): void {
       this.submitted = true;

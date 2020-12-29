@@ -12,6 +12,7 @@ namespace MyMoney.Core.Interfaces.Service
       bool Delete(long incomeId);
       IIncome Find(long incomeId);
       IList<IIncome> From(DateTime start, int count);
+      IList<IIncome> Between(DateTime start, DateTime end);
       IList<RunningTotal> RunningTotal(decimal initialTotal, DateTime start, DateTime end);
    }
 }
