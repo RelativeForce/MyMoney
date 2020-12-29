@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { JwtInterceptor } from './shared/classes/jwt-interceptor.class';
+import { JwtInterceptor } from './shared/api';
 import {
    HomeComponent,
    LoginComponent,
