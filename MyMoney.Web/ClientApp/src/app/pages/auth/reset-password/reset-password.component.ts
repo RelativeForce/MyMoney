@@ -29,8 +29,6 @@ export class ResetPasswordComponent implements OnInit {
       this.activatedRoute.params.subscribe(params => {
          const token = params['token'];
 
-         console.log(token);
-
          if (!token) {
             this.router.navigate(['/auth/login']);
          }
@@ -56,7 +54,6 @@ export class ResetPasswordComponent implements OnInit {
    public onSubmit(): void {
       this.submitted = true;
 
-      console.log(this.resetPasswordForm);
       if (this.resetPasswordForm.invalid) {
          return;
       }
