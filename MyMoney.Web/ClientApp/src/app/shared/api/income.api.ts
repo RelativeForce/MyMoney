@@ -3,13 +3,14 @@ import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import {
    IIncomeListDto,
-   IIncomeSearchDto,
    IDeleteResultDto,
    IIncomeDto,
    IIdDto,
    IUpdateResultDto,
    IRunningTotalSearchDto,
-   IRunningTotalListDto
+   IRunningTotalListDto,
+   IDateRangeDto,
+   IIncomeSearchDto
 } from './dtos.interface';
 import { HttpHelper } from './http-helper.class';
 
@@ -18,9 +19,15 @@ export class IncomeApi {
 
    constructor(private readonly api: HttpHelper) { }
 
-   public list(request: IIncomeSearchDto): Observable<IIncomeListDto> {
+   public list(request: IDateRangeDto): Observable<IIncomeListDto> {
       return this.api
-         .post<IIncomeSearchDto, IIncomeListDto>('/Income/List', request)
+         .post<IDateRangeDto, IIncomeListDto>('/Income/List', request)
+         .pipe(first());
+   }
+
+   public listCount(request: IIncomeSearchDto): Observable<IIncomeListDto> {
+      return this.api
+         .post<IIncomeSearchDto, IIncomeListDto>('/Income/ListCount', request)
          .pipe(first());
    }
 

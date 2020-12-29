@@ -6,7 +6,7 @@ import {
    DeleteIncomeAction,
    UpdateSearchDateAction
 } from '../actions';
-import { IIncomeModel, IIncomesSearch } from '../types';
+import { IDateRangeModel, IIncomeModel, IIncomesSearch } from '../types';
 
 export interface IIncomeState {
    incomes: IIncomeModel[];
@@ -16,8 +16,7 @@ export interface IIncomeState {
 export const initialIncomeState: IIncomeState = {
    incomes: [],
    searchParameters: {
-      count: 20,
-      date: new Date(),
+      dateRange: defaultDateRange(),
       refresh: true,
    }
 };
@@ -25,21 +24,21 @@ export const initialIncomeState: IIncomeState = {
 export function incomeReducer(state: IIncomeState = initialIncomeState, action: Action): IIncomeState {
    switch (action.type) {
       case IncomeActionTypes.SetIncomes:
-         return SetIncomes(state, action as SetIncomesAction);
+         return setIncomes(state, action as SetIncomesAction);
       case IncomeActionTypes.UpdateIncome:
-         return UpdateIncome(state, action as UpdateIncomeAction);
+         return updateIncome(state, action as UpdateIncomeAction);
       case IncomeActionTypes.DeleteIncome:
-         return DeleteIncome(state, action as DeleteIncomeAction);
+         return deleteIncome(state, action as DeleteIncomeAction);
       case IncomeActionTypes.UpdateSearchDate:
-         return UpdateSelectedSearchDate(state, action as UpdateSearchDateAction);
+         return updateSelectedSearchDate(state, action as UpdateSearchDateAction);
       case IncomeActionTypes.RefreshIncomes:
-         return RefreshIncomes(state);
+         return refreshIncomes(state);
       default:
          return state;
    }
 }
 
-function SetIncomes(state: IIncomeState, action: SetIncomesAction): IIncomeState {
+function setIncomes(state: IIncomeState, action: SetIncomesAction): IIncomeState {
    const incomes: IIncomeModel[] = action.incomes;
 
    return {
@@ -52,7 +51,7 @@ function SetIncomes(state: IIncomeState, action: SetIncomesAction): IIncomeState
    };
 }
 
-function RefreshIncomes(state: IIncomeState): IIncomeState {
+function refreshIncomes(state: IIncomeState): IIncomeState {
    return {
       ...state,
       searchParameters: {
@@ -62,7 +61,7 @@ function RefreshIncomes(state: IIncomeState): IIncomeState {
    };
 }
 
-function UpdateIncome(state: IIncomeState, action: UpdateIncomeAction): IIncomeState {
+function updateIncome(state: IIncomeState, action: UpdateIncomeAction): IIncomeState {
    const income: IIncomeModel = action.income;
 
    const index = state.incomes.findIndex(t => t.id === income.id);
@@ -77,7 +76,7 @@ function UpdateIncome(state: IIncomeState, action: UpdateIncomeAction): IIncomeS
    };
 }
 
-function DeleteIncome(state: IIncomeState, action: DeleteIncomeAction): IIncomeState {
+function deleteIncome(state: IIncomeState, action: DeleteIncomeAction): IIncomeState {
    const incomeId: number = action.incomeId;
 
    const index = state.incomes.findIndex(t => t.id === incomeId);
@@ -92,15 +91,24 @@ function DeleteIncome(state: IIncomeState, action: DeleteIncomeAction): IIncomeS
    };
 }
 
-function UpdateSelectedSearchDate(state: IIncomeState, action: UpdateSearchDateAction): IIncomeState {
-   const date: Date = action.date;
+function updateSelectedSearchDate(state: IIncomeState, action: UpdateSearchDateAction): IIncomeState {
+   const dateRange: IDateRangeModel = action.dateRange;
 
    return {
       ...state,
       searchParameters: {
          ...state.searchParameters,
-         date,
+         dateRange,
          refresh: true
       }
    };
+}
+
+function defaultDateRange(): IDateRangeModel {
+   const end: Date = new Date();
+
+   const start: Date = new Date();
+   start.setMonth(start.getMonth() - 1);
+
+   return { end, start };
 }

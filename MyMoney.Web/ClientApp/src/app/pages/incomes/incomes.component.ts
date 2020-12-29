@@ -5,6 +5,7 @@ import { IncomeViewModel } from '../../shared/classes';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/shared/state/app-state';
 import { selectIncomes, selectIncomesSearchParameters } from 'src/app/shared/state/selectors/income.selector';
+import { IDateRangeModel } from 'src/app/shared/state/types';
 
 @Component({
    templateUrl: './incomes.component.html'
@@ -12,7 +13,7 @@ import { selectIncomes, selectIncomesSearchParameters } from 'src/app/shared/sta
 export class IncomesComponent implements OnInit {
 
    public incomes: IncomeViewModel[] = [];
-   public date: Date;
+   public dateRange: IDateRangeModel;
    public dateForm: FormGroup;
    public loading: Boolean = false;
    public submitted: Boolean = false;
@@ -34,14 +35,49 @@ export class IncomesComponent implements OnInit {
       this.store
          .select(selectIncomesSearchParameters)
          .subscribe((searchParameters) => {
-            this.date = searchParameters.date;
+            this.dateRange = searchParameters.dateRange;
 
             this.dateForm = this.formBuilder.group({
-               date: [this.dateString, Validators.required],
+               start: [this.start, Validators.required],
+               end: [this.end, Validators.required]
             });
          });
 
       this.incomeService.refreshIncomes();
+   }
+
+   public get start(): string {
+      return this.formatDate(this.dateRange.start);
+   }
+
+   public get end(): string {
+      return this.formatDate(this.dateRange.end);
+   }
+
+   public updateIncomes(): void {
+      this.submitted = true;
+
+      if (this.dateForm.invalid) {
+         return;
+      }
+
+      this.loading = true;
+
+      this.dateRange = { start: this.f.start.value, end: this.f.end.value };
+
+      this.incomeService.updateDate(this.dateRange);
+   }
+
+   public get f() {
+      return this.dateForm.controls;
+   }
+
+   public deleteIncome(id: number): void {
+      if (!confirm(`Delete income ${id}?`)) {
+         return;
+      }
+
+      this.incomeService.deleteIncome(id);
    }
 
    private formatDate(date: Date): string {
@@ -57,38 +93,5 @@ export class IncomesComponent implements OnInit {
       const dayStr = day < 10 ? '0' + day : day;
 
       return parsedDate.getFullYear() + '-' + monthStr + '-' + dayStr;
-   }
-
-   public updateIncomes(): void {
-
-      this.loading = true;
-
-      this.date = this.f.date.value;
-
-      this.incomeService.updateDate(this.date);
-   }
-
-   public get dateString(): string {
-      return this.formatDate(this.date);
-   }
-
-   public get f() { return this.dateForm.controls; }
-
-   public deleteIncome(id: number): void {
-      if (!confirm(`Delete income ${id}?`)) {
-         return;
-      }
-
-      this.incomeService.deleteIncome(id);
-   }
-
-   public onSubmit(): void {
-      this.submitted = true;
-
-      if (this.dateForm.invalid) {
-         return;
-      }
-
-      this.updateIncomes();
    }
 }

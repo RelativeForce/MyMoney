@@ -3,7 +3,13 @@ import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
 import { TransactionApi, IDeleteResultDto, ITransactionListDto, IUpdateResultDto } from '../api';
-import { DeleteTransactionAction, RefreshTransactionsAction, SetTransactionsAction, UpdateDataRangeAction, UpdateTransactionAction } from '../state/actions';
+import {
+   DeleteTransactionAction,
+   RefreshTransactionsAction,
+   SetTransactionsAction,
+   UpdateDataRangeAction,
+   UpdateTransactionAction
+} from '../state/actions';
 import { IAppState } from '../state/app-state';
 import { selectTransactionsSearchParameters, selectTransaction } from '../state/selectors/transaction.selector';
 import { IDateRangeModel, ITransactionModel, ITransactionsSearch } from '../state/types';

@@ -119,7 +119,7 @@ export class EditTransactionsComponent implements OnInit {
          this.budgets = response.budgets.map(t => new BudgetViewModel(t));
       });
 
-      this.incomeService.getIncomes(date).subscribe(response => {
+      this.incomeService.getIncomesByDate(date).subscribe(response => {
          this.incomes = response.incomes.map(t => new IncomeViewModel(t));
       });
    }

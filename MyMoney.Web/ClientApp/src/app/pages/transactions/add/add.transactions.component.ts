@@ -38,7 +38,9 @@ export class AddTransactionsComponent implements OnInit {
       });
    }
 
-   public get f() { return this.addTransactionForm.controls; }
+   public get f() {
+      return this.addTransactionForm.controls;
+   }
 
    public onBudgetCheckboxChange(e, id): void {
       if (e.target.checked) {
@@ -66,7 +68,7 @@ export class AddTransactionsComponent implements OnInit {
          this.budgets = response.budgets.map(t => new BudgetViewModel(t));
       });
 
-      this.incomeService.getIncomes(date).subscribe(response => {
+      this.incomeService.getIncomesByDate(date).subscribe(response => {
          this.incomes = response.incomes.map(t => new IncomeViewModel(t));
       });
    }

@@ -57,7 +57,21 @@ namespace MyMoney.Core.Services
 
          var user = _currentUserProvider.CurrentUser;
 
-         return user.Incomes.Where(b => b.Date <= start).Take(count).ToList();
+         return user.Incomes
+            .Where(i => i.Date <= start)
+            .OrderByDescending(i => i.Date)
+            .Take(count)
+            .ToList();
+      }
+
+      public IList<IIncome> Between(DateTime start, DateTime end)
+      {
+         var user = _currentUserProvider.CurrentUser;
+
+         return user.Incomes
+            .Where(i => i.Date >= start && i.Date <= end)
+            .OrderByDescending(i => i.Date)
+            .ToList();
       }
 
       public IList<RunningTotal> RunningTotal(decimal initialTotal, DateTime start, DateTime end)

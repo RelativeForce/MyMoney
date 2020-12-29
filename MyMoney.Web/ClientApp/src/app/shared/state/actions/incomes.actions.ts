@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { IIncomeModel } from '../types';
+import { IDateRangeModel, IIncomeModel } from '../types';
 
 export enum IncomeActionTypes {
    SetIncomes = 'Set Incomes',
@@ -30,7 +30,7 @@ export class DeleteIncomeAction implements Action {
 export class UpdateSearchDateAction implements Action {
    public type: string = IncomeActionTypes.UpdateSearchDate;
 
-   constructor(public readonly date: Date) { }
+   constructor(public readonly dateRange: IDateRangeModel) { }
 }
 
 export class RefreshIncomesAction implements Action {

@@ -1,14 +1,24 @@
 <h2>Incomes</h2>
-<form [formGroup]="dateForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="dateForm" (ngSubmit)="updateIncomes()">
    <div class="form-inline">
       <div class="input-group mb-3 pr-2">
          <div class="input-group-prepend">
-            <span class="input-group-text">Date</span>
+            <span class="input-group-text">Start</span>
          </div>
-         <input type="date" formControlName="date" class="form-control" (change)="updateIncomes()"
-            [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
-         <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
-            <div *ngIf="f.date.errors.required">date is required</div>
+         <input type="date" formControlName="start" class="form-control" (change)="updateIncomes()"
+            [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
+         <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
+            <div *ngIf="f.start.errors.required">Start is required</div>
+         </div>
+      </div>
+      <div class="input-group mb-3 pr-2">
+         <div class="input-group-prepend">
+            <span class="input-group-text">End</span>
+         </div>
+         <input type="date" formControlName="end" class="form-control" (change)="updateIncomes()"
+            [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
+         <div *ngIf="submitted && f.end.errors" class="invalid-feedback">
+            <div *ngIf="f.end.errors.required">End is required</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">

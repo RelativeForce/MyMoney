@@ -1,5 +1,6 @@
+import { IDateRangeModel } from './date-range-model.interface';
+
 export interface IIncomesSearch {
-   date: Date;
-   count: number;
+   dateRange: IDateRangeModel;
    refresh: boolean;
 }
