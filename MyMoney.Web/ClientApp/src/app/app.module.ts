@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -70,7 +70,12 @@ import { routes } from './app.routing';
       RouterModule.forRoot(routes),
    ],
    providers: [
-      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+      {
+         provide: HTTP_INTERCEPTORS,
+         useClass: JwtInterceptor,
+         multi: true
+      },
+      Title
    ],
    bootstrap: [AppComponent],
 })
