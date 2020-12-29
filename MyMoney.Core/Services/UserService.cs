@@ -16,13 +16,15 @@ namespace MyMoney.Core.Services
       private readonly IEntityFactory _entityFactory;
       private readonly ITokenProvider _tokenProvider;
       private readonly IEmailManager _emailManager;
+      private readonly IResourceManager _resourceManager;
 
-      public UserService(IRepository repository, IEntityFactory entityFactory, ITokenProvider tokenProvider, IEmailManager emailManager)
+      public UserService(IRepository repository, IEntityFactory entityFactory, ITokenProvider tokenProvider, IEmailManager emailManager, IResourceManager resourceManager)
       {
          _repository = repository;
          _entityFactory = entityFactory;
          _tokenProvider = tokenProvider;
          _emailManager = emailManager;
+         _resourceManager = resourceManager;
       }
 
       public LoginResult Login(string email, string passwordHash)
@@ -107,24 +109,34 @@ namespace MyMoney.Core.Services
          return BasicResult.SuccessResult();
       }
 
-      public void SendForgotPasswordEmail(string email)
+      public void SendForgotPasswordEmail(string email, string baseUrl)
       {
          var userWithEmail = _repository.Find<IUser>(u => u.Email.Equals(email));
          if (userWithEmail == null)
             return;
 
-         EmailSettings myConfig = new EmailSettings
+         EmailSettings config = new EmailSettings
          {
             TOs = new string[] { email },
-            From = "noreply@mymoney.com",
             FromDisplayName = "MyMoney",
             Subject = "Reset password"
          };
 
-         EmailContent myContent = new EmailContent();
-         myContent.Content = "test";
+         string token = _tokenProvider.NewToken(userWithEmail);
 
-         _emailManager.SendMail(myConfig, myContent);
+         string contentString = _resourceManager.Load("forgot-password-email.html");
+
+         contentString = contentString
+            .Replace("${site-name}", "MyMoney")
+            .Replace("${reset-password-url}", $"{baseUrl}/reset-password/{token}")
+            .Replace("${site-url}", baseUrl);
+
+         EmailContent content = new EmailContent
+         {
+            Content = contentString
+         };
+
+         _emailManager.SendMail(config, content);
       }
 
       public IUser GetById(long userId)

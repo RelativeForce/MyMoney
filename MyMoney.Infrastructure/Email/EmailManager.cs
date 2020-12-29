@@ -29,10 +29,10 @@ namespace MyMoney.Infrastructure.Email
             throw new ApplicationException($"'{EnvironmentVariables.EmailPassword}' is missing");
       }
 
-      public bool SendMail(EmailSettings emailConfig, EmailContent content)
+      public void SendMail(EmailSettings emailConfig, EmailContent content)
       {
          MailMessage email = ConstructEmailMessage(emailConfig, content);
-         return Send(email);
+         Send(email);
       }
 
       private MailMessage ConstructEmailMessage(EmailSettings emailConfig, EmailContent content)
@@ -40,7 +40,7 @@ namespace MyMoney.Infrastructure.Email
          MailMessage msg = new MailMessage();
          foreach (string to in emailConfig.TOs)
          {
-            if (!string.IsNullOrEmpty(to))
+            if (!string.IsNullOrWhiteSpace(to))
             {
                msg.To.Add(to);
             }
@@ -48,13 +48,13 @@ namespace MyMoney.Infrastructure.Email
 
          foreach (string cc in emailConfig.CCs)
          {
-            if (!string.IsNullOrEmpty(cc))
+            if (!string.IsNullOrWhiteSpace(cc))
             {
                msg.CC.Add(cc);
             }
          }
 
-         msg.From = new MailAddress(emailConfig.From,
+         msg.From = new MailAddress(_clientEmailAddress,
                                     emailConfig.FromDisplayName,
                                     System.Text.Encoding.UTF8);
          msg.IsBodyHtml = content.IsHtml;
@@ -64,7 +64,7 @@ namespace MyMoney.Infrastructure.Email
          msg.BodyEncoding = System.Text.Encoding.UTF8;
          msg.SubjectEncoding = System.Text.Encoding.UTF8;
 
-         if (content.AttachFileName != null)
+         if (!string.IsNullOrWhiteSpace(content.AttachFileName))
          {
             Attachment data = new Attachment(content.AttachFileName,
                                              MediaTypeNames.Application.Zip);
@@ -74,7 +74,7 @@ namespace MyMoney.Infrastructure.Email
          return msg;
       }
 
-      private bool Send(MailMessage message)
+      private void Send(MailMessage message)
       {
          SmtpClient client = new SmtpClient
          {
@@ -88,12 +88,6 @@ namespace MyMoney.Infrastructure.Email
          try
          {
             client.Send(message);
-            return true;
-         }
-         catch (Exception e)
-         {
-            Console.WriteLine("Failed to send email: {0}", e.Message);
-            return false;
          }
          finally
          {

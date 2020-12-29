@@ -78,14 +78,14 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            _userService.SendForgotPasswordEmail(dto.Email);
+            _userService.SendForgotPasswordEmail(dto.Email, $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}");
 
             return Ok();
-
          }
-         catch (Exception)
+         catch (Exception e)
          {
-            return BadRequest("Error while forgot password");
+            Console.WriteLine(e);
+            return BadRequest("Error while sending forgot password email");
          }
       }
    }

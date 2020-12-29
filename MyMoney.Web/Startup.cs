@@ -44,6 +44,7 @@ namespace MyMoney.Web
          services.AddScoped<IEntityFactory, EntityFactory>();
          services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
          services.AddScoped<IEmailManager, EmailManager>();
+         services.AddScoped<IResourceManager, ResourceManager>();
 
          services.AddControllersWithViews();
          // In production, the Angular files will be served from this directory

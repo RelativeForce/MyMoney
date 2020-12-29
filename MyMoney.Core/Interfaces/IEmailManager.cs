@@ -4,6 +4,6 @@ namespace MyMoney.Core.Interfaces.Email
 {
    public interface IEmailManager
    {
-      bool SendMail(EmailSettings emailConfig, EmailContent content);
+      void SendMail(EmailSettings emailConfig, EmailContent content);
    }
 }

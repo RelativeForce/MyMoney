@@ -9,7 +9,7 @@ namespace MyMoney.Core.Interfaces.Service
       LoginResult Login(string email, string passwordHash);
       LoginResult Register(string email, string password, DateTime dateOfBirth, string fullName);
       IUser GetById(long userId);
-      void SendForgotPasswordEmail(string email);
+      void SendForgotPasswordEmail(string email, string baseUrl);
       BasicResult Update(long userId, string email, string fullName, DateTime dateOfBirth);
    }
 }
