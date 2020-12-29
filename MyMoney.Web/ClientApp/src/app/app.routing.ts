@@ -34,7 +34,8 @@ export const routes: Routes = [
             component: LoginComponent,
             canActivate: [AuthenticationGuard],
             data: {
-               isAnonymous: true
+               isAnonymous: true,
+               title: 'Login'
             }
          },
          {
@@ -42,7 +43,8 @@ export const routes: Routes = [
             component: RegisterComponent,
             canActivate: [AuthenticationGuard],
             data: {
-               isAnonymous: true
+               isAnonymous: true,
+               title: 'Register'
             }
          },
          {
@@ -50,7 +52,8 @@ export const routes: Routes = [
             component: ForgotPasswordComponent,
             canActivate: [AuthenticationGuard],
             data: {
-               isAnonymous: true
+               isAnonymous: true,
+               title: 'Forgot password'
             }
          },
          {
@@ -58,7 +61,8 @@ export const routes: Routes = [
             component: ResetPasswordComponent,
             canActivate: [AuthenticationGuard],
             data: {
-               isAnonymous: true
+               isAnonymous: true,
+               title: 'Reset password'
             }
          },
          { path: '**', redirectTo: '/' }
@@ -71,21 +75,33 @@ export const routes: Routes = [
             path: '',
             component: TransactionsComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Transactions'
+            },
          },
          {
             path: 'add',
             component: AddTransactionsComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Add transaction'
+            },
          },
          {
             path: 'import',
             component: ImportTransactionsComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Import transactions'
+            },
          },
          {
             path: 'edit/:id',
             component: EditTransactionsComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Edit transaction'
+            },
          },
          { path: '**', redirectTo: '/' }
       ]
@@ -97,16 +113,25 @@ export const routes: Routes = [
             path: '',
             component: BudgetsComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Budgets'
+            },
          },
          {
             path: 'add',
             component: AddBudgetsComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Add budget'
+            },
          },
          {
             path: 'edit/:id',
             component: EditBudgetsComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Edit budget'
+            },
          },
          { path: '**', redirectTo: '/' }
       ]
@@ -118,21 +143,33 @@ export const routes: Routes = [
             path: '',
             component: IncomesComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Incomes'
+            },
          },
          {
             path: 'add',
             component: AddIncomesComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Add income'
+            },
          },
          {
             path: 'import',
             component: ImportIncomesComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Import incomes'
+            },
          },
          {
             path: 'edit/:id',
             component: EditIncomesComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Edit income'
+            },
          },
          { path: '**', redirectTo: '/' }
       ]
@@ -144,6 +181,9 @@ export const routes: Routes = [
             path: '',
             component: UserComponent,
             canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Profile'
+            },
          },
          { path: '**', redirectTo: '/' }
       ]
