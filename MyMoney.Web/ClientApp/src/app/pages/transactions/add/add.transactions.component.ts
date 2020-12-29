@@ -31,7 +31,7 @@ export class AddTransactionsComponent implements OnInit {
 
    public ngOnInit(): void {
       this.addTransactionForm = this.formBuilder.group({
-         date: ['', Validators.required],
+         date: [new Date().toISOString().split('T')[0], Validators.required],
          description: ['', Validators.required],
          amount: ['', Validators.required],
          notes: ['']
