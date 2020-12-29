@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
 using MyMoney.Core;
@@ -29,49 +30,41 @@ namespace MyMoney.Infrastructure.Email
             throw new ApplicationException($"'{EnvironmentVariables.EmailPassword}' is missing");
       }
 
-      public void SendMail(EmailSettings emailConfig, EmailContent content)
+      public void SendMail(EmailSettings config, EmailContent content)
       {
-         MailMessage email = ConstructEmailMessage(emailConfig, content);
+         MailMessage email = ConstructEmailMessage(config, content);
          Send(email);
       }
 
-      private MailMessage ConstructEmailMessage(EmailSettings emailConfig, EmailContent content)
+      private MailMessage ConstructEmailMessage(EmailSettings config, EmailContent content)
       {
-         MailMessage msg = new MailMessage();
-         foreach (string to in emailConfig.TOs)
+         MailMessage message = new MailMessage();
+
+         foreach (string to in config.TOs.Where(to => !string.IsNullOrWhiteSpace(to)))
          {
-            if (!string.IsNullOrWhiteSpace(to))
-            {
-               msg.To.Add(to);
-            }
+            message.To.Add(to);
          }
 
-         foreach (string cc in emailConfig.CCs)
+         foreach (string cc in config.CCs.Where(cc => !string.IsNullOrWhiteSpace(cc)))
          {
-            if (!string.IsNullOrWhiteSpace(cc))
-            {
-               msg.CC.Add(cc);
-            }
+            message.CC.Add(cc);
          }
 
-         msg.From = new MailAddress(_clientEmailAddress,
-                                    emailConfig.FromDisplayName,
-                                    System.Text.Encoding.UTF8);
-         msg.IsBodyHtml = content.IsHtml;
-         msg.Body = content.Content;
-         msg.Priority = emailConfig.Priority;
-         msg.Subject = emailConfig.Subject;
-         msg.BodyEncoding = System.Text.Encoding.UTF8;
-         msg.SubjectEncoding = System.Text.Encoding.UTF8;
+         message.From = new MailAddress(_clientEmailAddress, config.FromDisplayName, System.Text.Encoding.UTF8);
+         message.IsBodyHtml = content.IsHtml;
+         message.Body = content.Content;
+         message.Priority = config.Priority;
+         message.Subject = config.Subject;
+         message.BodyEncoding = System.Text.Encoding.UTF8;
+         message.SubjectEncoding = System.Text.Encoding.UTF8;
 
          if (!string.IsNullOrWhiteSpace(content.AttachFileName))
          {
-            Attachment data = new Attachment(content.AttachFileName,
-                                             MediaTypeNames.Application.Zip);
-            msg.Attachments.Add(data);
+            Attachment data = new Attachment(content.AttachFileName, MediaTypeNames.Application.Zip);
+            message.Attachments.Add(data);
          }
 
-         return msg;
+         return message;
       }
 
       private void Send(MailMessage message)
@@ -81,8 +74,8 @@ namespace MyMoney.Infrastructure.Email
             UseDefaultCredentials = false,
             Credentials = new System.Net.NetworkCredential(_clientEmailAddress, _clientEmailPassword),
             Host = _smtpServer,
-            Port = 25,  // this is critical
-            EnableSsl = true  // this is critical
+            Port = 25,
+            EnableSsl = true
          };
 
          try
