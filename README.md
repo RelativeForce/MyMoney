@@ -16,7 +16,7 @@ Follow these steps to install and start a local instance of MyMoney.
    - `MyMoney_Email_Address`: The email address of the account the site will use to send emails
    - `MyMoney_Email_Password`: The password of the account the site will use to send emails
    - `MyMoney_Database_Connection` (optional): The connection string to the database. Defaults to the local SQL express server instance.
-   - `MyMoney_Database_Engine` (optional): The database type of the connection. Only `MySQL` and `SQLServer` and the site defaults to `SQLServer`.
+   - `MyMoney_Database_Engine` (optional): The database type of the connection. Only `MySQL` and `SQLServer` are supported. Defaults to `SQLServer`.
    - `MyMoney_Token_Secret` (optional): The secret used for generating the user JWT tokens. You can generate one [here](https://www.grc.com/passwords.htm). Defaults to `dqSRHqsruH3U75hFSg1Y5LCOcON7G90iXGomYbaFuH4G10f2PIexSes3QlyidLC`.
 5. Run `MyMoney.Web.exe`
 6. MyMoney will be available at http://localhost:5000 or https://localhost:5001
