@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
    public ngOnInit(): void {
       this.currentUserService.currentUser().subscribe((user) => this.user = user);
 
-
       this.router.events.subscribe((data) => {
          if (data instanceof RoutesRecognized) {
             const title: string | null = this.getTitle(data.state.root);
@@ -38,7 +37,7 @@ export class AppComponent implements OnInit {
 
    private getTitle(route: ActivatedRouteSnapshot): string | null {
 
-      const title: string | null = route.data?.title ?? null as string | null;
+      const title: string | null = route.data?.title ?? null;
 
       for (const childRoute of route.children) {
          const childTitle = this.getTitle(childRoute);
