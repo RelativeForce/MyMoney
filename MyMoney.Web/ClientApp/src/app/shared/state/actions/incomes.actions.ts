@@ -27,7 +27,7 @@ export class DeleteIncomeAction implements Action {
    constructor(public readonly incomeId: number) { }
 }
 
-export class UpdateSearchDateAction implements Action {
+export class UpdateIncomesSearchAction implements Action {
    public type: string = IncomeActionTypes.updateSearchDate;
 
    constructor(public readonly dateRange: IDateRangeModel) { }

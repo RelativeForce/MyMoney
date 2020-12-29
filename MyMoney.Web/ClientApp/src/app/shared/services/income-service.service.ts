@@ -8,7 +8,7 @@ import {
    RefreshIncomesAction,
    SetIncomesAction,
    UpdateIncomeAction,
-   UpdateSearchDateAction
+   UpdateIncomesSearchAction
 } from '../state/actions';
 import { IAppState } from '../state/app-state';
 import { selectIncomesSearchParameters, selectIncome } from '../state/selectors/income.selector';
@@ -52,7 +52,7 @@ export class IncomeService {
    }
 
    public updateDate(dateRange: IDateRangeModel): void {
-      this.store.dispatch(new UpdateSearchDateAction(dateRange));
+      this.store.dispatch(new UpdateIncomesSearchAction(dateRange));
    }
 
    public addIncome(income: IIncomeModel): Observable<boolean> {

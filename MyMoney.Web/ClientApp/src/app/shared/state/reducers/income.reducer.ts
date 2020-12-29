@@ -4,7 +4,7 @@ import {
    UpdateIncomeAction,
    IncomeActionTypes,
    DeleteIncomeAction,
-   UpdateSearchDateAction
+   UpdateIncomesSearchAction
 } from '../actions';
 import { IDateRangeModel, IIncomeModel, IIncomesSearch } from '../types';
 
@@ -61,7 +61,7 @@ function deleteIncome(state: IIncomeState, action: DeleteIncomeAction): IIncomeS
    };
 }
 
-function updateSelectedSearchDate(state: IIncomeState, action: UpdateSearchDateAction): IIncomeState {
+function updateSelectedSearchDate(state: IIncomeState, action: UpdateIncomesSearchAction): IIncomeState {
    const dateRange: IDateRangeModel = action.dateRange;
 
    return {
@@ -105,7 +105,7 @@ export function incomeReducer(state: IIncomeState = initialIncomeState, action: 
       case IncomeActionTypes.deleteIncome:
          return deleteIncome(state, action as DeleteIncomeAction);
       case IncomeActionTypes.updateSearchDate:
-         return updateSelectedSearchDate(state, action as UpdateSearchDateAction);
+         return updateSelectedSearchDate(state, action as UpdateIncomesSearchAction);
       case IncomeActionTypes.refreshIncomes:
          return refreshIncomes(state);
       default:
