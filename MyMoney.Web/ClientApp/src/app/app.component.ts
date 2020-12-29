@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router, RoutesRecognized } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RoutesRecognized } from '@angular/router';
 import { CurrentUserService } from './shared/services';
 import { IUser } from './shared/state/types';
 
