@@ -1,6 +1,6 @@
 ﻿using MyMoney.Core.Interfaces.Entities;
 
-namespace MyMoney.Core
+namespace MyMoney.Core.Interfaces
 {
    public interface ICurrentUserProvider
    {

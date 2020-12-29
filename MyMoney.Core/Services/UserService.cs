@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using MyMoney.Core.Email;
 using MyMoney.Core.Interfaces;
+using MyMoney.Core.Interfaces.Email;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
 
@@ -15,12 +15,16 @@ namespace MyMoney.Core.Services
       private readonly IRepository _repository;
       private readonly IEntityFactory _entityFactory;
       private readonly ITokenProvider _tokenProvider;
+      private readonly IEmailManager _emailManager;
+      private readonly IResourceManager _resourceManager;
 
-      public UserService(IRepository repository, IEntityFactory entityFactory, ITokenProvider tokenProvider)
+      public UserService(IRepository repository, IEntityFactory entityFactory, ITokenProvider tokenProvider, IEmailManager emailManager, IResourceManager resourceManager)
       {
          _repository = repository;
          _entityFactory = entityFactory;
          _tokenProvider = tokenProvider;
+         _emailManager = emailManager;
+         _resourceManager = resourceManager;
       }
 
       public LoginResult Login(string email, string passwordHash)
@@ -85,6 +89,8 @@ namespace MyMoney.Core.Services
       public BasicResult Update(long userId, string email, string fullName, DateTime dateOfBirth)
       {
          var user = GetById(userId);
+         if (user == null)
+            return BasicResult.FailResult("No user with that id exists");
 
          user.Email = email;
          user.FullName = fullName;
@@ -103,6 +109,56 @@ namespace MyMoney.Core.Services
             return BasicResult.FailResult("Database Error");
 
          return BasicResult.SuccessResult();
+      }
+
+      public BasicResult ChangePassword(long userId, string password)
+      {
+         if (!IsValidPassword(password))
+            return BasicResult.FailResult("Invalid Password (Must: contain 1 uppercase, contain 1 number and be 8-15 characters long)");
+
+         var user = GetById(userId);
+         if (user == null)
+            return BasicResult.FailResult("No user with that id exists");
+
+         string savedPasswordHash = HashPassword(password);
+
+         user.Password = savedPasswordHash;
+
+         var success = _repository.Update(user);
+         if (!success)
+            return BasicResult.FailResult("Database Error");
+
+         return BasicResult.SuccessResult();
+      }
+
+      public void SendForgotPasswordEmail(string email, string baseUrl)
+      {
+         var userWithEmail = _repository.Find<IUser>(u => u.Email.Equals(email));
+         if (userWithEmail == null)
+            return;
+
+         EmailSettings config = new EmailSettings
+         {
+            TOs = new string[] { email },
+            FromDisplayName = "MyMoney",
+            Subject = "Reset password"
+         };
+
+         string token = _tokenProvider.NewToken(userWithEmail);
+
+         string contentString = _resourceManager.Load("reset-password-email.html");
+
+         contentString = contentString
+            .Replace("${site-name}", "MyMoney")
+            .Replace("${reset-password-url}", $"{baseUrl}/auth/reset-password/{token}")
+            .Replace("${site-url}", baseUrl);
+
+         EmailContent content = new EmailContent
+         {
+            Content = contentString
+         };
+
+         _emailManager.SendMail(config, content);
       }
 
       public IUser GetById(long userId)

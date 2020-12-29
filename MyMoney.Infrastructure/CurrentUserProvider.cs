@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using MyMoney.Core;
+using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
 

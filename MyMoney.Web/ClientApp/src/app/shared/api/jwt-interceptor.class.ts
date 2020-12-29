@@ -20,6 +20,7 @@ export class JwtInterceptor implements HttpInterceptor {
                if (session !== null) {
                   request = request.clone({
                      setHeaders: {
+                        // eslint-disable-next-line @typescript-eslint/naming-convention
                         Authorization: `Bearer ${session.token}`
                      }
                   });

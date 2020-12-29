@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IBasicResultDto, IUserDto } from './dtos.interface';
+import { IBasicResultDto, IPasswordDto, IUserDto } from './dtos.interface';
 import { HttpHelper } from './http-helper.class';
 
 @Injectable({ providedIn: 'root' })
@@ -18,6 +18,12 @@ export class UserApi {
    public updateCurrentUserDetails(user: IUserDto): Observable<IBasicResultDto> {
       return this.api
          .post<IUserDto, IBasicResultDto>('/User/UpdateSignedInUser', user)
+         .pipe(first());
+   }
+
+   public changePassword(password: IPasswordDto): Observable<IBasicResultDto> {
+      return this.api
+         .post<IPasswordDto, IBasicResultDto>('/User/ChangePassword', password)
          .pipe(first());
    }
 }

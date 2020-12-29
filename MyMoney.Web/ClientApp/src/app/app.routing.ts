@@ -7,12 +7,14 @@ import {
    EditBudgetsComponent,
    EditIncomesComponent,
    EditTransactionsComponent,
+   ForgotPasswordComponent,
    HomeComponent,
    ImportIncomesComponent,
    ImportTransactionsComponent,
    IncomesComponent,
    LoginComponent,
    RegisterComponent,
+   ResetPasswordComponent,
    TransactionsComponent,
    UserComponent
 } from './pages';
@@ -30,12 +32,34 @@ export const routes: Routes = [
          {
             path: 'login',
             component: LoginComponent,
-            canActivate: [AuthenticationGuard]
+            canActivate: [AuthenticationGuard],
+            data: {
+               isAnonymous: true
+            }
          },
          {
             path: 'register',
             component: RegisterComponent,
-            canActivate: [AuthenticationGuard]
+            canActivate: [AuthenticationGuard],
+            data: {
+               isAnonymous: true
+            }
+         },
+         {
+            path: 'forgot-password',
+            component: ForgotPasswordComponent,
+            canActivate: [AuthenticationGuard],
+            data: {
+               isAnonymous: true
+            }
+         },
+         {
+            path: 'reset-password/:token',
+            component: ResetPasswordComponent,
+            canActivate: [AuthenticationGuard],
+            data: {
+               isAnonymous: true
+            }
          },
          { path: '**', redirectTo: '/' }
       ]

@@ -7,11 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using MyMoney.Core;
 using MyMoney.Core.Interfaces;
+using MyMoney.Core.Interfaces.Email;
 using MyMoney.Core.Interfaces.Service;
 using MyMoney.Core.Services;
 using MyMoney.Infrastructure;
+using MyMoney.Infrastructure.Email;
 using MyMoney.Infrastructure.EntityFramework;
 using MyMoney.Web.Utility;
 using MySql.Data.EntityFrameworkCore;
@@ -42,6 +43,8 @@ namespace MyMoney.Web
          services.AddScoped<IIncomeService, IncomeService>();
          services.AddScoped<IEntityFactory, EntityFactory>();
          services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
+         services.AddScoped<IEmailManager, EmailManager>();
+         services.AddScoped<IResourceManager, ResourceManager>();
 
          services.AddControllersWithViews();
          // In production, the Angular files will be served from this directory

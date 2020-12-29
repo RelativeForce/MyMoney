@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { JwtInterceptor } from './shared/classes/jwt-interceptor.class';
+import { JwtInterceptor } from './shared/api';
 import {
    HomeComponent,
    LoginComponent,
@@ -21,6 +21,8 @@ import {
    ImportTransactionsComponent,
    ImportIncomesComponent,
    UserComponent,
+   ForgotPasswordComponent,
+   ResetPasswordComponent,
 } from './pages';
 import { ImportFileComponent } from './shared/components/import';
 import { ChartComponent } from './shared/components/chart';
@@ -50,6 +52,8 @@ import { routes } from './app.routing';
       ImportTransactionsComponent,
       ImportIncomesComponent,
       UserComponent,
+      ForgotPasswordComponent,
+      ResetPasswordComponent,
 
       // Shared
       ImportFileComponent,

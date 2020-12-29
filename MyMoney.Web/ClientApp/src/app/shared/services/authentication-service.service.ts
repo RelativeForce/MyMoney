@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthenticationApi, ILoginResultDto, IRegisterDto } from '../api';
+import { AuthenticationApi, IBasicResultDto, ILoginResultDto, IRegisterDto } from '../api';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';
 import { ClearSessionAction, StartSessionAction } from '../state/actions';
@@ -36,6 +36,14 @@ export class AuthenticationService {
 
             return response;
          }));
+   }
+
+   public forgotPassword(email: string): Observable<void> {
+      return this.authenticationApi.forgotPassword({ email });
+   }
+
+   public resetPassword(newPassword: string, userToken: string): Observable<IBasicResultDto> {
+      return this.authenticationApi.resetPassword({ password: newPassword }, userToken);
    }
 
    public checkSession(): Observable<boolean> {

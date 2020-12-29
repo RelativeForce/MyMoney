@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyMoney.Core;
+using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Service;
 using MyMoney.Web.Models.Entity;
 using MyMoney.Web.Models.Request;
@@ -56,6 +56,28 @@ namespace MyMoney.Web.Controllers
          catch (Exception)
          {
             return BadRequest("Error while updating the current user's details");
+         }
+      }
+
+      [HttpPost(nameof(ChangePassword))]
+      public IActionResult ChangePassword(PasswordDto dto)
+      {
+         if (dto == null || !ModelState.IsValid)
+         {
+            return BadRequest("Invalid State");
+         }
+
+         try
+         {
+            var userId = _userProvider.CurrentUserId;
+
+            var result = _userService.ChangePassword(userId, dto.Password);
+
+            return Ok(new BasicResultDto(result));
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while updating the current user's password");
          }
       }
    }
