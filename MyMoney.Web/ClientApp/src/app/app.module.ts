@@ -22,6 +22,7 @@ import {
    ImportIncomesComponent,
    UserComponent,
    ForgotPasswordComponent,
+   ResetPasswordComponent,
 } from './pages';
 import { ImportFileComponent } from './shared/components/import';
 import { ChartComponent } from './shared/components/chart';
@@ -52,6 +53,7 @@ import { routes } from './app.routing';
       ImportIncomesComponent,
       UserComponent,
       ForgotPasswordComponent,
+      ResetPasswordComponent,
 
       // Shared
       ImportFileComponent,

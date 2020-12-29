@@ -14,3 +14,4 @@ export * from './transactions/import/import.transactions.component';
 export * from './incomes/import/import.incomes.component';
 export * from './user/user.component';
 export * from './auth/forgot-password/forgot-password.component';
+export * from './auth/reset-password/reset-password.component';

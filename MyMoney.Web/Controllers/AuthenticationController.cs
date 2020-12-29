@@ -78,7 +78,9 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            _userService.SendForgotPasswordEmail(dto.Email, $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}");
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}";
+
+            _userService.SendForgotPasswordEmail(dto.Email, baseUrl);
 
             return Ok();
          }

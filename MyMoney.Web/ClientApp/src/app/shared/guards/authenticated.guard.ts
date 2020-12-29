@@ -4,19 +4,13 @@ import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { AuthenticationService } from '../services';
 
-const anonymousRoutes: string[] = [
-   '/auth/login',
-   '/auth/register',
-   '/auth/forgot-password'
-];
-
 @Injectable({ providedIn: 'root' })
 export class AuthenticationGuard implements CanActivate {
 
    constructor(private readonly authenticationService: AuthenticationService, private readonly router: Router) { }
 
    public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
-      const isAnonymousRoute: boolean = anonymousRoutes.includes(state.url);
+      const isAnonymousRoute: boolean = route.data?.isAnonymous ?? false;
 
       return this.authenticationService.checkSession().pipe(first(), map((isLoggedIn: boolean) => {
 

@@ -89,6 +89,8 @@ namespace MyMoney.Core.Services
       public BasicResult Update(long userId, string email, string fullName, DateTime dateOfBirth)
       {
          var user = GetById(userId);
+         if (user == null)
+            return BasicResult.FailResult("No user with that id exists");
 
          user.Email = email;
          user.FullName = fullName;
@@ -101,6 +103,26 @@ namespace MyMoney.Core.Services
          var userWithEmail = _repository.Find<IUser>(u => u.Email.Equals(email));
          if (userWithEmail.Id != user.Id)
             return BasicResult.FailResult("Email already exists");
+
+         var success = _repository.Update(user);
+         if (!success)
+            return BasicResult.FailResult("Database Error");
+
+         return BasicResult.SuccessResult();
+      }
+
+      public BasicResult ChangePassword(long userId, string password)
+      {
+         if (!IsValidPassword(password))
+            return BasicResult.FailResult("Invalid Password (Must: contain 1 uppercase, contain 1 number and be 8-15 characters long)");
+
+         var user = GetById(userId);
+         if (user == null)
+            return BasicResult.FailResult("No user with that id exists");
+
+         string savedPasswordHash = HashPassword(password);
+
+         user.Password = savedPasswordHash;
 
          var success = _repository.Update(user);
          if (!success)
@@ -128,7 +150,7 @@ namespace MyMoney.Core.Services
 
          contentString = contentString
             .Replace("${site-name}", "MyMoney")
-            .Replace("${reset-password-url}", $"{baseUrl}/reset-password/{token}")
+            .Replace("${reset-password-url}", $"{baseUrl}/auth/reset-password/{token}")
             .Replace("${site-url}", baseUrl);
 
          EmailContent content = new EmailContent
