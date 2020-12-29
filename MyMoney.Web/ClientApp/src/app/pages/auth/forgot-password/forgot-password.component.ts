@@ -36,7 +36,6 @@ export class ForgotPasswordComponent implements OnInit {
       this.loading = true;
       this.message = null;
 
-      // Login here
       const email = this.f.email.value;
 
       this.authenticationService.forgotPassword(email)
@@ -45,8 +44,7 @@ export class ForgotPasswordComponent implements OnInit {
                this.loading = false;
                this.setMessage();
             },
-            (error) => {
-               // Show error
+            () => {
                this.loading = false;
                this.setMessage();
             });

@@ -78,7 +78,7 @@ export class ResetPasswordComponent implements OnInit {
                   this.error = result.error;
                }
             },
-            error => {
+            () => {
                this.error = 'Unknown error';
                this.loading = false;
             });
