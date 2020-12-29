@@ -4,29 +4,6 @@ import { SESSION_LOCAL_STORAGE_KEY } from '../../constants';
 import { SessionActionTypes, StartSessionAction, ClearSessionAction, SetUserAction } from '../actions';
 import { ISessionModel, IUser } from '../types';
 
-export interface ISessionState {
-   currentSession: ISessionModel | null;
-   currentUser: IUser | null;
-}
-
-export const initialSessionState: ISessionState = {
-   currentSession: null,
-   currentUser: null
-};
-
-export function sessionReducer(state: ISessionState = initialSessionState, action: Action): ISessionState {
-   switch (action.type) {
-      case SessionActionTypes.StartSession:
-         return startSession(state, action as StartSessionAction);
-      case SessionActionTypes.ClearSession:
-         return clearSession(state, action as ClearSessionAction);
-      case SessionActionTypes.SetUser:
-         return setUser(state, action as SetUserAction);
-      default:
-         return state;
-   }
-}
-
 function startSession(state: ISessionState, action: StartSessionAction) {
 
    const token: string = action.token;
@@ -73,3 +50,25 @@ function clearSession(state: ISessionState, action: ClearSessionAction) {
    };
 }
 
+export interface ISessionState {
+   currentSession: ISessionModel | null;
+   currentUser: IUser | null;
+}
+
+export const initialSessionState: ISessionState = {
+   currentSession: null,
+   currentUser: null
+};
+
+export function sessionReducer(state: ISessionState = initialSessionState, action: Action): ISessionState {
+   switch (action.type) {
+      case SessionActionTypes.startSession:
+         return startSession(state, action as StartSessionAction);
+      case SessionActionTypes.clearSession:
+         return clearSession(state, action as ClearSessionAction);
+      case SessionActionTypes.setUser:
+         return setUser(state, action as SetUserAction);
+      default:
+         return state;
+   }
+}

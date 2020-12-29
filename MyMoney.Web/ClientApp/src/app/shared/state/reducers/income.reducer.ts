@@ -8,36 +8,6 @@ import {
 } from '../actions';
 import { IDateRangeModel, IIncomeModel, IIncomesSearch } from '../types';
 
-export interface IIncomeState {
-   incomes: IIncomeModel[];
-   searchParameters: IIncomesSearch;
-}
-
-export const initialIncomeState: IIncomeState = {
-   incomes: [],
-   searchParameters: {
-      dateRange: defaultDateRange(),
-      refresh: true,
-   }
-};
-
-export function incomeReducer(state: IIncomeState = initialIncomeState, action: Action): IIncomeState {
-   switch (action.type) {
-      case IncomeActionTypes.SetIncomes:
-         return setIncomes(state, action as SetIncomesAction);
-      case IncomeActionTypes.UpdateIncome:
-         return updateIncome(state, action as UpdateIncomeAction);
-      case IncomeActionTypes.DeleteIncome:
-         return deleteIncome(state, action as DeleteIncomeAction);
-      case IncomeActionTypes.UpdateSearchDate:
-         return updateSelectedSearchDate(state, action as UpdateSearchDateAction);
-      case IncomeActionTypes.RefreshIncomes:
-         return refreshIncomes(state);
-      default:
-         return state;
-   }
-}
-
 function setIncomes(state: IIncomeState, action: SetIncomesAction): IIncomeState {
    const incomes: IIncomeModel[] = action.incomes;
 
@@ -111,4 +81,34 @@ function defaultDateRange(): IDateRangeModel {
    start.setMonth(start.getMonth() - 1);
 
    return { end, start };
+}
+
+export interface IIncomeState {
+   incomes: IIncomeModel[];
+   searchParameters: IIncomesSearch;
+}
+
+export const initialIncomeState: IIncomeState = {
+   incomes: [],
+   searchParameters: {
+      dateRange: defaultDateRange(),
+      refresh: true,
+   }
+};
+
+export function incomeReducer(state: IIncomeState = initialIncomeState, action: Action): IIncomeState {
+   switch (action.type) {
+      case IncomeActionTypes.setIncomes:
+         return setIncomes(state, action as SetIncomesAction);
+      case IncomeActionTypes.updateIncome:
+         return updateIncome(state, action as UpdateIncomeAction);
+      case IncomeActionTypes.deleteIncome:
+         return deleteIncome(state, action as DeleteIncomeAction);
+      case IncomeActionTypes.updateSearchDate:
+         return updateSelectedSearchDate(state, action as UpdateSearchDateAction);
+      case IncomeActionTypes.refreshIncomes:
+         return refreshIncomes(state);
+      default:
+         return state;
+   }
 }

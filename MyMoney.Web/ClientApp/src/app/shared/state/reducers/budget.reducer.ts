@@ -8,37 +8,6 @@ import {
 } from '../actions';
 import { IBudgetModel, IBudgetsSearch } from '../types';
 
-export interface IBudgetState {
-   budgets: IBudgetModel[];
-   searchParameters: IBudgetsSearch;
-}
-
-export const initialBudgetState: IBudgetState = {
-   budgets: [],
-   searchParameters: {
-      month: new Date().getMonth() + 1,
-      year: new Date().getFullYear(),
-      refresh: true,
-   }
-};
-
-export function budgetReducer(state: IBudgetState = initialBudgetState, action: Action): IBudgetState {
-   switch (action.type) {
-      case BudgetActionTypes.SetBudgets:
-         return setBudgets(state, action as SetBudgetsAction);
-      case BudgetActionTypes.UpdateBudget:
-         return updateBudget(state, action as UpdateBudgetAction);
-      case BudgetActionTypes.DeleteBudget:
-         return deleteBudget(state, action as DeleteBudgetAction);
-      case BudgetActionTypes.UpdateMonthId:
-         return updateSelectedMonth(state, action as UpdateSearchMonthIdAction);
-      case BudgetActionTypes.RefreshBudgets:
-         return refreshBudgets(state);
-      default:
-         return state;
-   }
-}
-
 function setBudgets(state: IBudgetState, action: SetBudgetsAction): IBudgetState {
    const budgets: IBudgetModel[] = action.budgets;
 
@@ -105,4 +74,35 @@ function updateSelectedMonth(state: IBudgetState, action: UpdateSearchMonthIdAct
          refresh: true
       }
    };
+}
+
+export interface IBudgetState {
+   budgets: IBudgetModel[];
+   searchParameters: IBudgetsSearch;
+}
+
+export const initialBudgetState: IBudgetState = {
+   budgets: [],
+   searchParameters: {
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+      refresh: true,
+   }
+};
+
+export function budgetReducer(state: IBudgetState = initialBudgetState, action: Action): IBudgetState {
+   switch (action.type) {
+      case BudgetActionTypes.setBudgets:
+         return setBudgets(state, action as SetBudgetsAction);
+      case BudgetActionTypes.updateBudget:
+         return updateBudget(state, action as UpdateBudgetAction);
+      case BudgetActionTypes.deleteBudget:
+         return deleteBudget(state, action as DeleteBudgetAction);
+      case BudgetActionTypes.updateMonthId:
+         return updateSelectedMonth(state, action as UpdateSearchMonthIdAction);
+      case BudgetActionTypes.refreshBudgets:
+         return refreshBudgets(state);
+      default:
+         return state;
+   }
 }

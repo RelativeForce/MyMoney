@@ -23,15 +23,15 @@ export const initialTransactionState: ITransactionState = {
 
 export function transactionReducer(state: ITransactionState = initialTransactionState, action: Action): ITransactionState {
    switch (action.type) {
-      case TransactionActionTypes.SetTransactions:
+      case TransactionActionTypes.setTransactions:
          return setTransactions(state, action as SetTransactionsAction);
-      case TransactionActionTypes.UpdateTransaction:
+      case TransactionActionTypes.updateTransaction:
          return updateTransaction(state, action as UpdateTransactionAction);
-      case TransactionActionTypes.DeleteTransaction:
+      case TransactionActionTypes.deleteTransaction:
          return deleteTransaction(state, action as DeleteTransactionAction);
-      case TransactionActionTypes.UpdateDataRange:
+      case TransactionActionTypes.updateDataRange:
          return updateDataRange(state, action as UpdateDataRangeAction);
-      case TransactionActionTypes.RefreshTransactions:
+      case TransactionActionTypes.refreshTransactions:
          return refreshTransactions(state);
       default:
          return state;
