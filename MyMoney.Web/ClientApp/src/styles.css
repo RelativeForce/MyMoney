@@ -22,3 +22,15 @@ code {
    background-size: 100% 2px, 2px 100%; /*thickness = 2px, length = 50% (25px)*/
    background-repeat:no-repeat;
 }
+
+.sticky-bottom {
+   position: -webkit-sticky; /* Safari */
+   position: sticky;
+   bottom: 0;
+}
+
+.sticky-top {
+   position: -webkit-sticky; /* Safari */
+   position: sticky;
+   top: 0;
+}

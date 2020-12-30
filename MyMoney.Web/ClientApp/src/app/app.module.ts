@@ -24,8 +24,11 @@ import {
    ForgotPasswordComponent,
    ResetPasswordComponent,
 } from './pages';
-import { ImportFileComponent } from './shared/components/import';
-import { ChartComponent } from './shared/components/chart';
+import {
+   ChartComponent,
+   FooterComponent,
+   ImportFileComponent
+} from './shared/components';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -58,6 +61,7 @@ import { routes } from './app.routing';
       // Shared
       ImportFileComponent,
       ChartComponent,
+      FooterComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
