@@ -1,39 +1,41 @@
 <body>
    <!-- nav -->
-   <nav class="navbar navbar-expand navbar-dark bg-dark justify-content-between" *ngIf="user !== null">
-      <a class="navbar-brand" routerLink="/">MyMoney</a>
-      <ul class="navbar-nav mr-auto">
-         <li class="nav-item">
-            <a class="nav-link" routerLink="/">Home</a>
-         </li>
-         <li class="nav-item">
-            <a class="nav-link" routerLink="/transactions">Transactions</a>
-         </li>
-         <li class="nav-item">
-            <a class="nav-link" routerLink="/budgets">Budgets</a>
-         </li>
-         <li class="nav-item">
-            <a class="nav-link" routerLink="/incomes">Incomes</a>
-         </li>
-      </ul>
-      <ul class="navbar-nav">
-         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="userMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true"
-               aria-expanded="false">
-               {{ user.fullName }}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="userMenuLink">
-               <a class="dropdown-item" routerLink="/user">Profile</a>
-               <button class="dropdown-item" (click)="logout()">Logout</button>
-            </div>
-         </li>
-      </ul>
-   </nav>
-
+   <div class="sticky-top">
+      <nav class="navbar navbar-expand navbar-dark bg-dark justify-content-between" *ngIf="user !== null">
+         <a class="navbar-brand" routerLink="/">MyMoney</a>
+         <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+               <a class="nav-link" routerLink="/">Home</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" routerLink="/transactions">Transactions</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" routerLink="/budgets">Budgets</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" routerLink="/incomes">Incomes</a>
+            </li>
+         </ul>
+         <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="userMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  {{ user.fullName }}
+               </a>
+               <div class="dropdown-menu" aria-labelledby="userMenuLink">
+                  <a class="dropdown-item" routerLink="/user">Profile</a>
+                  <button class="dropdown-item" (click)="logout()">Logout</button>
+               </div>
+            </li>
+         </ul>
+      </nav>
+   </div>
    <!-- main app container -->
    <div class="jumbotron">
       <div class="container">
          <router-outlet></router-outlet>
       </div>
+      <mymoney-footer></mymoney-footer>
    </div>
 </body>
