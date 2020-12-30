@@ -37,9 +37,9 @@ export class EditIncomesComponent implements OnInit {
          this.id = Number.parseInt(idStr, 10);
 
          this.editIncomeForm = this.formBuilder.group({
-            date: ['', Validators.required],
-            name: ['', Validators.required],
-            amount: ['', Validators.required],
+            date: ['', [Validators.required]],
+            name: ['', [Validators.required]],
+            amount: [0, [Validators.required, Validators.min(0)]],
          });
 
          this.disableForm();
@@ -59,19 +59,10 @@ export class EditIncomesComponent implements OnInit {
       });
    }
 
-   private disableForm() {
-      this.f.amount.disable();
-      this.f.name.disable();
-      this.f.date.disable();
-   }
 
-   private enableForm() {
-      this.f.amount.enable();
-      this.f.name.enable();
-      this.f.date.enable();
+   public get f() {
+      return this.editIncomeForm.controls;
    }
-
-   public get f() { return this.editIncomeForm.controls; }
 
    public toInputDateString(text: string): string {
       const month = Number.parseInt(text.split('/')[1], 10);
@@ -83,24 +74,6 @@ export class EditIncomesComponent implements OnInit {
       const dayStr = day < 10 ? '0' + day : day;
 
       return text.split('/')[2] + '-' + monthStr + '-' + dayStr;
-   }
-
-   private get asIncomeModel(): IIncomeModel {
-
-      const date = new Date(this.f.date.value);
-
-      const dateString: string = date.toLocaleDateString();
-
-      const name = this.f.name.value;
-      const amount = this.f.amount.value;
-
-      return {
-         date: dateString,
-         name,
-         amount,
-         remaining: 0,
-         id: this.id,
-      };
    }
 
    public onSubmit(): void {
@@ -125,5 +98,35 @@ export class EditIncomesComponent implements OnInit {
                // Show error
                this.loading = false;
             });
+   }
+
+   private disableForm() {
+      this.f.amount.disable();
+      this.f.name.disable();
+      this.f.date.disable();
+   }
+
+   private enableForm() {
+      this.f.amount.enable();
+      this.f.name.enable();
+      this.f.date.enable();
+   }
+
+   private get asIncomeModel(): IIncomeModel {
+
+      const date = new Date(this.f.date.value);
+
+      const dateString: string = date.toLocaleDateString();
+
+      const name = this.f.name.value;
+      const amount = this.f.amount.value;
+
+      return {
+         date: dateString,
+         name,
+         amount,
+         remaining: 0,
+         id: this.id,
+      };
    }
 }

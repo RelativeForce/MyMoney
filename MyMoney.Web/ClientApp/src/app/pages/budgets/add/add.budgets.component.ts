@@ -20,28 +20,29 @@ export class AddBudgetsComponent implements OnInit {
    ) { }
 
    public ngOnInit(): void {
-
       const today = new Date();
 
       const year = today.getFullYear();
       const month = today.getMonth() + 1;
 
       this.addBudgetForm = this.formBuilder.group({
-         year: [year, Validators.required],
-         month: [month, Validators.required],
-         amount: ['', Validators.required],
-         name: ['', Validators.required],
-         notes: ['', Validators.required]
+         year: [year, [Validators.required, Validators.min(1980)]],
+         month: [month, [Validators.required, Validators.min(1), Validators.max(12)]],
+         amount: [0, [Validators.required, Validators.min(0)]],
+         name: ['', [Validators.required]],
+         notes: ['', [Validators.required]]
       });
    }
 
-   public get f() { return this.addBudgetForm.controls; }
+   public get f() {
+      return this.addBudgetForm.controls;
+   }
 
    public onSubmit(): void {
       this.submitted = true;
 
       // stop here if form is invalid
-      if (this.addBudgetForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
+      if (this.addBudgetForm.invalid) {
          return;
       }
 

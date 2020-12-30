@@ -44,9 +44,9 @@ export class EditTransactionsComponent implements OnInit {
          this.id = Number.parseInt(idStr, 10);
 
          this.editTransactionForm = this.formBuilder.group({
-            date: ['', Validators.required],
-            description: ['', Validators.required],
-            amount: [0, Validators.required],
+            date: ['', [Validators.required]],
+            description: ['', [Validators.required]],
+            amount: [0, [Validators.required, Validators.min(0)]],
             notes: ['']
          });
 

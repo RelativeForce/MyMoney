@@ -1,5 +1,5 @@
 <h2>Budgets</h2>
-<form [formGroup]="monthIdForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="monthIdForm" (ngSubmit)="updateBudgets()">
    <div class="form-inline">
       <div class="input-group mb-3 pr-2">
          <div class="input-group-prepend">
@@ -8,7 +8,8 @@
          <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.year.errors }"
             (change)="updateBudgets()" />
          <div *ngIf="submitted && f.year.errors" class="invalid-feedback">
-            <div *ngIf="f.year.errors.required">year is required</div>
+            <div *ngIf="f.year.errors.required">Year is required</div>
+            <div *ngIf="f.year.errors.min">Year cannot be less than 1980</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2">
@@ -18,7 +19,9 @@
          <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.month.errors }"
             (change)="updateBudgets()" />
          <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
-            <div *ngIf="f.month.errors.required">month is required</div>
+            <div *ngIf="f.month.errors.required">Month is required</div>
+            <div *ngIf="f.month.errors.min">Month cannot be less than 1</div>
+            <div *ngIf="f.month.errors.max">Month cannot be greater than 12</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">

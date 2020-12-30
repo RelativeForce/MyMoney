@@ -38,8 +38,8 @@ export class TransactionsComponent implements OnInit {
             this.dateRange = dateRange;
 
             this.dateRangeForm = this.formBuilder.group({
-               start: [this.start, Validators.required],
-               end: [this.end, Validators.required]
+               start: [this.start, [Validators.required]],
+               end: [this.end, [Validators.required]]
             });
          });
 
@@ -60,6 +60,12 @@ export class TransactionsComponent implements OnInit {
 
    public updateTransactions(): void {
 
+      this.submitted = true;
+
+      if (this.dateRangeForm.invalid) {
+         return;
+      }
+
       this.loading = true;
 
       this.dateRange = { start: this.f.start.value, end: this.f.end.value };
@@ -73,16 +79,6 @@ export class TransactionsComponent implements OnInit {
       }
 
       this.transactionService.deleteTransaction(id);
-   }
-
-   public onSubmit(): void {
-      this.submitted = true;
-
-      if (this.dateRangeForm.invalid) {
-         return;
-      }
-
-      this.updateTransactions();
    }
 
    private formatDate(date: Date): string {

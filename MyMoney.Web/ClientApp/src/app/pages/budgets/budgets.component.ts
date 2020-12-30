@@ -37,8 +37,8 @@ export class BudgetsComponent implements OnInit {
             const year = searchParams.year;
 
             this.monthIdForm = this.formBuilder.group({
-               year: [year, Validators.required],
-               month: [month, Validators.required]
+               year: [year, [Validators.required, Validators.min(1980)]],
+               month: [month, [Validators.required, Validators.min(1), Validators.max(12)]]
             });
          });
 
@@ -46,7 +46,9 @@ export class BudgetsComponent implements OnInit {
    }
 
    public updateBudgets(): void {
-      if (this.monthIdForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
+      this.submitted = true;
+
+      if (this.monthIdForm.invalid) {
          return;
       }
 
@@ -58,7 +60,9 @@ export class BudgetsComponent implements OnInit {
       this.budgetService.updateMonthId(month, year);
    }
 
-   public get f() { return this.monthIdForm.controls; }
+   public get f() {
+      return this.monthIdForm.controls;
+   }
 
    public delete(id: number): void {
       if (!confirm(`Delete budget ${id}?`)) {
@@ -66,11 +70,5 @@ export class BudgetsComponent implements OnInit {
       }
 
       this.budgetService.deleteBudget(id);
-   }
-
-   public onSubmit(): void {
-      this.submitted = true;
-
-      this.updateBudgets();
    }
 }

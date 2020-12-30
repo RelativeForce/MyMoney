@@ -34,11 +34,11 @@ export class EditBudgetsComponent implements OnInit {
          this.id = Number.parseInt(idStr, 10);
 
          this.editBudgetForm = this.formBuilder.group({
-            year: [0, Validators.required],
-            month: [0, Validators.required],
-            amount: [0, Validators.required],
-            name: ['', Validators.required],
-            notes: ['', Validators.required]
+            year: [1980, [Validators.required, Validators.min(1980)]],
+            month: [1, [Validators.required, Validators.min(1), Validators.max(12)]],
+            amount: [0, [Validators.required, Validators.min(0)]],
+            name: ['', [Validators.required]],
+            notes: ['', [Validators.required]]
          });
 
          this.disableForm();
@@ -57,29 +57,15 @@ export class EditBudgetsComponent implements OnInit {
       });
    }
 
-   private disableForm() {
-      this.f.year.disable();
-      this.f.month.disable();
-      this.f.amount.disable();
-      this.f.name.disable();
-      this.f.notes.disable();
+   public get f() {
+      return this.editBudgetForm.controls;
    }
-
-   private enableForm() {
-      this.f.year.enable();
-      this.f.month.enable();
-      this.f.amount.enable();
-      this.f.name.enable();
-      this.f.notes.enable();
-   }
-
-   public get f() { return this.editBudgetForm.controls; }
 
    public onSubmit(): void {
       this.submitted = true;
 
       // stop here if form is invalid
-      if (this.editBudgetForm.invalid || this.f.year.value < 0 || this.f.month.value < 0 || this.f.month.value > 12) {
+      if (this.editBudgetForm.invalid) {
          return;
       }
 
@@ -105,5 +91,21 @@ export class EditBudgetsComponent implements OnInit {
             this.loading = false;
          });
 
+   }
+
+   private disableForm() {
+      this.f.year.disable();
+      this.f.month.disable();
+      this.f.amount.disable();
+      this.f.name.disable();
+      this.f.notes.disable();
+   }
+
+   private enableForm() {
+      this.f.year.enable();
+      this.f.month.enable();
+      this.f.amount.enable();
+      this.f.name.enable();
+      this.f.notes.enable();
    }
 }

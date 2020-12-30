@@ -31,11 +31,13 @@ export class AddTransactionsComponent implements OnInit {
 
    public ngOnInit(): void {
       this.addTransactionForm = this.formBuilder.group({
-         date: [new Date().toISOString().split('T')[0], Validators.required],
-         description: ['', Validators.required],
-         amount: ['', Validators.required],
+         date: [new Date().toISOString().split('T')[0], [Validators.required]],
+         description: ['', [Validators.required]],
+         amount: [0, [Validators.required, Validators.min(0)]],
          notes: ['']
       });
+
+      this.onDateChange();
    }
 
    public get f() {
