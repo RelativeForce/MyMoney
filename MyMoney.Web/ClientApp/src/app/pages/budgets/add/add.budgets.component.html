@@ -7,7 +7,8 @@
          </div>
          <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.year.errors }" />
          <div *ngIf="submitted && f.year.errors" class="invalid-feedback">
-            <div *ngIf="f.year.errors.required">year is required</div>
+            <div *ngIf="f.year.errors.required">Year is required</div>
+            <div *ngIf="f.year.errors.min">Year cannot be less than 1980</div>
          </div>
       </div>
       <div class="input-group mb-3">
@@ -16,7 +17,9 @@
          </div>
          <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.month.errors }" />
          <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
-            <div *ngIf="f.month.errors.required">month is required</div>
+            <div *ngIf="f.month.errors.required">Month is required</div>
+            <div *ngIf="f.month.errors.min">Month cannot be less than 1</div>
+            <div *ngIf="f.month.errors.max">Month cannot be greater than 12</div>
          </div>
       </div>
    </div>
@@ -24,21 +27,22 @@
       <label for="name">Name</label>
       <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
       <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-         <div *ngIf="f.name.errors.required">Date is required</div>
+         <div *ngIf="f.name.errors.required">Name is required</div>
       </div>
    </div>
    <div class="form-group">
       <label for="amount">Amount</label>
       <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" />
       <div *ngIf="submitted && f.amount.errors" class="invalid-feedback">
-         <div *ngIf="f.amount.errors.required">amount is required</div>
+         <div *ngIf="f.amount.errors.required">Amount is required</div>
+         <div *ngIf="f.amount.errors.min">Amount cannot be negative</div>
       </div>
    </div>
    <div class="form-group">
       <label for="notes">Notes</label>
       <input type="text" formControlName="notes" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }" />
       <div *ngIf="submitted && f.notes.errors" class="invalid-feedback">
-         <div *ngIf="f.notes.errors.required">notes is required</div>
+         <div *ngIf="f.notes.errors.required">Notes is required</div>
       </div>
    </div>
    <div class="form-group">

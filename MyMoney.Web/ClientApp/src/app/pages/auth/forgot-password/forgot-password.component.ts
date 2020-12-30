@@ -19,7 +19,7 @@ export class ForgotPasswordComponent implements OnInit {
 
    public ngOnInit(): void {
       this.forgotPasswordForm = this.formBuilder.group({
-         email: ['', Validators.required]
+         email: ['', [Validators.required]]
       });
    }
 
@@ -28,11 +28,12 @@ export class ForgotPasswordComponent implements OnInit {
    }
 
    public onSubmit(): void {
+      this.submitted = true;
+
       if (this.forgotPasswordForm.invalid) {
          return;
       }
 
-      this.submitted = true;
       this.loading = true;
       this.message = null;
 

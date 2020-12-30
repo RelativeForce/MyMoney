@@ -19,20 +19,14 @@ namespace MyMoney.Infrastructure.Email
          _smtpServer = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailSmtpServer);
          _clientEmailAddress = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailAddress);
          _clientEmailPassword = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailPassword);
-
-         if (_smtpServer == null)
-            throw new ApplicationException($"'{EnvironmentVariables.EmailSmtpServer}' is missing");
-
-         if (_clientEmailAddress == null)
-            throw new ApplicationException($"'{EnvironmentVariables.EmailAddress}' is missing");
-
-         if (_clientEmailPassword == null)
-            throw new ApplicationException($"'{EnvironmentVariables.EmailPassword}' is missing");
       }
 
       public void SendMail(EmailSettings config, EmailContent content)
       {
+         CheckEnvironment();
+
          MailMessage email = ConstructEmailMessage(config, content);
+
          Send(email);
       }
 
@@ -86,6 +80,18 @@ namespace MyMoney.Infrastructure.Email
          {
             message.Dispose();
          }
+      }
+
+      private void CheckEnvironment()
+      {
+         if (_smtpServer == null)
+            throw new ApplicationException($"'{EnvironmentVariables.EmailSmtpServer}' is missing, sending emails is disabled");
+
+         if (_clientEmailAddress == null)
+            throw new ApplicationException($"'{EnvironmentVariables.EmailAddress}' is missing, sending emails is disabled");
+
+         if (_clientEmailPassword == null)
+            throw new ApplicationException($"'{EnvironmentVariables.EmailPassword}' is missing, sending emails is disabled");
       }
    }
 }

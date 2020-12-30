@@ -15,14 +15,15 @@
             <input type="text" formControlName="description" class="form-control"
                [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
             <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-               <div *ngIf="f.description.errors.required">description is required</div>
+               <div *ngIf="f.description.errors.required">Description is required</div>
             </div>
          </div>
          <div class="form-group">
             <label for="amount">Amount</label>
             <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" />
             <div *ngIf="submitted && f.amount.errors" class="invalid-feedback">
-               <div *ngIf="f.amount.errors.required">amount is required</div>
+               <div *ngIf="f.amount.errors.required">Amount is required</div>
+               <div *ngIf="f.amount.errors.min">Amount cannot be negative</div>
             </div>
          </div>
          <div class="form-group">
@@ -59,7 +60,7 @@
                </td>
                <td>{{budget.name}}</td>
                <td>{{budget.amount}}</td>
-               <td>{{budget.remaining}}</td>
+               <td [ngClass]="{ 'text-danger': budget.showWarning }">{{budget.remaining}}</td>
             </tr>
          </tbody>
       </table>
@@ -81,7 +82,7 @@
                </td>
                <td>{{income.date}}</td>
                <td>{{income.name}}</td>
-               <td>{{income.remaining}}</td>
+               <td [ngClass]="{ 'text-danger': income.showWarning }">{{income.remaining}}</td>
             </tr>
          </tbody>
       </table>

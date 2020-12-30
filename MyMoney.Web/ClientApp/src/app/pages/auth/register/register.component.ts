@@ -24,10 +24,15 @@ export class RegisterComponent implements OnInit {
 
    public ngOnInit(): void {
       this.registerForm = this.formBuilder.group({
-         email: ['', Validators.required],
-         fullName: ['', Validators.required],
-         dateOfBirth: [new Date().toISOString().split('T')[0], Validators.required],
-         password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]]
+         email: ['', [Validators.required]],
+         fullName: ['', [Validators.required]],
+         dateOfBirth: [new Date().toISOString().split('T')[0], [Validators.required]],
+         password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]],
+         confirmPassword: ['']
+      });
+
+      this.registerForm.valueChanges.subscribe(() => {
+         this.checkPasswords();
       });
    }
 
@@ -60,9 +65,19 @@ export class RegisterComponent implements OnInit {
                   this.error = result.error;
                }
             },
-            error => {
+            () => {
                this.error = 'Unknown error';
                this.loading = false;
             });
+   }
+
+   private checkPasswords() {
+      const isInvalid = this.f.password.value !== this.f.confirmPassword.value;
+
+      if (isInvalid) {
+         this.f.confirmPassword.setErrors({ notSame: true });
+      } else {
+         this.f.confirmPassword.setErrors(null);
+      }
    }
 }

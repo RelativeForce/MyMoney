@@ -38,8 +38,8 @@ export class IncomesComponent implements OnInit {
             this.dateRange = searchParameters.dateRange;
 
             this.dateForm = this.formBuilder.group({
-               start: [this.start, Validators.required],
-               end: [this.end, Validators.required]
+               start: [this.start, [Validators.required]],
+               end: [this.end, [Validators.required]]
             });
          });
 

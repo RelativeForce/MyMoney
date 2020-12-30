@@ -27,9 +27,9 @@ export class UserComponent implements OnInit {
 
    public ngOnInit(): void {
       this.userForm = this.formBuilder.group({
-         email: ['', Validators.required],
-         fullName: ['', Validators.required],
-         dateOfBirth: [new Date().toISOString().split('T')[0], Validators.required],
+         email: ['', [Validators.required]],
+         fullName: ['', [Validators.required]],
+         dateOfBirth: [new Date().toISOString().split('T')[0], [Validators.required]],
       });
 
       this.disableForm();

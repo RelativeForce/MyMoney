@@ -22,9 +22,9 @@ export class AddIncomesComponent implements OnInit {
 
    public ngOnInit(): void {
       this.addIncomeForm = this.formBuilder.group({
-         date: [new Date().toISOString().split('T')[0], Validators.required],
-         name: ['', Validators.required],
-         amount: ['', Validators.required],
+         date: [new Date().toISOString().split('T')[0], [Validators.required]],
+         name: ['', [Validators.required]],
+         amount: [0, [Validators.required, Validators.min(0)]],
       });
    }
 

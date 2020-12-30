@@ -6,6 +6,7 @@ export class IncomeViewModel {
    amount: string;
    remaining: string;
    id: number;
+   showWarning: boolean;
 
    constructor(model: IIncomeModel) {
       this.date = model.date;
@@ -13,5 +14,6 @@ export class IncomeViewModel {
       this.amount = '£' + model.amount;
       this.remaining = '£' + model.remaining;
       this.id = model.id;
+      this.showWarning = model.remaining < 0;
    }
 }
