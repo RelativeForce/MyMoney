@@ -1,59 +1,45 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { AuthenticationService } from '../../../shared/services';
+import { CurrentUserService } from '../../../shared/services';
 import { IBasicResultDto } from '../../../shared/api';
 
 @Component({
-   templateUrl: 'reset-password.component.html'
+   templateUrl: 'change-password.component.html'
 })
-export class ResetPasswordComponent implements OnInit {
-   public resetPasswordForm: FormGroup;
+export class ChangePasswordComponent implements OnInit {
+   public changePasswordForm: FormGroup;
    public loading = false;
    public submitted = false;
    public error: string | null = null;
-   private token: string = null;
 
    constructor(
       private readonly formBuilder: FormBuilder,
-      private readonly activatedRoute: ActivatedRoute,
       private readonly router: Router,
-      private readonly authenticationService: AuthenticationService,
+      private readonly currentUserService: CurrentUserService,
    ) {
    }
 
    public ngOnInit(): void {
-
-      this.activatedRoute.params.subscribe(params => {
-         const token = params['token'];
-
-         if (!token) {
-            this.router.navigate(['/auth/login']);
-         }
-
-         this.token = token;
-      });
-
-
-      this.resetPasswordForm = this.formBuilder.group({
+      this.changePasswordForm = this.formBuilder.group({
          password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]],
          confirmPassword: ['']
       });
 
-      this.resetPasswordForm.valueChanges.subscribe(() => {
+      this.changePasswordForm.valueChanges.subscribe(() => {
          this.checkPasswords();
       });
    }
 
    public get f() {
-      return this.resetPasswordForm.controls;
+      return this.changePasswordForm.controls;
    }
 
    public onSubmit(): void {
       this.submitted = true;
 
-      if (this.resetPasswordForm.invalid) {
+      if (this.changePasswordForm.invalid) {
          return;
       }
 
@@ -62,14 +48,14 @@ export class ResetPasswordComponent implements OnInit {
 
       const password: string = this.f.password.value;
 
-      this.authenticationService.resetPassword(password, this.token)
+      this.currentUserService.updatePassword(password)
          .pipe(first())
          .subscribe(
             (result: IBasicResultDto) => {
                this.loading = false;
 
                if (result.success) {
-                  this.router.navigate(['/auth/login']);
+                  this.router.navigate(['/']);
                } else {
                   this.error = result.error;
                }

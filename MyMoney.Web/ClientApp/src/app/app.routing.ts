@@ -16,7 +16,8 @@ import {
    RegisterComponent,
    ResetPasswordComponent,
    TransactionsComponent,
-   UserComponent
+   ProfileComponent,
+   ChangePasswordComponent
 } from './pages';
 import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 
@@ -178,11 +179,19 @@ export const routes: Routes = [
       path: 'user',
       children: [
          {
-            path: '',
-            component: UserComponent,
+            path: 'profile',
+            component: ProfileComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Profile'
+            },
+         },
+         {
+            path: 'change-password',
+            component: ChangePasswordComponent,
+            canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Change password'
             },
          },
          { path: '**', redirectTo: '/' }
