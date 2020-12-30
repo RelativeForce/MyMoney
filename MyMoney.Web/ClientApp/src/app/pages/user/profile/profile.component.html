@@ -1,5 +1,5 @@
 <h2>Profile</h2>
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
    <div class="form-group">
       <label for="email">Email</label>
       <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />

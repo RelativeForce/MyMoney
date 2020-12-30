@@ -29,6 +29,10 @@ export class CurrentUserService {
       return this.userApi.updateCurrentUserDetails(newData);
    }
 
+   public updatePassword(newPassword: string): Observable<IBasicResultDto> {
+      return this.userApi.changePassword({ password: newPassword });
+   }
+
    public logout(): void {
       this.store.dispatch(new ClearSessionAction());
       this.router.navigate(['/auth/login']);

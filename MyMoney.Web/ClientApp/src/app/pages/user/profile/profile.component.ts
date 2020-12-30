@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CurrentUserService } from '../../shared/services';
-import { toInputDateString } from '../../shared/functions';
+import { CurrentUserService } from '../../../shared/services';
+import { toInputDateString } from '../../../shared/functions';
 import { filter } from 'rxjs/operators';
 import { IUser } from 'src/app/shared/state/types';
 import { IBasicResultDto, IUserDto } from 'src/app/shared/api';
@@ -10,10 +10,10 @@ import { Store } from '@ngrx/store';
 import { SetUserAction } from 'src/app/shared/state/actions';
 
 @Component({
-   templateUrl: 'user.component.html'
+   templateUrl: 'profile.component.html'
 })
-export class UserComponent implements OnInit {
-   public userForm: FormGroup;
+export class ProfileComponent implements OnInit {
+   public profileForm: FormGroup;
    public loading = false;
    public submitted = false;
    public error: string | null = null;
@@ -26,7 +26,7 @@ export class UserComponent implements OnInit {
    }
 
    public ngOnInit(): void {
-      this.userForm = this.formBuilder.group({
+      this.profileForm = this.formBuilder.group({
          email: ['', [Validators.required]],
          fullName: ['', [Validators.required]],
          dateOfBirth: [new Date().toISOString().split('T')[0], [Validators.required]],
@@ -46,13 +46,13 @@ export class UserComponent implements OnInit {
    }
 
    public get f() {
-      return this.userForm.controls;
+      return this.profileForm.controls;
    }
 
    public onSubmit(): void {
       this.submitted = true;
 
-      if (this.userForm.invalid) {
+      if (this.profileForm.invalid) {
          return;
       }
 

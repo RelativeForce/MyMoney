@@ -20,9 +20,10 @@ import {
    AddIncomesComponent,
    ImportTransactionsComponent,
    ImportIncomesComponent,
-   UserComponent,
+   ProfileComponent,
    ForgotPasswordComponent,
    ResetPasswordComponent,
+   ChangePasswordComponent,
 } from './pages';
 import {
    ChartComponent,
@@ -54,9 +55,10 @@ import { routes } from './app.routing';
       EditIncomesComponent,
       ImportTransactionsComponent,
       ImportIncomesComponent,
-      UserComponent,
+      ProfileComponent,
       ForgotPasswordComponent,
       ResetPasswordComponent,
+      ChangePasswordComponent,
 
       // Shared
       ImportFileComponent,
