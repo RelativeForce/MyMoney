@@ -8,6 +8,7 @@ export class BudgetViewModel {
    year: number;
    name: string;
    remaining: string;
+   showWarning: boolean;
 
    constructor(model: IBudgetModel) {
       this.month = model.month;
@@ -17,5 +18,6 @@ export class BudgetViewModel {
       this.amount = '£' + model.amount;
       this.id = model.id;
       this.remaining = '£' + model.remaining;
+      this.showWarning = model.remaining < 0;
    }
 }

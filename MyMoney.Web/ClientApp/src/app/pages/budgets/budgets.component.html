@@ -47,7 +47,7 @@
          <tr *ngFor="let budget of budgets; let i = index">
             <td>{{budget.name}}</td>
             <td>{{budget.amount}}</td>
-            <td>{{budget.remaining}}</td>
+            <td [ngClass]="{ 'text-danger': budget.showWarning }">{{budget.remaining}}</td>
             <td>{{budget.notes}}</td>
             <td style="min-width:120px">
                <div class="btn-group">

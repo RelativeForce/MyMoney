@@ -59,7 +59,7 @@
                </td>
                <td>{{budget.name}}</td>
                <td>{{budget.amount}}</td>
-               <td>{{budget.remaining}}</td>
+               <td [ngClass]="{ 'text-danger': budget.showWarning }">{{budget.remaining}}</td>
             </tr>
          </tbody>
       </table>
@@ -81,7 +81,7 @@
                </td>
                <td>{{income.date}}</td>
                <td>{{income.name}}</td>
-               <td>{{income.remaining}}</td>
+               <td [ngClass]="{ 'text-danger': income.showWarning }">{{income.remaining}}</td>
             </tr>
          </tbody>
       </table>
