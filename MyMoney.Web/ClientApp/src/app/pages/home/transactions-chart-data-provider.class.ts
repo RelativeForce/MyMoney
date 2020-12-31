@@ -8,7 +8,7 @@ import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { ISeries } from 'src/app/shared/interfaces/series.interface';
 
 export class TransactionsChartDataProvider implements IChartDataProvider {
-   public xAxisLabel: string;
+   public chartTitle: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
    public seriesData: Observable<ISeries[]>;
@@ -24,11 +24,9 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
       this.seriesData = this.seriesDataSubject.asObservable();
 
-      this.xAxisLabel = 'Transactions';
+      this.chartTitle = 'Transactions';
       this.yAxisLabel = 'Remaining in budget (£)';
-      this.colorScheme = {
-         domain: ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5']
-      };
+      this.colorScheme = { domain: [] };
       this.legendTitle = new Date().toLocaleString('default', { month: 'long' });
    }
 
@@ -36,8 +34,10 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
 
-      combineLatest([this.budgetService.getBudgetsForMonth(month, year), this.transactionService.getTransactionsInRange(this.defaultDateRange())])
-         .subscribe(([budgetList, transactionList]) => this.updateChart(budgetList.budgets, transactionList.transactions.reverse()));
+      combineLatest([
+         this.budgetService.getBudgetsForMonth(month, year),
+         this.transactionService.getTransactionsInRange(this.defaultDateRange())
+      ]).subscribe(([budgetList, transactionList]) => this.updateChart(budgetList.budgets, transactionList.transactions.reverse()));
    }
 
    public destroy(): void {
@@ -75,6 +75,23 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
          seriesData[seriesData.length] = bs as ISeries;
       }
 
+      this.updateColourScheme(budgets.length);
+
       this.seriesDataSubject.next(seriesData);
+   }
+
+   private updateColourScheme(budgetCount: number) {
+
+      const colours = ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5'];
+
+      if (budgetCount > colours.length) {
+         for (let index = 0; index < colours.length - budgetCount; index++) {
+            const newColor: string = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+
+            colours.push(newColor);
+         }
+      }
+
+      this.colorScheme = { domain: colours };
    }
 }

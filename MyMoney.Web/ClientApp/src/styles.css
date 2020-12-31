@@ -34,3 +34,7 @@ code {
    position: sticky;
    top: 0;
 }
+
+.center-text {
+   text-align: center;
+}

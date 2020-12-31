@@ -1,8 +1,10 @@
+<div class="container center-text">
+   {{ dataProvider.chartTitle }}
+</div>
 <div style="width: 100%; min-height: 500px; margin-bottom: 60px;">
    <ngx-charts-line-chart [scheme]="dataProvider.colorScheme" [legend]="showLegend" [showXAxisLabel]="true" [showYAxisLabel]="true"
-      [xAxis]="true" [yAxis]="true" [xAxisLabel]="dataProvider.xAxisLabel" [yAxisLabel]="dataProvider.yAxisLabel"
-      [results]="dataProvider.seriesData | async" [legendTitle]="dataProvider.legendTitle" (select)="onSelect($event)"
-      [xAxisTickFormatting]="getXAxisTickLabel">
+      [xAxis]="true" [yAxis]="true" [yAxisLabel]="dataProvider.yAxisLabel" [results]="dataProvider.seriesData | async"
+      [legendTitle]="dataProvider.legendTitle" (select)="onSelect($event)" [xAxisTickFormatting]="getXAxisTickLabel">
       <ng-template #tooltipTemplate let-model="model">
          {{ (model.id === -1 ? model.series : model.date) }} • {{ model.text }} • £{{ model.amount }}
       </ng-template>

@@ -9,7 +9,7 @@ import { IRunningTotalDto } from 'src/app/shared/api';
 import { RunningTotalSeries } from 'src/app/shared/classes/running-total-series.class';
 
 export class RunningTotalChartDataProvider implements IChartDataProvider {
-   public xAxisLabel: string;
+   public chartTitle: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
    public seriesData: Observable<ISeries[]>;
@@ -24,7 +24,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
       this.seriesData = this.seriesDataSubject.asObservable();
 
-      this.xAxisLabel = 'Total savings this year';
+      this.chartTitle = 'Total savings this year';
       this.yAxisLabel = 'Balance (£)';
       this.colorScheme = {
          domain: ['#7aa3e5']
@@ -68,5 +68,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       }
 
       this.seriesDataSubject.next([series]);
+
+
    }
 }
