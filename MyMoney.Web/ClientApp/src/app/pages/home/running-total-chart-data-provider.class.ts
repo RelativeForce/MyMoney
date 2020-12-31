@@ -16,6 +16,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
    public subChartTitle: string;
 
    private seriesDataSubject: BehaviorSubject<ISeries[]>;
+   private year: number;
 
    constructor(
       private readonly budgetService: IncomeService,
@@ -29,12 +30,11 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       this.colorScheme = {
          domain: ['#7aa3e5']
       };
-      this.subChartTitle = `${new Date().getFullYear()}`;
+      this.year = new Date().getFullYear();
    }
 
    public init(): void {
-      this.budgetService.getRunningTotal(0, this.defaultDateRange(new Date().getFullYear()))
-         .subscribe((runningTotalList) => this.updateChart(runningTotalList.runningTotals));
+      this.loadChartData();
    }
 
    public destroy(): void {
@@ -45,20 +45,36 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       this.router.navigate(item.link);
    }
 
-   private defaultDateRange(year: number): IDateRangeModel {
+   public next(): void {
+      this.year++;
+      this.loadChartData();
+   }
+
+   public previous(): void {
+      this.year--;
+      this.loadChartData();
+   }
+
+   private get dateRange(): IDateRangeModel {
       const end: Date = new Date();
       end.setDate(1);
       end.setMonth(0);
-      end.setFullYear(year + 1);
+      end.setFullYear(this.year + 1);
       end.setHours(0, 0, 0, 0);
 
       const start: Date = new Date();
       start.setDate(1);
-      start.setFullYear(year);
+      start.setFullYear(this.year);
       start.setMonth(0);
       start.setHours(0, 0, 0, 0);
 
       return { end, start };
+   }
+
+   private loadChartData() {
+      this.subChartTitle = `${this.year}`;
+      this.budgetService.getRunningTotal(0, this.dateRange)
+         .subscribe((runningTotalList) => this.updateChart(runningTotalList.runningTotals));
    }
 
    private updateChart(runningTotals: IRunningTotalDto[]): void {

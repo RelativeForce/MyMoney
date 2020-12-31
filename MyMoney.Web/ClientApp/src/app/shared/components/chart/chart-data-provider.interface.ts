@@ -11,4 +11,6 @@ export interface IChartDataProvider {
    onSelect(data: ISeriesItem): void;
    init(): void;
    destroy(): void;
+   next(): void;
+   previous(): void;
 }

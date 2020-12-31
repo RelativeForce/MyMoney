@@ -1,10 +1,10 @@
 <div class="container inline">
-   <button class="btn btn-light btn-sm"><i class="arrow left"></i></button>
+   <button class="btn btn-light btn-sm" type="button" (click)="onPrevious()"><i class="arrow left"></i></button>
    <span class="ml-auto">
       <div *ngIf="dataProvider.subChartTitle">{{ dataProvider.chartTitle }} - {{ dataProvider.subChartTitle }}</div>
       <div *ngIf="!dataProvider.subChartTitle">{{ dataProvider.chartTitle }}</div>
    </span>
-   <button class="btn btn-light btn-sm ml-auto"><i class="arrow right"></i></button>
+   <button class="btn btn-light btn-sm ml-auto" type="button" (click)="onNext()"><i class="arrow right"></i></button>
 </div>
 <div style="width: 100%; min-height: 500px; margin-bottom: 60px;">
    <ngx-charts-line-chart [scheme]="dataProvider.colorScheme" [legend]="showLegend" [showXAxisLabel]="true" [showYAxisLabel]="true"

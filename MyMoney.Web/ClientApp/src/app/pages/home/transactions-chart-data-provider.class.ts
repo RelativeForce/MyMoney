@@ -15,6 +15,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
    public subChartTitle: string;
 
    private seriesDataSubject: BehaviorSubject<ISeries[]>;
+   private month: Date;
 
    constructor(
       private readonly transactionService: TransactionService,
@@ -27,17 +28,12 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
       this.chartTitle = 'Transactions';
       this.yAxisLabel = 'Remaining in budget (£)';
       this.colorScheme = { domain: [] };
-      this.subChartTitle = new Date().toLocaleString('default', { month: 'long' });
+      this.month = new Date();
+      this.month.setDate(1);
    }
 
    public init(): void {
-      const month = new Date().getMonth() + 1;
-      const year = new Date().getFullYear();
-
-      combineLatest([
-         this.budgetService.getBudgetsForMonth(month, year),
-         this.transactionService.getTransactionsInRange(this.defaultDateRange())
-      ]).subscribe(([budgetList, transactionList]) => this.updateChart(budgetList.budgets, transactionList.transactions.reverse()));
+      this.loadChartData();
    }
 
    public destroy(): void {
@@ -48,17 +44,46 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
       this.router.navigate(item.link);
    }
 
-   private defaultDateRange(): IDateRangeModel {
+   public next(): void {
+      this.month.setMonth(this.month.getMonth() + 1);
+      this.loadChartData();
+   }
+
+   public previous(): void {
+      this.month.setMonth(this.month.getMonth() - 1);
+      this.loadChartData();
+   }
+
+   private get monthYear(): { month: number; year: number } {
+      const month = this.month.getMonth() + 1;
+      const year = this.month.getFullYear();
+
+      return { month, year };
+   }
+
+   private get dateRange(): IDateRangeModel {
+
       const end: Date = new Date();
       end.setDate(1);
-      end.setMonth(end.getMonth() + 1);
+      end.setMonth(this.month.getMonth() + 1);
       end.setHours(0, 0, 0, 0);
 
       const start: Date = new Date();
       start.setDate(1);
+      start.setMonth(this.month.getMonth());
       start.setHours(0, 0, 0, 0);
 
       return { end, start };
+   }
+
+   private loadChartData(): void {
+      const monthYear = this.monthYear;
+
+      this.subChartTitle = this.month.toLocaleString('default', { month: 'long' });
+      combineLatest([
+         this.budgetService.getBudgetsForMonth(monthYear.month, monthYear.year),
+         this.transactionService.getTransactionsInRange(this.dateRange)
+      ]).subscribe(([budgetList, transactionList]) => this.updateChart(budgetList.budgets, transactionList.transactions.reverse()));
    }
 
    private updateChart(budgets: IBudgetModel[], transactions: ITransactionModel[]): void {
