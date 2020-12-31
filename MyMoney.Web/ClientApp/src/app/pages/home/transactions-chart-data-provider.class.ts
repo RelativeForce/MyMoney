@@ -12,7 +12,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
    public seriesData: Observable<ISeries[]>;
-   public legendTitle: string;
+   public subChartTitle: string;
 
    private seriesDataSubject: BehaviorSubject<ISeries[]>;
 
@@ -27,7 +27,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
       this.chartTitle = 'Transactions';
       this.yAxisLabel = 'Remaining in budget (£)';
       this.colorScheme = { domain: [] };
-      this.legendTitle = new Date().toLocaleString('default', { month: 'long' });
+      this.subChartTitle = new Date().toLocaleString('default', { month: 'long' });
    }
 
    public init(): void {

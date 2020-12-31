@@ -7,7 +7,7 @@ export interface IChartDataProvider {
    yAxisLabel: string;
    colorScheme: { domain: string[] };
    seriesData: Observable<ISeries[]>;
-   legendTitle: string;
+   subChartTitle: string;
    onSelect(data: ISeriesItem): void;
    init(): void;
    destroy(): void;

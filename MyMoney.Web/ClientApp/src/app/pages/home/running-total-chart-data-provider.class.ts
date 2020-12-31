@@ -13,7 +13,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
    public seriesData: Observable<ISeries[]>;
-   public legendTitle: string;
+   public subChartTitle: string;
 
    private seriesDataSubject: BehaviorSubject<ISeries[]>;
 
@@ -24,12 +24,12 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
       this.seriesData = this.seriesDataSubject.asObservable();
 
-      this.chartTitle = 'Total savings this year';
+      this.chartTitle = 'Total savings';
       this.yAxisLabel = 'Balance (£)';
       this.colorScheme = {
          domain: ['#7aa3e5']
       };
-      this.legendTitle = '';
+      this.subChartTitle = `${new Date().getFullYear()}`;
    }
 
    public init(): void {
@@ -68,7 +68,5 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       }
 
       this.seriesDataSubject.next([series]);
-
-
    }
 }
