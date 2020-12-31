@@ -82,16 +82,18 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
 
    private updateColourScheme(budgetCount: number) {
 
-      const colours = ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5'];
+      const colors = ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5'];
 
-      if (budgetCount > colours.length) {
-         for (let index = 0; index < colours.length - budgetCount; index++) {
+      if (budgetCount > colors.length) {
+         const colorsToAdd = budgetCount - colors.length;
+
+         for (let index = 0; index < colorsToAdd; index++) {
             const newColor: string = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
 
-            colours.push(newColor);
+            colors.push(newColor);
          }
       }
 
-      this.colorScheme = { domain: colours };
+      this.colorScheme = { domain: colors };
    }
 }
