@@ -66,11 +66,13 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
 
       const end: Date = new Date();
       end.setDate(1);
+      end.setFullYear(this.month.getFullYear());
       end.setMonth(this.month.getMonth() + 1);
       end.setHours(0, 0, 0, 0);
 
       const start: Date = new Date();
       start.setDate(1);
+      start.setFullYear(this.month.getFullYear());
       start.setMonth(this.month.getMonth());
       start.setHours(0, 0, 0, 0);
 
