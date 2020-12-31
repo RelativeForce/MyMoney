@@ -23,3 +23,7 @@ export function toInputDateString(text: string): string {
 
    return text.split('/')[2] + '-' + monthStr + '-' + dayStr;
 }
+
+export function randomColor(): string {
+   return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+}

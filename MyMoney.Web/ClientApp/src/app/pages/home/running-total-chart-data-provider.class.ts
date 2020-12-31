@@ -73,7 +73,8 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
 
    private loadChartData() {
       this.subChartTitle = `${this.year}`;
-      this.budgetService.getRunningTotal(0, this.dateRange)
+      this.budgetService
+         .getRunningTotal(0, this.dateRange)
          .subscribe((runningTotalList) => this.updateChart(runningTotalList.runningTotals));
    }
 

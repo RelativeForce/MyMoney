@@ -6,6 +6,7 @@ import { BudgetService, TransactionService } from 'src/app/shared/services';
 import { IBudgetModel, IDateRangeModel, ITransactionModel } from 'src/app/shared/state/types';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { ISeries } from 'src/app/shared/interfaces/series.interface';
+import { randomColor } from 'src/app/shared/functions';
 
 export class TransactionsChartDataProvider implements IChartDataProvider {
    public chartTitle: string;
@@ -77,9 +78,9 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
    }
 
    private loadChartData(): void {
-      const monthYear = this.monthYear;
-
       this.subChartTitle = this.month.toLocaleString('default', { month: 'long' });
+
+      const monthYear = this.monthYear;
       combineLatest([
          this.budgetService.getBudgetsForMonth(monthYear.month, monthYear.year),
          this.transactionService.getTransactionsInRange(this.dateRange)
@@ -113,9 +114,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
          const colorsToAdd = budgetCount - colors.length;
 
          for (let index = 0; index < colorsToAdd; index++) {
-            const newColor: string = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
-
-            colors.push(newColor);
+            colors.push(randomColor());
          }
       }
 
