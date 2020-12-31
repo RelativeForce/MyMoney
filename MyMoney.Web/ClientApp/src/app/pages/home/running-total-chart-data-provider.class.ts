@@ -33,7 +33,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
    }
 
    public init(): void {
-      this.budgetService.getRunningTotal(0, this.defaultDateRange())
+      this.budgetService.getRunningTotal(0, this.defaultDateRange(new Date().getFullYear()))
          .subscribe((runningTotalList) => this.updateChart(runningTotalList.runningTotals));
    }
 
@@ -45,15 +45,16 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       this.router.navigate(item.link);
    }
 
-   private defaultDateRange(): IDateRangeModel {
+   private defaultDateRange(year: number): IDateRangeModel {
       const end: Date = new Date();
       end.setDate(1);
       end.setMonth(0);
-      end.setFullYear(end.getFullYear() + 1);
+      end.setFullYear(year + 1);
       end.setHours(0, 0, 0, 0);
 
       const start: Date = new Date();
       start.setDate(1);
+      start.setFullYear(year);
       start.setMonth(0);
       start.setHours(0, 0, 0, 0);
 
