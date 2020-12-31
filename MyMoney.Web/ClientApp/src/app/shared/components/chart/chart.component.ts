@@ -11,12 +11,20 @@ export class ChartComponent {
    public dataProvider!: IChartDataProvider;
 
    @Input()
-   public showLegend: boolean = true;
+   public showLegend = true;
 
    constructor() { }
 
    public onSelect(item: ISeriesItem): void {
       this.dataProvider.onSelect(item);
+   }
+
+   public onNext(): void {
+      this.dataProvider.next();
+   }
+
+   public onPrevious(): void {
+      this.dataProvider.previous();
    }
 
    public getXAxisTickLabel(val: string): string {

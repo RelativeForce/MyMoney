@@ -9,13 +9,14 @@ import { IRunningTotalDto } from 'src/app/shared/api';
 import { RunningTotalSeries } from 'src/app/shared/classes/running-total-series.class';
 
 export class RunningTotalChartDataProvider implements IChartDataProvider {
-   public xAxisLabel: string;
+   public chartTitle: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
    public seriesData: Observable<ISeries[]>;
-   public legendTitle: string;
+   public subChartTitle: string;
 
    private seriesDataSubject: BehaviorSubject<ISeries[]>;
+   private year: number;
 
    constructor(
       private readonly budgetService: IncomeService,
@@ -24,17 +25,16 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
       this.seriesData = this.seriesDataSubject.asObservable();
 
-      this.xAxisLabel = 'Total savings this year';
+      this.chartTitle = 'Total savings';
       this.yAxisLabel = 'Balance (£)';
       this.colorScheme = {
          domain: ['#7aa3e5']
       };
-      this.legendTitle = '';
+      this.year = new Date().getFullYear();
    }
 
    public init(): void {
-      this.budgetService.getRunningTotal(0, this.defaultDateRange())
-         .subscribe((runningTotalList) => this.updateChart(runningTotalList.runningTotals));
+      this.loadChartData();
    }
 
    public destroy(): void {
@@ -45,19 +45,37 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       this.router.navigate(item.link);
    }
 
-   private defaultDateRange(): IDateRangeModel {
+   public next(): void {
+      this.year++;
+      this.loadChartData();
+   }
+
+   public previous(): void {
+      this.year--;
+      this.loadChartData();
+   }
+
+   private get dateRange(): IDateRangeModel {
       const end: Date = new Date();
       end.setDate(1);
       end.setMonth(0);
-      end.setFullYear(end.getFullYear() + 1);
+      end.setFullYear(this.year + 1);
       end.setHours(0, 0, 0, 0);
 
       const start: Date = new Date();
       start.setDate(1);
+      start.setFullYear(this.year);
       start.setMonth(0);
       start.setHours(0, 0, 0, 0);
 
       return { end, start };
+   }
+
+   private loadChartData() {
+      this.subChartTitle = `${this.year}`;
+      this.budgetService
+         .getRunningTotal(0, this.dateRange)
+         .subscribe((runningTotalList) => this.updateChart(runningTotalList.runningTotals));
    }
 
    private updateChart(runningTotals: IRunningTotalDto[]): void {

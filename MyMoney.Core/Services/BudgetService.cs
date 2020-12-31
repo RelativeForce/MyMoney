@@ -62,7 +62,10 @@ namespace MyMoney.Core.Services
       {
          var user = _currentUserProvider.CurrentUser;
 
-         return user.Budgets.Where(b => month == b.Month && year == b.Year).ToList();
+         return user.Budgets
+            .Where(b => month == b.Month && year == b.Year)
+            .OrderBy(b => b.Name)
+            .ToList();
       }
 
       public bool Update(long budgetId, int month, int year, string name, decimal amount, string notes)
