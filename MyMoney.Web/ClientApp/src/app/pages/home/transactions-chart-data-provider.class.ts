@@ -69,6 +69,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
       end.setFullYear(this.month.getFullYear());
       end.setMonth(this.month.getMonth() + 1);
       end.setHours(0, 0, 0, 0);
+      end.setDate(0); // Subtract 1 day
 
       const start: Date = new Date();
       start.setDate(1);
@@ -80,7 +81,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
    }
 
    private loadChartData(): void {
-      this.subChartTitle = this.month.toLocaleString('default', { month: 'long' });
+      this.subChartTitle = `${this.month.toLocaleString('default', { month: 'long' })} ${this.month.getFullYear()}`;
 
       const monthYear = this.monthYear;
       combineLatest([

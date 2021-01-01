@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>3.9</TypeScriptToolsVersion>
+    <LangVersion>8.0</LangVersion>
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
@@ -17,12 +18,12 @@
     <Company>MyMoney Ltd</Company>
     <PackageIcon>favicon-32x32.png</PackageIcon>
     <RepositoryType>Personal</RepositoryType>
-    <Copyright>2020</Copyright>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <Version>1.1.0</Version>
+    <Copyright>2021</Copyright>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <Version>1.1.1</Version>
     <RepositoryUrl>https://github.com/RelativeForce/MyMoney</RepositoryUrl>
     <Product>MyMoney</Product>
-    <PackageTags>v1.1.0</PackageTags>
+    <PackageTags>v1.1.1</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <NeutralLanguage>en-GB</NeutralLanguage>
   </PropertyGroup>

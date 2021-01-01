@@ -7,6 +7,7 @@ using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Email;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
+using MyMoney.Core.Results;
 
 namespace MyMoney.Core.Services
 {
@@ -54,7 +55,7 @@ namespace MyMoney.Core.Services
                return LoginResult.FailResult("Incorrect password");
          }
 
-         return LoginResult.SuccessResult(_tokenProvider.NewToken(user), _tokenProvider.TokenTimeOut);
+         return LoginResult.SuccessResult(_tokenProvider.NewToken(user));
       }
 
       public LoginResult Register(string email, string password, DateTime dateOfBirth, string fullName)
@@ -83,7 +84,7 @@ namespace MyMoney.Core.Services
          if (user == null)
             return LoginResult.FailResult("Database Error");
 
-         return LoginResult.SuccessResult(_tokenProvider.NewToken(user), _tokenProvider.TokenTimeOut);
+         return LoginResult.SuccessResult(_tokenProvider.NewToken(user));
       }
 
       public BasicResult Update(long userId, string email, string fullName, DateTime dateOfBirth)
@@ -144,13 +145,13 @@ namespace MyMoney.Core.Services
             Subject = "Reset password"
          };
 
-         string token = _tokenProvider.NewToken(userWithEmail);
+         var token = _tokenProvider.NewToken(userWithEmail);
 
          string contentString = _resourceManager.Load("reset-password-email.html");
 
          contentString = contentString
             .Replace("${site-name}", "MyMoney")
-            .Replace("${reset-password-url}", $"{baseUrl}/auth/reset-password/{token}")
+            .Replace("${reset-password-url}", $"{baseUrl}/auth/reset-password/{token.JWT}")
             .Replace("${site-url}", baseUrl);
 
          EmailContent content = new EmailContent

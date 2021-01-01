@@ -1,7 +1,7 @@
 ﻿using MyMoney.Core.Interfaces.Entities;
 using System;
 
-namespace MyMoney.Core.Services
+namespace MyMoney.Core.Data
 {
    public class RunningTotal
    {

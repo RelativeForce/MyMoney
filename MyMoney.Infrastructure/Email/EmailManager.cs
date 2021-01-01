@@ -16,14 +16,15 @@ namespace MyMoney.Infrastructure.Email
 
       public EmailManager()
       {
-         _smtpServer = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailSmtpServer);
-         _clientEmailAddress = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailAddress);
-         _clientEmailPassword = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailPassword);
+         _smtpServer = EmailConstants.SMTPServerURL;
+         _clientEmailAddress = EmailConstants.ClientEmailAddress;
+         _clientEmailPassword = EmailConstants.ClientEmailPassword;
       }
 
       public void SendMail(EmailSettings config, EmailContent content)
       {
-         CheckEnvironment();
+         if (!HasClientAccount())
+            return;
 
          MailMessage email = ConstructEmailMessage(config, content);
 
@@ -82,16 +83,14 @@ namespace MyMoney.Infrastructure.Email
          }
       }
 
-      private void CheckEnvironment()
+      private bool HasClientAccount()
       {
-         if (_smtpServer == null)
-            throw new ApplicationException($"'{EnvironmentVariables.EmailSmtpServer}' is missing, sending emails is disabled");
+         if (_smtpServer == null || _clientEmailAddress == null || _clientEmailPassword == null) { 
+            Console.WriteLine($"Email environment variable(s) is missing, sending emails is disabled");
+            return false;
+         }
 
-         if (_clientEmailAddress == null)
-            throw new ApplicationException($"'{EnvironmentVariables.EmailAddress}' is missing, sending emails is disabled");
-
-         if (_clientEmailPassword == null)
-            throw new ApplicationException($"'{EnvironmentVariables.EmailPassword}' is missing, sending emails is disabled");
+         return true;
       }
    }
 }

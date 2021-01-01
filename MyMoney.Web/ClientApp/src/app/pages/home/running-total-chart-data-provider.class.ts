@@ -61,6 +61,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       end.setMonth(0);
       end.setFullYear(this.year + 1);
       end.setHours(0, 0, 0, 0);
+      end.setDate(0); // Subtract 1 day
 
       const start: Date = new Date();
       start.setDate(1);

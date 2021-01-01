@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Services;
 
 namespace MyMoney.Core.Interfaces.Service
 {
