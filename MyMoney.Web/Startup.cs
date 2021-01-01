@@ -34,7 +34,7 @@ namespace MyMoney.Web
       {
          services.AddHttpContextAccessor();
 
-         services.AddScoped<ITokenProvider, TokenProvider>();
+         services.AddSingleton<ITokenProvider, TokenProvider>();
          services.AddScoped<IUserService, UserService>();
          services.AddScoped<IRepository, Repository>();
          services.AddScoped<IRelationRepository, RelationRepository>();
@@ -43,8 +43,8 @@ namespace MyMoney.Web
          services.AddScoped<IIncomeService, IncomeService>();
          services.AddScoped<IEntityFactory, EntityFactory>();
          services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
-         services.AddScoped<IEmailManager, EmailManager>();
-         services.AddScoped<IResourceManager, ResourceManager>();
+         services.AddSingleton<IEmailManager, EmailManager>();
+         services.AddSingleton<IResourceManager, ResourceManager>();
 
          services.AddControllersWithViews();
          // In production, the Angular files will be served from this directory
