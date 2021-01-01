@@ -14,6 +14,7 @@ namespace MyMoney.Infrastructure.Entities
       public DateTime Date { get; set; }
       [Required]
       public string Name { get; set; }
+      [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
       public long UserId { get; set; }
 

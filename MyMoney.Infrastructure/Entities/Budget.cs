@@ -11,6 +11,7 @@ namespace MyMoney.Infrastructure.Entities
 {
    public class Budget : BaseEntity, IBudget
    {
+      [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
       public string Notes { get; set; }
       public long UserId { get; set; }
