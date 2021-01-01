@@ -7,23 +7,44 @@ namespace MyMoney.Infrastructure.EntityFramework
    {
       public const string LocalDatabaseConnection = @"Server=.\SQLEXPRESS;Initial Catalog=MyMoney;Trusted_Connection=True;MultipleActiveResultSets=true;Integrated Security=True";
 
-      public static string DatabaseConnection => Environment.GetEnvironmentVariable(EnvironmentVariables.DatabaseConnection) ?? LocalDatabaseConnection;
+      public static string DatabaseConnection => _databaseConnection ??= GetDatabaseConnection();
+      private static string _databaseConnection;
 
-      public static DatabaseEngine TargetDatabaseEngine
+      public static DatabaseEngine TargetDatabaseEngine => _targetDatabaseEngine ??= GetTargetDatabaseEngine();
+      private static DatabaseEngine? _targetDatabaseEngine;
+
+      private static string GetDatabaseConnection()
       {
-         get
+         var connectionString = Environment.GetEnvironmentVariable(EnvironmentVariables.DatabaseConnection) ?? string.Empty;
+
+         if (!string.IsNullOrWhiteSpace(connectionString))
          {
-            var engine = Environment.GetEnvironmentVariable(EnvironmentVariables.DatabaseEngine) ?? string.Empty;
+            EnvironmentVariables.LogVariableValue(EnvironmentVariables.DatabaseConnection, connectionString);
+            return connectionString;
+         }
 
-            if (engine.ToUpper() == "MYSQL")
-               return DatabaseEngine.MySQL;
+         EnvironmentVariables.LogVariableValue(EnvironmentVariables.DatabaseConnection, LocalDatabaseConnection, true);
+         return LocalDatabaseConnection;
+      }
 
-            if (engine.ToUpper() == "SQLSERVER")
-               return DatabaseEngine.SQLServer;
+      private static DatabaseEngine GetTargetDatabaseEngine()
+      {
+         var engine = Environment.GetEnvironmentVariable(EnvironmentVariables.DatabaseEngine) ?? string.Empty;
 
-            Console.WriteLine($"'{EnvironmentVariables.DatabaseEngine}' environment variable is not assigned, defaulting to {nameof(DatabaseEngine.SQLServer)}");
+         if (engine.ToUpper() == "MYSQL")
+         {
+            EnvironmentVariables.LogVariableValue(EnvironmentVariables.DatabaseEngine, nameof(DatabaseEngine.MySQL));
+            return DatabaseEngine.MySQL;
+         }
+
+         if (engine.ToUpper() == "SQLSERVER")
+         {
+            EnvironmentVariables.LogVariableValue(EnvironmentVariables.DatabaseEngine, nameof(DatabaseEngine.SQLServer));
             return DatabaseEngine.SQLServer;
          }
+
+         EnvironmentVariables.LogVariableValue(EnvironmentVariables.DatabaseEngine, nameof(DatabaseEngine.SQLServer), true);
+         return DatabaseEngine.SQLServer;
       }
 
       public enum DatabaseEngine
