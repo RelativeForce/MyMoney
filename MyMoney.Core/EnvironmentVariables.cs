@@ -15,5 +15,10 @@ namespace MyMoney.Core
       {
          Console.WriteLine($"{environmentVariable}: '{value}'{(isDefault ? " (default)" : "")}");
       }
+
+      public static void LogVariableMissing(string environmentVariable)
+      {
+         Console.WriteLine($"{environmentVariable}: MISSING");
+      }
    }
 }
