@@ -13,9 +13,8 @@ namespace MyMoney.Web.Utility
    {
       private const string DefaultTokenSecret = "dqSRHqsruH3U75hFSg1Y5LCOcON7G90iXGomYbaFuH4G10f2PIexSes3QlyidLC";
 
-      private static string Secret => Environment.GetEnvironmentVariable(EnvironmentVariables.TokenSecret) ?? DefaultTokenSecret;
-
-      public static byte[] Key => Encoding.ASCII.GetBytes(Secret);
+      public static byte[] Key => _key ??= GetKey();
+      public static byte[] _key;
 
       public DateTime TokenTimeOut => DateTime.Now.AddHours(1);
 
@@ -34,6 +33,23 @@ namespace MyMoney.Web.Utility
          var token = tokenHandler.CreateToken(tokenDescriptor);
 
          return tokenHandler.WriteToken(token);
+      }
+
+      private static byte[] GetKey()
+      {
+         var secret = Environment.GetEnvironmentVariable(EnvironmentVariables.TokenSecret);
+
+         if (string.IsNullOrWhiteSpace(secret))
+         {
+            EnvironmentVariables.LogVariableValue(EnvironmentVariables.TokenSecret, DefaultTokenSecret, true);
+            secret = DefaultTokenSecret;
+         }
+         else
+         {
+            EnvironmentVariables.LogVariableValue(EnvironmentVariables.TokenSecret, secret);
+         }
+
+         return Encoding.ASCII.GetBytes(secret);
       }
    }
 }
