@@ -1,6 +1,6 @@
 ﻿using System;
 using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Services;
+using MyMoney.Core.Results;
 
 namespace MyMoney.Core.Interfaces.Service
 {

@@ -1,6 +1,7 @@
-﻿using System;
+﻿using MyMoney.Core.Data;
+using System;
 
-namespace MyMoney.Core.Services
+namespace MyMoney.Core.Results
 {
    public class LoginResult
    {
@@ -14,14 +15,14 @@ namespace MyMoney.Core.Services
          // Private constructor
       }
 
-      public static LoginResult SuccessResult(string token, DateTime tokenTimeOut)
+      public static LoginResult SuccessResult(Token token)
       {
          return new LoginResult
          {
             Success = true,
-            Token = token,
+            Token = token.JWT,
             Error = null,
-            ValidTo = tokenTimeOut
+            ValidTo = token.ValidTo
          };
       }
 

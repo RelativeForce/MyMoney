@@ -1,4 +1,4 @@
-﻿using MyMoney.Core.Services;
+﻿using MyMoney.Core.Data;
 using System;
 
 namespace MyMoney.Web.Models.Entity

@@ -1,4 +1,4 @@
-﻿namespace MyMoney.Core.Services
+﻿namespace MyMoney.Core.Results
 {
    public class BasicResult
    {
@@ -11,7 +11,7 @@
       }
 
       public static BasicResult SuccessResult()
-      { 
+      {
          return new BasicResult
          {
             Success = true,
