@@ -12,11 +12,19 @@ Follow these steps to install and start a local instance of MyMoney.
 2. Download the latest release of the app [here](https://github.com/RelativeForce/MyMoney/releases)
 3. Unzip it in some folder called `MyMoney`
 4. Set up environment variables
+
+   Email
    - `MyMoney_Email_Smtp_Server_URL`: The url of the SMTP email server
+   - `MyMoney_Email_Smtp_Server_Port`: The port number of the SMTP email server
+   - `MyMoney_Email_Smtp_Server_SSL` (optional): Whether or not to use SSL for requests to SMTP email server. Defaults to `true`.
    - `MyMoney_Email_Address`: The email address of the account the site will use to send emails
    - `MyMoney_Email_Password`: The password of the account the site will use to send emails
+
+   Database
    - `MyMoney_Database_Connection` (optional): The connection string to the database. Defaults to the local SQL express server instance.
    - `MyMoney_Database_Engine` (optional): The database type of the connection. Only `MySQL` and `SQLServer` are supported. Defaults to `SQLServer`.
+
+   Misc
    - `MyMoney_Token_Secret` (optional): The secret used for generating the user JWT tokens. You can generate one [here](https://www.grc.com/passwords.htm). Defaults to `dqSRHqsruH3U75hFSg1Y5LCOcON7G90iXGomYbaFuH4G10f2PIexSes3QlyidLC`.
 5. Run `MyMoney.Web.exe`
-6. MyMoney will be available at http://localhost:5000 or https://localhost:5001
+6. MyMoney will be available at http://localhost:5000 (https://localhost:5001 when SSL is enabled)

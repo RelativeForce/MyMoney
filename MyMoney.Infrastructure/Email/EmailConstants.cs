@@ -14,17 +14,23 @@ namespace MyMoney.Infrastructure.Email
       public static string ClientEmailPassword => _clientEmailPassword ??= GetClientEmailPassword();
       private static string _clientEmailPassword;
 
+      public static int SmtpServerPort => _smtpServerPort ??= GetSmtpServerPort();
+      private static int? _smtpServerPort;
+
+      public static bool SmtpServerSSL => _smtpServerSSL ??= GetSmtpServerSSL();
+      private static bool? _smtpServerSSL;
+
       private static string GetSTMPServerURL()
       {
-         var url = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailSmtpServer);
+         var url = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailSmtpServerURL);
 
          if (string.IsNullOrWhiteSpace(url))
          {
-            EnvironmentVariables.LogVariableMissing(EnvironmentVariables.EmailSmtpServer);
+            EnvironmentVariables.LogVariableMissing(EnvironmentVariables.EmailSmtpServerURL);
             return null;
          }
 
-         EnvironmentVariables.LogVariableValue(EnvironmentVariables.EmailSmtpServer, url);
+         EnvironmentVariables.LogVariableValue(EnvironmentVariables.EmailSmtpServerURL, url);
          return url;
       }
 
@@ -54,6 +60,35 @@ namespace MyMoney.Infrastructure.Email
 
          EnvironmentVariables.LogVariableValue(EnvironmentVariables.EmailPassword, password);
          return password;
+      }
+
+      private static int GetSmtpServerPort()
+      {
+         var portString = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailSmtpServerPort) ?? string.Empty;
+
+         if(int.TryParse(portString, out int port))
+         {
+            EnvironmentVariables.LogVariableValue(EnvironmentVariables.EmailSmtpServerPort, port.ToString());
+            return port;
+         }
+
+         // Invalid port number
+         EnvironmentVariables.LogVariableMissing(EnvironmentVariables.EmailSmtpServerPort);
+         return -1;
+      }
+
+      private static bool GetSmtpServerSSL()
+      {
+         var sslString = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailSmtpServerSSL) ?? string.Empty;
+
+         if (bool.TryParse(sslString, out bool ssl))
+         {
+            EnvironmentVariables.LogVariableValue(EnvironmentVariables.EmailSmtpServerSSL, ssl.ToString());
+            return ssl;
+         }
+
+         EnvironmentVariables.LogVariableValue(EnvironmentVariables.EmailSmtpServerSSL, true.ToString(), true);
+         return true;
       }
    }
 }
