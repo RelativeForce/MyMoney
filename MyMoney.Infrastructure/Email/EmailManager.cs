@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
-using MyMoney.Core;
 using MyMoney.Core.Email;
 using MyMoney.Core.Interfaces.Email;
 
@@ -13,12 +12,14 @@ namespace MyMoney.Infrastructure.Email
       private string _smtpServer;
       private string _clientEmailAddress;
       private string _clientEmailPassword;
+      private int _port;
 
       public EmailManager()
       {
          _smtpServer = EmailConstants.SMTPServerURL;
          _clientEmailAddress = EmailConstants.ClientEmailAddress;
          _clientEmailPassword = EmailConstants.ClientEmailPassword;
+         _port = EmailConstants.SmtpServerPort;
       }
 
       public void SendMail(EmailSettings config, EmailContent content)
@@ -69,7 +70,7 @@ namespace MyMoney.Infrastructure.Email
             UseDefaultCredentials = false,
             Credentials = new System.Net.NetworkCredential(_clientEmailAddress, _clientEmailPassword),
             Host = _smtpServer,
-            Port = 25,
+            Port = _port,
             EnableSsl = true
          };
 
@@ -85,7 +86,7 @@ namespace MyMoney.Infrastructure.Email
 
       private bool HasClientAccount()
       {
-         if (_smtpServer == null || _clientEmailAddress == null || _clientEmailPassword == null) { 
+         if (_smtpServer == null || _clientEmailAddress == null || _clientEmailPassword == null || _port == -1) { 
             Console.WriteLine($"Email environment variable(s) is missing, sending emails is disabled");
             return false;
          }
