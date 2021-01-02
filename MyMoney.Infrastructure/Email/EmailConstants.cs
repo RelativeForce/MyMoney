@@ -17,6 +17,9 @@ namespace MyMoney.Infrastructure.Email
       public static int SmtpServerPort => _smtpServerPort ??= GetSmtpServerPort();
       private static int? _smtpServerPort;
 
+      public static bool SmtpServerSSL => _smtpServerSSL ??= GetSmtpServerSSL();
+      private static bool? _smtpServerSSL;
+
       private static string GetSTMPServerURL()
       {
          var url = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailSmtpServerURL);
@@ -61,13 +64,7 @@ namespace MyMoney.Infrastructure.Email
 
       private static int GetSmtpServerPort()
       {
-         var portString = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailSmtpServerPort);
-
-         if (string.IsNullOrWhiteSpace(portString))
-         {
-            EnvironmentVariables.LogVariableMissing(EnvironmentVariables.EmailSmtpServerPort);
-            return -1;
-         }
+         var portString = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailSmtpServerPort) ?? string.Empty;
 
          if(int.TryParse(portString, out int port))
          {
@@ -78,6 +75,20 @@ namespace MyMoney.Infrastructure.Email
          // Invalid port number
          EnvironmentVariables.LogVariableMissing(EnvironmentVariables.EmailSmtpServerPort);
          return -1;
+      }
+
+      private static bool GetSmtpServerSSL()
+      {
+         var sslString = Environment.GetEnvironmentVariable(EnvironmentVariables.EmailSmtpServerSSL) ?? string.Empty;
+
+         if (bool.TryParse(sslString, out bool ssl))
+         {
+            EnvironmentVariables.LogVariableValue(EnvironmentVariables.EmailSmtpServerSSL, ssl.ToString());
+            return ssl;
+         }
+
+         EnvironmentVariables.LogVariableValue(EnvironmentVariables.EmailSmtpServerSSL, true.ToString(), true);
+         return true;
       }
    }
 }
