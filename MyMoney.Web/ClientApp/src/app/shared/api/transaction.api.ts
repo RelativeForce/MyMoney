@@ -17,33 +17,21 @@ export class TransactionApi {
 
    constructor(private readonly api: HttpHelper) { }
 
-   public list(dateRange: IDateRangeModel): Observable<ITransactionListDto> {
-      return this.api
-         .post<IDateRangeModel, ITransactionListDto>('/Transaction/List', dateRange)
-         .pipe(first());
-   }
-
-   public delete(id: IIdDto): Observable<IDeleteResultDto> {
-      return this.api
-         .post<IIdDto, IDeleteResultDto>('/Transaction/Delete', id)
-         .pipe(first());
-   }
-
-   public deleteRecurring(id: IIdDto): Observable<IDeleteResultDto> {
-      return this.api
-         .post<IIdDto, IDeleteResultDto>('/Transaction/DeleteRecurring', id)
-         .pipe(first());
-   }
-
    public add(transaction: ITransactionDto): Observable<ITransactionDto> {
       return this.api
          .post<ITransactionDto, ITransactionDto>('/Transaction/Add', transaction)
          .pipe(first());
    }
 
-   public addRecurring(transaction: IRecurringTransactionDto): Observable<IRecurringTransactionDto> {
+   public find(id: IIdDto): Observable<ITransactionDto> {
       return this.api
-         .post<IRecurringTransactionDto, IRecurringTransactionDto>('/Transaction/AddRecurring', transaction)
+         .post<IIdDto, ITransactionDto>('/Transaction/Find', id)
+         .pipe(first());
+   }
+
+   public list(dateRange: IDateRangeModel): Observable<ITransactionListDto> {
+      return this.api
+         .post<IDateRangeModel, ITransactionListDto>('/Transaction/List', dateRange)
          .pipe(first());
    }
 
@@ -53,22 +41,33 @@ export class TransactionApi {
          .pipe(first());
    }
 
-   public updateRecurring(transaction: IRecurringTransactionDto): Observable<IUpdateResultDto> {
+   public delete(id: IIdDto): Observable<IDeleteResultDto> {
       return this.api
-         .post<IRecurringTransactionDto, IUpdateResultDto>('/Transaction/UpdateRecurring', transaction)
+         .post<IIdDto, IDeleteResultDto>('/Transaction/Delete', id)
          .pipe(first());
    }
 
-
-   public find(id: IIdDto): Observable<ITransactionDto> {
+   public addRecurring(transaction: IRecurringTransactionDto): Observable<IRecurringTransactionDto> {
       return this.api
-         .post<IIdDto, ITransactionDto>('/Transaction/Find', id)
+         .post<IRecurringTransactionDto, IRecurringTransactionDto>('/Transaction/AddRecurring', transaction)
          .pipe(first());
    }
 
    public findRecurring(id: IIdDto): Observable<IRecurringTransactionDto> {
       return this.api
          .post<IIdDto, IRecurringTransactionDto>('/Transaction/FindRecurring', id)
+         .pipe(first());
+   }
+
+   public updateRecurring(transaction: IRecurringTransactionDto): Observable<IUpdateResultDto> {
+      return this.api
+         .post<IRecurringTransactionDto, IUpdateResultDto>('/Transaction/UpdateRecurring', transaction)
+         .pipe(first());
+   }
+
+   public deleteRecurring(id: IIdDto): Observable<IDeleteResultDto> {
+      return this.api
+         .post<IIdDto, IDeleteResultDto>('/Transaction/DeleteRecurring', id)
          .pipe(first());
    }
 }
