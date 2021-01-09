@@ -19,6 +19,6 @@ export class RunningTotalSeriesDataPoint implements ISeriesDataPoint {
       this.amount = runningTotal?.delta ?? 0;
       this.date = runningTotal?.date ?? '';
       this.name = runningTotal?.name ?? DEFAULT_TEXT;
-      this.link = runningTotal?.link.split('\\');
+      this.link = runningTotal?.link.split('/');
    }
 }

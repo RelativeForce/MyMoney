@@ -18,13 +18,13 @@ namespace MyMoney.Core.Data
          
          if (transaction.Parent != null)
          {
-            Link = $@"\transactions\edit-recurring\{transaction.Parent.Id}";
+            Link = $@"/transactions/edit-recurring/{transaction.Parent.Id}";
             Id = transaction.Parent.Id;
             // Name must be unique
             Name = $"Recurring Transaction {transaction.Id}";
          }
          else {
-            Link = $@"\transactions\edit\{transaction.Id}";
+            Link = $@"/transactions/edit/{transaction.Id}";
             Id = transaction.Id;
             Name = $"Transaction {transaction.Id}";
          }
@@ -37,7 +37,7 @@ namespace MyMoney.Core.Data
       public RunningTotal(IIncome income)
       {
          Id = income.Id;
-         Link = $@"\incomes\edit\{income.Id}";
+         Link = $@"/incomes/edit/{income.Id}";
          Name = $"Income {income.Id}";
          Text = income.Name;
          Date = income.Date;
