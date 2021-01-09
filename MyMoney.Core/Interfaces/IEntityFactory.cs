@@ -8,5 +8,6 @@ namespace MyMoney.Core.Interfaces
       ITransaction NewTransaction { get; }
       IUser NewUser { get; }
       IIncome NewIncome { get; }
+      IRecurringTransaction NewRecurringTransaction { get; }
    }
 }
