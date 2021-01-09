@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,26 +9,15 @@ using MyMoney.Infrastructure.Entities.Abstract;
 
 namespace MyMoney.Infrastructure.Entities
 {
-   public class Budget : BaseEntity, IBudget
+   public class Budget : UserFilteredEntity, IBudget
    {
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
       public string Notes { get; set; }
-      public long UserId { get; set; }
       public int Year { get; set; }
       public int Month { get; set; }
       [Required]
       public string Name { get; set; }
-
-      [NotMapped]
-      public IUser User
-      {
-         get => UserProxy;
-         set => UserProxy = value as User;
-      }
-
-      [ForeignKey(nameof(UserId))]
-      public virtual User UserProxy { get; set; }
 
       [NotMapped]
       public IQueryable<ITransaction> Transactions => TransactionsProxy.Select(tb => tb.Transaction).Cast<ITransaction>().AsQueryable();
@@ -64,7 +52,7 @@ namespace MyMoney.Infrastructure.Entities
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<Budget>().HasIndex(t => new { t.UserId, t.Year, t.Month, t.Name }).IsUnique();
-         model.Entity<Budget>().HasOne(t => t.UserProxy).WithMany(t => t.BudgetsProxy).IsRequired();
+         model.Entity<Budget>().HasOne(t => t.UserProxy).WithMany().IsRequired();
       }
    }
 }

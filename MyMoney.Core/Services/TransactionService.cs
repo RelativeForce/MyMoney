@@ -35,7 +35,8 @@ namespace MyMoney.Core.Services
 
       public IList<ITransaction> Between(DateTime start, DateTime end)
       {
-         return _currentUserProvider.CurrentUser.Transactions
+         return _repository
+            .UserFiltered<ITransaction>(_currentUserProvider.CurrentUserId)
             .Where(t => t.Date >= start && t.Date <= end)
             .OrderByDescending(t => t.Date)
             .ToList(); ;
@@ -67,7 +68,10 @@ namespace MyMoney.Core.Services
          }
 
          // Budgets
-         var budgets = user.Budgets.Where(b => budgetIds.Contains(b.Id)).ToList();
+         var budgets = _repository
+            .UserFiltered<IBudget>(user)
+            .Where(b => budgetIds.Contains(b.Id))
+            .ToList();
 
          foreach (var budget in budgets)
          {
@@ -75,7 +79,10 @@ namespace MyMoney.Core.Services
          }
 
          // Incomes
-         var incomes = user.Incomes.Where(i => incomeIds.Contains(i.Id)).ToList();
+         var incomes = _repository
+            .UserFiltered<IIncome>(user)
+            .Where(i => incomeIds.Contains(i.Id))
+            .ToList();
 
          foreach (var income in incomes)
          {
@@ -110,7 +117,10 @@ namespace MyMoney.Core.Services
             budget.RemoveTransaction(_relationRepository, transaction);
          }
 
-         var budgets = user.Budgets.Where(b => budgetIds.Contains(b.Id)).ToList();
+         var budgets = _repository
+            .UserFiltered<IBudget>(user)
+            .Where(b => budgetIds.Contains(b.Id))
+            .ToList();
 
          foreach (var budget in budgets)
          {
@@ -123,7 +133,10 @@ namespace MyMoney.Core.Services
             income.RemoveTransaction(_relationRepository, transaction);
          }
 
-         var incomes = user.Incomes.Where(i => incomeIds.Contains(i.Id)).ToList();
+         var incomes = _repository
+            .UserFiltered<IIncome>(user)
+            .Where(i => incomeIds.Contains(i.Id))
+            .ToList();
 
          foreach (var income in incomes)
          {

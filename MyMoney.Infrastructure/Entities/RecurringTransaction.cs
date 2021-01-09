@@ -1,4 +1,5 @@
-﻿using MyMoney.Core.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities.Abstract;
 using System;
@@ -16,17 +17,6 @@ namespace MyMoney.Infrastructure.Entities
       public string Notes { get; set; }
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
-      public long UserId { get; set; }
-
-      [NotMapped]
-      public IUser User
-      {
-         get => UserProxy;
-         set => UserProxy = value as User;
-      }
-
-      [ForeignKey(nameof(UserId))]
-      public virtual User UserProxy { get; set; }
 
       public override IList<Transaction> BuildVirtualInstances()
       {
@@ -47,6 +37,12 @@ namespace MyMoney.Infrastructure.Entities
          });
 
          return transactions;
+      }
+
+      internal static void Configure(ModelBuilder model)
+      {
+         model.Entity<RecurringTransaction>().HasIndex(t => new { t.UserId, t.Start, t.End, t.Recurrence, t.Description }).IsUnique();
+         model.Entity<RecurringTransaction>().HasOne(t => t.UserProxy).WithMany().IsRequired();
       }
    }
 }

@@ -58,7 +58,8 @@ namespace MyMoney.Core.Services
 
          var user = _currentUserProvider.CurrentUser;
 
-         return user.Incomes
+         return _repository
+            .UserFiltered<IIncome>(user)
             .Where(i => i.Date <= start)
             .OrderByDescending(i => i.Date)
             .Take(count)
@@ -69,7 +70,8 @@ namespace MyMoney.Core.Services
       {
          var user = _currentUserProvider.CurrentUser;
 
-         return user.Incomes
+         return _repository
+            .UserFiltered<IIncome>(user)
             .Where(i => i.Date >= start && i.Date <= end)
             .OrderByDescending(i => i.Date)
             .ToList();
@@ -79,12 +81,14 @@ namespace MyMoney.Core.Services
       {
          var user = _currentUserProvider.CurrentUser;
 
-         var transactions = _currentUserProvider.CurrentUser.Transactions
+         var transactions = _repository
+            .UserFiltered<ITransaction>(user)
             .Where(t => t.Date >= start && t.Date <= end)
             .AsEnumerable()
             .Select(t => new RunningTotal(t));
 
-         var incomes = _currentUserProvider.CurrentUser.Incomes
+         var incomes = _repository
+            .UserFiltered<IIncome>(user)
             .Where(i => i.Date >= start && i.Date <= end)
             .AsEnumerable()
             .Select(i => new RunningTotal(i));

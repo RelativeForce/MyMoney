@@ -62,7 +62,8 @@ namespace MyMoney.Core.Services
       {
          var user = _currentUserProvider.CurrentUser;
 
-         return user.Budgets
+         return _repository
+            .UserFiltered<IBudget>(user)
             .Where(b => month == b.Month && year == b.Year)
             .OrderBy(b => b.Name)
             .ToList();
