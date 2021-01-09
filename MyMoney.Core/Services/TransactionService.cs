@@ -29,7 +29,10 @@ namespace MyMoney.Core.Services
 
          var recurring = _repository
             .UserFiltered<IRecurringTransaction>(userId)
-            .Where(rt => rt.Start >= start || rt.End <= end)
+            .Where(rt =>
+               (rt.Start >= start && rt.Start <= end) || // Starts in the range
+               (rt.End >= start && rt.End <= end) || // Ends in the range
+               (rt.Start <= start && rt.End >= end)) // Spans the range
             .AsEnumerable()
             .Select(rt => rt.ToInstances())
             .SelectMany(vt => vt)
