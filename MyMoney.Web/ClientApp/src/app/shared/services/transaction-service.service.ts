@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { TransactionApi, IDeleteResultDto, ITransactionListDto, IUpdateResultDto } from '../api';
+import { TransactionApi, IDeleteResultDto, ITransactionListDto, IUpdateResultDto, IRecurringTransactionDto } from '../api';
 import {
    DeleteTransactionAction,
    RefreshTransactionsAction,
@@ -56,6 +56,12 @@ export class TransactionService {
          }));
    }
 
+   public addRecurringTransaction(transaction: IRecurringTransactionDto): Observable<boolean> {
+      return this.transactionApi
+         .addRecurring(transaction)
+         .pipe(map(() => true));
+   }
+
    public editTransaction(transaction: ITransactionModel): Observable<boolean> {
       return this.transactionApi
          .update(transaction)
@@ -67,6 +73,12 @@ export class TransactionService {
          }));
    }
 
+   public editRecurringTransaction(transaction: IRecurringTransactionDto): Observable<boolean> {
+      return this.transactionApi
+         .updateRecurring(transaction)
+         .pipe(map((status: IUpdateResultDto) => status.success));
+   }
+
    public findTransaction(transactionId: number): Observable<ITransactionModel> {
       return this.store.select(selectTransaction(transactionId)).pipe(map((transaction: ITransactionModel | undefined) => {
          if (transaction !== undefined) {
@@ -75,6 +87,10 @@ export class TransactionService {
 
          return this.transactionApi.find({ id: transactionId });
       }), concatAll());
+   }
+
+   public findRecurringTransaction(transactionId: number): Observable<IRecurringTransactionDto> {
+      return this.transactionApi.findRecurring({ id: transactionId });
    }
 
    public refreshTransactions(): void {
