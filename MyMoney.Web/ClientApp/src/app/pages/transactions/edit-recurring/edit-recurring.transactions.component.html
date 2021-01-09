@@ -75,7 +75,7 @@
          <table class="table">
             <tbody>
                <tr *ngFor="let date of dates; let i = index">
-                  <td>{{date}}</td>
+                  <td>{{date}} <span *ngIf="nextDate === date" class="badge badge-pill badge-primary">Upcoming next</span></td>
                </tr>
             </tbody>
          </table>
