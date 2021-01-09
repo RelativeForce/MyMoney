@@ -26,8 +26,8 @@ namespace MyMoney.Web.Models.Entity
          Description = model.Description;
          Notes = model.Notes;
          Amount = model.Amount;
-         RecurringPeriod = model.RecurringPeriod;
-         RecurringTransactionId = model.RecurringTransactionId;
+         RecurringPeriod = model.Parent?.Recurrence;
+         RecurringTransactionId = model.Parent?.Id;
          BudgetIds = model.Budgets.Select(t => t.Id).ToArray();
          IncomeIds = model.Incomes.Select(t => t.Id).ToArray();
       }

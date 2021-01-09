@@ -16,10 +16,10 @@ namespace MyMoney.Core.Data
       public RunningTotal(ITransaction transaction)
       {
          
-         if (transaction.RecurringTransactionId.HasValue)
+         if (transaction.Parent != null)
          {
-            Link = $@"\transactions\recurring\edit\{transaction.RecurringTransactionId}";
-            Id = transaction.RecurringTransactionId.Value;
+            Link = $@"\transactions\recurring\edit\{transaction.Parent.Id}";
+            Id = transaction.Parent.Id;
             Name = $"Recurring Transaction {transaction.Id}";
          }
          else {

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 export interface IBudgetDto {
    id: number;
    amount: number;
@@ -130,4 +131,14 @@ export enum Period {
    week = 1,
    month = 2,
    year = 3,
+}
+
+export interface IRecurringTransactionDto {
+   start: string;
+   end: string;
+   description: string;
+   notes: string;
+   amount: number;
+   id: number;
+   recurrence: Period | null;
 }

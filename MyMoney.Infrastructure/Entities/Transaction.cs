@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities.Abstract;
 
@@ -21,10 +20,7 @@ namespace MyMoney.Infrastructure.Entities
       public decimal Amount { get; set; }
 
       [NotMapped]
-      public long? RecurringTransactionId { get; set; } = null;
-
-      [NotMapped]
-      public Period? RecurringPeriod { get; set; } = null;
+      public IRecurringTransaction Parent { get; set; } = null;
 
       [NotMapped]
       public IQueryable<IBudget> Budgets => BudgetsProxy.Select(tb => tb.Budget).Cast<IBudget>().AsQueryable();
