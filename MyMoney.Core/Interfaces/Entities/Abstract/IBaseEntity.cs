@@ -1,4 +1,4 @@
-﻿namespace MyMoney.Core.Interfaces.Entities
+﻿namespace MyMoney.Core.Interfaces.Entities.Abstract
 {
    public interface IBaseEntity
    {

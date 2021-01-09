@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyMoney.Core.Interfaces.Entities.Abstract;
+using System;
 using System.Linq;
 
 namespace MyMoney.Core.Interfaces.Entities

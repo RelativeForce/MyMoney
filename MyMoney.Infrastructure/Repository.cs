@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Core.Interfaces.Entities.Abstract;
 using MyMoney.Infrastructure.Entities;
 using MyMoney.Infrastructure.EntityFramework;
 

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Mail;
 using Microsoft.EntityFrameworkCore;
 using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Infrastructure.Entities.Abstract;
 
 namespace MyMoney.Infrastructure.Entities
 {
