@@ -141,4 +141,5 @@ export interface IRecurringTransactionDto {
    amount: number;
    id: number;
    recurrence: Period | null;
+   dates: string[];
 }

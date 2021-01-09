@@ -34,6 +34,17 @@ namespace MyMoney.Core.Services
          return transaction;
       }
 
+      public IRecurringTransaction FindRecurring(long transactionId)
+      {
+         var transaction = _repository.FindById<IRecurringTransaction>(transactionId);
+         var userId = _currentUserProvider.CurrentUserId;
+
+         if (transaction == null || transaction.UserId != userId)
+            return null;
+
+         return transaction;
+      }
+
       public IList<ITransaction> Between(DateTime start, DateTime end)
       {
          var userId = _currentUserProvider.CurrentUserId;
@@ -135,6 +146,37 @@ namespace MyMoney.Core.Services
          transaction.Notes = notes;
 
          return _repository.Add(transaction);
+      }
+
+      public bool UpdateRecurring(long transactionId, DateTime start, DateTime end, string description, decimal amount, string notes, Period period)
+      {
+         if (string.IsNullOrWhiteSpace(description))
+            return false;
+
+         if (notes == null)
+            notes = "";
+
+         if (start > end)
+         {
+            var temp = start;
+            start = end;
+            end = temp;
+         }
+
+         var transaction = _repository.FindById<IRecurringTransaction>(transactionId);
+         var user = _currentUserProvider.CurrentUser;
+
+         if (transaction == null || transaction.UserId != user.Id)
+            return false;
+
+         transaction.Start = start;
+         transaction.End = end;
+         transaction.Recurrence = period;
+         transaction.Description = description;
+         transaction.Amount = amount;
+         transaction.Notes = notes;
+
+         return _repository.Update(transaction);
       }
 
       public bool Update(long transactionId, DateTime date, string description, decimal amount, string notes, long[] budgetIds, long[] incomeIds)

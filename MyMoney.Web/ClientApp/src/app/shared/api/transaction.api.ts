@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IDeleteResultDto, IIdDto, ITransactionDto, ITransactionListDto, IUpdateResultDto } from './dtos.interface';
+import {
+   IDeleteResultDto,
+   IIdDto,
+   IRecurringTransactionDto,
+   ITransactionDto,
+   ITransactionListDto,
+   IUpdateResultDto
+} from './dtos.interface';
 import { HttpHelper } from './http-helper.class';
 import { IDateRangeModel } from '../state/types';
 
@@ -28,15 +35,34 @@ export class TransactionApi {
          .pipe(first());
    }
 
+   public addRecurring(transaction: IRecurringTransactionDto): Observable<IRecurringTransactionDto> {
+      return this.api
+         .post<IRecurringTransactionDto, IRecurringTransactionDto>('/Transaction/AddRecurring', transaction)
+         .pipe(first());
+   }
+
    public update(transaction: ITransactionDto): Observable<IUpdateResultDto> {
       return this.api
          .post<ITransactionDto, IUpdateResultDto>('/Transaction/Update', transaction)
          .pipe(first());
    }
 
+   public updateRecurring(transaction: IRecurringTransactionDto): Observable<IUpdateResultDto> {
+      return this.api
+         .post<IRecurringTransactionDto, IUpdateResultDto>('/Transaction/UpdateRecurring', transaction)
+         .pipe(first());
+   }
+
+
    public find(id: IIdDto): Observable<ITransactionDto> {
       return this.api
          .post<IIdDto, ITransactionDto>('/Transaction/Find', id)
+         .pipe(first());
+   }
+
+   public findRecurring(id: IIdDto): Observable<IRecurringTransactionDto> {
+      return this.api
+         .post<IIdDto, IRecurringTransactionDto>('/Transaction/FindRecurring', id)
          .pipe(first());
    }
 }

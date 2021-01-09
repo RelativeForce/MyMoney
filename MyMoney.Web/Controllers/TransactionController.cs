@@ -46,7 +46,32 @@ namespace MyMoney.Web.Controllers
          }
          catch (Exception)
          {
-            return BadRequest("Error while creating");
+            return BadRequest("Error while searching");
+         }
+      }
+
+      [HttpPost(nameof(FindRecurring))]
+      public IActionResult FindRecurring([FromBody] IdDto findParameters)
+      {
+         try
+         {
+            if (findParameters == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var transaction = _transactionService.FindRecurring(findParameters.Id);
+
+            if (transaction != null)
+            {
+               return Ok(new RecurringTransactionDto(transaction));
+            }
+
+            return NotFound("Recurriung transaction does not exist");
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while searching");
          }
       }
 
@@ -97,6 +122,30 @@ namespace MyMoney.Web.Controllers
          }
       }
 
+      [HttpPost(nameof(UpdateRecurring))]
+      public IActionResult UpdateRecurring([FromBody] RecurringTransactionDto model)
+      {
+         try
+         {
+            if (model == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var success = _transactionService.UpdateRecurring(model.Id, DateTime.Parse(model.Start), DateTime.Parse(model.End), model.Description, model.Amount, model.Notes, model.Recurrence);
+
+            return Ok(new UpdateResultDto
+            {
+               Success = success,
+               Error = success ? "" : "Invalid recurring transaction information"
+            });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while updating");
+         }
+      }
+
       [HttpPost(nameof(Add))]
       public IActionResult Add([FromBody] TransactionDto model)
       {
@@ -113,6 +162,29 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
 
             return Ok(new TransactionDto(result));
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
+      }
+
+      [HttpPost(nameof(AddRecurring))]
+      public IActionResult AddRecurring([FromBody] RecurringTransactionDto model)
+      {
+         try
+         {
+            if (model == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var result = _transactionService.AddRecurring(DateTime.Parse(model.Start), DateTime.Parse(model.End),  model.Description, model.Amount, model.Notes, model.Recurrence);
+
+            if (result == null)
+               return BadRequest("Invalid State");
+
+            return Ok(new RecurringTransactionDto(result));
          }
          catch (Exception)
          {
