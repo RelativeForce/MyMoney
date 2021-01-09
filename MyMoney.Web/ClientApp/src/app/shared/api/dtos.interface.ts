@@ -140,6 +140,6 @@ export interface IRecurringTransactionDto {
    notes: string;
    amount: number;
    id: number;
-   recurrence: Frequency | null;
+   recurrence: Frequency;
    dates: string[];
 }
