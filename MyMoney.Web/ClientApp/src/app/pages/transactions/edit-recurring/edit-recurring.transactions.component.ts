@@ -76,11 +76,11 @@ export class EditRecurringTransactionsComponent implements OnInit {
       return this.editTransactionForm.controls;
    }
 
-   public get nextDate(): string {
+   public get nextDate(): string | null {
 
       const now = new Date(Date.now()).getTime();
 
-      return this.dates.find(d => Date.parse(this.toInputDateString(d)) > now);
+      return this.dates.find(d => Date.parse(this.toInputDateString(d)) > now) ?? null;
    }
 
    public onDateChange(): void {
