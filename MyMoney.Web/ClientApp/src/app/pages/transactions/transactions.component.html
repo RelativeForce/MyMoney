@@ -51,10 +51,10 @@
             <td>{{transaction.amount}}</td>
             <td>
                <div class="btn-group">
-                  <a class="btn btn-primary" routerLink="./edit/{{transaction.id}}" data-toggle="tooltip" data-placement="bottom"
-                     title="Edit transaction {{transaction.id}}">🖉</a>
-                  <button class="btn btn-danger" (click)="deleteTransaction(transaction.id)" data-toggle="tooltip" data-placement="bottom"
-                     title="Delete transaction {{transaction.id}}">✕</button>
+                  <a class="btn btn-primary" routerLink="{{transaction.editLink}}" data-toggle="tooltip" data-placement="bottom"
+                     title="{{transaction.editTooltip}}">🖉</a>
+                  <button *ngIf="transaction.canDelete" class="btn btn-danger" (click)="deleteTransaction(transaction.id)"
+                     data-toggle="tooltip" data-placement="bottom" title="Delete transaction {{transaction.id}}">✕</button>
                </div>
             </td>
          </tr>

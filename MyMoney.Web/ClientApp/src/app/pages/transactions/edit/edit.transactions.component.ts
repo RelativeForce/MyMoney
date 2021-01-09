@@ -181,6 +181,7 @@ export class EditTransactionsComponent implements OnInit {
          incomeIds: Array.from(this.selectedIncomes),
          notes,
          recurringTransactionId: null,
+         recurringPeriod: null,
       };
    }
 }

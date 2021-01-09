@@ -1,4 +1,5 @@
-﻿using MyMoney.Core.Interfaces.Entities;
+﻿using MyMoney.Core.Data;
+using MyMoney.Core.Interfaces.Entities;
 using System.Linq;
 
 namespace MyMoney.Web.Models.Entity
@@ -12,6 +13,7 @@ namespace MyMoney.Web.Models.Entity
       public long[] BudgetIds { get; set; }
       public long[] IncomeIds { get; set; }
       public long? RecurringTransactionId { get; set; }
+      public Period? RecurringPeriod { get; set; }
 
       public TransactionDto()
       {
@@ -24,6 +26,7 @@ namespace MyMoney.Web.Models.Entity
          Description = model.Description;
          Notes = model.Notes;
          Amount = model.Amount;
+         RecurringPeriod = model.RecurringPeriod;
          RecurringTransactionId = model.RecurringTransactionId;
          BudgetIds = model.Budgets.Select(t => t.Id).ToArray();
          IncomeIds = model.Incomes.Select(t => t.Id).ToArray();

@@ -32,7 +32,8 @@ namespace MyMoney.Infrastructure.Entities
             UserId = UserId,
             User = User,
             Id = VirtualTransactionId--,
-            RecurringTransactionId = Id
+            RecurringTransactionId = Id,
+            RecurringPeriod = Recurrence
          });
 
          return transactions.Cast<ITransaction>().ToList();
