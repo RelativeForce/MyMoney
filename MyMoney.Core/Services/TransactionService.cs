@@ -178,7 +178,7 @@ namespace MyMoney.Core.Services
 
       #region Recurring
 
-      public IRecurringTransaction AddRecurring(DateTime start, DateTime end, string description, decimal amount, string notes, Period period)
+      public IRecurringTransaction AddRecurring(DateTime start, DateTime end, string description, decimal amount, string notes, Frequency period)
       {
          if (string.IsNullOrWhiteSpace(description))
             return null;
@@ -219,7 +219,7 @@ namespace MyMoney.Core.Services
          return transaction;
       }
 
-      public bool UpdateRecurring(long transactionId, DateTime start, DateTime end, string description, decimal amount, string notes, Period period)
+      public bool UpdateRecurring(long transactionId, DateTime start, DateTime end, string description, decimal amount, string notes, Frequency period)
       {
          if (string.IsNullOrWhiteSpace(description))
             return false;

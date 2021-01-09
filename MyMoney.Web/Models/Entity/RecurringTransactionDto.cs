@@ -9,7 +9,7 @@ namespace MyMoney.Web.Models.Entity
    {
       public string Start { get; set; }
       public string End { get; set; }
-      public Period Recurrence { get; set; }
+      public Frequency Recurrence { get; set; }
       public string Description { get; set; }
       public string Notes { get; set; }
       public decimal Amount { get; set; }

@@ -13,7 +13,7 @@ namespace MyMoney.Web.Models.Entity
       public long[] BudgetIds { get; set; }
       public long[] IncomeIds { get; set; }
       public long? RecurringTransactionId { get; set; }
-      public Period? RecurringPeriod { get; set; }
+      public Frequency? RecurringPeriod { get; set; }
 
       public TransactionDto()
       {

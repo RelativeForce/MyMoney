@@ -76,7 +76,7 @@ export interface ITransactionDto {
    incomeIds: number[];
    id: number;
    recurringTransactionId: number | null;
-   recurringPeriod: Period | null;
+   recurringPeriod: Frequency | null;
 }
 
 export interface ITransactionListDto {
@@ -126,7 +126,7 @@ export interface IPasswordDto {
    password: string;
 }
 
-export enum Period {
+export enum Frequency {
    day = 0,
    week = 1,
    month = 2,
@@ -140,6 +140,6 @@ export interface IRecurringTransactionDto {
    notes: string;
    amount: number;
    id: number;
-   recurrence: Period | null;
+   recurrence: Frequency | null;
    dates: string[];
 }

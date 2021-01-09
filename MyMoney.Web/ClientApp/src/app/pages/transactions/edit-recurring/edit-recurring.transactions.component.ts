@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../shared/services';
-import { IRecurringTransactionDto, Period } from 'src/app/shared/api';
+import { IRecurringTransactionDto, Frequency } from 'src/app/shared/api';
 import { periodString } from 'src/app/shared/functions';
 
 @Component({
@@ -16,7 +16,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
    public submitted = false;
    public dateMessage: string | null = null;
    public dates: string[] = [];
-   public recurrenceOptions: { key: Period; value: string }[];
+   public recurrenceOptions: { key: Frequency; value: string }[];
 
    constructor(
       private readonly formBuilder: FormBuilder,
@@ -25,10 +25,10 @@ export class EditRecurringTransactionsComponent implements OnInit {
       private readonly activatedRoute: ActivatedRoute,
    ) {
       this.recurrenceOptions = [
-         { key: Period.day, value: periodString(Period.day) },
-         { key: Period.week, value: periodString(Period.week) },
-         { key: Period.month, value: periodString(Period.month) },
-         { key: Period.year, value: periodString(Period.year) },
+         { key: Frequency.day, value: periodString(Frequency.day) },
+         { key: Frequency.week, value: periodString(Frequency.week) },
+         { key: Frequency.month, value: periodString(Frequency.month) },
+         { key: Frequency.year, value: periodString(Frequency.year) },
       ];
    }
 
@@ -49,7 +49,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
             description: ['', [Validators.required]],
             amount: [0, [Validators.required, Validators.min(0)]],
             notes: [''],
-            recurrence: [Period.month, [Validators.required, Validators.min(Period.day), Validators.max(Period.year)]]
+            recurrence: [Frequency.month, [Validators.required, Validators.min(Frequency.day), Validators.max(Frequency.year)]]
          });
 
          this.disableForm();
@@ -146,7 +146,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
       const description = this.f.description.value;
       const amount = this.f.amount.value;
       const notes = this.f.notes.value;
-      const recurrence = Number.parseInt(this.f.recurrence.value, 10) as Period;
+      const recurrence = Number.parseInt(this.f.recurrence.value, 10) as Frequency;
 
       return {
          start,

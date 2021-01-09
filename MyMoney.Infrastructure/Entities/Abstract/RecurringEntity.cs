@@ -9,7 +9,7 @@ namespace MyMoney.Infrastructure.Entities.Abstract
    {
       public DateTime Start { get; set; }
       public DateTime End { get; set; }
-      public Period Recurrence { get; set; }
+      public Frequency Recurrence { get; set; }
       public abstract IList<T> BuildVirtualInstances();
    }
 }
