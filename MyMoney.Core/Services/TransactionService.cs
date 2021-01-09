@@ -31,7 +31,7 @@ namespace MyMoney.Core.Services
             .UserFiltered<IRecurringTransaction>(userId)
             .Where(rt => rt.Start >= start || rt.End <= end)
             .AsEnumerable()
-            .Select(rt => rt.BuildVirtualInstances())
+            .Select(rt => rt.ToInstances())
             .SelectMany(vt => vt)
             .Where(t => t.Date >= start && t.Date <= end);
 

@@ -19,7 +19,7 @@ namespace MyMoney.Infrastructure.Entities
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
 
-      public override IList<ITransaction> BuildVirtualInstances()
+      public override IList<ITransaction> ToInstances()
       {
          var duration = End.Subtract(Start);
 
