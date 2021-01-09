@@ -39,7 +39,7 @@ namespace MyMoney.Core.Services
             .UserFiltered<ITransaction>(_currentUserProvider.CurrentUserId)
             .Where(t => t.Date >= start && t.Date <= end)
             .OrderByDescending(t => t.Date)
-            .ToList(); ;
+            .ToList();
       }
 
       public ITransaction Add(DateTime date, string description, decimal amount, string notes, long[] budgetIds, long[] incomeIds)

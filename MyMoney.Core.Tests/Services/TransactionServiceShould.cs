@@ -66,8 +66,6 @@ namespace MyMoney.Core.Tests.Services
 
          var mockUser = new Mock<IUser>(MockBehavior.Strict);
          mockUser.Setup(m => m.Id).Returns(userId);
-         mockUser.Setup(m => m.Budgets).Returns(new List<IBudget>().AsQueryable());
-         mockUser.Setup(m => m.Incomes).Returns(new List<IIncome>().AsQueryable());
 
          _currentUserProvider
              .Setup(m => m.CurrentUser)
@@ -92,6 +90,14 @@ namespace MyMoney.Core.Tests.Services
                 return t;
              })
              .Verifiable();
+
+         _repositoryMock
+            .Setup(m => m.UserFiltered<IBudget>(mockUser.Object))
+            .Returns(new List<IBudget>().AsQueryable());
+
+         _repositoryMock
+            .Setup(m => m.UserFiltered<IIncome>(mockUser.Object))
+            .Returns(new List<IIncome>().AsQueryable());
 
          _repositoryMock
              .Setup(m => m.Update(It.Is<ITransaction>(t =>
@@ -170,8 +176,6 @@ namespace MyMoney.Core.Tests.Services
 
          var mockUser = new Mock<IUser>(MockBehavior.Strict);
          mockUser.Setup(m => m.Id).Returns(userId);
-         mockUser.Setup(m => m.Budgets).Returns(new List<IBudget>().AsQueryable());
-         mockUser.Setup(m => m.Incomes).Returns(new List<IIncome>().AsQueryable());
 
          _currentUserProvider
              .Setup(m => m.CurrentUser)
@@ -182,6 +186,14 @@ namespace MyMoney.Core.Tests.Services
          mockTransaction.Setup(m => m.Id).Returns(transactionId);
          mockTransaction.Setup(m => m.UserId).Returns(userId + 4);
          mockTransaction.SetupAllProperties();
+
+         _repositoryMock
+            .Setup(m => m.UserFiltered<IBudget>(mockUser.Object))
+            .Returns(new List<IBudget>().AsQueryable());
+
+         _repositoryMock
+            .Setup(m => m.UserFiltered<IIncome>(mockUser.Object))
+            .Returns(new List<IIncome>().AsQueryable());
 
          _repositoryMock
              .Setup(m => m.Update(It.IsAny<ITransaction>()))
@@ -216,13 +228,19 @@ namespace MyMoney.Core.Tests.Services
 
          var mockUser = new Mock<IUser>(MockBehavior.Strict);
          mockUser.Setup(m => m.Id).Returns(userId);
-         mockUser.Setup(m => m.Budgets).Returns(new List<IBudget>().AsQueryable());
-         mockUser.Setup(m => m.Incomes).Returns(new List<IIncome>().AsQueryable());
 
          _currentUserProvider
              .Setup(m => m.CurrentUser)
              .Returns(mockUser.Object)
              .Verifiable();
+
+         _repositoryMock
+            .Setup(m => m.UserFiltered<IBudget>(mockUser.Object))
+            .Returns(new List<IBudget>().AsQueryable());
+
+         _repositoryMock
+            .Setup(m => m.UserFiltered<IIncome>(mockUser.Object))
+            .Returns(new List<IIncome>().AsQueryable());
 
          _repositoryMock
              .Setup(m => m.Update(It.IsAny<ITransaction>()))
@@ -259,8 +277,6 @@ namespace MyMoney.Core.Tests.Services
 
          var mockUser = new Mock<IUser>(MockBehavior.Strict);
          mockUser.Setup(m => m.Id).Returns(userId);
-         mockUser.Setup(m => m.Budgets).Returns(new List<IBudget>().AsQueryable());
-         mockUser.Setup(m => m.Incomes).Returns(new List<IIncome>().AsQueryable());
 
          _currentUserProvider
              .Setup(m => m.CurrentUser)
@@ -271,6 +287,14 @@ namespace MyMoney.Core.Tests.Services
          mockTransaction.SetupAllProperties();
          mockTransaction.Object.Id = transactionId;
          mockTransaction.Object.UserId = userId;
+
+         _repositoryMock
+            .Setup(m => m.UserFiltered<IBudget>(mockUser.Object))
+            .Returns(new List<IBudget>().AsQueryable());
+
+         _repositoryMock
+            .Setup(m => m.UserFiltered<IIncome>(mockUser.Object))
+            .Returns(new List<IIncome>().AsQueryable());
 
          _repositoryMock
              .Setup(m => m.Update(mockTransaction.Object))
