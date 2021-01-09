@@ -21,6 +21,9 @@ namespace MyMoney.Infrastructure.Entities
       public long UserId { get; set; }
 
       [NotMapped]
+      public long? RecurringTransactionId { get; set; } = null;
+
+      [NotMapped]
       public IUser User
       {
          get => UserProxy;
