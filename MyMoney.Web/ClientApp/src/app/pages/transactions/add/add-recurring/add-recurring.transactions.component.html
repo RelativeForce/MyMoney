@@ -23,7 +23,8 @@
    <div class="form-group">
       <label for="recurrence">Recurrence</label>
       <select class="form-control" formControlName="recurrence" [ngClass]="{ 'is-invalid': submitted && f.recurrence.errors }">
-         <option *ngFor="let opt of recurrenceOptions" [value]="opt.key" [selected]="opt.key == f.recurrence.value">{{ opt.value }}
+         <option *ngFor="let opt of recurrenceOptions" [value]="opt.key" [selected]="opt.key == f.recurrence.value">
+            {{ opt.value }}
          </option>
       </select>
       <div *ngIf="submitted && f.recurrence.errors" class="invalid-feedback">
