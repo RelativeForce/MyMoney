@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces.Entities.Abstract;
 
 namespace MyMoney.Infrastructure.Entities.Abstract
@@ -7,5 +9,7 @@ namespace MyMoney.Infrastructure.Entities.Abstract
    {
       public DateTime Start { get; set; }
       public DateTime End { get; set; }
+      public Period Recurrence { get; set; }
+      public abstract IList<T> BuildVirtualInstances();
    }
 }
