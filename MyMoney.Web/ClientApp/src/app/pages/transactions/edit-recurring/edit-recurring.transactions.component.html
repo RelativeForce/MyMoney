@@ -1,6 +1,6 @@
 <h2>Edit recurring transaction {{id}}</h2>
 <div class="row">
-   <div class="col-6">
+   <div class="col-7">
       <form [formGroup]="editTransactionForm" (ngSubmit)="onSubmit()">
          <label>Duration</label>
          <div class="form-inline">
@@ -68,7 +68,7 @@
          </div>
       </form>
    </div>
-   <div class="col-6">
+   <div class="col-5">
       <h4>Dates</h4>
       <div *ngIf="dateMessage !== null"> {{ dateMessage }} </div>
       <div *ngIf="dates.length > 0" [ngStyle]="{'max-height': '60vh', 'overflow-y': 'scroll'}">
