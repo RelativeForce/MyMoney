@@ -20,6 +20,7 @@ namespace MyMoney.Core.Data
          {
             Link = $@"\transactions\edit-recurring\{transaction.Parent.Id}";
             Id = transaction.Parent.Id;
+            // Name must be unique
             Name = $"Recurring Transaction {transaction.Id}";
          }
          else {

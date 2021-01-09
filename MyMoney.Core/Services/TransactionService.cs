@@ -23,7 +23,7 @@ namespace MyMoney.Core.Services
          _currentUserProvider = currentUserProvider;
       }
 
-   public IList<ITransaction> Between(DateTime start, DateTime end)
+      public IList<ITransaction> Between(DateTime start, DateTime end)
       {
          var userId = _currentUserProvider.CurrentUserId;
 
