@@ -4,9 +4,9 @@ using Xunit;
 
 namespace MyMoney.Core.Tests.Services
 {
-   public class PeriodExtensionShould
+   public class FrequencyExtensionShould
    {
-      #region AddPeriod Tests
+      #region Add Tests
 
       [Fact]
       public void ShouldAddDayPeriodToDate()
