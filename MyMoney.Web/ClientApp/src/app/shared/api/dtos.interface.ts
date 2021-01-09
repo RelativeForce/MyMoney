@@ -93,8 +93,8 @@ export interface IRunningTotalSearchDto {
 
 export interface IRunningTotalDto {
    id: number;
-   isTransaction: boolean;
-   isIncome: boolean;
+   link: string;
+   name: string;
    text: string;
    date: string;
    delta: number;

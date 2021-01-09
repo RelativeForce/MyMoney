@@ -9,7 +9,7 @@ export class RunningTotalSeries implements ISeries {
    private initialTotal: number;
 
    constructor(initialTotal: number) {
-      this.name = "Running total";
+      this.name = 'Running total';
       this.initialTotal = initialTotal;
       this.series = [new RunningTotalSeriesDataPoint(null, initialTotal)];
    }
