@@ -74,6 +74,7 @@ export interface ITransactionDto {
    budgetIds: number[];
    incomeIds: number[];
    id: number;
+   recurringTransactionId: number | null;
 }
 
 export interface ITransactionListDto {

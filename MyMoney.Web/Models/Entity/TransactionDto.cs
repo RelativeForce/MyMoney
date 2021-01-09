@@ -11,6 +11,7 @@ namespace MyMoney.Web.Models.Entity
       public decimal Amount { get; set; }
       public long[] BudgetIds { get; set; }
       public long[] IncomeIds { get; set; }
+      public long? RecurringTransactionId { get; set; }
 
       public TransactionDto()
       {
@@ -23,6 +24,7 @@ namespace MyMoney.Web.Models.Entity
          Description = model.Description;
          Notes = model.Notes;
          Amount = model.Amount;
+         RecurringTransactionId = model.RecurringTransactionId;
          BudgetIds = model.Budgets.Select(t => t.Id).ToArray();
          IncomeIds = model.Incomes.Select(t => t.Id).ToArray();
       }

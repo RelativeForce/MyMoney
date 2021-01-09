@@ -2,10 +2,10 @@ import { ITransactionDto } from 'src/app/shared/api';
 import { TransactionService } from 'src/app/shared/services';
 import { TransactionProperty } from './transaction-property.enum';
 import { BaseHeading, Row, IImportDataProvider } from '../../../shared/components/import';
-import { TransactionHeading } from "./transaction-heading.class";
+import { TransactionHeading } from './transaction-heading.class';
 
-const DUPLICATE_TRANSACTION_ERROR: string = 'Duplicate transaction: Two transactions with the same description cannot exist on the same day';
-const FAILED_IMPORT_ERROR: string = 'Failed to import transaction';
+const DUPLICATE_TRANSACTION_ERROR = 'Duplicate transaction: Two transactions with the same description cannot exist on the same day';
+const FAILED_IMPORT_ERROR = 'Failed to import transaction';
 
 export class TransactionImportDataProvider implements IImportDataProvider<TransactionProperty> {
 
@@ -22,7 +22,7 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
          `Transactions created: ${created}\n` +
          `Transactions failed: ${failed}\n\n` +
          'Return to transactions page?'
-      )
+      );
    }
 
    public markAsDuplicate(rows: Row[]): void {
@@ -55,11 +55,12 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
       const amountIndex = headings.findIndex(h => h.property === TransactionProperty.Amount);
       const notesIndex = headings.findIndex(h => h.property === TransactionProperty.Notes);
 
-      function toTransaction(row: Row): { transaction: ITransactionDto; row: Row; } | null {
+      function toTransaction(row: Row): { transaction: ITransactionDto; row: Row } | null {
 
          const date: string | null = TransactionHeading.formatWithTransactionProperty(TransactionProperty.Date, row.data[dateIndex]);
          const amount: number | null = TransactionHeading.formatWithTransactionProperty(TransactionProperty.Amount, row.data[amountIndex]);
-         const description: string | null = TransactionHeading.formatWithTransactionProperty(TransactionProperty.Description, row.data[descriptionIndex]);
+         const description: string | null = TransactionHeading.formatWithTransactionProperty(
+            TransactionProperty.Description, row.data[descriptionIndex]);
          const notes: string | null = TransactionHeading.formatWithTransactionProperty(TransactionProperty.Notes, row.data[notesIndex]);
 
          if (date === null || amount === null || description === null) {
@@ -74,7 +75,8 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
                id: 0,
                budgetIds: [],
                incomeIds: [],
-               notes: notes ?? ''
+               notes: notes ?? '',
+               recurringTransactionId: null,
             },
             row: row
          };
@@ -105,31 +107,38 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
       const descriptionFieldCount = headings.filter(h => h.property === TransactionProperty.Description).length;
       const notesFieldCount = headings.filter(h => h.property === TransactionProperty.Notes).length;
 
-      if (amountFieldCount === 0)
+      if (amountFieldCount === 0) {
          return this.missingFieldErrorMessage(TransactionProperty.Amount);
+      }
 
-      if (amountFieldCount > 1)
+      if (amountFieldCount > 1) {
          return this.multipleFieldErrorMessage(TransactionProperty.Amount);
+      }
 
-      if (dateFieldCount === 0)
+      if (dateFieldCount === 0) {
          return this.missingFieldErrorMessage(TransactionProperty.Date);
+      }
 
-      if (dateFieldCount > 1)
+      if (dateFieldCount > 1) {
          return this.multipleFieldErrorMessage(TransactionProperty.Date);
+      }
 
-      if (descriptionFieldCount === 0)
+      if (descriptionFieldCount === 0) {
          return this.missingFieldErrorMessage(TransactionProperty.Description);
+      }
 
-      if (descriptionFieldCount > 1)
+      if (descriptionFieldCount > 1) {
          return this.multipleFieldErrorMessage(TransactionProperty.Description);
+      }
 
-      if (notesFieldCount > 1)
+      if (notesFieldCount > 1) {
          return this.multipleFieldErrorMessage(TransactionProperty.Notes);
+      }
 
       return null;
    }
 
-   private isComplete(transactionRows: { transaction: ITransactionDto; row: Row; }[]): boolean {
+   private isComplete(transactionRows: { transaction: ITransactionDto; row: Row }[]): boolean {
       const remainingCount = transactionRows.filter(tr => tr.row.success === null).length;
       return remainingCount === 0;
    }
