@@ -1,4 +1,4 @@
-import { Period } from '../../api';
+import { periodString } from '../../functions';
 import { ITransactionModel } from '../../state/types';
 
 export class TransactionViewModel {
@@ -20,19 +20,10 @@ export class TransactionViewModel {
       this.canDelete = true;
 
       if (model.recurringTransactionId !== null) {
-         this.description += ` (${TransactionViewModel.periodString(model.recurringPeriod)})`;
-         this.editLink = `./recurring/edit/${model.recurringTransactionId}`;
+         this.description += ` (${periodString(model.recurringPeriod)})`;
+         this.editLink = `./edit-recurring/${model.recurringTransactionId}`;
          this.editTooltip = `Edit recurring transaction ${model.recurringTransactionId}`;
          this.canDelete = false;
-      }
-   }
-
-   private static periodString(period: Period): string {
-      switch (period) {
-         case Period.day: return 'Daily';
-         case Period.week: return 'Weekly';
-         case Period.month: return 'Monthly';
-         case Period.year: return 'Annually';
       }
    }
 }

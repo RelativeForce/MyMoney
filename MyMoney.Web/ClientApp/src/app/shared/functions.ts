@@ -1,3 +1,5 @@
+import { Period } from './api';
+
 export function groupBy<T, K>(list: T[], toKey: (item: T) => K): Map<K, T[]> {
    const map = new Map<K, T[]>();
    list.forEach((item: T) => {
@@ -26,4 +28,13 @@ export function toInputDateString(text: string): string {
 
 export function randomColor(): string {
    return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+}
+
+export function periodString(period: Period): string {
+   switch (period) {
+      case Period.day: return 'Daily';
+      case Period.week: return 'Weekly';
+      case Period.month: return 'Monthly';
+      case Period.year: return 'Annually';
+   }
 }

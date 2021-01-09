@@ -18,7 +18,7 @@ namespace MyMoney.Core.Data
          
          if (transaction.Parent != null)
          {
-            Link = $@"\transactions\recurring\edit\{transaction.Parent.Id}";
+            Link = $@"\transactions\edit-recurring\{transaction.Parent.Id}";
             Id = transaction.Parent.Id;
             Name = $"Recurring Transaction {transaction.Id}";
          }
