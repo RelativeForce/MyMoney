@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IncomeService } from '../../../shared/services';
 import { BudgetViewModel } from '../../../shared/classes';
 import { IIncomeModel } from 'src/app/shared/state/types';
+import { toInputDateString } from 'src/app/shared/functions';
 
 @Component({
    templateUrl: './edit.incomes.component.html'
@@ -48,7 +49,7 @@ export class EditIncomesComponent implements OnInit {
             .findIncome(this.id)
             .subscribe((response: IIncomeModel) => {
 
-               this.f.date.patchValue(this.toInputDateString(response.date));
+               this.f.date.patchValue(toInputDateString(response.date));
                this.f.name.patchValue(response.name);
                this.f.amount.patchValue(response.amount);
                this.enableForm();
@@ -62,18 +63,6 @@ export class EditIncomesComponent implements OnInit {
 
    public get f() {
       return this.editIncomeForm.controls;
-   }
-
-   public toInputDateString(text: string): string {
-      const month = Number.parseInt(text.split('/')[1], 10);
-
-      const monthStr = month < 10 ? '0' + month : month;
-
-      const day = Number.parseInt(text.split('/')[0], 10);
-
-      const dayStr = day < 10 ? '0' + day : day;
-
-      return text.split('/')[2] + '-' + monthStr + '-' + dayStr;
    }
 
    public onSubmit(): void {

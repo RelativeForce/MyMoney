@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../shared/services';
 import { IRecurringTransactionDto, Frequency } from 'src/app/shared/api';
-import { periodString } from 'src/app/shared/functions';
+import { periodString, toInputDateString } from 'src/app/shared/functions';
 
 @Component({
    templateUrl: './edit-recurring.transactions.component.html'
@@ -57,8 +57,8 @@ export class EditRecurringTransactionsComponent implements OnInit {
          this.transactionService
             .findRecurringTransaction(this.id)
             .subscribe((response: IRecurringTransactionDto) => {
-               this.f.start.patchValue(this.toInputDateString(response.start));
-               this.f.end.patchValue(this.toInputDateString(response.end));
+               this.f.start.patchValue(toInputDateString(response.start));
+               this.f.end.patchValue(toInputDateString(response.end));
                this.f.description.patchValue(response.description);
                this.f.recurrence.patchValue(response.recurrence);
                this.f.amount.patchValue(response.amount);
@@ -80,24 +80,12 @@ export class EditRecurringTransactionsComponent implements OnInit {
 
       const now = new Date(Date.now()).getTime();
 
-      return this.dates.find(d => Date.parse(this.toInputDateString(d)) > now) ?? null;
+      return this.dates.find(d => Date.parse(toInputDateString(d)) > now) ?? null;
    }
 
    public onDateChange(): void {
       this.dates = [];
       this.dateMessage = 'Dates will be recalculated when saved.';
-   }
-
-   public toInputDateString(text: string): string {
-      const month = Number.parseInt(text.split('/')[1], 10);
-
-      const monthStr = month < 10 ? '0' + month : month;
-
-      const day = Number.parseInt(text.split('/')[0], 10);
-
-      const dayStr = day < 10 ? '0' + day : day;
-
-      return text.split('/')[2] + '-' + monthStr + '-' + dayStr;
    }
 
    public onSubmit(): void {
