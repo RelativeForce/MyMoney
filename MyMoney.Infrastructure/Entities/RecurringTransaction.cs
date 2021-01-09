@@ -23,17 +23,15 @@ namespace MyMoney.Infrastructure.Entities
       {
          var duration = End.Subtract(Start);
 
-         decimal amountPerTransaction = Amount / Recurrence.CountBetween(Start, End);
-
          var transactions = Recurrence.Repeat(Start, End, (DateTime date) => new Transaction
          {
             Date = date,
-            Amount = amountPerTransaction,
+            Amount = Amount,
             Description = Description,
             Notes = Notes,
             UserId = UserId,
             User = User,
-            Id = 0,
+            Id = VirtualTransactionId--,
             RecurringTransactionId = Id
          });
 
@@ -45,5 +43,10 @@ namespace MyMoney.Infrastructure.Entities
          model.Entity<RecurringTransaction>().HasIndex(t => new { t.UserId, t.Start, t.End, t.Recurrence, t.Description }).IsUnique();
          model.Entity<RecurringTransaction>().HasOne(t => t.UserProxy).WithMany().IsRequired();
       }
+
+      /// <summary>
+      /// A virtual Id for transactions that only exist as part of a recuring transaction.
+      /// </summary>
+      private static long VirtualTransactionId = -1;
    }
 }
