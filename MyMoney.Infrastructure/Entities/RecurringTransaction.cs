@@ -21,8 +21,6 @@ namespace MyMoney.Infrastructure.Entities
 
       public override IList<ITransaction> ToInstances()
       {
-         var duration = End.Subtract(Start);
-
          var transactions = Recurrence.Repeat(Start, End, (DateTime date) => new Transaction
          {
             Date = date,
