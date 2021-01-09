@@ -4,7 +4,7 @@
       <form [formGroup]="editTransactionForm" (ngSubmit)="onSubmit()">
          <label>Duration</label>
          <div class="form-inline">
-            <div class="input-group mb-3 pr-2">
+            <div class="input-group mb-3 pr-2" [ngStyle]="{ 'width': '50%'}">
                <div class="input-group-prepend">
                   <span class="input-group-text">Start</span>
                </div>
@@ -14,7 +14,7 @@
                   <div *ngIf="f.start.errors.required">Start is required</div>
                </div>
             </div>
-            <div class="input-group mb-3 pr-2">
+            <div class="input-group mb-3" [ngStyle]="{ 'width': '50%'}">
                <div class="input-group-prepend">
                   <span class="input-group-text">End</span>
                </div>
