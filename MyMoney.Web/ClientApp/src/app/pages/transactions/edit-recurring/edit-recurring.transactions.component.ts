@@ -116,6 +116,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
       this.f.start.disable();
       this.f.end.disable();
       this.f.description.disable();
+      this.f.recurrence.disable();
       this.f.amount.disable();
       this.f.notes.disable();
    }
@@ -124,6 +125,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
       this.f.start.enable();
       this.f.end.enable();
       this.f.description.enable();
+      this.f.recurrence.enable();
       this.f.amount.enable();
       this.f.notes.enable();
    }
