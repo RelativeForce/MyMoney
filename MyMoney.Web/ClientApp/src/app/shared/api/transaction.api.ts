@@ -29,6 +29,12 @@ export class TransactionApi {
          .pipe(first());
    }
 
+   public deleteRecurring(id: IIdDto): Observable<IDeleteResultDto> {
+      return this.api
+         .post<IIdDto, IDeleteResultDto>('/Transaction/DeleteRecurring', id)
+         .pipe(first());
+   }
+
    public add(transaction: ITransactionDto): Observable<ITransactionDto> {
       return this.api
          .post<ITransactionDto, ITransactionDto>('/Transaction/Add', transaction)

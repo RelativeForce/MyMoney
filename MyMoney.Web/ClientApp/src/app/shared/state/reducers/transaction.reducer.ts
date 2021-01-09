@@ -4,7 +4,8 @@ import {
    UpdateTransactionAction,
    TransactionActionTypes,
    DeleteTransactionAction,
-   UpdateDataRangeAction
+   UpdateDataRangeAction,
+   DeleteRecurringTransactionAction
 } from '../actions';
 import { ITransactionModel, IDateRangeModel, ITransactionsSearch } from '../types';
 
@@ -49,15 +50,18 @@ function updateTransaction(state: ITransactionState, action: UpdateTransactionAc
 function deleteTransaction(state: ITransactionState, action: DeleteTransactionAction): ITransactionState {
    const transactionId: number = action.transactionId;
 
-   const index = state.transactions.findIndex(t => t.id === transactionId);
+   return {
+      ...state,
+      transactions: state.transactions.filter(t => t.id !== transactionId)
+   };
+}
 
-   const transactions = state.transactions.map(t => t);
-
-   transactions.splice(index, 1);
+function deleteRecurringTransaction(state: ITransactionState, action: DeleteRecurringTransactionAction): ITransactionState {
+   const transactionId: number = action.transactionId;
 
    return {
       ...state,
-      transactions
+      transactions: state.transactions.filter(t => t.recurringTransactionId !== transactionId)
    };
 }
 
@@ -104,6 +108,8 @@ export function transactionReducer(state: ITransactionState = initialTransaction
          return updateTransaction(state, action as UpdateTransactionAction);
       case TransactionActionTypes.deleteTransaction:
          return deleteTransaction(state, action as DeleteTransactionAction);
+      case TransactionActionTypes.deleteRecurringTransaction:
+         return deleteRecurringTransaction(state, action as DeleteRecurringTransactionAction);
       case TransactionActionTypes.updateDataRange:
          return updateDataRange(state, action as UpdateDataRangeAction);
       case TransactionActionTypes.refreshTransactions:

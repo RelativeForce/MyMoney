@@ -73,6 +73,14 @@ export class TransactionsComponent implements OnInit {
       this.transactionService.updateDateRange(this.dateRange);
    }
 
+   public deleteRecurringTransaction(id: number): void {
+      if (!confirm(`Delete recurring transaction ${id}?`)) {
+         return;
+      }
+
+      this.transactionService.deleteRecurringTransaction(id);
+   }
+
    public deleteTransaction(id: number): void {
       if (!confirm(`Delete transaction ${id}?`)) {
          return;

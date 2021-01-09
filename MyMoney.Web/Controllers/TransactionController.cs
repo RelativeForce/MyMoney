@@ -211,5 +211,25 @@ namespace MyMoney.Web.Controllers
             return BadRequest("Error while deleting");
          }
       }
+
+      [HttpPost(nameof(DeleteRecurring))]
+      public IActionResult DeleteRecurring([FromBody] IdDto deleteParameters)
+      {
+         try
+         {
+            if (deleteParameters == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var result = _transactionService.DeleteRecurring(deleteParameters.Id);
+
+            return Ok(new DeleteResultDto { Success = result });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while deleting");
+         }
+      }
    }
 }

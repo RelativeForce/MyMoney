@@ -243,5 +243,16 @@ namespace MyMoney.Core.Services
 
          return _repository.Delete(transaction);
       }
+
+      public bool DeleteRecurring(long transactionId)
+      {
+         var transaction = _repository.FindById<IRecurringTransaction>(transactionId);
+         var userId = _currentUserProvider.CurrentUserId;
+
+         if (transaction == null || transaction.UserId != userId)
+            return false;
+
+         return _repository.Delete(transaction);
+      }
    }
 }

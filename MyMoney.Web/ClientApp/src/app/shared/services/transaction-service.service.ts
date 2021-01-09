@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
 import { TransactionApi, IDeleteResultDto, ITransactionListDto, IUpdateResultDto, IRecurringTransactionDto } from '../api';
 import {
+   DeleteRecurringTransactionAction,
    DeleteTransactionAction,
    RefreshTransactionsAction,
    SetTransactionsAction,
@@ -43,6 +44,16 @@ export class TransactionService {
          });
    }
 
+   public deleteRecurringTransaction(transactionId: number): void {
+      this.transactionApi
+         .deleteRecurring({ id: transactionId })
+         .subscribe((status: IDeleteResultDto) => {
+            if (status.success) {
+               this.store.dispatch(new DeleteRecurringTransactionAction(transactionId));
+            }
+         });
+   }
+
    public updateDateRange(dateRange: IDateRangeModel): void {
       this.store.dispatch(new UpdateDataRangeAction(dateRange));
    }
@@ -50,7 +61,7 @@ export class TransactionService {
    public addTransaction(transaction: ITransactionModel): Observable<boolean> {
       return this.transactionApi
          .add(transaction)
-         .pipe(map((t) => {
+         .pipe(map(() => {
             this.store.dispatch(new RefreshTransactionsAction());
             return true;
          }));
@@ -59,7 +70,10 @@ export class TransactionService {
    public addRecurringTransaction(transaction: IRecurringTransactionDto): Observable<boolean> {
       return this.transactionApi
          .addRecurring(transaction)
-         .pipe(map(() => true));
+         .pipe(map(() => {
+            this.store.dispatch(new RefreshTransactionsAction());
+            return true;
+         }));
    }
 
    public editTransaction(transaction: ITransactionModel): Observable<boolean> {
@@ -76,7 +90,12 @@ export class TransactionService {
    public editRecurringTransaction(transaction: IRecurringTransactionDto): Observable<boolean> {
       return this.transactionApi
          .updateRecurring(transaction)
-         .pipe(map((status: IUpdateResultDto) => status.success));
+         .pipe(map((status: IUpdateResultDto) => {
+            if (status.success) {
+               this.store.dispatch(new RefreshTransactionsAction());
+            }
+            return status.success;
+         }));
    }
 
    public findTransaction(transactionId: number): Observable<ITransactionModel> {

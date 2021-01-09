@@ -4,10 +4,8 @@ import { ITransactionModel } from '../../state/types';
 export class TransactionViewModel {
    date: string;
    description: string;
-   editTooltip: string;
    amount: string;
-   editLink: string;
-   canDelete: boolean;
+   recurringTransactionId: number | null;
    id: number;
 
    constructor(model: ITransactionModel) {
@@ -15,15 +13,10 @@ export class TransactionViewModel {
       this.description = model.description;
       this.amount = '£' + model.amount;
       this.id = model.id;
-      this.editLink = `./edit/${model.id}`;
-      this.editTooltip = `Edit transaction ${model.id}`;
-      this.canDelete = true;
+      this.recurringTransactionId = model.recurringTransactionId;
 
       if (model.recurringTransactionId !== null) {
          this.description += ` (${periodString(model.recurringPeriod)})`;
-         this.editLink = `./edit-recurring/${model.recurringTransactionId}`;
-         this.editTooltip = `Edit recurring transaction ${model.recurringTransactionId}`;
-         this.canDelete = false;
       }
    }
 }

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { IDateRangeModel, IIncomeModel } from '../types';
 
+// eslint-disable-next-line no-shadow
 export enum IncomeActionTypes {
    setIncomes = 'Set Incomes',
    updateIncome = 'Update Income',

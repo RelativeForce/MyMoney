@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { IUserDto } from '../../api';
 
+// eslint-disable-next-line no-shadow
 export enum SessionActionTypes {
    startSession = 'Start login session',
    clearSession = 'Clear session',
