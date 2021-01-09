@@ -77,7 +77,7 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
                incomeIds: [],
                notes: notes ?? '',
                recurringTransactionId: null,
-               recurringPeriod: null,
+               recurringFrequency: null,
             },
             row: row
          };

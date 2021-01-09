@@ -30,8 +30,8 @@ export function randomColor(): string {
    return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
 }
 
-export function periodString(period: Frequency): string {
-   switch (period) {
+export function toFrequencyString(frequency: Frequency): string {
+   switch (frequency) {
       case Frequency.day: return 'Daily';
       case Frequency.week: return 'Weekly';
       case Frequency.month: return 'Monthly';

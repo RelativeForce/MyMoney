@@ -1,4 +1,4 @@
-import { periodString } from '../../functions';
+import { toFrequencyString } from '../../functions';
 import { ITransactionModel } from '../../state/types';
 
 export class TransactionViewModel {
@@ -16,7 +16,7 @@ export class TransactionViewModel {
       this.recurringTransactionId = model.recurringTransactionId;
 
       if (model.recurringTransactionId !== null) {
-         this.description += ` (${periodString(model.recurringPeriod)})`;
+         this.description += ` (${toFrequencyString(model.recurringFrequency)})`;
       }
    }
 }
