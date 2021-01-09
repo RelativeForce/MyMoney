@@ -87,13 +87,26 @@ namespace MyMoney.Core.Services
             .AsEnumerable()
             .Select(t => new RunningTotal(t));
 
+         var recurringTransactions = _repository
+            .UserFiltered<IRecurringTransaction>(user)
+            .Where(rt => rt.Start >= start || rt.End <= end)
+            .AsEnumerable()
+            .Select(rt => rt.BuildVirtualInstances())
+            .SelectMany(vt => vt)
+            .Where(t => t.Date >= start && t.Date <= end)
+            .Select(t => new RunningTotal(t));
+
          var incomes = _repository
             .UserFiltered<IIncome>(user)
             .Where(i => i.Date >= start && i.Date <= end)
             .AsEnumerable()
             .Select(i => new RunningTotal(i));
 
-         var runningTotals = transactions.Concat(incomes).OrderBy(rt => rt.Date).ToList();
+         var runningTotals = transactions
+            .Concat(incomes)
+            .Concat(recurringTransactions)
+            .OrderBy(rt => rt.Date)
+            .ToList();
 
          foreach (var rt in runningTotals)
          {

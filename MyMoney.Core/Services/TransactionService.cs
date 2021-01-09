@@ -35,9 +35,23 @@ namespace MyMoney.Core.Services
 
       public IList<ITransaction> Between(DateTime start, DateTime end)
       {
-         return _repository
-            .UserFiltered<ITransaction>(_currentUserProvider.CurrentUserId)
+         var userId = _currentUserProvider.CurrentUserId;
+
+         var recurring = _repository
+            .UserFiltered<IRecurringTransaction>(userId)
+            .Where(rt => rt.Start >= start || rt.End <= end)
+            .AsEnumerable()
+            .Select(rt => rt.BuildVirtualInstances())
+            .SelectMany(vt => vt)
+            .Where(t => t.Date >= start && t.Date <= end);
+
+         var basic = _repository
+            .UserFiltered<ITransaction>(userId)
             .Where(t => t.Date >= start && t.Date <= end)
+            .AsEnumerable();
+
+         return basic
+            .Concat(recurring)
             .OrderByDescending(t => t.Date)
             .ToList();
       }

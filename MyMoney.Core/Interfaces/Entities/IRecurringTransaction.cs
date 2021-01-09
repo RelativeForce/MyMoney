@@ -2,7 +2,7 @@
 
 namespace MyMoney.Core.Interfaces.Entities
 {
-   public interface IRecurringTransaction<T> : IUserFilteredEntity, IRecurringEntity<T> where T : ITransaction
+   public interface IRecurringTransaction : IUserFilteredEntity, IRecurringEntity<ITransaction>
    {
       string Description { get; set; }
       string Notes { get; set; }

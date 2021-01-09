@@ -6,10 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MyMoney.Infrastructure.Entities
 {
-   public class RecurringTransaction : RecurringEntity<Transaction>, IRecurringTransaction<Transaction>
+   public class RecurringTransaction : RecurringEntity<ITransaction>, IRecurringTransaction
    {
       [Required]
       public string Description { get; set; }
@@ -18,7 +19,7 @@ namespace MyMoney.Infrastructure.Entities
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
 
-      public override IList<Transaction> BuildVirtualInstances()
+      public override IList<ITransaction> BuildVirtualInstances()
       {
          var duration = End.Subtract(Start);
 
@@ -36,7 +37,7 @@ namespace MyMoney.Infrastructure.Entities
             RecurringTransactionId = Id
          });
 
-         return transactions;
+         return transactions.Cast<ITransaction>().ToList();
       }
 
       internal static void Configure(ModelBuilder model)
