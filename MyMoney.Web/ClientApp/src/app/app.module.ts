@@ -26,6 +26,7 @@ import {
    ChangePasswordComponent,
    EditRecurringTransactionsComponent,
    AddBasicTransactionsComponent,
+   AddRecurringTransactionsComponent,
 } from './pages';
 import {
    ChartComponent,
@@ -64,6 +65,7 @@ import { routes } from './app.routing';
       ChangePasswordComponent,
       EditRecurringTransactionsComponent,
       AddBasicTransactionsComponent,
+      AddRecurringTransactionsComponent,
 
       // Shared
       ImportFileComponent,

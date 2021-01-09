@@ -2,6 +2,7 @@
 <div class="row">
    <div class="col-6">
       <form [formGroup]="editTransactionForm" (ngSubmit)="onSubmit()">
+         <label>Duration</label>
          <div class="form-inline">
             <div class="input-group mb-3 pr-2">
                <div class="input-group-prepend">
@@ -26,12 +27,14 @@
          </div>
          <div class="form-group">
             <label for="recurrence">Recurrence</label>
-            <select class="form-control" formControlName="recurrence" [ngClass]="{ 'is-invalid': submitted && f.recurrence.errors }">
+            <select class="form-control" formControlName="recurrence" [ngClass]="{ 'is-invalid': submitted && f.recurrence.errors }"
+               (change)="onDateChange()">
                <option *ngFor="let opt of recurrenceOptions" [value]="opt.key" [selected]="opt.key == f.recurrence.value">{{ opt.value }}
                </option>
             </select>
             <div *ngIf="submitted && f.recurrence.errors" class="invalid-feedback">
                <div *ngIf="f.recurrence.errors.required">Recurrence is required</div>
+               <div *ngIf="f.recurrence.errors.min || f.recurrence.errors.max">Invalid recurrence value</div>
             </div>
          </div>
          <div class="form-group">
@@ -67,7 +70,8 @@
    </div>
    <div class="col-6">
       <h4>Dates</h4>
-      <div [ngStyle]="{'max-height': '60vh', 'overflow-y': 'scroll'}">
+      <div *ngIf="dateMessage !== null"> {{ dateMessage }} </div>
+      <div *ngIf="dates.length > 0" [ngStyle]="{'max-height': '60vh', 'overflow-y': 'scroll'}">
          <table class="table">
             <tbody>
                <tr *ngFor="let date of dates; let i = index">

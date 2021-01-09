@@ -14,6 +14,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
    public id: number;
    public loading = false;
    public submitted = false;
+   public dateMessage: string | null = null;
    public dates: string[] = [];
    public recurrenceOptions: { key: Period; value: string }[];
 
@@ -48,7 +49,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
             description: ['', [Validators.required]],
             amount: [0, [Validators.required, Validators.min(0)]],
             notes: [''],
-            recurrence: [Period.month, [Validators.required, Validators.min(0)]]
+            recurrence: [Period.month, [Validators.required, Validators.min(Period.day), Validators.max(Period.year)]]
          });
 
          this.disableForm();
@@ -77,6 +78,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
 
    public onDateChange(): void {
       this.dates = [];
+      this.dateMessage = 'Dates will be recalculated when saved.';
    }
 
    public toInputDateString(text: string): string {
@@ -137,6 +139,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
       const description = this.f.description.value;
       const amount = this.f.amount.value;
       const notes = this.f.notes.value;
+      const recurrence = Number.parseInt(this.f.recurrence.value, 10) as Period;
 
       return {
          start,
@@ -145,7 +148,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
          amount,
          id: this.id,
          notes,
-         recurrence: Period.month,
+         recurrence,
          dates: []
       };
    }

@@ -3,3 +3,4 @@
    <mymoney-toggle [value]="isRecurring" [text]="'Toggle Recurring'" (checked)="onRecurringChanged($event)"></mymoney-toggle>
 </div>
 <mymoney-add-basic-transaction *ngIf="!isRecurring"></mymoney-add-basic-transaction>
+<mymoney-add-recurring-transaction *ngIf="isRecurring"></mymoney-add-recurring-transaction>
