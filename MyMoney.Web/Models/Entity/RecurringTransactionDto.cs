@@ -1,5 +1,6 @@
 ﻿using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces.Entities;
+using System;
 using System.Linq;
 
 namespace MyMoney.Web.Models.Entity
@@ -12,6 +13,7 @@ namespace MyMoney.Web.Models.Entity
       public string Description { get; set; }
       public string Notes { get; set; }
       public decimal Amount { get; set; }
+      public string[] Dates { get; set; }
 
       public RecurringTransactionDto()
       {
@@ -22,6 +24,7 @@ namespace MyMoney.Web.Models.Entity
       {
          Start = model.Start.ToShortDateString();
          End = model.End.ToShortDateString();
+         Dates = model.Recurrence.Repeat(model.Start, model.End, (DateTime date) => date.ToShortDateString()).ToArray();
          Description = model.Description;
          Notes = model.Notes;
          Amount = model.Amount;
