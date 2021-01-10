@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Core.Interfaces.Entities.Abstract;
 using MyMoney.Infrastructure.Entities;
 using MyMoney.Infrastructure.EntityFramework;
 
@@ -140,6 +141,23 @@ namespace MyMoney.Infrastructure
          }
       }
 
+      public IQueryable<T> UserFiltered<T>(long userId) where T : class, IUserFilteredEntity { 
+         try
+         {
+            return Set<T>().Where(e => e.UserId == userId);
+         }
+         catch (Exception e)
+         {
+            Console.WriteLine(e);
+            return null;
+         }
+      }
+
+      public IQueryable<T> UserFiltered<T>(IUser user) where T : class, IUserFilteredEntity
+      {
+         return UserFiltered<T>(user.Id);
+      }
+
       private IQueryable<T> Set<T>() where T : class, IBaseEntity
       {
          if (typeof(T) == typeof(ITransaction))
@@ -153,6 +171,9 @@ namespace MyMoney.Infrastructure
 
          if (typeof(T) == typeof(IIncome))
             return _model.Set<Income>().Cast<IIncome>().AsQueryable() as IQueryable<T>;
+
+         if (typeof(T) == typeof(IRecurringTransaction))
+            return _model.Set<RecurringTransaction>().Cast<IRecurringTransaction>().AsQueryable() as IQueryable<T>;
 
          throw new InvalidCastException("Unsupported entity type");
       }

@@ -1,10 +1,12 @@
 import { Action } from '@ngrx/store';
 import { IDateRangeModel, ITransactionModel } from '../types';
 
+// eslint-disable-next-line no-shadow
 export enum TransactionActionTypes {
    setTransactions = 'Set transactions',
    updateTransaction = 'Update transaction',
    deleteTransaction = 'Delete transaction',
+   deleteRecurringTransaction = 'Delete recurring transaction',
    updateDataRange = 'Update Data Range',
    refreshTransactions = 'Refresh Transactions',
 }
@@ -23,6 +25,12 @@ export class UpdateTransactionAction implements Action {
 
 export class DeleteTransactionAction implements Action {
    public type: string = TransactionActionTypes.deleteTransaction;
+
+   constructor(public readonly transactionId: number) { }
+}
+
+export class DeleteRecurringTransactionAction implements Action {
+   public type: string = TransactionActionTypes.deleteRecurringTransaction;
 
    constructor(public readonly transactionId: number) { }
 }

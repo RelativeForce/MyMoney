@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Core.Interfaces.Entities.Abstract;
 
 namespace MyMoney.Core.Interfaces
 {
@@ -14,5 +15,7 @@ namespace MyMoney.Core.Interfaces
       T Find<T>(Func<T, bool> predicate) where T : class, IBaseEntity;
       T FindById<T>(long id) where T : class, IBaseEntity;
       IQueryable<T> All<T>() where T : class, IBaseEntity;
+      IQueryable<T> UserFiltered<T>(long userId) where T : class, IUserFilteredEntity;
+      IQueryable<T> UserFiltered<T>(IUser user) where T : class, IUserFilteredEntity;
    }
 }

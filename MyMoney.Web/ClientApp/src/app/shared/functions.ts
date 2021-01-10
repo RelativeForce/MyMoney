@@ -1,3 +1,5 @@
+import { Frequency } from './api';
+
 export function groupBy<T, K>(list: T[], toKey: (item: T) => K): Map<K, T[]> {
    const map = new Map<K, T[]>();
    list.forEach((item: T) => {
@@ -26,4 +28,13 @@ export function toInputDateString(text: string): string {
 
 export function randomColor(): string {
    return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+}
+
+export function toFrequencyString(frequency: Frequency): string {
+   switch (frequency) {
+      case Frequency.day: return 'Daily';
+      case Frequency.week: return 'Weekly';
+      case Frequency.month: return 'Monthly';
+      case Frequency.year: return 'Annually';
+   }
 }

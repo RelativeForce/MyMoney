@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Infrastructure.Entities.Abstract;
 
 namespace MyMoney.Infrastructure.Entities
 {
-   public class Transaction : BaseEntity, ITransaction
+   public class Transaction : UserFilteredEntity, ITransaction
    {
       public DateTime Date { get; set; }
       [Required]
@@ -17,17 +18,9 @@ namespace MyMoney.Infrastructure.Entities
       public string Notes { get; set; }
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
-      public long UserId { get; set; }
 
       [NotMapped]
-      public IUser User
-      {
-         get => UserProxy;
-         set => UserProxy = value as User;
-      }
-
-      [ForeignKey(nameof(UserId))]
-      public virtual User UserProxy { get; set; }
+      public IRecurringTransaction Parent { get; set; } = null;
 
       [NotMapped]
       public IQueryable<IBudget> Budgets => BudgetsProxy.Select(tb => tb.Budget).Cast<IBudget>().AsQueryable();
@@ -40,7 +33,7 @@ namespace MyMoney.Infrastructure.Entities
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<Transaction>().HasIndex(t => new { t.UserId, t.Date, t.Description }).IsUnique();
-         model.Entity<Transaction>().HasOne(t => t.UserProxy).WithMany(t => t.TransactionsProxy).IsRequired();
+         model.Entity<Transaction>().HasOne(t => t.UserProxy).WithMany().IsRequired();
       }
    }
 }

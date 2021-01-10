@@ -18,21 +18,7 @@ export class RunningTotalSeriesDataPoint implements ISeriesDataPoint {
       this.value = runningTotal?.value ?? initialTotal;
       this.amount = runningTotal?.delta ?? 0;
       this.date = runningTotal?.date ?? '';
-
-      if (runningTotal !== null) {
-
-         if (runningTotal.isIncome) {
-            this.name = `Income ${runningTotal.id}`;
-            this.link = ['/incomes', 'edit', runningTotal.id];
-         }
-
-         if (runningTotal.isTransaction) {
-            this.name = `Transaction ${runningTotal.id}`;
-            this.link = ['/transactions', 'edit', runningTotal.id];
-         }
-      } else {
-         this.name = DEFAULT_TEXT;
-         this.link = null;
-      }
+      this.name = runningTotal?.name ?? DEFAULT_TEXT;
+      this.link = runningTotal?.link.split('/');
    }
 }

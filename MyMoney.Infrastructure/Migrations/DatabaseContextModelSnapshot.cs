@@ -8,199 +8,242 @@ using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Infrastructure.Migrations
 {
-    [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
-    {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
+   [DbContext(typeof(DatabaseContext))]
+   partial class DatabaseContextModelSnapshot : ModelSnapshot
+   {
+      protected override void BuildModel(ModelBuilder modelBuilder)
+      {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+         modelBuilder
+             .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+             .HasAnnotation("Relational:MaxIdentifierLength", 128)
+             .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+             .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.Budget", b =>
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.Budget", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+                   b.Property<long>("Id")
+                       .ValueGeneratedOnAdd()
+                       .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                       .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Amount");
+                   b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Month");
+                   b.Property<int>("Month");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                   b.Property<string>("Name")
+                       .IsRequired();
 
-                    b.Property<string>("Notes");
+                   b.Property<string>("Notes");
 
-                    b.Property<long>("UserId");
+                   b.Property<long>("UserId");
 
-                    b.Property<int>("Year");
+                   b.Property<int>("Year");
 
-                    b.HasKey("Id");
+                   b.HasKey("Id");
 
-                    b.HasIndex("UserId", "Year", "Month", "Name")
-                        .IsUnique();
+                   b.HasIndex("UserId", "Year", "Month", "Name")
+                       .IsUnique();
 
-                    b.ToTable("Budgets");
+                   b.ToTable("Budgets");
                 });
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.Income", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.Income", b =>
+             {
+                b.Property<long>("Id")
+                       .ValueGeneratedOnAdd()
+                       .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                       .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Amount");
+                b.Property<decimal>("Amount")
+                     .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("Date");
+                b.Property<DateTime>("Date");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                b.Property<string>("Name")
+                       .IsRequired();
 
-                    b.Property<long>("UserId");
+                b.Property<long>("UserId");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId", "Date", "Name")
-                        .IsUnique();
+                b.HasIndex("UserId", "Date", "Name")
+                       .IsUnique();
 
-                    b.ToTable("Incomes");
-                });
+                b.ToTable("Incomes");
+             });
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.Transaction", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.RecurringTransaction", b =>
+             {
+                b.Property<long>("Id")
+                       .ValueGeneratedOnAdd()
+                       .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                       .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Amount");
+                b.Property<decimal>("Amount")
+                     .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("Date");
+                b.Property<string>("Description")
+                       .IsRequired();
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<DateTime>("End");
 
-                    b.Property<string>("Notes")
-                        .IsRequired();
+                b.Property<string>("Notes")
+                       .IsRequired();
 
-                    b.Property<long>("UserId");
+                b.Property<int>("Recurrence");
 
-                    b.HasKey("Id");
+                b.Property<DateTime>("Start");
 
-                    b.HasIndex("UserId", "Date", "Description")
-                        .IsUnique();
+                b.Property<long>("UserId");
 
-                    b.ToTable("Transactions");
-                });
+                b.HasKey("Id");
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionBudget", b =>
-                {
-                    b.Property<long>("BudgetId");
+                b.HasIndex("UserId", "Start", "End", "Recurrence", "Description")
+                       .IsUnique();
 
-                    b.Property<long>("TransactionId");
+                b.ToTable("RecurringTransactions");
+             });
 
-                    b.HasKey("BudgetId", "TransactionId");
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.Transaction", b =>
+             {
+                b.Property<long>("Id")
+                       .ValueGeneratedOnAdd()
+                       .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                       .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.HasIndex("TransactionId");
+                b.Property<decimal>("Amount")
+                     .HasColumnType("decimal(18,2)");
 
-                    b.ToTable("TransactionBudget");
-                });
+                b.Property<DateTime>("Date");
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionIncome", b =>
-                {
-                    b.Property<long>("IncomeId");
+                b.Property<string>("Description")
+                       .IsRequired();
 
-                    b.Property<long>("TransactionId");
+                b.Property<string>("Notes")
+                       .IsRequired();
 
-                    b.HasKey("IncomeId", "TransactionId");
+                b.Property<long>("UserId");
 
-                    b.HasIndex("TransactionId");
+                b.HasKey("Id");
 
-                    b.ToTable("TransactionIncome");
-                });
+                b.HasIndex("UserId", "Date", "Description")
+                       .IsUnique();
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.User", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+                b.ToTable("Transactions");
+             });
 
-                    b.Property<DateTime>("DateOfBirth");
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionBudget", b =>
+             {
+                b.Property<long>("BudgetId");
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                b.Property<long>("TransactionId");
 
-                    b.Property<string>("FullName")
-                        .IsRequired();
+                b.HasKey("BudgetId", "TransactionId");
 
-                    b.Property<string>("Password")
-                        .IsRequired();
+                b.HasIndex("TransactionId");
 
-                    b.HasKey("Id");
+                b.ToTable("TransactionBudget");
+             });
 
-                    b.HasIndex("Email")
-                        .IsUnique();
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionIncome", b =>
+             {
+                b.Property<long>("IncomeId");
 
-                    b.ToTable("Users");
-                });
+                b.Property<long>("TransactionId");
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.Budget", b =>
-                {
-                    b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
-                        .WithMany("BudgetsProxy")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                b.HasKey("IncomeId", "TransactionId");
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.Income", b =>
-                {
-                    b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
-                        .WithMany("IncomesProxy")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                b.HasIndex("TransactionId");
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.Transaction", b =>
-                {
-                    b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
-                        .WithMany("TransactionsProxy")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                b.ToTable("TransactionIncome");
+             });
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionBudget", b =>
-                {
-                    b.HasOne("MyMoney.Infrastructure.Entities.Budget", "Budget")
-                        .WithMany("TransactionsProxy")
-                        .HasForeignKey("BudgetId")
-                        .OnDelete(DeleteBehavior.Restrict);
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.User", b =>
+             {
+                b.Property<long>("Id")
+                       .ValueGeneratedOnAdd()
+                       .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                       .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.HasOne("MyMoney.Infrastructure.Entities.Transaction", "Transaction")
-                        .WithMany("BudgetsProxy")
-                        .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                b.Property<DateTime>("DateOfBirth");
 
-            modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionIncome", b =>
-                {
-                    b.HasOne("MyMoney.Infrastructure.Entities.Income", "Income")
-                        .WithMany("TransactionsProxy")
-                        .HasForeignKey("IncomeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                b.Property<string>("Email")
+                       .IsRequired();
 
-                    b.HasOne("MyMoney.Infrastructure.Entities.Transaction", "Transaction")
-                        .WithMany("IncomesProxy")
-                        .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                b.Property<string>("FullName")
+                       .IsRequired();
+
+                b.Property<string>("Password")
+                       .IsRequired();
+
+                b.HasKey("Id");
+
+                b.HasIndex("Email")
+                       .IsUnique();
+
+                b.ToTable("Users");
+             });
+
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.Budget", b =>
+             {
+                b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
+                       .WithMany()
+                       .HasForeignKey("UserId")
+                       .OnDelete(DeleteBehavior.Cascade);
+             });
+
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.Income", b =>
+             {
+                b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
+                       .WithMany()
+                       .HasForeignKey("UserId")
+                       .OnDelete(DeleteBehavior.Cascade);
+             });
+
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.RecurringTransaction", b =>
+             {
+                b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
+                       .WithMany()
+                       .HasForeignKey("UserId")
+                       .OnDelete(DeleteBehavior.Cascade);
+             });
+
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.Transaction", b =>
+             {
+                b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
+                       .WithMany()
+                       .HasForeignKey("UserId")
+                       .OnDelete(DeleteBehavior.Cascade);
+             });
+
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionBudget", b =>
+             {
+                b.HasOne("MyMoney.Infrastructure.Entities.Budget", "Budget")
+                       .WithMany("TransactionsProxy")
+                       .HasForeignKey("BudgetId")
+                       .OnDelete(DeleteBehavior.Restrict);
+
+                b.HasOne("MyMoney.Infrastructure.Entities.Transaction", "Transaction")
+                       .WithMany("BudgetsProxy")
+                       .HasForeignKey("TransactionId")
+                       .OnDelete(DeleteBehavior.Cascade);
+             });
+
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.TransactionIncome", b =>
+             {
+                b.HasOne("MyMoney.Infrastructure.Entities.Income", "Income")
+                       .WithMany("TransactionsProxy")
+                       .HasForeignKey("IncomeId")
+                       .OnDelete(DeleteBehavior.Restrict);
+
+                b.HasOne("MyMoney.Infrastructure.Entities.Transaction", "Transaction")
+                       .WithMany("IncomesProxy")
+                       .HasForeignKey("TransactionId")
+                       .OnDelete(DeleteBehavior.Cascade);
+             });
 #pragma warning restore 612, 618
-        }
-    }
+      }
+   }
 }

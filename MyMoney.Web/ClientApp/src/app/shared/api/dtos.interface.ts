@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 export interface IBudgetDto {
    id: number;
    amount: number;
@@ -74,6 +75,8 @@ export interface ITransactionDto {
    budgetIds: number[];
    incomeIds: number[];
    id: number;
+   recurringTransactionId: number | null;
+   recurringFrequency: Frequency | null;
 }
 
 export interface ITransactionListDto {
@@ -92,8 +95,8 @@ export interface IRunningTotalSearchDto {
 
 export interface IRunningTotalDto {
    id: number;
-   isTransaction: boolean;
-   isIncome: boolean;
+   link: string;
+   name: string;
    text: string;
    date: string;
    delta: number;
@@ -121,4 +124,22 @@ export interface IForgotPasswordDto {
 
 export interface IPasswordDto {
    password: string;
+}
+
+export enum Frequency {
+   day = 0,
+   week = 1,
+   month = 2,
+   year = 3,
+}
+
+export interface IRecurringTransactionDto {
+   start: string;
+   end: string;
+   description: string;
+   notes: string;
+   amount: number;
+   id: number;
+   recurrence: Frequency;
+   dates: string[];
 }

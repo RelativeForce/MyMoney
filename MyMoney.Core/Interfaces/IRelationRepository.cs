@@ -1,5 +1,5 @@
 ﻿using System;
-using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Core.Interfaces.Entities.Abstract;
 
 namespace MyMoney.Core.Interfaces
 {

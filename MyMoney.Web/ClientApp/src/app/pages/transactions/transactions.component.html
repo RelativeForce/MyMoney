@@ -50,9 +50,16 @@
             <td>{{transaction.description}}</td>
             <td>{{transaction.amount}}</td>
             <td>
-               <div class="btn-group">
+               <div *ngIf="transaction.recurringTransactionId !== null" class="btn-group">
+                  <a class="btn btn-primary" routerLink="./edit-recurring/{{transaction.recurringTransactionId}}" data-toggle="tooltip"
+                     data-placement="bottom" title="Edit recurring transaction {{transaction.recurringTransactionId}}">🖉</a>
+                  <button class="btn btn-danger" (click)="deleteRecurringTransaction(transaction.recurringTransactionId)"
+                     data-toggle="tooltip" data-placement="bottom"
+                     title="Delete recurring transaction {{transaction.recurringTransactionId}}">✕</button>
+               </div>
+               <div *ngIf="transaction.recurringTransactionId === null" class="btn-group">
                   <a class="btn btn-primary" routerLink="./edit/{{transaction.id}}" data-toggle="tooltip" data-placement="bottom"
-                     title="Edit transaction {{transaction.id}}">🖉</a>
+                     title=" Edit transaction {{transaction.id}}">🖉</a>
                   <button class="btn btn-danger" (click)="deleteTransaction(transaction.id)" data-toggle="tooltip" data-placement="bottom"
                      title="Delete transaction {{transaction.id}}">✕</button>
                </div>

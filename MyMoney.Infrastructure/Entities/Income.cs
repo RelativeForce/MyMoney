@@ -6,27 +6,17 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Infrastructure.Entities.Abstract;
 
 namespace MyMoney.Infrastructure.Entities
 {
-   public class Income : BaseEntity, IIncome
+   public class Income : UserFilteredEntity, IIncome
    {
       public DateTime Date { get; set; }
       [Required]
       public string Name { get; set; }
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
-      public long UserId { get; set; }
-
-      [NotMapped]
-      public IUser User
-      {
-         get => UserProxy;
-         set => UserProxy = value as User;
-      }
-
-      [ForeignKey(nameof(UserId))]
-      public virtual User UserProxy { get; set; }
 
       [NotMapped]
       public IQueryable<ITransaction> Transactions => TransactionsProxy.Select(tb => tb.Transaction).Cast<ITransaction>().AsQueryable();
@@ -61,7 +51,7 @@ namespace MyMoney.Infrastructure.Entities
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<Income>().HasIndex(t => new { t.UserId, t.Date, t.Name }).IsUnique();
-         model.Entity<Income>().HasOne(t => t.UserProxy).WithMany(t => t.IncomesProxy).IsRequired();
+         model.Entity<Income>().HasOne(t => t.UserProxy).WithMany().IsRequired();
       }
    }
 }

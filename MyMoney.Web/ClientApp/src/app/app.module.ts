@@ -24,11 +24,15 @@ import {
    ForgotPasswordComponent,
    ResetPasswordComponent,
    ChangePasswordComponent,
+   EditRecurringTransactionsComponent,
+   AddBasicTransactionsComponent,
+   AddRecurringTransactionsComponent,
 } from './pages';
 import {
    ChartComponent,
    FooterComponent,
-   ImportFileComponent
+   ImportFileComponent,
+   ToggleComponent
 } from './shared/components';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
@@ -59,11 +63,15 @@ import { routes } from './app.routing';
       ForgotPasswordComponent,
       ResetPasswordComponent,
       ChangePasswordComponent,
+      EditRecurringTransactionsComponent,
+      AddBasicTransactionsComponent,
+      AddRecurringTransactionsComponent,
 
       // Shared
       ImportFileComponent,
       ChartComponent,
       FooterComponent,
+      ToggleComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

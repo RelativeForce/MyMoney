@@ -17,7 +17,8 @@ import {
    ResetPasswordComponent,
    TransactionsComponent,
    ProfileComponent,
-   ChangePasswordComponent
+   ChangePasswordComponent,
+   EditRecurringTransactionsComponent
 } from './pages';
 import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 
@@ -102,6 +103,14 @@ export const routes: Routes = [
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Edit transaction'
+            },
+         },
+         {
+            path: 'edit-recurring/:id',
+            component: EditRecurringTransactionsComponent,
+            canActivate: [AuthenticationGuard],
+            data: {
+               title: 'Edit recurring transaction'
             },
          },
          { path: '**', redirectTo: '/' }

@@ -6,8 +6,8 @@ namespace MyMoney.Core.Data
    public class RunningTotal
    {
       public long Id { get; }
-      public bool IsTransaction { get; }
-      public bool IsIncome { get; }
+      public string Link { get; }
+      public string Name { get; }
       public string Text { get; }
       public DateTime Date { get; }
       public decimal Delta { get; }
@@ -15,9 +15,20 @@ namespace MyMoney.Core.Data
 
       public RunningTotal(ITransaction transaction)
       {
-         Id = transaction.Id;
-         IsIncome = false;
-         IsTransaction = true;
+         
+         if (transaction.Parent != null)
+         {
+            Link = $@"/transactions/edit-recurring/{transaction.Parent.Id}";
+            Id = transaction.Parent.Id;
+            // Name must be unique
+            Name = $"Recurring Transaction {transaction.Id}";
+         }
+         else {
+            Link = $@"/transactions/edit/{transaction.Id}";
+            Id = transaction.Id;
+            Name = $"Transaction {transaction.Id}";
+         }
+
          Text = transaction.Description;
          Date = transaction.Date;
          Delta = -transaction.Amount;
@@ -26,8 +37,8 @@ namespace MyMoney.Core.Data
       public RunningTotal(IIncome income)
       {
          Id = income.Id;
-         IsTransaction = false;
-         IsIncome = true;
+         Link = $@"/incomes/edit/{income.Id}";
+         Name = $"Income {income.Id}";
          Text = income.Name;
          Date = income.Date;
          Delta = income.Amount;

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { IBudgetModel } from '../types';
 
+// eslint-disable-next-line no-shadow
 export enum BudgetActionTypes {
    setBudgets = 'Set Budgets',
    updateBudget = 'Update Budget',

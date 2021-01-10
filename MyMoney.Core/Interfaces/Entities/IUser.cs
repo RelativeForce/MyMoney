@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MyMoney.Core.Interfaces.Entities.Abstract;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MyMoney.Core.Interfaces.Entities
 {
@@ -11,9 +11,6 @@ namespace MyMoney.Core.Interfaces.Entities
       DateTime DateOfBirth { get; set; }
       string FullName { get; set; }
 
-      IQueryable<ITransaction> Transactions { get; }
-      IQueryable<IBudget> Budgets { get; }
-      IQueryable<IIncome> Incomes { get; }
       IEnumerable<string> ValidationErrors();
    }
 }
