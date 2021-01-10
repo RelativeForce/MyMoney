@@ -21,7 +21,7 @@ namespace MyMoney.Local
             try
             {
                var latestTag = await GetLatestTag(client);
-               var latestVersion = new Version(latestTag[1..]);
+               var latestVersion = new Version(latestTag.Substring(1));
 
                if (!ShouldDownloadLatest(latestVersion))
                {
@@ -81,9 +81,9 @@ namespace MyMoney.Local
 
          var zipFilePath = Path.Combine(Directory.GetCurrentDirectory(), assetFileName);
 
-         await using (var ms = await fileResponse.Content.ReadAsStreamAsync())
+         using (var ms = await fileResponse.Content.ReadAsStreamAsync())
          {
-            await using (var fs = File.Create(zipFilePath))
+            using (var fs = File.Create(zipFilePath))
             {
                ms.Seek(0, SeekOrigin.Begin);
                ms.CopyTo(fs);
