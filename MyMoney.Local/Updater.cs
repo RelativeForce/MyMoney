@@ -37,6 +37,7 @@ namespace MyMoney.Local
             {
                Console.WriteLine("Failed check for new version");
                Console.WriteLine(e);
+               Console.ReadLine();
             }
          }
       }
