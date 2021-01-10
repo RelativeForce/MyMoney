@@ -6,16 +6,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using MyMoney.Core;
 
 namespace MyMoney.Local
 {
    public class Program
    {
-      private static string WebAppFolder => Environment.GetEnvironmentVariable(EnvironmentVariables.LocalWebAppPath) ?? Path.Combine(Directory.GetCurrentDirectory(), "Web");
-      private static string WebAppPath => Path.Combine(WebAppFolder, "MyMoney.Web.exe");
-      private static string RepositoryURl => Environment.GetEnvironmentVariable(EnvironmentVariables.GitHubRepositoryURL) ?? "https://github.com/RelativeForce/MyMoney";
-
       public static void Main(string[] args)
       {
          Task.Run(async () => await EnsureLatestVersion()).Wait();
@@ -25,13 +20,13 @@ namespace MyMoney.Local
 
       private static void Launch()
       {
-         if (!File.Exists(WebAppPath))
+         if (!File.Exists(Constants.WebAppPath))
             return;
 
          try
          {
             Console.WriteLine("Starting MyMoney...");
-            var process = Process.Start(WebAppPath);
+            var process = Process.Start(Constants.WebAppPath);
             if (process == null)
             {
                Console.WriteLine("Failed to start MyMoney");
@@ -53,7 +48,7 @@ namespace MyMoney.Local
       private static async Task<string> GetLatestTag(HttpClient client)
       {
          Console.WriteLine("Searching for latest version...");
-         var response = await client.GetAsync($"{RepositoryURl}/releases/latest");
+         var response = await client.GetAsync($"{Constants.RepositoryURL}/releases/latest");
          var redirect = response.RequestMessage.RequestUri;
          return redirect.ToString().Split('/').Last();
       }
@@ -61,28 +56,28 @@ namespace MyMoney.Local
       private static bool ShouldDownloadLatest(Version latest)
       {
          // If the web app doesnt exist, download the latest
-         if (!File.Exists(WebAppPath))
+         if (!File.Exists(Constants.WebAppPath))
             return true;
 
          // Check the local version
-         var fileData = FileVersionInfo.GetVersionInfo(WebAppPath);
+         var fileData = FileVersionInfo.GetVersionInfo(Constants.WebAppPath);
          var localVersion = new Version(fileData.FileVersion);
          return latest > localVersion;
       }
 
       private static void EmptyExistingFolder()
       {
-         if (Directory.Exists(WebAppFolder))
+         if (Directory.Exists(Constants.WebAppFolder))
          {
-            Directory.Delete(WebAppFolder, true);
+            Directory.Delete(Constants.WebAppFolder, true);
          }
 
-         Directory.CreateDirectory(WebAppFolder);
+         Directory.CreateDirectory(Constants.WebAppFolder);
       }
 
       private static async Task DownloadLatest(HttpClient client, string latestTag, Version latestVersion)
       {
-         var assetPath = string.Format(RepositoryURl + "/releases/download/{0}/MyMoney_win64_{1}-{2}-{3}.zip", latestTag, latestVersion.Major, latestVersion.Minor, latestVersion.Build);
+         var assetPath = string.Format(Constants.RepositoryURL + "/releases/download/{0}/MyMoney_win64_{1}-{2}-{3}.zip", latestTag, latestVersion.Major, latestVersion.Minor, latestVersion.Build);
 
          var fileResponse = await client.GetAsync(assetPath);
 
@@ -97,7 +92,7 @@ namespace MyMoney.Local
             }
          }
 
-         ZipFile.ExtractToDirectory(zipFilePath, WebAppFolder);
+         ZipFile.ExtractToDirectory(zipFilePath, Constants.WebAppFolder);
 
          File.Delete(zipFilePath);
       }
