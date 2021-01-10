@@ -15,7 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMoney.Web", "MyMoney.Web\
 		{91A5C579-65C3-4261-B769-9DFBD96FC94F} = {91A5C579-65C3-4261-B769-9DFBD96FC94F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMoney.Web.Tests", "MyMoney.Web.Tests\MyMoney.Web.Tests.csproj", "{51005CD9-FA4C-4B57-8098-8B088D094A57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMoney.Web.Tests", "MyMoney.Web.Tests\MyMoney.Web.Tests.csproj", "{51005CD9-FA4C-4B57-8098-8B088D094A57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMoney.Local", "MyMoney.Local\MyMoney.Local.csproj", "{C2841F09-0DC6-4958-AC27-F38B7C739367}"
+	ProjectSection(ProjectDependencies) = postProject
+		{91A5C579-65C3-4261-B769-9DFBD96FC94F} = {91A5C579-65C3-4261-B769-9DFBD96FC94F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +48,10 @@ Global
 		{51005CD9-FA4C-4B57-8098-8B088D094A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51005CD9-FA4C-4B57-8098-8B088D094A57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51005CD9-FA4C-4B57-8098-8B088D094A57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2841F09-0DC6-4958-AC27-F38B7C739367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2841F09-0DC6-4958-AC27-F38B7C739367}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2841F09-0DC6-4958-AC27-F38B7C739367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2841F09-0DC6-4958-AC27-F38B7C739367}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

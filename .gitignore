@@ -15,3 +15,5 @@
 /MyMoney.Web.Tests/obj
 /MyMoney.Web/ClientApp/package-lock.json
 /MyMoney.Web/Emails
+/MyMoney.Local/bin
+/MyMoney.Local/obj

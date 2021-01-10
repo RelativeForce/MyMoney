@@ -8,6 +8,8 @@ namespace MyMoney.Core
       public const string DatabaseEngine = "MyMoney_Database_Engine";
 
       public const string TokenSecret = "MyMoney_Token_Secret";
+      public const string LocalWebAppPath = "MyMoney_Local_Web_App_Path";
+      public const string GitHubRepositoryURL = "MyMoney_GitHub_URL";
 
       public const string EmailSmtpServerURL = "MyMoney_Email_Smtp_Server_URL";
       public const string EmailSmtpServerPort = "MyMoney_Email_Smtp_Server_Port";
