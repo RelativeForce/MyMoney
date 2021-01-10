@@ -17,3 +17,5 @@
 /MyMoney.Web/Emails
 /MyMoney.Local/bin
 /MyMoney.Local/obj
+/MyMoney.Local/Properties/PublishProfiles
+/MyMoney.Local
