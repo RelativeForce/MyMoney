@@ -22,7 +22,14 @@ namespace MyMoney.Local
             return;
 
          Console.WriteLine("Starting MyMoney...");
-         var process = Process.Start(Constants.WebAppPath);
+
+         ProcessStartInfo startInfo = new ProcessStartInfo(Constants.WebAppPath)
+         {
+            Verb = "runas",
+            WorkingDirectory = Constants.WebAppFolder
+         };
+
+         var process = Process.Start(startInfo);
          if (process == null)
          {
             Console.WriteLine("Failed to start MyMoney");
