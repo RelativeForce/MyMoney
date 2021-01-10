@@ -13,7 +13,7 @@ namespace MyMoney.Core
       // Update
       public const string LocalWebAppPath = "MyMoney_Local_Web_App_Path";
       public const string GitHubRepositoryURL = "MyMoney_GitHub_URL";
-      public const string AssetFileName = "MyMoney_Asset_File_name";
+      public const string AssetFileName = "MyMoney_Asset_File_Name";
 
       // Email
       public const string EmailSmtpServerURL = "MyMoney_Email_Smtp_Server_URL";

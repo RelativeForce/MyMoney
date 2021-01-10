@@ -9,9 +9,10 @@ If you would like a new feature to be added please create a new feature issue.
 Follow these steps to install and start a local instance of MyMoney.
 
 1. Download and install SQL Server Express [here](https://www.microsoft.com/en-gb/sql-server/sql-server-downloads)
-2. Download the latest release of the app [here](https://github.com/RelativeForce/MyMoney/releases)
-3. Unzip it in some folder called `MyMoney`
-4. Set up environment variables
+2. Go to the latest release of the app [here](https://github.com/RelativeForce/MyMoney/releases/latest)
+3. Download `MyMoney.exe`
+4. Move `MyMoney.exe` to the folder you would like app to run from
+5. Set up environment variables
 
    Email
    - `MyMoney_Email_Smtp_Server_URL`: The url of the SMTP email server
@@ -24,7 +25,15 @@ Follow these steps to install and start a local instance of MyMoney.
    - `MyMoney_Database_Connection` (optional): The connection string to the database. Defaults to the local SQL express server instance.
    - `MyMoney_Database_Engine` (optional): The database type of the connection. Only `MySQL` and `SQLServer` are supported. Defaults to `SQLServer`.
 
+   Update
+   - `MyMoney_Local_Web_App_Path` (optional): The folder path you would like to install the app into. Defaults to `Web` child folder.
+   - `MyMoney_GitHub_URL` (optional): The URL to the public GitHub repository.
+   - `MyMoney_Asset_File_Name` (optional): The filename of the asset to download. Requires 
+     - `{0}` Major version number
+     - `{1}` Minor version number
+     - `{2}` Hotfix number
+
    Misc
    - `MyMoney_Token_Secret` (optional): The secret used for generating the user JWT tokens. You can generate one [here](https://www.grc.com/passwords.htm). Defaults to `dqSRHqsruH3U75hFSg1Y5LCOcON7G90iXGomYbaFuH4G10f2PIexSes3QlyidLC`.
-5. Run `MyMoney.Web.exe`
-6. MyMoney will be available at http://localhost:5000 (https://localhost:5001 when SSL is enabled)
+6. Run `MyMoney.exe`
+7. MyMoney will be available at http://localhost:5000 (https://localhost:5001 when SSL is enabled)
