@@ -1,8 +1,5 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/.vs
+﻿*.vs
+*.user
 /MyMoney.Core/bin
 /MyMoney.Core/obj
 /MyMoney.Infrastructure/bin
@@ -13,5 +10,6 @@
 /MyMoney.Web/obj
 /MyMoney.Web.Tests/bin
 /MyMoney.Web.Tests/obj
-/MyMoney.Web/ClientApp/package-lock.json
 /MyMoney.Web/Emails
+/MyMoney.Local/bin
+/MyMoney.Local/obj
