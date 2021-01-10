@@ -73,11 +73,13 @@ namespace MyMoney.Local
 
       private static async Task DownloadLatest(HttpClient client, string latestTag, Version latestVersion)
       {
-         var assetPath = string.Format(Constants.RepositoryURL + "/releases/download/{0}/MyMoney_win64_{1}-{2}-{3}.zip", latestTag, latestVersion.Major, latestVersion.Minor, latestVersion.Build);
+         var assetFileName = string.Format(Constants.AssetFileName, latestVersion.Major, latestVersion.Minor, latestVersion.Build);
 
-         var fileResponse = await client.GetAsync(assetPath);
+         var assetURL = $"{Constants.RepositoryURL}/releases/download/{latestTag}/{assetFileName}";
 
-         var zipFilePath = Path.Combine(Directory.GetCurrentDirectory(), $"{DateTime.UtcNow.ToFileTimeUtc()}.zip");
+         var fileResponse = await client.GetAsync(assetURL);
+
+         var zipFilePath = Path.Combine(Directory.GetCurrentDirectory(), assetFileName);
 
          await using (var ms = await fileResponse.Content.ReadAsStreamAsync())
          {

@@ -14,6 +14,9 @@ namespace MyMoney.Local
       public static string RepositoryURL => _repositoryURL ??= GetRepositoryURL();
       private static string _repositoryURL;
 
+      public static string AssetFileName => _assetFileName ??= GetAssetFileName();
+      private static string _assetFileName;
+
       private static string GetWebAppFolder()
       {
          var path = Environment.GetEnvironmentVariable(EnvironmentVariables.LocalWebAppPath);
@@ -44,6 +47,22 @@ namespace MyMoney.Local
 
          EnvironmentVariables.LogVariableValue(EnvironmentVariables.GitHubRepositoryURL, url);
          return url;
+      }
+
+      private static string GetAssetFileName()
+      {
+         var fileName = Environment.GetEnvironmentVariable(EnvironmentVariables.AssetFileName);
+
+         if (string.IsNullOrWhiteSpace(fileName))
+         {
+            fileName = "MyMoney_win64_{0}-{1}-{2}.zip";
+
+            EnvironmentVariables.LogVariableValue(EnvironmentVariables.AssetFileName, fileName, true);
+            return fileName;
+         }
+
+         EnvironmentVariables.LogVariableValue(EnvironmentVariables.AssetFileName, fileName);
+         return fileName;
       }
    }
 }
