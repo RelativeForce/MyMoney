@@ -75,7 +75,16 @@
          <table class="table">
             <tbody>
                <tr *ngFor="let child of children; let i = index">
-                  <td>{{child.date}} <span *ngIf="nextDate === child.date" class="badge badge-pill badge-primary">Upcoming next</span></td>
+                  <td>
+                     <div class="center">
+                        {{child.date}}
+                        <span *ngIf="nextDate === child.date" class="badge badge-pill badge-primary">Upcoming next</span>
+                     </div>
+                  </td>
+                  <td>
+                     <button class="btn btn-info" (click)="addOrEditTransaction(child)" data-toggle="tooltip" data-placement="bottom"
+                        title="Edit transaction {{child.date}}">🖉</button>
+                  </td>
                </tr>
             </tbody>
          </table>

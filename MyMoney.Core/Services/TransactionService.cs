@@ -68,6 +68,8 @@ namespace MyMoney.Core.Services
          transaction.UserId = user.Id;
          transaction.User = user;
          transaction.Notes = notes;
+         transaction.Parent = null;
+         transaction.ParentId = null;
 
          var addedTransaction = _repository.Add(transaction);
 
@@ -211,6 +213,28 @@ namespace MyMoney.Core.Services
          return _repository.Add(transaction);
       }
 
+      public ITransaction Realise(long recurringTransactionId, DateTime date)
+      {
+         var recurring = FindRecurring(recurringTransactionId);
+         if (recurring == null)
+            return null;
+
+         var user = _currentUserProvider.CurrentUser;
+
+         var transaction = _entityFactory.NewTransaction;
+
+         transaction.Date = date;
+         transaction.Description = recurring.Description;
+         transaction.Amount = recurring.Amount;
+         transaction.UserId = user.Id;
+         transaction.User = user;
+         transaction.Notes = recurring.Notes;
+         transaction.Parent = recurring;
+         transaction.ParentId = recurring.Id;
+
+         return _repository.Add(transaction);
+      }
+
       public IRecurringTransaction FindRecurring(long transactionId)
       {
          var transaction = _repository.FindById<IRecurringTransaction>(transactionId);
@@ -263,6 +287,9 @@ namespace MyMoney.Core.Services
          if (transaction == null || transaction.UserId != user.Id)
             return false;
 
+         var clearChildren = transaction.Start != start || transaction.Recurrence != period;
+         var trimBounds = transaction.End != end && !clearChildren;
+
          transaction.Start = start;
          transaction.End = end;
          transaction.Recurrence = period;
@@ -270,7 +297,36 @@ namespace MyMoney.Core.Services
          transaction.Amount = amount;
          transaction.Notes = notes;
 
-         return _repository.Update(transaction);
+         if (!_repository.Update(transaction))
+            return false;
+
+         var children = _repository
+            .UserFiltered<ITransaction>(user)
+            .Where(t => t.ParentId == transactionId)
+            .Where(t => !trimBounds || t.Date > end)
+            .ToList();
+
+         if (clearChildren || trimBounds)
+         {
+            // Clear the children that are invalid as a result of the change
+            foreach (var child in children)
+            {
+               _repository.Delete(child);
+            }
+
+            return true;
+         }
+
+         foreach (var child in children)
+         {
+            child.Description = description;
+            child.Amount = amount;
+            child.Notes = notes;
+
+            _repository.Update(child);
+         }
+
+         return true;
       }
 
       public bool DeleteRecurring(long transactionId)
@@ -280,6 +336,17 @@ namespace MyMoney.Core.Services
 
          if (transaction == null || transaction.UserId != userId)
             return false;
+
+         var children = _repository
+            .UserFiltered<ITransaction>(userId)
+            .Where(t => t.ParentId == transactionId)
+            .ToList();
+
+         foreach (var child in children)
+         {
+            if (!_repository.Delete(child))
+               return false;
+         }
 
          return _repository.Delete(transaction);
       }

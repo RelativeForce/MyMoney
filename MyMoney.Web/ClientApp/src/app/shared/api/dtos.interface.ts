@@ -75,8 +75,8 @@ export interface ITransactionDto {
    budgetIds: number[];
    incomeIds: number[];
    id: number;
-   recurringTransactionId: number | null;
-   recurringFrequency: Frequency | null;
+   parentId: number | null;
+   parentFrequency: Frequency | null;
 }
 
 export interface ITransactionListDto {

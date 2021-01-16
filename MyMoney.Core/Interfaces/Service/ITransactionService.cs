@@ -17,5 +17,6 @@ namespace MyMoney.Core.Interfaces.Service
       IRecurringTransaction FindRecurring(long transactionId);
       IList<ITransaction> Between(DateTime start, DateTime end);
       IList<ITransaction> GetChildTransactions(IRecurringTransaction recurringTransaction);
+      ITransaction Realise(long recurringTransactionId, DateTime date);
    }
 }

@@ -11,6 +11,11 @@ namespace MyMoney.Web.Models.Response
    {
       public string Date { get; set; }
 
+      public RecurringTransactionChildDto() : base()
+      { 
+         // Required for deserialisation
+      }
+
       public RecurringTransactionChildDto(ITransaction model) : base(model.Id)
       {
          Date = model.Date.ToShortDateString();

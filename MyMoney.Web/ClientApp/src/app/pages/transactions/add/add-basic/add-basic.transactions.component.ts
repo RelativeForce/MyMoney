@@ -96,8 +96,8 @@ export class AddBasicTransactionsComponent implements OnInit {
          description,
          amount,
          id: 0,
-         recurringTransactionId: null,
-         recurringFrequency: null,
+         parentId: null,
+         parentFrequency: null,
          budgetIds: Array.from(this.selectedBudgets),
          incomeIds: Array.from(this.selectedIncomes),
          notes

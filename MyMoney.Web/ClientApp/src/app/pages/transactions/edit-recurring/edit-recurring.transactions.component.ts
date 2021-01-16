@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../shared/services';
-import { IRecurringTransactionDto, Frequency } from 'src/app/shared/api';
+import { IRecurringTransactionDto, Frequency, ITransactionDto } from 'src/app/shared/api';
 import { toFrequencyString, toInputDateString } from 'src/app/shared/functions';
 
 @Component({
-   templateUrl: './edit-recurring.transactions.component.html'
+   templateUrl: './edit-recurring.transactions.component.html',
+   styleUrls: ['./edit-recurring.transactions.component.scss']
 })
 export class EditRecurringTransactionsComponent implements OnInit {
 
@@ -88,12 +89,32 @@ export class EditRecurringTransactionsComponent implements OnInit {
       this.dateMessage = 'Dates will be recalculated when saved.';
    }
 
+   public addOrEditTransaction(child: { id: number; date: string }) {
+      if (child.id < 0) {
+         this.transactionService
+            .realiseTransaction(this.id, child.date)
+            .subscribe((realChild: ITransactionDto) => {
+               this.router.navigate(['/transactions', 'edit', realChild.id]);
+            });
+      } else {
+         this.router.navigate(['/transactions', 'edit', child.id]);
+      }
+   }
+
    public onSubmit(): void {
       this.submitted = true;
 
       // stop here if form is invalid
       if (this.editTransactionForm.invalid) {
          return;
+      }
+
+      if (this.f.start.dirty || this.f.recurrence.dirty) {
+         const message = 'Changing the start or recurrence will erase all manual changes to the transaction instances\n\n' + 'Continue?';
+
+         if (!confirm(message)) {
+            return;
+         }
       }
 
       this.loading = true;

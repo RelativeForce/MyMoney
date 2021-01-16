@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { TransactionApi, IDeleteResultDto, ITransactionListDto, IUpdateResultDto, IRecurringTransactionDto } from '../api';
+import {
+   TransactionApi,
+   IDeleteResultDto,
+   ITransactionListDto,
+   IUpdateResultDto,
+   IRecurringTransactionDto,
+   ITransactionDto
+} from '../api';
 import {
    DeleteRecurringTransactionAction,
    DeleteTransactionAction,
@@ -65,6 +72,10 @@ export class TransactionService {
             this.store.dispatch(new RefreshTransactionsAction());
             return true;
          }));
+   }
+
+   public realiseTransaction(recurringTransactionId: number, date: string): Observable<ITransactionDto> {
+      return this.transactionApi.realise({ id: recurringTransactionId, date });
    }
 
    public addRecurringTransaction(transaction: IRecurringTransactionDto): Observable<boolean> {

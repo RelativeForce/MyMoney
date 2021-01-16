@@ -180,8 +180,8 @@ export class EditTransactionsComponent implements OnInit {
          budgetIds: Array.from(this.selectedBudgets),
          incomeIds: Array.from(this.selectedIncomes),
          notes,
-         recurringTransactionId: null,
-         recurringFrequency: null,
+         parentId: null,
+         parentFrequency: null,
       };
    }
 }
