@@ -137,6 +137,12 @@ export class EditTransactionsComponent implements OnInit {
       });
    }
 
+   public get month(): string {
+      const date = new Date(this.f.date.value);
+
+      return `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+   }
+
    public onSubmit(): void {
       this.submitted = true;
 

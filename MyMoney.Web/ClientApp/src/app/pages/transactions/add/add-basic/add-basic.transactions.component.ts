@@ -61,6 +61,12 @@ export class AddBasicTransactionsComponent implements OnInit {
       }
    }
 
+   public get month(): string {
+      const date = new Date(this.f.date.value);
+
+      return `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+   }
+
    public onDateChange(): void {
 
       this.selectedBudgets.clear();
