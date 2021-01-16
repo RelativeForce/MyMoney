@@ -8,7 +8,8 @@ import { selectTransactions, selectTransactionsDateRange } from 'src/app/shared/
 import { IDateRangeModel } from '../../shared/state/types';
 
 @Component({
-   templateUrl: './transactions.component.html'
+   templateUrl: './transactions.component.html',
+   styleUrls: ['./transactions.component.scss']
 })
 export class TransactionsComponent implements OnInit {
 

@@ -125,14 +125,6 @@ export class EditTransactionsComponent implements OnInit {
       return `(${toFrequencyString(this.parentFrequency)})`;
    }
 
-   public cancel(): void {
-      if (this.parentId === null) {
-         this.router.navigate(['/transactions']);
-      } else {
-         this.router.navigate(['/transactions', 'edit-recurring', this.parentId]);
-      }
-   }
-
    public fetchBudgetsAndIncomes(): void {
       const date = new Date(this.f.date.value);
 
