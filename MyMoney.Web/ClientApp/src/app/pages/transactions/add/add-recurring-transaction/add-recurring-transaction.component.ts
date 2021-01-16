@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ITransactionModel } from 'src/app/shared/state/types';
 import { TransactionService } from 'src/app/shared/services';
 import { IRecurringTransactionDto, Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
 
 @Component({
    selector: 'mymoney-add-recurring-transaction',
-   templateUrl: './add-recurring.transactions.component.html',
+   templateUrl: './add-recurring-transaction.component.html',
 })
-export class AddRecurringTransactionsComponent implements OnInit {
+export class AddRecurringTransactionComponent implements OnInit {
 
    public addTransactionForm: FormGroup;
    public loading = false;
