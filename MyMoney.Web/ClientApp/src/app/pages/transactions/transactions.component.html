@@ -55,8 +55,11 @@
                      title=" Edit transaction {{transaction.id}}">🖉</a>
                   <a class="btn btn-primary" *ngIf="transaction.parentId !== null" routerLink="./edit-recurring/{{transaction.parentId}}"
                      data-toggle="tooltip" data-placement="bottom" title="Edit recurring transaction {{transaction.parentId}}">🗐</a>
-                  <button class="btn btn-danger" (click)="deleteRecurringTransaction(transaction.parentId)" data-toggle="tooltip"
-                     data-placement="bottom" title="Delete recurring transaction {{transaction.parentId}}">✕</button>
+                  <button class="btn btn-danger" *ngIf="transaction.parentId !== null"
+                     (click)="deleteRecurringTransaction(transaction.parentId)" data-toggle="tooltip" data-placement="bottom"
+                     title="Delete recurring transaction {{transaction.parentId}}">✕</button>
+                  <button class="btn btn-danger" *ngIf="transaction.parentId === null" (click)="deleteTransaction(transaction.id)"
+                     data-toggle="tooltip" data-placement="bottom" title="Delete transaction {{transaction.id}}">✕</button>
                </div>
             </td>
          </tr>
