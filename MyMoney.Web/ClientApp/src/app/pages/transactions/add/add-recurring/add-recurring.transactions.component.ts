@@ -75,7 +75,7 @@ export class AddRecurringTransactionsComponent implements OnInit {
          id: 0,
          recurrence,
          notes,
-         dates: []
+         children: []
       };
 
       this.transactionService.addRecurringTransaction(transaction).subscribe(success => {

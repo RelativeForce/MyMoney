@@ -15,7 +15,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
    public loading = false;
    public submitted = false;
    public dateMessage: string | null = null;
-   public dates: string[] = [];
+   public children: { id: number; date: string }[] = [];
    public recurrenceOptions: { key: Frequency; value: string }[];
 
    constructor(
@@ -64,7 +64,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
                this.f.amount.patchValue(response.amount);
                this.f.notes.patchValue(response.notes);
 
-               this.dates = response.dates;
+               this.children = response.children;
                this.enableForm();
             },
                () => this.router.navigate(['/transactions'])
@@ -80,11 +80,11 @@ export class EditRecurringTransactionsComponent implements OnInit {
 
       const now = new Date(Date.now()).getTime();
 
-      return this.dates.find(d => Date.parse(toInputDateString(d)) > now) ?? null;
+      return this.children.find(d => Date.parse(toInputDateString(d.date)) > now)?.date ?? null;
    }
 
    public onDateChange(): void {
-      this.dates = [];
+      this.children = [];
       this.dateMessage = 'Dates will be recalculated when saved.';
    }
 
@@ -146,7 +146,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
          id: this.id,
          notes,
          recurrence,
-         dates: []
+         children: []
       };
    }
 }

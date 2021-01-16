@@ -141,5 +141,10 @@ export interface IRecurringTransactionDto {
    amount: number;
    id: number;
    recurrence: Frequency;
-   dates: string[];
+   children: IRecurringTransactionChildDto[];
+}
+
+export interface IRecurringTransactionChildDto {
+   date: string;
+   id: number;
 }

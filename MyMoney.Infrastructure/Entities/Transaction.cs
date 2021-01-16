@@ -18,9 +18,17 @@ namespace MyMoney.Infrastructure.Entities
       public string Notes { get; set; }
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
+      public long? ParentId { get; set; } = null;
 
       [NotMapped]
-      public IRecurringTransaction Parent { get; set; } = null;
+      public IRecurringTransaction Parent
+      {
+         get => ParentProxy;
+         set => ParentProxy = value as RecurringTransaction;
+      }
+
+      [ForeignKey(nameof(ParentId))]
+      public virtual RecurringTransaction ParentProxy { get; set; } = null;
 
       [NotMapped]
       public IQueryable<IBudget> Budgets => BudgetsProxy.Select(tb => tb.Budget).Cast<IBudget>().AsQueryable();
@@ -34,6 +42,7 @@ namespace MyMoney.Infrastructure.Entities
       {
          model.Entity<Transaction>().HasIndex(t => new { t.UserId, t.Date, t.Description }).IsUnique();
          model.Entity<Transaction>().HasOne(t => t.UserProxy).WithMany().IsRequired();
+         model.Entity<Transaction>().HasOne(t => t.ParentProxy).WithMany().IsRequired(false);
       }
    }
 }

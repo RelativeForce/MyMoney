@@ -71,11 +71,11 @@
    <div class="col-5">
       <h4>Dates</h4>
       <div *ngIf="dateMessage !== null"> {{ dateMessage }} </div>
-      <div *ngIf="dates.length > 0" [ngStyle]="{'max-height': '60vh', 'overflow-y': 'scroll'}">
+      <div *ngIf="children.length > 0" [ngStyle]="{'max-height': '60vh', 'overflow-y': 'scroll'}">
          <table class="table">
             <tbody>
-               <tr *ngFor="let date of dates; let i = index">
-                  <td>{{date}} <span *ngIf="nextDate === date" class="badge badge-pill badge-primary">Upcoming next</span></td>
+               <tr *ngFor="let child of children; let i = index">
+                  <td>{{child.date}} <span *ngIf="nextDate === child.date" class="badge badge-pill badge-primary">Upcoming next</span></td>
                </tr>
             </tbody>
          </table>

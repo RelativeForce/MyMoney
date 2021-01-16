@@ -9,6 +9,6 @@ namespace MyMoney.Core.Interfaces.Entities.Abstract
       public DateTime Start { get; set; }
       public DateTime End { get; set; }
       public Frequency Recurrence { get; set; }
-      public IList<T> ToInstances();
+      public IList<T> VirtualChildren();
    }
 }

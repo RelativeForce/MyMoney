@@ -94,7 +94,7 @@ namespace MyMoney.Core.Services
                (rt.End >= start && rt.End <= end) || // Ends in the range
                (rt.Start <= start && rt.End >= end)) // Spans the range
             .AsEnumerable()
-            .Select(rt => rt.ToInstances())
+            .Select(rt => rt.VirtualChildren())
             .SelectMany(vt => vt)
             .Where(t => t.Date >= start && t.Date <= end)
             .Select(t => new RunningTotal(t));

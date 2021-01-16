@@ -183,7 +183,9 @@ namespace MyMoney.Web.Controllers
 
             if (transaction != null)
             {
-               return Ok(new RecurringTransactionDto(transaction));
+               var children = _transactionService.GetChildTransactions(transaction);
+
+               return Ok(new RecurringTransactionDto(transaction, children));
             }
 
             return NotFound("Recurriung transaction does not exist");

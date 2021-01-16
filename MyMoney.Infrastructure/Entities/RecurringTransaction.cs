@@ -19,7 +19,7 @@ namespace MyMoney.Infrastructure.Entities
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
 
-      public override IList<ITransaction> ToInstances()
+      public override IList<ITransaction> VirtualChildren()
       {
          var transactions = Recurrence.Repeat(Start, End, (DateTime date) => new Transaction
          {
