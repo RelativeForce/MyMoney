@@ -1,4 +1,4 @@
-<h2>Edit transaction {{id}}</h2>
+<h2>Edit transaction {{id}} {{ frequencyString }}</h2>
 <div class="row">
    <div class="col-6">
       <form [formGroup]="editTransactionForm" (ngSubmit)="onSubmit()">
@@ -37,7 +37,7 @@
                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                Save changes
             </button>
-            <a routerLink="/transactions" class="btn btn-link">Cancel</a>
+            <button (click)="cancel()" class="btn btn-link">Cancel</button>
          </div>
       </form>
    </div>

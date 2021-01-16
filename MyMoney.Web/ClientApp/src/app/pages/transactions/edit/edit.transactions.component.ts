@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BudgetService, IncomeService, TransactionService } from '../../../shared/services';
 import { BudgetViewModel, IncomeViewModel } from '../../../shared/classes';
 import { ITransactionModel } from 'src/app/shared/state/types';
+import { Frequency } from 'src/app/shared/api';
+import { toFrequencyString } from 'src/app/shared/functions';
 
 @Component({
    templateUrl: './edit.transactions.component.html'
@@ -12,6 +14,8 @@ export class EditTransactionsComponent implements OnInit {
 
    public editTransactionForm: FormGroup;
    public id: number;
+   public parentId: number | null;
+   public parentFrequency: Frequency | null;
    public loading = false;
    public submitted = false;
 
@@ -20,7 +24,6 @@ export class EditTransactionsComponent implements OnInit {
 
    public selectedIncomes: Set<number> = new Set();
    public incomes: IncomeViewModel[] = [];
-
 
    constructor(
       private readonly formBuilder: FormBuilder,
@@ -63,8 +66,10 @@ export class EditTransactionsComponent implements OnInit {
                this.f.description.patchValue(response.description);
                this.f.amount.patchValue(response.amount);
                this.f.notes.patchValue(response.notes);
+               this.parentId = response.parentId;
+               this.parentFrequency = response.parentFrequency;
 
-               this.enableForm();
+               this.enableForm(response.parentId !== null);
 
                this.fetchBudgetsAndIncomes();
             },
@@ -112,6 +117,22 @@ export class EditTransactionsComponent implements OnInit {
       return text.split('/')[2] + '-' + monthStr + '-' + dayStr;
    }
 
+   public get frequencyString(): string {
+      if (this.parentFrequency === null) {
+         return '';
+      }
+
+      return `(${toFrequencyString(this.parentFrequency)})`;
+   }
+
+   public cancel(): void {
+      if (this.parentId === null) {
+         this.router.navigate(['/transactions']);
+      } else {
+         this.router.navigate(['/transactions', 'edit-recurring', this.parentId]);
+      }
+   }
+
    public fetchBudgetsAndIncomes(): void {
       const date = new Date(this.f.date.value);
 
@@ -155,10 +176,14 @@ export class EditTransactionsComponent implements OnInit {
       this.f.notes.disable();
    }
 
-   private enableForm() {
-      this.f.date.enable();
-      this.f.description.enable();
-      this.f.amount.enable();
+   private enableForm(isChild: boolean) {
+
+      if (!isChild) {
+         this.f.date.enable();
+         this.f.description.enable();
+         this.f.amount.enable();
+      }
+
       this.f.notes.enable();
    }
 
@@ -180,8 +205,8 @@ export class EditTransactionsComponent implements OnInit {
          budgetIds: Array.from(this.selectedBudgets),
          incomeIds: Array.from(this.selectedIncomes),
          notes,
-         parentId: null,
-         parentFrequency: null,
+         parentId: this.parentId,
+         parentFrequency: this.parentFrequency,
       };
    }
 }
