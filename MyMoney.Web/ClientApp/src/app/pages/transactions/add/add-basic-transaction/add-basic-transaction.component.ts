@@ -7,9 +7,9 @@ import { BudgetService, IncomeService, TransactionService } from 'src/app/shared
 
 @Component({
    selector: 'mymoney-add-basic-transaction',
-   templateUrl: './add-basic.transactions.component.html',
+   templateUrl: './add-basic-transaction.component.html',
 })
-export class AddBasicTransactionsComponent implements OnInit {
+export class AddBasicTransactionComponent implements OnInit {
 
    public addTransactionForm: FormGroup;
    public loading = false;
