@@ -78,11 +78,11 @@
                   <td>
                      <div class="center">
                         {{child.date}}
-                        <span *ngIf="nextDate === child.date" class="badge badge-pill badge-primary">Upcoming next</span>
+                        <span *ngIf="nextDate === child.date" class="badge badge-pill badge-warning">Upcoming next</span>
                      </div>
                   </td>
                   <td>
-                     <button class="btn btn-info" (click)="addOrEditTransaction(child)" data-toggle="tooltip" data-placement="bottom"
+                     <button class="btn btn-primary" (click)="addOrEditTransaction(child)" data-toggle="tooltip" data-placement="bottom"
                         title="Edit transaction {{child.date}}">🖉</button>
                   </td>
                </tr>
