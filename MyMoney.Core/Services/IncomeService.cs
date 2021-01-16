@@ -83,6 +83,7 @@ namespace MyMoney.Core.Services
 
          var transactions = _repository
             .UserFiltered<ITransaction>(user)
+            .Where(t => t.ParentId == null)
             .Where(t => t.Date >= start && t.Date <= end)
             .AsEnumerable()
             .Select(t => new RunningTotal(t));
@@ -94,9 +95,8 @@ namespace MyMoney.Core.Services
                (rt.End >= start && rt.End <= end) || // Ends in the range
                (rt.Start <= start && rt.End >= end)) // Spans the range
             .AsEnumerable()
-            .Select(rt => rt.VirtualChildren())
+            .Select(rt => rt.Children(_repository, t => t.Date >= start && t.Date <= end))
             .SelectMany(vt => vt)
-            .Where(t => t.Date >= start && t.Date <= end)
             .Select(t => new RunningTotal(t));
 
          var incomes = _repository

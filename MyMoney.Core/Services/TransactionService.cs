@@ -34,12 +34,12 @@ namespace MyMoney.Core.Services
                (rt.End >= start && rt.End <= end) || // Ends in the range
                (rt.Start <= start && rt.End >= end)) // Spans the range
             .AsEnumerable()
-            .Select(rt => rt.VirtualChildren())
-            .SelectMany(vt => vt)
-            .Where(t => t.Date >= start && t.Date <= end);
+            .Select(rt => rt.Children(_repository, t => t.Date >= start && t.Date <= end))
+            .SelectMany(vt => vt);
 
          var basic = _repository
             .UserFiltered<ITransaction>(userId)
+            .Where(t => t.ParentId == null)
             .Where(t => t.Date >= start && t.Date <= end)
             .AsEnumerable();
 
@@ -248,22 +248,7 @@ namespace MyMoney.Core.Services
 
       public IList<ITransaction> GetChildTransactions(IRecurringTransaction recurringTransaction)
       {
-         var transactions = recurringTransaction.VirtualChildren()
-            .ToDictionary(t => t.Date);
-
-         var realTransactions = _repository
-            .UserFiltered<ITransaction>(recurringTransaction.UserId)
-            .Where(t => t.ParentId == recurringTransaction.Id)
-            .ToList();
-
-         // Replace virtual transactions with the real ones
-         foreach (var realTransaction in realTransactions)
-            transactions[realTransaction.Date] = realTransaction;
-
-         return transactions
-            .Values
-            .OrderBy(t => t.Date)
-            .ToList();
+         return recurringTransaction.Children(_repository);
       }
 
       public bool UpdateRecurring(long transactionId, DateTime start, DateTime end, string description, decimal amount, string notes, Frequency period)
