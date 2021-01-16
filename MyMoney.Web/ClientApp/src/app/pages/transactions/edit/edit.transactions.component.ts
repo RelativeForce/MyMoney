@@ -8,7 +8,8 @@ import { Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
 
 @Component({
-   templateUrl: './edit.transactions.component.html'
+   templateUrl: './edit.transactions.component.html',
+   styleUrls: ['./edit.transactions.component.scss']
 })
 export class EditTransactionsComponent implements OnInit {
 
