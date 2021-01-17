@@ -8,7 +8,7 @@
                <div class="input-group-prepend">
                   <span class="input-group-text">Start</span>
                </div>
-               <input type="date" formControlName="start" class="form-control" (change)="onDateChange()"
+               <input type="date" formControlName="start" class="form-control" (change)="onDurationOrRecurrenceChange()"
                   [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
                <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
                   <div *ngIf="f.start.errors.required">Start is required</div>
@@ -18,7 +18,7 @@
                <div class="input-group-prepend">
                   <span class="input-group-text">End</span>
                </div>
-               <input type="date" formControlName="end" class="form-control" (change)="onDateChange()"
+               <input type="date" formControlName="end" class="form-control" (change)="onDurationOrRecurrenceChange()"
                   [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
                <div *ngIf="submitted && f.end.errors" class="invalid-feedback">
                   <div *ngIf="f.end.errors.required">End is required</div>
@@ -28,7 +28,7 @@
          <div class="form-group">
             <label for="recurrence">Recurrence</label>
             <select class="form-control" formControlName="recurrence" [ngClass]="{ 'is-invalid': submitted && f.recurrence.errors }"
-               (change)="onDateChange()">
+               (change)="onDurationOrRecurrenceChange()">
                <option *ngFor="let opt of recurrenceOptions" [value]="opt.key" [selected]="opt.key == f.recurrence.value">{{ opt.value }}
                </option>
             </select>

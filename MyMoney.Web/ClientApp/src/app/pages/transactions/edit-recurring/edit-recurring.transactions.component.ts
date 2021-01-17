@@ -85,7 +85,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
       return this.children.find(d => Date.parse(toInputDateString(d.date)) > now)?.id ?? null;
    }
 
-   public onDateChange(): void {
+   public onDurationOrRecurrenceChange(): void {
       this.children = [];
       this.dateMessage = 'Dates will be recalculated when saved.';
    }
