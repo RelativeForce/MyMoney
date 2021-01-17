@@ -123,9 +123,18 @@ namespace MyMoney.Core.Services
             notes = "";
 
          var transaction = _repository.FindById<ITransaction>(transactionId);
-         var user = _currentUserProvider.CurrentUser;
+         var userId = _currentUserProvider.CurrentUserId;
 
-         if (transaction == null || transaction.UserId != user.Id)
+         if (transaction == null || transaction.UserId != userId)
+            return false;
+
+         var basicDataHasChanged = 
+            transaction.Amount != amount ||
+            transaction.Date != date ||
+            transaction.Description != description;
+
+         // Cannot edit the basic data of a recuring transaction child
+         if (transaction.ParentId != null && basicDataHasChanged)
             return false;
 
          transaction.Amount = amount;
@@ -140,7 +149,7 @@ namespace MyMoney.Core.Services
          }
 
          var budgets = _repository
-            .UserFiltered<IBudget>(user)
+            .UserFiltered<IBudget>(userId)
             .Where(b => budgetIds.Contains(b.Id))
             .ToList();
 
@@ -156,7 +165,7 @@ namespace MyMoney.Core.Services
          }
 
          var incomes = _repository
-            .UserFiltered<IIncome>(user)
+            .UserFiltered<IIncome>(userId)
             .Where(i => incomeIds.Contains(i.Id))
             .ToList();
 
