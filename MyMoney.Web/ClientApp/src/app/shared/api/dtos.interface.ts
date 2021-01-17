@@ -95,12 +95,12 @@ export interface IRunningTotalSearchDto {
 
 export interface IRunningTotalDto {
    id: number;
-   link: string;
    name: string;
    text: string;
    date: string;
    delta: number;
    value: number;
+   parentId: number | null;
 }
 
 export interface IRunningTotalListDto {

@@ -5,7 +5,7 @@ namespace MyMoney.Web.Models.Entity
 {
    public class RunningTotalDto : EntityDto
    {
-      public string Link { get; }
+      public long? ParentId { get; }
       public string Text { get; }
       public string Name { get; }
       public string Date { get; }
@@ -18,7 +18,7 @@ namespace MyMoney.Web.Models.Entity
          Date = runningTotal.Date.ToShortDateString();
          Delta = runningTotal.Delta;
          Value = runningTotal.Value;
-         Link = runningTotal.Link;
+         ParentId = runningTotal.ParentId;
          Name = runningTotal.Name;
       }
    }

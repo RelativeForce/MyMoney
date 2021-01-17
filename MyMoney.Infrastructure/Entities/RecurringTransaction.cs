@@ -36,6 +36,7 @@ namespace MyMoney.Infrastructure.Entities
             User = User,
             Id = VirtualTransactionId--,
             Parent = this,
+            ParentId = Id
          }).Cast<ITransaction>().Where(filter.Compile()).ToDictionary(t => t.Date);
 
          var realTransactions = repository
