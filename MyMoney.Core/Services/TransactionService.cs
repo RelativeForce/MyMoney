@@ -191,7 +191,7 @@ namespace MyMoney.Core.Services
          transaction.Amount = recurring.Amount;
          transaction.UserId = user.Id;
          transaction.User = user;
-         transaction.Notes = recurring.Notes;
+         transaction.Notes = string.Empty;
          transaction.Parent = recurring;
          transaction.ParentId = recurring.Id;
 
@@ -269,7 +269,6 @@ namespace MyMoney.Core.Services
          {
             child.Description = description;
             child.Amount = amount;
-            child.Notes = notes;
 
             _repository.Update(child);
          }
