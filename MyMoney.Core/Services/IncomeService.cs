@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
@@ -75,48 +74,6 @@ namespace MyMoney.Core.Services
             .Where(i => i.Date >= start && i.Date <= end)
             .OrderByDescending(i => i.Date)
             .ToList();
-      }
-
-      public IList<RunningTotal> RunningTotal(decimal initialTotal, DateTime start, DateTime end)
-      {
-         var user = _currentUserProvider.CurrentUser;
-
-         var transactions = _repository
-            .UserFiltered<ITransaction>(user)
-            .Where(t => t.ParentId == null)
-            .Where(t => t.Date >= start && t.Date <= end)
-            .AsEnumerable()
-            .Select(t => new RunningTotal(t));
-
-         var recurringTransactions = _repository
-            .UserFiltered<IRecurringTransaction>(user)
-            .Where(rt =>
-               (rt.Start >= start && rt.Start <= end) || // Starts in the range
-               (rt.End >= start && rt.End <= end) || // Ends in the range
-               (rt.Start <= start && rt.End >= end)) // Spans the range
-            .AsEnumerable()
-            .Select(rt => rt.Children(_repository, t => t.Date >= start && t.Date <= end))
-            .SelectMany(vt => vt)
-            .Select(t => new RunningTotal(t));
-
-         var incomes = _repository
-            .UserFiltered<IIncome>(user)
-            .Where(i => i.Date >= start && i.Date <= end)
-            .AsEnumerable()
-            .Select(i => new RunningTotal(i));
-
-         var runningTotals = transactions
-            .Concat(incomes)
-            .Concat(recurringTransactions)
-            .OrderBy(rt => rt.Date)
-            .ToList();
-
-         foreach (var rt in runningTotals)
-         {
-            initialTotal = rt.AdjustTotal(initialTotal);
-         }
-
-         return runningTotals;
       }
 
       public bool Update(long incomeId, DateTime date, string name, decimal amount)
