@@ -87,7 +87,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
 
    public onDurationOrRecurrenceChange(): void {
       this.children = [];
-      this.dateMessage = 'Dates will be recalculated when saved.';
+      this.dateMessage = 'Occurrences will be recalculated when changes are saved.';
    }
 
    public addOrEditTransaction(child: { id: number; date: string }) {
@@ -113,7 +113,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
       }
 
       if (this.f.start.dirty || this.f.recurrence.dirty) {
-         const message = 'Changing the start or recurrence will erase all manual changes to the transaction instances\n\n' + 'Continue?';
+         const message = 'Changing the start or recurrence will erase all manual changes to the transaction occurrences.\n\n' + 'Continue?';
 
          if (!confirm(message)) {
             return;
