@@ -37,7 +37,7 @@ namespace MyMoney.Core.Services
       {
          var user = _currentUserProvider.CurrentUser;
 
-         if (string.IsNullOrWhiteSpace(name) || amount <= 0)
+         if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return null;
 
          var income = _entityFactory.NewIncome;
@@ -78,7 +78,7 @@ namespace MyMoney.Core.Services
 
       public bool Update(long incomeId, DateTime date, string name, decimal amount)
       {
-         if (string.IsNullOrWhiteSpace(name) || amount <= 0)
+         if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return false;
 
          var income = _repository.FindById<IIncome>(incomeId);

@@ -53,7 +53,7 @@ namespace MyMoney.Core.Services
 
       public ITransaction Add(DateTime date, string description, decimal amount, string notes, long[] budgetIds, long[] incomeIds)
       {
-         if (string.IsNullOrWhiteSpace(description))
+         if (string.IsNullOrWhiteSpace(description) || amount < 0.01m)
             return null;
 
          if (notes == null)
@@ -98,7 +98,7 @@ namespace MyMoney.Core.Services
 
       public bool Update(long transactionId, DateTime date, string description, decimal amount, string notes, long[] budgetIds, long[] incomeIds)
       {
-         if (string.IsNullOrWhiteSpace(description))
+         if (string.IsNullOrWhiteSpace(description) || amount < 0.01m)
             return false;
 
          if (notes == null)
@@ -148,7 +148,7 @@ namespace MyMoney.Core.Services
 
       public IRecurringTransaction AddRecurring(DateTime start, DateTime end, string description, decimal amount, string notes, Frequency period)
       {
-         if (string.IsNullOrWhiteSpace(description))
+         if (string.IsNullOrWhiteSpace(description) || amount < 0.01m)
             return null;
 
          if (notes == null)
@@ -216,7 +216,7 @@ namespace MyMoney.Core.Services
 
       public bool UpdateRecurring(long transactionId, DateTime start, DateTime end, string description, decimal amount, string notes, Frequency period)
       {
-         if (string.IsNullOrWhiteSpace(description))
+         if (string.IsNullOrWhiteSpace(description) || amount < 0.01m)
             return false;
 
          if (notes == null)
