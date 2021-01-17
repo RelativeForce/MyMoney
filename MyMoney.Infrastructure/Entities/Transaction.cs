@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities.Abstract;
 
@@ -37,6 +38,52 @@ namespace MyMoney.Infrastructure.Entities
       [NotMapped]
       public IQueryable<IIncome> Incomes => IncomesProxy.Select(tb => tb.Income).Cast<IIncome>().AsQueryable();
       public virtual ICollection<TransactionIncome> IncomesProxy { get; set; } = new List<TransactionIncome>();
+
+      public void UpdateBudgets(IRepository repository, IRelationRepository relationRepository, long[] budgetIds)
+      {
+         DeleteAllBudgets(relationRepository);
+
+         var budgets = repository
+            .UserFiltered<IBudget>(UserId)
+            .Where(b => budgetIds.Contains(b.Id))
+            .ToList();
+
+         foreach (var budget in budgets)
+         {
+            relationRepository.Add(new TransactionBudget(this, budget));
+         }
+      }
+
+      public void UpdateIncomes(IRepository repository, IRelationRepository relationRepository, long[] incomeIds)
+      {
+         DeleteAllIncomes(relationRepository);
+
+         var incomes = repository
+            .UserFiltered<IIncome>(UserId)
+            .Where(b => incomeIds.Contains(b.Id))
+            .ToList();
+
+         foreach (var income in incomes)
+         {
+            relationRepository.Add(new TransactionIncome(this, income));
+         }
+      }
+
+      public void DeleteAllBudgets(IRelationRepository relationRepository)
+      {
+         foreach (var budget in BudgetsProxy.ToList())
+         {
+            relationRepository.Delete(budget);
+         }
+      }
+
+      public void DeleteAllIncomes(IRelationRepository relationRepository)
+      {
+         foreach (var income in IncomesProxy.ToList())
+         {
+            relationRepository.Delete(income);
+         }
+      }
 
       internal static void Configure(ModelBuilder model)
       {

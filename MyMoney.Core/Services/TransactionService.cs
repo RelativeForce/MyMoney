@@ -78,27 +78,9 @@ namespace MyMoney.Core.Services
             return null;
          }
 
-         // Budgets
-         var budgets = _repository
-            .UserFiltered<IBudget>(user)
-            .Where(b => budgetIds.Contains(b.Id))
-            .ToList();
-
-         foreach (var budget in budgets)
-         {
-            budget.AddTransaction(_relationRepository, addedTransaction);
-         }
-
-         // Incomes
-         var incomes = _repository
-            .UserFiltered<IIncome>(user)
-            .Where(i => incomeIds.Contains(i.Id))
-            .ToList();
-
-         foreach (var income in incomes)
-         {
-            income.AddTransaction(_relationRepository, addedTransaction);
-         }
+         // Add relations
+         transaction.UpdateBudgets(_repository, _relationRepository, budgetIds);
+         transaction.UpdateIncomes(_repository, _relationRepository, incomeIds);
 
          return _repository.Update(addedTransaction) ? addedTransaction : null;
       }
@@ -142,37 +124,9 @@ namespace MyMoney.Core.Services
          transaction.Description = description;
          transaction.Notes = notes;
 
-         // Budgets
-         foreach (var budget in transaction.Budgets.ToList())
-         {
-            budget.RemoveTransaction(_relationRepository, transaction);
-         }
-
-         var budgets = _repository
-            .UserFiltered<IBudget>(userId)
-            .Where(b => budgetIds.Contains(b.Id))
-            .ToList();
-
-         foreach (var budget in budgets)
-         {
-            budget.AddTransaction(_relationRepository, transaction);
-         }
-
-         // Incomes
-         foreach (var income in transaction.Incomes.ToList())
-         {
-            income.RemoveTransaction(_relationRepository, transaction);
-         }
-
-         var incomes = _repository
-            .UserFiltered<IIncome>(userId)
-            .Where(i => incomeIds.Contains(i.Id))
-            .ToList();
-
-         foreach (var income in incomes)
-         {
-            income.AddTransaction(_relationRepository, transaction);
-         }
+         // Update relations
+         transaction.UpdateBudgets(_repository, _relationRepository, budgetIds);
+         transaction.UpdateIncomes(_repository, _relationRepository, incomeIds);
 
          return _repository.Update(transaction);
       }
@@ -182,7 +136,7 @@ namespace MyMoney.Core.Services
          var transaction = _repository.FindById<ITransaction>(transactionId);
          var userId = _currentUserProvider.CurrentUserId;
 
-         if (transaction == null || transaction.UserId != userId)
+         if (transaction == null || transaction.UserId != userId || transaction.ParentId != null)
             return false;
 
          return _repository.Delete(transaction);

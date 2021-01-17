@@ -102,7 +102,7 @@ namespace MyMoney.Core.Services
          if (income == null || income.UserId != userId)
             return false;
 
-         income.RemoveAllTransactions(_relationRepository);
+         income.DeleteRelations(_relationRepository);
 
          return _repository.Delete(income);
       }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Entities.Abstract;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,11 +20,11 @@ namespace MyMoney.Infrastructure.Entities
          // Required by EF
       }
 
-      public TransactionBudget(Transaction transaction, Budget budget)
+      public TransactionBudget(ITransaction transaction, IBudget budget)
       {
-         Transaction = transaction;
+         Transaction = transaction as Transaction;
          TransactionId = transaction.Id;
-         Budget = budget;
+         Budget = budget as Budget;
          BudgetId = budget.Id;
       }
 
