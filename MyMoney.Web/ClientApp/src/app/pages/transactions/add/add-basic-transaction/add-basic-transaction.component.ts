@@ -1,10 +1,9 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BudgetViewModel } from '../../../../shared/classes';
 import { ITransactionModel } from 'src/app/shared/state/types';
-import { BudgetService, TransactionService } from 'src/app/shared/services';
-import { IncomeSelectorComponent } from 'src/app/shared/components';
+import { TransactionService } from 'src/app/shared/services';
+import { BudgetSelectorComponent, IncomeSelectorComponent } from 'src/app/shared/components';
 
 @Component({
    selector: 'mymoney-add-basic-transaction',
@@ -15,19 +14,20 @@ export class AddBasicTransactionComponent implements OnInit, AfterViewInit {
    @ViewChild(IncomeSelectorComponent)
    public incomeSelector?: IncomeSelectorComponent;
 
+   @ViewChild(BudgetSelectorComponent)
+   public budgetSelector?: BudgetSelectorComponent;
+
    public addTransactionForm: FormGroup;
    public loading = false;
    public submitted = false;
 
    public selectedBudgets: Set<number> = new Set();
-   public budgets: BudgetViewModel[] | null = null;
-
    public selectedIncomes: Set<number> = new Set();
+
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly transactionService: TransactionService,
-      private readonly budgetService: BudgetService,
    ) {
    }
 
@@ -48,20 +48,6 @@ export class AddBasicTransactionComponent implements OnInit, AfterViewInit {
       return this.addTransactionForm.controls;
    }
 
-   public onBudgetCheckboxChange(event: any, id: number): void {
-      if (event.target.checked) {
-         this.selectedBudgets.add(id);
-      } else {
-         this.selectedBudgets.delete(id);
-      }
-   }
-
-   public get month(): string {
-      const date = new Date(this.f.date.value);
-
-      return `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
-   }
-
    public onDateChange(): void {
 
       this.selectedBudgets.clear();
@@ -69,10 +55,7 @@ export class AddBasicTransactionComponent implements OnInit, AfterViewInit {
 
       const date = new Date(this.f.date.value);
 
-      this.budgetService.getBudgetsForMonth(date.getMonth() + 1, date.getFullYear()).subscribe(response => {
-         this.budgets = response.budgets.map(t => new BudgetViewModel(t));
-      });
-
+      this.budgetSelector?.updateBudgets(date);
       this.incomeSelector?.updateIncomes(date);
    }
 

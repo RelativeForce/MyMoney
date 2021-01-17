@@ -3,3 +3,4 @@ export * from './footer/footer.component';
 export * from './import';
 export * from './toggle/toggle.component';
 export * from './income-selector/income-selector.component';
+export * from './budget-selector/budget-selector.component';

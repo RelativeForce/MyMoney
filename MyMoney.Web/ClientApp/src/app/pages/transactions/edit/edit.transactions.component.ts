@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BudgetService, TransactionService } from '../../../shared/services';
@@ -6,16 +6,19 @@ import { BudgetViewModel } from '../../../shared/classes';
 import { ITransactionModel } from 'src/app/shared/state/types';
 import { Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
-import { IncomeSelectorComponent } from 'src/app/shared/components';
+import { BudgetSelectorComponent, IncomeSelectorComponent } from 'src/app/shared/components';
 
 @Component({
    templateUrl: './edit.transactions.component.html',
    styleUrls: ['./edit.transactions.component.scss']
 })
-export class EditTransactionsComponent implements OnInit {
+export class EditTransactionsComponent implements OnInit, AfterViewInit {
 
    @ViewChild(IncomeSelectorComponent)
    public incomeSelector?: IncomeSelectorComponent;
+
+   @ViewChild(BudgetSelectorComponent)
+   public budgetSelector?: BudgetSelectorComponent;
 
    public editTransactionForm: FormGroup;
    public id: number;
@@ -25,8 +28,6 @@ export class EditTransactionsComponent implements OnInit {
    public submitted = false;
 
    public selectedBudgets: Set<number> = new Set();
-   public budgets: BudgetViewModel[] = [];
-
    public selectedIncomes: Set<number> = new Set();
 
    constructor(
@@ -38,7 +39,6 @@ export class EditTransactionsComponent implements OnInit {
    }
 
    public ngOnInit(): void {
-
       this.activatedRoute.params.subscribe(params => {
          const idStr = params['id'];
 
@@ -56,40 +56,34 @@ export class EditTransactionsComponent implements OnInit {
          });
 
          this.disableForm();
-
-         this.transactionService
-            .findTransaction(this.id)
-            .subscribe((response: ITransactionModel) => {
-
-               response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
-               response.incomeIds.forEach(iid => this.selectedIncomes.add(iid));
-
-               this.f.date.patchValue(this.toInputDateString(response.date));
-               this.f.description.patchValue(response.description);
-               this.f.amount.patchValue(response.amount);
-               this.f.notes.patchValue(response.notes);
-               this.parentId = response.parentId;
-               this.parentFrequency = response.parentFrequency;
-
-               this.enableForm(response.parentId !== null);
-
-               this.fetchBudgetsAndIncomes();
-            },
-               () => this.router.navigate(['/transactions'])
-            );
       });
+   }
+
+   public ngAfterViewInit(): void {
+      this.transactionService
+         .findTransaction(this.id)
+         .subscribe((response: ITransactionModel) => {
+
+            response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
+            response.incomeIds.forEach(iid => this.selectedIncomes.add(iid));
+
+            this.f.date.patchValue(this.toInputDateString(response.date));
+            this.f.description.patchValue(response.description);
+            this.f.amount.patchValue(response.amount);
+            this.f.notes.patchValue(response.notes);
+            this.parentId = response.parentId;
+            this.parentFrequency = response.parentFrequency;
+
+            this.enableForm(response.parentId !== null);
+
+            this.fetchBudgetsAndIncomes();
+         },
+            () => this.router.navigate(['/transactions'])
+         );
    }
 
    public get f() {
       return this.editTransactionForm.controls;
-   }
-
-   public onBudgetCheckboxChange(event: any, id: number): void {
-      if (event.target.checked) {
-         this.selectedBudgets.add(id);
-      } else {
-         this.selectedBudgets.delete(id);
-      }
    }
 
    public onDateChange(): void {
@@ -123,17 +117,8 @@ export class EditTransactionsComponent implements OnInit {
    public fetchBudgetsAndIncomes(): void {
       const date = new Date(this.f.date.value);
 
-      this.budgetService.getBudgetsForMonth(date.getMonth() + 1, date.getFullYear()).subscribe(response => {
-         this.budgets = response.budgets.map(t => new BudgetViewModel(t));
-      });
-
+      this.budgetSelector?.updateBudgets(date);
       this.incomeSelector?.updateIncomes(date);
-   }
-
-   public get month(): string {
-      const date = new Date(this.f.date.value);
-
-      return `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
    }
 
    public onSubmit(): void {

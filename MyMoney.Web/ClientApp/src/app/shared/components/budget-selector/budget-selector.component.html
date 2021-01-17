@@ -1,0 +1,29 @@
+<h4>Budgets ({{ month }})</h4>
+<div *ngIf="budgets === null">
+   <span class="spinner-border spinner-border-sm mr-1"></span>
+   Loading...
+</div>
+<div *ngIf="budgets !== null && budgets.length === 0" class="alert alert-warning" role="alert">
+   No budgets exist for {{ month }}
+</div>
+<table *ngIf="budgets != null && budgets.length !== 0" class="table">
+   <thead>
+      <tr>
+         <th scope="col"></th>
+         <th scope="col">Name</th>
+         <th scope="col">Amount</th>
+         <th scope="col">Remaining</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr *ngFor="let budget of budgets; let i = index">
+         <td>
+            <input type="checkbox" [value]="budget.id" [checked]="selectedBudgets.has(budget.id)"
+               (change)="onBudgetCheckboxChange($event, budget.id)" />
+         </td>
+         <td>{{budget.name}}</td>
+         <td>{{budget.amount}}</td>
+         <td [ngClass]="{ 'text-danger': budget.showWarning }">{{budget.remaining}}</td>
+      </tr>
+   </tbody>
+</table>

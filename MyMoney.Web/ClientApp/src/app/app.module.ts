@@ -29,6 +29,7 @@ import {
    AddRecurringTransactionComponent,
 } from './pages';
 import {
+   BudgetSelectorComponent,
    ChartComponent,
    FooterComponent,
    ImportFileComponent,
@@ -74,6 +75,7 @@ import { routes } from './app.routing';
       FooterComponent,
       ToggleComponent,
       IncomeSelectorComponent,
+      BudgetSelectorComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
