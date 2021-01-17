@@ -1,5 +1,6 @@
 <div class="header">
-   <h2>Edit transaction {{id}} {{ frequencyString }}</h2>
+   <h2 *ngIf="loadingTransaction">Loading transaction {{id}}</h2>
+   <h2 *ngIf="!loadingTransaction">Edit transaction {{id}} {{ frequencyString }}</h2>
    <div>
       <a class="btn btn-link" *ngIf="parentId !== null" routerLink="/transactions/edit-recurring/{{parentId}}">
          Parent recurring transaction

@@ -1,8 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BudgetService, TransactionService } from '../../../shared/services';
-import { BudgetViewModel } from '../../../shared/classes';
+import { TransactionService } from '../../../shared/services';
 import { ITransactionModel } from 'src/app/shared/state/types';
 import { Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
@@ -22,10 +21,11 @@ export class EditTransactionsComponent implements OnInit, AfterViewInit {
 
    public editTransactionForm: FormGroup;
    public id: number;
-   public parentId: number | null;
-   public parentFrequency: Frequency | null;
+   public parentId: number | null = null;
+   public parentFrequency: Frequency | null = null;
    public loading = false;
    public submitted = false;
+   public loadingTransaction = true;
 
    public selectedBudgets: Set<number> = new Set();
    public selectedIncomes: Set<number> = new Set();
@@ -34,8 +34,17 @@ export class EditTransactionsComponent implements OnInit, AfterViewInit {
       private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
       private readonly router: Router,
-      private readonly activatedRoute: ActivatedRoute,
-      private readonly budgetService: BudgetService) {
+      private readonly activatedRoute: ActivatedRoute) {
+      this.id = 0;
+
+      this.editTransactionForm = this.formBuilder.group({
+         date: ['', [Validators.required]],
+         description: ['', [Validators.required]],
+         amount: [0, [Validators.required, Validators.min(0.01)]],
+         notes: ['']
+      });
+
+      this.disableForm();
    }
 
    public ngOnInit(): void {
@@ -47,15 +56,6 @@ export class EditTransactionsComponent implements OnInit, AfterViewInit {
          }
 
          this.id = Number.parseInt(idStr, 10);
-
-         this.editTransactionForm = this.formBuilder.group({
-            date: ['', [Validators.required]],
-            description: ['', [Validators.required]],
-            amount: [0, [Validators.required, Validators.min(0.01)]],
-            notes: ['']
-         });
-
-         this.disableForm();
       });
    }
 
@@ -75,6 +75,7 @@ export class EditTransactionsComponent implements OnInit, AfterViewInit {
             this.parentFrequency = response.parentFrequency;
 
             this.enableForm(response.parentId !== null);
+            this.loadingTransaction = false;
 
             this.fetchBudgetsAndIncomes();
          },
@@ -87,6 +88,9 @@ export class EditTransactionsComponent implements OnInit, AfterViewInit {
    }
 
    public onDateChange(): void {
+      if (this.loadingTransaction) {
+         return;
+      }
 
       this.selectedBudgets.clear();
       this.selectedIncomes.clear();

@@ -10,7 +10,9 @@ export class BudgetSelectorComponent {
    @Input()
    public selectedBudgets: Set<number> = new Set();
 
-   public date: Date | null = null;
+   @Input()
+   public date: Date = new Date();
+
    public budgets: BudgetViewModel[] | null = null;
 
    constructor(
@@ -28,7 +30,7 @@ export class BudgetSelectorComponent {
 
    public get month(): string {
       if (this.date === null) {
-         return '';
+         return '...';
       }
 
       return `${this.date.toLocaleString('default', { month: 'long' })} ${this.date.getFullYear()}`;
