@@ -78,12 +78,15 @@
                   <td>
                      <div class="center">
                         {{child.date}}
-                        <span *ngIf="nextDate === child.date" class="badge badge-pill badge-warning">Upcoming next</span>
+                        <span *ngIf="nextChildTransaction === child.id" class="badge badge-pill badge-warning">Upcoming next</span>
                      </div>
                   </td>
                   <td>
-                     <button class="btn btn-primary" (click)="addOrEditTransaction(child)" data-toggle="tooltip" data-placement="bottom"
-                        title="Edit transaction {{child.date}}">🖉</button>
+                     <button class="btn btn-primary" [disabled]="realisingChild !== null" (click)="addOrEditTransaction(child)"
+                        data-toggle="tooltip" data-placement="bottom" title="Edit transaction {{child.date}}">
+                        <span *ngIf="realisingChild !== child.id">🖉</span>
+                        <span *ngIf="realisingChild === child.id" class="spinner-border spinner-border-sm mr-1"></span>
+                     </button>
                   </td>
                </tr>
             </tbody>
