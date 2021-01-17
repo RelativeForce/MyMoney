@@ -18,7 +18,7 @@ namespace MyMoney.Infrastructure.Migrations
              .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
              .HasAnnotation("Relational:MaxIdentifierLength", 128)
              .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-               .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+             .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
          modelBuilder.Entity("MyMoney.Infrastructure.Entities.Budget", b =>
                 {
