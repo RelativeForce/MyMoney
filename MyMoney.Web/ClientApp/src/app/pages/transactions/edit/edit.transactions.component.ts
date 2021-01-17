@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BudgetService, IncomeService, TransactionService } from '../../../shared/services';
-import { BudgetViewModel, IncomeViewModel } from '../../../shared/classes';
+import { BudgetService, TransactionService } from '../../../shared/services';
+import { BudgetViewModel } from '../../../shared/classes';
 import { ITransactionModel } from 'src/app/shared/state/types';
 import { Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
+import { IncomeSelectorComponent } from 'src/app/shared/components';
 
 @Component({
    templateUrl: './edit.transactions.component.html',
    styleUrls: ['./edit.transactions.component.scss']
 })
 export class EditTransactionsComponent implements OnInit {
+
+   @ViewChild(IncomeSelectorComponent)
+   public incomeSelector?: IncomeSelectorComponent;
 
    public editTransactionForm: FormGroup;
    public id: number;
@@ -24,16 +28,13 @@ export class EditTransactionsComponent implements OnInit {
    public budgets: BudgetViewModel[] = [];
 
    public selectedIncomes: Set<number> = new Set();
-   public incomes: IncomeViewModel[] = [];
 
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
-      private readonly budgetService: BudgetService,
-      private readonly incomeService: IncomeService
-   ) {
+      private readonly budgetService: BudgetService) {
    }
 
    public ngOnInit(): void {
@@ -91,17 +92,10 @@ export class EditTransactionsComponent implements OnInit {
       }
    }
 
-   public onIncomeCheckboxChange(e, id): void {
-      if (e.target.checked) {
-         this.selectedIncomes.add(id);
-      } else {
-         this.selectedIncomes.delete(id);
-      }
-   }
-
    public onDateChange(): void {
 
       this.selectedBudgets.clear();
+      this.selectedIncomes.clear();
 
       this.fetchBudgetsAndIncomes();
    }
@@ -133,9 +127,7 @@ export class EditTransactionsComponent implements OnInit {
          this.budgets = response.budgets.map(t => new BudgetViewModel(t));
       });
 
-      this.incomeService.getIncomesByDate(date).subscribe(response => {
-         this.incomes = response.incomes.map(t => new IncomeViewModel(t));
-      });
+      this.incomeSelector?.updateIncomes(date);
    }
 
    public get month(): string {

@@ -71,27 +71,6 @@
             </tr>
          </tbody>
       </table>
-      <h4>Incomes</h4>
-      <table class="table">
-         <thead>
-            <tr>
-               <th scope="col"></th>
-               <th scope="col">Date</th>
-               <th scope="col">Name</th>
-               <th scope="col">Remaining</th>
-            </tr>
-         </thead>
-         <tbody>
-            <tr *ngFor="let income of incomes; let i = index">
-               <td>
-                  <input type="checkbox" [value]="income.id" [checked]="selectedIncomes.has(income.id)"
-                     (change)="onIncomeCheckboxChange($event, income.id)" />
-               </td>
-               <td>{{income.date}}</td>
-               <td>{{income.name}}</td>
-               <td [ngClass]="{ 'text-danger': income.showWarning }">{{income.remaining}}</td>
-            </tr>
-         </tbody>
-      </table>
+      <mymoney-income-selector [selectedIncomes]="selectedIncomes"></mymoney-income-selector>
    </div>
 </div>

@@ -1,0 +1,29 @@
+<h4>Incomes</h4>
+<div *ngIf="incomes === null">
+   <span class="spinner-border spinner-border-sm mr-1"></span>
+   Loading...
+</div>
+<div *ngIf="incomes !== null && incomes.length === 0" class="alert alert-warning" role="alert">
+   No incomes as of the date selected
+</div>
+<table *ngIf="incomes !== null && incomes.length !== 0" class="table">
+   <thead>
+      <tr>
+         <th scope="col"></th>
+         <th scope="col">Date</th>
+         <th scope="col">Name</th>
+         <th scope="col">Remaining</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr *ngFor="let income of incomes; let i = index">
+         <td>
+            <input type="checkbox" [value]="income.id" [checked]="selectedIncomes.has(income.id)"
+               (change)="onIncomeCheckboxChange($event, income.id)" />
+         </td>
+         <td>{{income.date}}</td>
+         <td>{{income.name}}</td>
+         <td [ngClass]="{ 'text-danger': income.showWarning }">{{income.remaining}}</td>
+      </tr>
+   </tbody>
+</table>

@@ -42,7 +42,14 @@
    </div>
    <div class="col-6">
       <h4>Budgets ({{ month }})</h4>
-      <table class="table">
+      <div *ngIf="budgets === null">
+         <span class="spinner-border spinner-border-sm mr-1"></span>
+         Loading...
+      </div>
+      <div *ngIf="budgets !== null && budgets.length === 0" class="alert alert-warning" role="alert">
+         No budgets exist for {{ month }}
+      </div>
+      <table *ngIf="budgets != null && budgets.length !== 0" class="table">
          <thead>
             <tr>
                <th scope="col"></th>
@@ -63,27 +70,6 @@
             </tr>
          </tbody>
       </table>
-      <h4>Incomes</h4>
-      <table class="table">
-         <thead>
-            <tr>
-               <th scope="col"></th>
-               <th scope="col">Date</th>
-               <th scope="col">Name</th>
-               <th scope="col">Remaining</th>
-            </tr>
-         </thead>
-         <tbody>
-            <tr *ngFor="let income of incomes; let i = index">
-               <td>
-                  <input type="checkbox" [value]="income.id" [checked]="selectedIncomes.has(income.id)"
-                     (change)="onIncomeCheckboxChange($event, income.id)" />
-               </td>
-               <td>{{income.date}}</td>
-               <td>{{income.name}}</td>
-               <td [ngClass]="{ 'text-danger': income.showWarning }">{{income.remaining}}</td>
-            </tr>
-         </tbody>
-      </table>
+      <mymoney-income-selector [selectedIncomes]="selectedIncomes"></mymoney-income-selector>
    </div>
 </div>
