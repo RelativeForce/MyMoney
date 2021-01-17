@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Entities.Abstract;
 using System.ComponentModel.DataAnnotations;
 
@@ -20,11 +19,11 @@ namespace MyMoney.Infrastructure.Entities
          // Required by EF
       }
 
-      public TransactionIncome(ITransaction transaction, IIncome income)
+      public TransactionIncome(Transaction transaction, Income income)
       {
-         Transaction = transaction as Transaction;
+         Transaction = transaction;
          TransactionId = transaction.Id;
-         Income = income as Income;
+         Income = income;
          IncomeId = income.Id;
       }
 

@@ -44,7 +44,7 @@ namespace MyMoney.Infrastructure.Entities
          DeleteAllBudgets(relationRepository);
 
          var budgets = repository
-            .UserFiltered<IBudget>(UserId)
+            .UserFiltered<Budget>(UserId)
             .Where(b => budgetIds.Contains(b.Id))
             .ToList();
 
@@ -59,7 +59,7 @@ namespace MyMoney.Infrastructure.Entities
          DeleteAllIncomes(relationRepository);
 
          var incomes = repository
-            .UserFiltered<IIncome>(UserId)
+            .UserFiltered<Income>(UserId)
             .Where(b => incomeIds.Contains(b.Id))
             .ToList();
 
