@@ -1,24 +1,16 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../shared/services';
 import { ITransactionModel } from 'src/app/shared/state/types';
 import { Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
-import { BudgetSelectorComponent, IncomeSelectorComponent } from 'src/app/shared/components';
 
 @Component({
    templateUrl: './edit.transactions.component.html',
    styleUrls: ['./edit.transactions.component.scss']
 })
-export class EditTransactionsComponent implements OnInit, AfterViewInit {
-
-   @ViewChild(IncomeSelectorComponent)
-   public incomeSelector?: IncomeSelectorComponent;
-
-   @ViewChild(BudgetSelectorComponent)
-   public budgetSelector?: BudgetSelectorComponent;
-
+export class EditTransactionsComponent implements OnInit {
    public editTransactionForm: FormGroup;
    public id: number;
    public parentId: number | null = null;
@@ -56,46 +48,35 @@ export class EditTransactionsComponent implements OnInit, AfterViewInit {
          }
 
          this.id = Number.parseInt(idStr, 10);
+
+         this.transactionService
+            .findTransaction(this.id)
+            .subscribe((response: ITransactionModel) => {
+
+               response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
+               response.incomeIds.forEach(iid => this.selectedIncomes.add(iid));
+
+               this.f.date.patchValue(this.toInputDateString(response.date));
+               this.f.description.patchValue(response.description);
+               this.f.amount.patchValue(response.amount);
+               this.f.notes.patchValue(response.notes);
+               this.parentId = response.parentId;
+               this.parentFrequency = response.parentFrequency;
+
+               this.enableForm(response.parentId !== null);
+               this.loadingTransaction = false;
+            },
+               () => this.router.navigate(['/transactions'])
+            );
       });
    }
 
-   public ngAfterViewInit(): void {
-      this.transactionService
-         .findTransaction(this.id)
-         .subscribe((response: ITransactionModel) => {
-
-            response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
-            response.incomeIds.forEach(iid => this.selectedIncomes.add(iid));
-
-            this.f.date.patchValue(this.toInputDateString(response.date));
-            this.f.description.patchValue(response.description);
-            this.f.amount.patchValue(response.amount);
-            this.f.notes.patchValue(response.notes);
-            this.parentId = response.parentId;
-            this.parentFrequency = response.parentFrequency;
-
-            this.enableForm(response.parentId !== null);
-            this.loadingTransaction = false;
-
-            this.fetchBudgetsAndIncomes();
-         },
-            () => this.router.navigate(['/transactions'])
-         );
+   public get selectedDate(): Date | null {
+      return this.loadingTransaction ? null : new Date(this.f.date.value);
    }
 
    public get f() {
       return this.editTransactionForm.controls;
-   }
-
-   public onDateChange(): void {
-      if (this.loadingTransaction) {
-         return;
-      }
-
-      this.selectedBudgets.clear();
-      this.selectedIncomes.clear();
-
-      this.fetchBudgetsAndIncomes();
    }
 
    public toInputDateString(text: string): string {
@@ -116,13 +97,6 @@ export class EditTransactionsComponent implements OnInit, AfterViewInit {
       }
 
       return `(${toFrequencyString(this.parentFrequency)})`;
-   }
-
-   public fetchBudgetsAndIncomes(): void {
-      const date = new Date(this.f.date.value);
-
-      this.budgetSelector?.updateBudgets(date);
-      this.incomeSelector?.updateIncomes(date);
    }
 
    public onSubmit(): void {

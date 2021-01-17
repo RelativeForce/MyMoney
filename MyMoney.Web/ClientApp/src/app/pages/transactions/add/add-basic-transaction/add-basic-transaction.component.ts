@@ -1,22 +1,14 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ITransactionModel } from 'src/app/shared/state/types';
 import { TransactionService } from 'src/app/shared/services';
-import { BudgetSelectorComponent, IncomeSelectorComponent } from 'src/app/shared/components';
 
 @Component({
    selector: 'mymoney-add-basic-transaction',
    templateUrl: './add-basic-transaction.component.html',
 })
-export class AddBasicTransactionComponent implements OnInit, AfterViewInit {
-
-   @ViewChild(IncomeSelectorComponent)
-   public incomeSelector?: IncomeSelectorComponent;
-
-   @ViewChild(BudgetSelectorComponent)
-   public budgetSelector?: BudgetSelectorComponent;
-
+export class AddBasicTransactionComponent implements OnInit {
    public addTransactionForm: FormGroup;
    public loading = false;
    public submitted = false;
@@ -29,10 +21,6 @@ export class AddBasicTransactionComponent implements OnInit, AfterViewInit {
       private readonly router: Router,
       private readonly transactionService: TransactionService,
    ) {
-   }
-
-   public ngAfterViewInit(): void {
-      this.onDateChange();
    }
 
    public ngOnInit(): void {
@@ -48,15 +36,8 @@ export class AddBasicTransactionComponent implements OnInit, AfterViewInit {
       return this.addTransactionForm.controls;
    }
 
-   public onDateChange(): void {
-
-      this.selectedBudgets.clear();
-      this.selectedIncomes.clear();
-
-      const date = new Date(this.f.date.value);
-
-      this.budgetSelector?.updateBudgets(date);
-      this.incomeSelector?.updateIncomes(date);
+   public get selectedDate(): Date {
+      return new Date(this.f.date.value);
    }
 
    public onSubmit(): void {
