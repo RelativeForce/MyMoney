@@ -45,7 +45,7 @@
       <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" />
       <div *ngIf="submitted && f.amount.errors" class="invalid-feedback">
          <div *ngIf="f.amount.errors.required">Amount is required</div>
-         <div *ngIf="f.amount.errors.min">Amount cannot be negative</div>
+         <div *ngIf="f.amount.errors.min">Amount cannot be less that 0.01</div>
       </div>
    </div>
    <div class="form-group">
