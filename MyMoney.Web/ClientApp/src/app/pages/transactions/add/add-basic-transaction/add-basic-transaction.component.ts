@@ -34,7 +34,7 @@ export class AddBasicTransactionComponent implements OnInit {
       this.addTransactionForm = this.formBuilder.group({
          date: [new Date().toISOString().split('T')[0], [Validators.required]],
          description: ['', [Validators.required]],
-         amount: [0, [Validators.required, Validators.min(0)]],
+         amount: [0, [Validators.required, Validators.min(0.01)]],
          notes: ['']
       });
 
