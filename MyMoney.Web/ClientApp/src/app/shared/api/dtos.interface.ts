@@ -75,8 +75,8 @@ export interface ITransactionDto {
    budgetIds: number[];
    incomeIds: number[];
    id: number;
-   recurringTransactionId: number | null;
-   recurringFrequency: Frequency | null;
+   parentId: number | null;
+   parentFrequency: Frequency | null;
 }
 
 export interface ITransactionListDto {
@@ -95,12 +95,12 @@ export interface IRunningTotalSearchDto {
 
 export interface IRunningTotalDto {
    id: number;
-   link: string;
    name: string;
    text: string;
    date: string;
    delta: number;
    value: number;
+   parentId: number | null;
 }
 
 export interface IRunningTotalListDto {
@@ -141,5 +141,10 @@ export interface IRecurringTransactionDto {
    amount: number;
    id: number;
    recurrence: Frequency;
-   dates: string[];
+   children: IRecurringTransactionChildDto[];
+}
+
+export interface IRecurringTransactionChildDto {
+   date: string;
+   id: number;
 }

@@ -40,7 +40,7 @@ export class EditIncomesComponent implements OnInit {
          this.editIncomeForm = this.formBuilder.group({
             date: ['', [Validators.required]],
             name: ['', [Validators.required]],
-            amount: [0, [Validators.required, Validators.min(0)]],
+            amount: [0, [Validators.required, Validators.min(0.01)]],
          });
 
          this.disableForm();

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
@@ -38,7 +37,7 @@ namespace MyMoney.Core.Services
       {
          var user = _currentUserProvider.CurrentUser;
 
-         if (string.IsNullOrWhiteSpace(name) || amount <= 0)
+         if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return null;
 
          var income = _entityFactory.NewIncome;
@@ -77,51 +76,9 @@ namespace MyMoney.Core.Services
             .ToList();
       }
 
-      public IList<RunningTotal> RunningTotal(decimal initialTotal, DateTime start, DateTime end)
-      {
-         var user = _currentUserProvider.CurrentUser;
-
-         var transactions = _repository
-            .UserFiltered<ITransaction>(user)
-            .Where(t => t.Date >= start && t.Date <= end)
-            .AsEnumerable()
-            .Select(t => new RunningTotal(t));
-
-         var recurringTransactions = _repository
-            .UserFiltered<IRecurringTransaction>(user)
-            .Where(rt =>
-               (rt.Start >= start && rt.Start <= end) || // Starts in the range
-               (rt.End >= start && rt.End <= end) || // Ends in the range
-               (rt.Start <= start && rt.End >= end)) // Spans the range
-            .AsEnumerable()
-            .Select(rt => rt.ToInstances())
-            .SelectMany(vt => vt)
-            .Where(t => t.Date >= start && t.Date <= end)
-            .Select(t => new RunningTotal(t));
-
-         var incomes = _repository
-            .UserFiltered<IIncome>(user)
-            .Where(i => i.Date >= start && i.Date <= end)
-            .AsEnumerable()
-            .Select(i => new RunningTotal(i));
-
-         var runningTotals = transactions
-            .Concat(incomes)
-            .Concat(recurringTransactions)
-            .OrderBy(rt => rt.Date)
-            .ToList();
-
-         foreach (var rt in runningTotals)
-         {
-            initialTotal = rt.AdjustTotal(initialTotal);
-         }
-
-         return runningTotals;
-      }
-
       public bool Update(long incomeId, DateTime date, string name, decimal amount)
       {
-         if (string.IsNullOrWhiteSpace(name) || amount <= 0)
+         if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return false;
 
          var income = _repository.FindById<IIncome>(incomeId);
@@ -145,7 +102,7 @@ namespace MyMoney.Core.Services
          if (income == null || income.UserId != userId)
             return false;
 
-         income.RemoveAllTransactions(_relationRepository);
+         income.DeleteRelations(_relationRepository);
 
          return _repository.Delete(income);
       }

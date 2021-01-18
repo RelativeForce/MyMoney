@@ -23,25 +23,7 @@ namespace MyMoney.Infrastructure.Entities
       public IQueryable<ITransaction> Transactions => TransactionsProxy.Select(tb => tb.Transaction).Cast<ITransaction>().AsQueryable();
       public virtual ICollection<TransactionBudget> TransactionsProxy { get; set; } = new List<TransactionBudget>();
 
-      public void AddTransaction(IRelationRepository relationRepository, ITransaction transaction)
-      {
-         if (transaction is Transaction t)
-         {
-            relationRepository.Add(new TransactionBudget(t, this));
-         }
-      }
-
-      public void RemoveTransaction(IRelationRepository relationRepository, ITransaction transaction)
-      {
-         var transactionBudget = TransactionsProxy.FirstOrDefault(t => t.TransactionId == transaction.Id);
-
-         if (transactionBudget != null)
-         {
-            relationRepository.Delete(transactionBudget);
-         }
-      }
-
-      public void RemoveAllTransactions(IRelationRepository relationRepository)
+      public void DeleteRelations(IRelationRepository relationRepository)
       {
          foreach(var transaction in TransactionsProxy.ToList())
          {

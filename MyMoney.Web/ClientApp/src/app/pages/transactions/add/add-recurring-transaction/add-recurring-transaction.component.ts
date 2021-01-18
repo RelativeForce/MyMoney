@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ITransactionModel } from 'src/app/shared/state/types';
 import { TransactionService } from 'src/app/shared/services';
 import { IRecurringTransactionDto, Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
 
 @Component({
    selector: 'mymoney-add-recurring-transaction',
-   templateUrl: './add-recurring.transactions.component.html',
+   templateUrl: './add-recurring-transaction.component.html',
 })
-export class AddRecurringTransactionsComponent implements OnInit {
+export class AddRecurringTransactionComponent implements OnInit {
 
    public addTransactionForm: FormGroup;
    public loading = false;
@@ -40,7 +39,7 @@ export class AddRecurringTransactionsComponent implements OnInit {
          start: [start.toISOString().split('T')[0], [Validators.required]],
          end: [end.toISOString().split('T')[0], [Validators.required]],
          description: ['', [Validators.required]],
-         amount: [0, [Validators.required, Validators.min(0)]],
+         amount: [0, [Validators.required, Validators.min(0.01)]],
          recurrence: [Frequency.month, [Validators.required, Validators.min(Frequency.day), Validators.max(Frequency.year)]],
          notes: ['']
       });
@@ -75,7 +74,7 @@ export class AddRecurringTransactionsComponent implements OnInit {
          id: 0,
          recurrence,
          notes,
-         dates: []
+         children: []
       };
 
       this.transactionService.addRecurringTransaction(transaction).subscribe(success => {

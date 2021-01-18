@@ -2,20 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../shared/services';
-import { IRecurringTransactionDto, Frequency } from 'src/app/shared/api';
+import { IRecurringTransactionDto, Frequency, ITransactionDto } from 'src/app/shared/api';
 import { toFrequencyString, toInputDateString } from 'src/app/shared/functions';
 
 @Component({
-   templateUrl: './edit-recurring.transactions.component.html'
+   templateUrl: './edit-recurring.transactions.component.html',
+   styleUrls: ['./edit-recurring.transactions.component.scss']
 })
 export class EditRecurringTransactionsComponent implements OnInit {
 
    public editTransactionForm: FormGroup;
    public id: number;
    public loading = false;
+   public realisingChild: number | null = null;
    public submitted = false;
    public dateMessage: string | null = null;
-   public dates: string[] = [];
+   public children: { id: number; date: string }[] = [];
    public recurrenceOptions: { key: Frequency; value: string }[];
 
    constructor(
@@ -47,7 +49,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
             start: ['', [Validators.required]],
             end: ['', [Validators.required]],
             description: ['', [Validators.required]],
-            amount: [0, [Validators.required, Validators.min(0)]],
+            amount: [0, [Validators.required, Validators.min(0.01)]],
             notes: [''],
             recurrence: [Frequency.month, [Validators.required, Validators.min(Frequency.day), Validators.max(Frequency.year)]]
          });
@@ -64,7 +66,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
                this.f.amount.patchValue(response.amount);
                this.f.notes.patchValue(response.notes);
 
-               this.dates = response.dates;
+               this.children = response.children;
                this.enableForm();
             },
                () => this.router.navigate(['/transactions'])
@@ -76,16 +78,30 @@ export class EditRecurringTransactionsComponent implements OnInit {
       return this.editTransactionForm.controls;
    }
 
-   public get nextDate(): string | null {
+   public get nextChildTransaction(): number | null {
 
       const now = new Date(Date.now()).getTime();
 
-      return this.dates.find(d => Date.parse(toInputDateString(d)) > now) ?? null;
+      return this.children.find(d => Date.parse(toInputDateString(d.date)) > now)?.id ?? null;
    }
 
-   public onDateChange(): void {
-      this.dates = [];
-      this.dateMessage = 'Dates will be recalculated when saved.';
+   public onDurationOrRecurrenceChange(): void {
+      this.children = [];
+      this.dateMessage = 'Occurrences will be recalculated when changes are saved.';
+   }
+
+   public addOrEditTransaction(child: { id: number; date: string }) {
+      if (child.id < 0) {
+         this.realisingChild = child.id;
+         this.transactionService
+            .realiseTransaction(this.id, child.date)
+            .subscribe((realChild: ITransactionDto) => {
+               this.realisingChild = null;
+               this.router.navigate(['/transactions', 'edit', realChild.id]);
+            });
+      } else {
+         this.router.navigate(['/transactions', 'edit', child.id]);
+      }
    }
 
    public onSubmit(): void {
@@ -94,6 +110,14 @@ export class EditRecurringTransactionsComponent implements OnInit {
       // stop here if form is invalid
       if (this.editTransactionForm.invalid) {
          return;
+      }
+
+      if (this.f.start.dirty || this.f.recurrence.dirty) {
+         const message = 'Changing the start or recurrence will erase all manual changes to the transaction occurrences.\n\n' + 'Continue?';
+
+         if (!confirm(message)) {
+            return;
+         }
       }
 
       this.loading = true;
@@ -146,7 +170,7 @@ export class EditRecurringTransactionsComponent implements OnInit {
          id: this.id,
          notes,
          recurrence,
-         dates: []
+         children: []
       };
    }
 }

@@ -5,7 +5,7 @@ export class TransactionViewModel {
    date: string;
    description: string;
    amount: string;
-   recurringTransactionId: number | null;
+   parentId: number | null;
    id: number;
 
    constructor(model: ITransactionModel) {
@@ -13,10 +13,10 @@ export class TransactionViewModel {
       this.description = model.description;
       this.amount = '£' + model.amount;
       this.id = model.id;
-      this.recurringTransactionId = model.recurringTransactionId;
+      this.parentId = model.parentId;
 
-      if (model.recurringTransactionId !== null) {
-         this.description += ` (${toFrequencyString(model.recurringFrequency)})`;
+      if (model.parentId !== null) {
+         this.description += ` (${toFrequencyString(model.parentFrequency)})`;
       }
    }
 }

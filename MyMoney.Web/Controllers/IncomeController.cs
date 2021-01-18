@@ -16,10 +16,12 @@ namespace MyMoney.Web.Controllers
    public class IncomeController : ControllerBase
    {
       private readonly IIncomeService _incomeService;
+      private readonly IRunningTotalService _runningTotalService;
 
-      public IncomeController(IIncomeService incomeService)
+      public IncomeController(IIncomeService incomeService, IRunningTotalService runningTotalService)
       {
          _incomeService = incomeService;
+         _runningTotalService = runningTotalService;
       }
 
       [HttpPost(nameof(Find))]
@@ -109,7 +111,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var runningTotals = _incomeService.RunningTotal(dto.InitialTotal, dto.dateRange.Start, dto.dateRange.End);
+            var runningTotals = _runningTotalService.RunningTotal(dto.InitialTotal, dto.dateRange.Start, dto.dateRange.End);
 
             if (runningTotals == null)
                return NotFound();

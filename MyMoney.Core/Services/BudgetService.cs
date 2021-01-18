@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Interfaces.Service;
@@ -38,13 +36,12 @@ namespace MyMoney.Core.Services
       {
          var user = _currentUserProvider.CurrentUser;
 
-         notes = notes ?? "";
-         name = name ?? $"Budget for {month}/{year}";
+         notes ??= "";
+         name ??= $"Budget for {month}/{year}";
 
-         if (month <= 0 || year <= 0 || month > 12)
-         {
+         if (month <= 0 || year <= 0 || month > 12 || amount < 0.01m)
             return null;
-         }
+         
 
          var budget = _entityFactory.NewBudget;
          budget.UserId = user.Id;
@@ -74,10 +71,13 @@ namespace MyMoney.Core.Services
          if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(notes))
             return false;
 
+         if (month <= 0 || year <= 0 || month > 12 || amount < 0.01m)
+            return false;
+
          var budget = _repository.FindById<IBudget>(budgetId);
          var userId = _currentUserProvider.CurrentUserId;
 
-         if (budget == null || budget.UserId != userId || month <= 0 || year <= 0 || month > 12)
+         if (budget == null || budget.UserId != userId)
             return false;
 
          budget.Month = month;
@@ -97,7 +97,7 @@ namespace MyMoney.Core.Services
          if (budget == null || budget.UserId != userId)
             return false;
 
-         budget.RemoveAllTransactions(_relationRepository);
+         budget.DeleteRelations(_relationRepository);
 
          return _repository.Delete(budget);
       }

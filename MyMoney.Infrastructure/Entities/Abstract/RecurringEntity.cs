@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using MyMoney.Core.Data;
+using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities.Abstract;
 
 namespace MyMoney.Infrastructure.Entities.Abstract
@@ -10,6 +12,6 @@ namespace MyMoney.Infrastructure.Entities.Abstract
       public DateTime Start { get; set; }
       public DateTime End { get; set; }
       public Frequency Recurrence { get; set; }
-      public abstract IList<T> ToInstances();
+      public abstract IList<T> Children(IRepository repository, Expression<Func<T, bool>> filter = null);
    }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyMoney.Core.Data;
+using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities.Abstract;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace MyMoney.Infrastructure.Entities
 {
@@ -19,8 +21,11 @@ namespace MyMoney.Infrastructure.Entities
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
 
-      public override IList<ITransaction> ToInstances()
+      public override IList<ITransaction> Children(IRepository repository, Expression<Func<ITransaction, bool>> filter = null)
       {
+         // Use an empty filter if none is specified
+         filter ??= (t) => true;
+
          var transactions = Recurrence.Repeat(Start, End, (DateTime date) => new Transaction
          {
             Date = date,
@@ -31,9 +36,23 @@ namespace MyMoney.Infrastructure.Entities
             User = User,
             Id = VirtualTransactionId--,
             Parent = this,
-         });
+            ParentId = Id
+         }).Cast<ITransaction>().Where(filter.Compile()).ToDictionary(t => t.Date);
 
-         return transactions.Cast<ITransaction>().ToList();
+         var realTransactions = repository
+            .UserFiltered<ITransaction>(UserId)
+            .Where(t => t.ParentId == Id)
+            .Where(filter)
+            .ToList();
+
+         // Replace virtual transactions with the real ones
+         foreach (var realTransaction in realTransactions)
+            transactions[realTransaction.Date] = realTransaction;
+
+         return transactions
+            .Values
+            .OrderBy(t => t.Date)
+            .ToList();
       }
 
       internal static void Configure(ModelBuilder model)

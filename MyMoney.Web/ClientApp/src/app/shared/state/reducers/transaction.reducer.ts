@@ -61,7 +61,7 @@ function deleteRecurringTransaction(state: ITransactionState, action: DeleteRecu
 
    return {
       ...state,
-      transactions: state.transactions.filter(t => t.recurringTransactionId !== transactionId)
+      transactions: state.transactions.filter(t => t.parentId !== transactionId)
    };
 }
 

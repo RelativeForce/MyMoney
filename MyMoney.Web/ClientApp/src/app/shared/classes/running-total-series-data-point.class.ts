@@ -13,12 +13,26 @@ export class RunningTotalSeriesDataPoint implements ISeriesDataPoint {
    public readonly link: (string | number)[] | null;
 
    constructor(runningTotal: IRunningTotalDto | null, initialTotal: number) {
-      this.id = runningTotal?.id ?? -1;
+      this.id = runningTotal?.id ?? 0;
       this.text = runningTotal?.text ?? DEFAULT_TEXT;
       this.value = runningTotal?.value ?? initialTotal;
       this.amount = runningTotal?.delta ?? 0;
       this.date = runningTotal?.date ?? '';
       this.name = runningTotal?.name ?? DEFAULT_TEXT;
-      this.link = runningTotal?.link.split('/');
+      this.link = null;
+
+      if (this.amount > 0) {
+         if (runningTotal.parentId === null || this.id > 0) {
+            this.link = ['/incomes', 'edit', this.id];
+         } else {
+            // TODO: Recurring income link
+         }
+      } else if (this.amount < 0) {
+         if (runningTotal.parentId === null || this.id > 0) {
+            this.link = ['/transactions', 'edit', this.id];
+         } else {
+            this.link = ['/transactions', 'edit-recurring', runningTotal.parentId];
+         }
+      }
    }
 }

@@ -28,7 +28,7 @@ export class AddBudgetsComponent implements OnInit {
       this.addBudgetForm = this.formBuilder.group({
          year: [year, [Validators.required, Validators.min(1980)]],
          month: [month, [Validators.required, Validators.min(1), Validators.max(12)]],
-         amount: [0, [Validators.required, Validators.min(0)]],
+         amount: [0, [Validators.required, Validators.min(0.01)]],
          name: ['', [Validators.required]],
          notes: ['', [Validators.required]]
       });

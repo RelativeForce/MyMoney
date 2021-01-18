@@ -169,6 +169,29 @@ namespace MyMoney.Web.Controllers
          }
       }
 
+      [HttpPost(nameof(Realise))]
+      public IActionResult Realise([FromBody] RecurringTransactionChildDto model)
+      {
+         try
+         {
+            if (model == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var result = _transactionService.Realise(model.Id, DateTime.Parse(model.Date));
+
+            if (result == null)
+               return BadRequest("Invalid State");
+
+            return Ok(new TransactionDto(result));
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
+      }
+
       [HttpPost(nameof(FindRecurring))]
       public IActionResult FindRecurring([FromBody] IdDto findParameters)
       {
@@ -183,7 +206,9 @@ namespace MyMoney.Web.Controllers
 
             if (transaction != null)
             {
-               return Ok(new RecurringTransactionDto(transaction));
+               var children = _transactionService.GetChildTransactions(transaction);
+
+               return Ok(new RecurringTransactionDto(transaction, children));
             }
 
             return NotFound("Recurriung transaction does not exist");

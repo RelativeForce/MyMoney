@@ -1,39 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BudgetService, IncomeService, TransactionService } from '../../../shared/services';
-import { BudgetViewModel, IncomeViewModel } from '../../../shared/classes';
+import { TransactionService } from '../../../shared/services';
 import { ITransactionModel } from 'src/app/shared/state/types';
+import { Frequency } from 'src/app/shared/api';
+import { toFrequencyString } from 'src/app/shared/functions';
 
 @Component({
-   templateUrl: './edit.transactions.component.html'
+   templateUrl: './edit.transactions.component.html',
+   styleUrls: ['./edit.transactions.component.scss']
 })
 export class EditTransactionsComponent implements OnInit {
-
    public editTransactionForm: FormGroup;
    public id: number;
+   public parentId: number | null = null;
+   public parentFrequency: Frequency | null = null;
    public loading = false;
    public submitted = false;
+   public loadingTransaction = true;
 
    public selectedBudgets: Set<number> = new Set();
-   public budgets: BudgetViewModel[] = [];
-
    public selectedIncomes: Set<number> = new Set();
-   public incomes: IncomeViewModel[] = [];
-
 
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
       private readonly router: Router,
-      private readonly activatedRoute: ActivatedRoute,
-      private readonly budgetService: BudgetService,
-      private readonly incomeService: IncomeService
-   ) {
+      private readonly activatedRoute: ActivatedRoute) {
+      this.id = 0;
+
+      this.editTransactionForm = this.formBuilder.group({
+         date: ['', [Validators.required]],
+         description: ['', [Validators.required]],
+         amount: [0, [Validators.required, Validators.min(0.01)]],
+         notes: ['']
+      });
+
+      this.disableForm();
    }
 
    public ngOnInit(): void {
-
       this.activatedRoute.params.subscribe(params => {
          const idStr = params['id'];
 
@@ -42,15 +48,6 @@ export class EditTransactionsComponent implements OnInit {
          }
 
          this.id = Number.parseInt(idStr, 10);
-
-         this.editTransactionForm = this.formBuilder.group({
-            date: ['', [Validators.required]],
-            description: ['', [Validators.required]],
-            amount: [0, [Validators.required, Validators.min(0)]],
-            notes: ['']
-         });
-
-         this.disableForm();
 
          this.transactionService
             .findTransaction(this.id)
@@ -63,41 +60,23 @@ export class EditTransactionsComponent implements OnInit {
                this.f.description.patchValue(response.description);
                this.f.amount.patchValue(response.amount);
                this.f.notes.patchValue(response.notes);
+               this.parentId = response.parentId;
+               this.parentFrequency = response.parentFrequency;
 
-               this.enableForm();
-
-               this.fetchBudgetsAndIncomes();
+               this.enableForm(response.parentId !== null);
+               this.loadingTransaction = false;
             },
                () => this.router.navigate(['/transactions'])
             );
       });
    }
 
+   public get selectedDate(): Date | null {
+      return this.loadingTransaction ? null : new Date(this.f.date.value);
+   }
+
    public get f() {
       return this.editTransactionForm.controls;
-   }
-
-   public onBudgetCheckboxChange(event: any, id: number): void {
-      if (event.target.checked) {
-         this.selectedBudgets.add(id);
-      } else {
-         this.selectedBudgets.delete(id);
-      }
-   }
-
-   public onIncomeCheckboxChange(e, id): void {
-      if (e.target.checked) {
-         this.selectedIncomes.add(id);
-      } else {
-         this.selectedIncomes.delete(id);
-      }
-   }
-
-   public onDateChange(): void {
-
-      this.selectedBudgets.clear();
-
-      this.fetchBudgetsAndIncomes();
    }
 
    public toInputDateString(text: string): string {
@@ -112,16 +91,12 @@ export class EditTransactionsComponent implements OnInit {
       return text.split('/')[2] + '-' + monthStr + '-' + dayStr;
    }
 
-   public fetchBudgetsAndIncomes(): void {
-      const date = new Date(this.f.date.value);
+   public get frequencyString(): string {
+      if (this.parentFrequency === null) {
+         return '';
+      }
 
-      this.budgetService.getBudgetsForMonth(date.getMonth() + 1, date.getFullYear()).subscribe(response => {
-         this.budgets = response.budgets.map(t => new BudgetViewModel(t));
-      });
-
-      this.incomeService.getIncomesByDate(date).subscribe(response => {
-         this.incomes = response.incomes.map(t => new IncomeViewModel(t));
-      });
+      return `(${toFrequencyString(this.parentFrequency)})`;
    }
 
    public onSubmit(): void {
@@ -155,10 +130,14 @@ export class EditTransactionsComponent implements OnInit {
       this.f.notes.disable();
    }
 
-   private enableForm() {
-      this.f.date.enable();
-      this.f.description.enable();
-      this.f.amount.enable();
+   private enableForm(isChild: boolean) {
+
+      if (!isChild) {
+         this.f.date.enable();
+         this.f.description.enable();
+         this.f.amount.enable();
+      }
+
       this.f.notes.enable();
    }
 
@@ -180,8 +159,8 @@ export class EditTransactionsComponent implements OnInit {
          budgetIds: Array.from(this.selectedBudgets),
          incomeIds: Array.from(this.selectedIncomes),
          notes,
-         recurringTransactionId: null,
-         recurringFrequency: null,
+         parentId: this.parentId,
+         parentFrequency: this.parentFrequency,
       };
    }
 }

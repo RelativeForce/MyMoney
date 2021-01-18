@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Infrastructure.Migrations
 {
    [DbContext(typeof(DatabaseContext))]
-   partial class DatabaseContextModelSnapshot : ModelSnapshot
+   [Migration("20210116000810_TransactionToRecurring")]
+   partial class TransactionToRecurring
    {
-      protected override void BuildModel(ModelBuilder modelBuilder)
+      protected override void BuildTargetModel(ModelBuilder modelBuilder)
       {
 #pragma warning disable 612, 618
          modelBuilder
@@ -21,33 +23,33 @@ namespace MyMoney.Infrastructure.Migrations
              .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
          modelBuilder.Entity("MyMoney.Infrastructure.Entities.Budget", b =>
-                {
-                   b.Property<long>("Id")
+             {
+                b.Property<long>("Id")
                        .ValueGeneratedOnAdd()
                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                   b.Property<decimal>("Amount")
+                b.Property<decimal>("Amount")
                        .HasColumnType("decimal(18,2)");
 
-                   b.Property<int>("Month");
+                b.Property<int>("Month");
 
-                   b.Property<string>("Name")
+                b.Property<string>("Name")
                        .IsRequired();
 
-                   b.Property<string>("Notes");
+                b.Property<string>("Notes");
 
-                   b.Property<long>("UserId");
+                b.Property<long>("UserId");
 
-                   b.Property<int>("Year");
+                b.Property<int>("Year");
 
-                   b.HasKey("Id");
+                b.HasKey("Id");
 
-                   b.HasIndex("UserId", "Year", "Month", "Name")
+                b.HasIndex("UserId", "Year", "Month", "Name")
                        .IsUnique();
 
-                   b.ToTable("Budgets");
-                });
+                b.ToTable("Budgets");
+             });
 
          modelBuilder.Entity("MyMoney.Infrastructure.Entities.Income", b =>
              {

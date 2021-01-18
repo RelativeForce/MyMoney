@@ -11,8 +11,6 @@ namespace MyMoney.Core.Interfaces.Entities
       decimal Amount { get; set; }
 
       IQueryable<ITransaction> Transactions { get; }
-      void AddTransaction(IRelationRepository _relationRepository, ITransaction transaction);
-      void RemoveTransaction(IRelationRepository relationRepository, ITransaction transaction);
-      void RemoveAllTransactions(IRelationRepository relationRepository);
+      void DeleteRelations(IRelationRepository relationRepository);
    }
 }

@@ -175,7 +175,8 @@ namespace MyMoney.Infrastructure
          if (typeof(T) == typeof(IRecurringTransaction))
             return _model.Set<RecurringTransaction>().Cast<IRecurringTransaction>().AsQueryable() as IQueryable<T>;
 
-         throw new InvalidCastException("Unsupported entity type");
+         // Attempt to use entity directly
+         return _model.Set<T>().AsQueryable();
       }
    }
 }

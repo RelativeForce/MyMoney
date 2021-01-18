@@ -41,6 +41,7 @@ namespace MyMoney.Web
          services.AddScoped<IBudgetService, BudgetService>();
          services.AddScoped<ITransactionService, TransactionService>();
          services.AddScoped<IIncomeService, IncomeService>();
+         services.AddScoped<IRunningTotalService, RunningTotalService>();
          services.AddScoped<IEntityFactory, EntityFactory>();
          services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
          services.AddSingleton<IEmailManager, EmailManager>();

@@ -49,19 +49,17 @@
             <td>{{transaction.date}}</td>
             <td>{{transaction.description}}</td>
             <td>{{transaction.amount}}</td>
-            <td>
-               <div *ngIf="transaction.recurringTransactionId !== null" class="btn-group">
-                  <a class="btn btn-primary" routerLink="./edit-recurring/{{transaction.recurringTransactionId}}" data-toggle="tooltip"
-                     data-placement="bottom" title="Edit recurring transaction {{transaction.recurringTransactionId}}">🖉</a>
-                  <button class="btn btn-danger" (click)="deleteRecurringTransaction(transaction.recurringTransactionId)"
-                     data-toggle="tooltip" data-placement="bottom"
-                     title="Delete recurring transaction {{transaction.recurringTransactionId}}">✕</button>
-               </div>
-               <div *ngIf="transaction.recurringTransactionId === null" class="btn-group">
+            <td class="pull-right">
+               <div class="btn-group">
                   <a class="btn btn-primary" routerLink="./edit/{{transaction.id}}" data-toggle="tooltip" data-placement="bottom"
                      title=" Edit transaction {{transaction.id}}">🖉</a>
-                  <button class="btn btn-danger" (click)="deleteTransaction(transaction.id)" data-toggle="tooltip" data-placement="bottom"
-                     title="Delete transaction {{transaction.id}}">✕</button>
+                  <a class="btn btn-primary" *ngIf="transaction.parentId !== null" routerLink="./edit-recurring/{{transaction.parentId}}"
+                     data-toggle="tooltip" data-placement="bottom" title="Edit recurring transaction {{transaction.parentId}}">🗐</a>
+                  <button class="btn btn-danger" *ngIf="transaction.parentId !== null"
+                     (click)="deleteRecurringTransaction(transaction.parentId)" data-toggle="tooltip" data-placement="bottom"
+                     title="Delete recurring transaction {{transaction.parentId}}">✕</button>
+                  <button class="btn btn-danger" *ngIf="transaction.parentId === null" (click)="deleteTransaction(transaction.id)"
+                     data-toggle="tooltip" data-placement="bottom" title="Delete transaction {{transaction.id}}">✕</button>
                </div>
             </td>
          </tr>
