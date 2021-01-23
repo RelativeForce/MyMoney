@@ -19,7 +19,7 @@
    </thead>
    <tbody>
       <ng-container *ngFor="let row of rows">
-         <tr>
+         <tr [ngClass]="{'alert alert-warning': row.error !== null}" data-toggle="tooltip" data-placement="top" title="{{row.error}}">
             <td *ngFor="let element of row.data; let elementIndex = index">
                <input type='{{headings[elementIndex].inputType}}' class="form-control" [value]="headings[elementIndex].format(element)"
                   (change)='changeElementValue($event.target.value, row.id, elementIndex)' [readonly]="headings[elementIndex].isIgnored"
@@ -34,8 +34,6 @@
                      data-placement="bottom" title="Delete row">✕</button>
                   <button class="btn btn-success" (click)="alert('Import successful')" *ngIf="row.success === true" data-toggle="tooltip"
                      data-placement="bottom" title="Import successful">✓</button>
-                  <button class="btn btn-warning" *ngIf="row.error !== null" (click)="alert(row.error)" data-toggle="tooltip"
-                     data-placement="top" title="{{row.error}}">!</button>
                </div>
             </td>
          </tr>

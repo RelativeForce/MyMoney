@@ -10,13 +10,21 @@ export abstract class BaseHeading<T> {
    }
 
    private static formatAmount(input: string): number | null {
-      const result = /-?[0-9][0-9,\.]+/g.exec(input) as RegExpExecArray | null;
+      // If there is more that 1 decimal point
+      if (input.split('.').length > 2) {
+         return null;
+      }
 
+      const result = /-?[0-9]+(\.[0-9]+)?/g.exec(input) as RegExpExecArray | null;
       if (result === null) {
          return null;
       }
 
-      return Number.parseFloat(result[0]);
+      if (result[0].includes('.')) {
+         Number.parseFloat(result[0]);
+      }
+
+      return Number.parseInt(result[0], 10);
    }
 
    private static formatDate(input: string): string | null {
