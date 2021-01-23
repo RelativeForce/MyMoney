@@ -24,7 +24,7 @@ export class AddIncomesComponent implements OnInit {
       this.addIncomeForm = this.formBuilder.group({
          date: [new Date().toISOString().split('T')[0], [Validators.required]],
          name: ['', [Validators.required]],
-         amount: [0, [Validators.required, Validators.min(0.01)]],
+         amount: [0.01, [Validators.required, Validators.min(0.01)]],
          notes: [''],
       });
    }
