@@ -2,7 +2,7 @@
 {
    public static class Constants
    {
-      public const int MaxNameLength = 255;
-      public const int MaxNotesLength = 510;
+      public const int MaxNameLength = 100;
+      public const int MaxNotesLength = 1000;
    }
 }
