@@ -39,7 +39,7 @@ export class AddRecurringTransactionComponent implements OnInit {
          start: [start.toISOString().split('T')[0], [Validators.required]],
          end: [end.toISOString().split('T')[0], [Validators.required]],
          description: ['', [Validators.required]],
-         amount: [0, [Validators.required, Validators.min(0.01)]],
+         amount: [0.01, [Validators.required, Validators.min(0.01)]],
          recurrence: [Frequency.month, [Validators.required, Validators.min(Frequency.day), Validators.max(Frequency.year)]],
          notes: ['']
       });

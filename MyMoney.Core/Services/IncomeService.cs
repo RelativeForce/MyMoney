@@ -33,12 +33,14 @@ namespace MyMoney.Core.Services
          return income;
       }
 
-      public IIncome Add(DateTime date, string name, decimal amount)
+      public IIncome Add(DateTime date, string name, decimal amount, string notes)
       {
          var user = _currentUserProvider.CurrentUser;
 
          if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return null;
+
+         notes ??= string.Empty;
 
          var income = _entityFactory.NewIncome;
          income.UserId = user.Id;
@@ -46,6 +48,7 @@ namespace MyMoney.Core.Services
          income.Amount = amount;
          income.Date = date;
          income.Name = name;
+         income.Notes = notes;
 
          return _repository.Add(income);
       }
@@ -76,10 +79,12 @@ namespace MyMoney.Core.Services
             .ToList();
       }
 
-      public bool Update(long incomeId, DateTime date, string name, decimal amount)
+      public bool Update(long incomeId, DateTime date, string name, decimal amount, string notes)
       {
          if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return false;
+
+         notes ??= string.Empty;
 
          var income = _repository.FindById<IIncome>(incomeId);
          var userId = _currentUserProvider.CurrentUserId;
@@ -90,6 +95,7 @@ namespace MyMoney.Core.Services
          income.Amount = amount;
          income.Date = date;
          income.Name = name;
+         income.Notes = notes;
 
          return _repository.Update(income);
       }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities.Abstract;
@@ -13,10 +14,17 @@ namespace MyMoney.Infrastructure.Entities
    public class Income : UserFilteredEntity, IIncome
    {
       public DateTime Date { get; set; }
+
       [Required]
+      [MaxLength(Constants.MaxNameLength)]
       public string Name { get; set; }
+
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
+
+      [Required]
+      [MaxLength(Constants.MaxNotesLength)]
+      public string Notes { get; set; }
 
       [NotMapped]
       public IQueryable<ITransaction> Transactions => TransactionsProxy.Select(tb => tb.Transaction).Cast<ITransaction>().AsQueryable();

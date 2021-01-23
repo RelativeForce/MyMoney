@@ -9,6 +9,7 @@ namespace MyMoney.Core.Interfaces.Entities
       DateTime Date { get; set; }
       string Name { get; set; }
       decimal Amount { get; set; }
+      string Notes { get; set; }
 
       IQueryable<ITransaction> Transactions { get; }
       void DeleteRelations(IRelationRepository relationRepository);

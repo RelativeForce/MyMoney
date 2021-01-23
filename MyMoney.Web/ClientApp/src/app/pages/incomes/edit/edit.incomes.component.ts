@@ -41,6 +41,7 @@ export class EditIncomesComponent implements OnInit {
             date: ['', [Validators.required]],
             name: ['', [Validators.required]],
             amount: [0, [Validators.required, Validators.min(0.01)]],
+            notes: [''],
          });
 
          this.disableForm();
@@ -52,6 +53,7 @@ export class EditIncomesComponent implements OnInit {
                this.f.date.patchValue(toInputDateString(response.date));
                this.f.name.patchValue(response.name);
                this.f.amount.patchValue(response.amount);
+               this.f.notes.patchValue(response.notes);
                this.enableForm();
             },
                () => {
@@ -93,12 +95,14 @@ export class EditIncomesComponent implements OnInit {
       this.f.amount.disable();
       this.f.name.disable();
       this.f.date.disable();
+      this.f.notes.disable();
    }
 
    private enableForm() {
       this.f.amount.enable();
       this.f.name.enable();
       this.f.date.enable();
+      this.f.notes.enable();
    }
 
    private get asIncomeModel(): IIncomeModel {
@@ -109,11 +113,13 @@ export class EditIncomesComponent implements OnInit {
 
       const name = this.f.name.value;
       const amount = this.f.amount.value;
+      const notes = this.f.notes.value;
 
       return {
          date: dateString,
          name,
          amount,
+         notes,
          remaining: 0,
          id: this.id,
       };

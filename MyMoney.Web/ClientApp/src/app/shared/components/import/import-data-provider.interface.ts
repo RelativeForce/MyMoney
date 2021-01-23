@@ -5,7 +5,7 @@ export interface IImportDataProvider<T> {
    fields: T[];
    homeLink: string;
    newHeading(): BaseHeading<T>;
-   setupKeyExtractor(headings: BaseHeading<T>[]): ((row: Row) => string)
+   setupKeyExtractor(headings: BaseHeading<T>[]): ((row: Row) => string);
    columnErrorMessage(headings: BaseHeading<T>[]): string | null;
    submit(rows: Row[], headings: BaseHeading<T>[], onComplete: () => void): void;
    markAsDuplicate(rows: Row[]): void;

@@ -1,6 +1,8 @@
+// eslint-disable-next-line no-shadow
 export enum IncomeProperty {
-   Name = 'Name',
-   Amount = 'Amount',
-   Date = 'Date',
-   Ignore = 'Ignore'
+   name = 'Name',
+   amount = 'Amount',
+   date = 'Date',
+   notes = 'Notes',
+   ignore = 'Ignore',
 }

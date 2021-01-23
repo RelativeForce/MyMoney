@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities.Abstract;
@@ -13,12 +14,18 @@ namespace MyMoney.Infrastructure.Entities
    public class Transaction : UserFilteredEntity, ITransaction
    {
       public DateTime Date { get; set; }
+
       [Required]
+      [MaxLength(Constants.MaxNameLength)]
       public string Description { get; set; }
+
       [Required]
+      [MaxLength(Constants.MaxNotesLength)]
       public string Notes { get; set; }
+
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
+
       public long? ParentId { get; set; } = null;
 
       [NotMapped]

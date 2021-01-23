@@ -28,7 +28,7 @@ export class ImportFileComponent<T> {
 
    public openFile(event: any) {
       const input = event.target;
-      for (var index = 0; index < input.files.length; index++) {
+      for (let index = 0; index < input.files.length; index++) {
          const reader = new FileReader();
          reader.onload = () => {
             this.rows = [];
@@ -48,7 +48,7 @@ export class ImportFileComponent<T> {
 
             this.resetHeadings();
             this.checkRows();
-         }
+         };
          reader.readAsText(input.files[index]);
       };
    }
@@ -68,8 +68,9 @@ export class ImportFileComponent<T> {
       }
 
       for (const row of this.rows) {
-         if (row.data.length === columnCount) continue;
-
+         if (row.data.length === columnCount) {
+            continue;
+         }
          for (let index = 0; index < columnCount; index++) {
 
             if (row.data[index] === undefined) {
@@ -99,9 +100,9 @@ export class ImportFileComponent<T> {
 
    public checkRows() {
 
-      if (this.dataProvider.columnErrorMessage(this.headings) !== null)
+      if (this.dataProvider.columnErrorMessage(this.headings) !== null) {
          return; // Skip if the columns are not valid
-
+      }
       const duplicateTransactions = groupBy(this.rows, this.dataProvider.setupKeyExtractor(this.headings)).entries();
 
       for (const [_, rows] of duplicateTransactions) {
@@ -133,8 +134,9 @@ export class ImportFileComponent<T> {
          .reduce((a, b) => a || b, false);
 
       if (anyInvalidRows) {
-         if (!confirm('Warning:\nSome rows have invalid data and will be ignored.\nContinue?'))
+         if (!confirm('Warning:\nSome rows have invalid data and will be ignored.\nContinue?')) {
             return;
+         }
       }
 
       this.isLoading = true;
@@ -147,7 +149,7 @@ export class ImportFileComponent<T> {
             if (this.doneConfirmation()) {
                this.router.navigate([this.dataProvider.homeLink]);
             }
-         }, 2000)
+         }, 2000);
       });
    }
 

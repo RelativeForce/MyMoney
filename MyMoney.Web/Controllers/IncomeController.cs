@@ -137,11 +137,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _incomeService.Add(
-                DateTime.Parse(dto.Date),
-                dto.Name,
-                dto.Amount
-            );
+            var result = _incomeService.Add(DateTime.Parse(dto.Date), dto.Name, dto.Amount, dto.Notes);
 
             if (result == null)
                return BadRequest("Invalid income data");
@@ -164,7 +160,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var success = _incomeService.Update(dto.Id, DateTime.Parse(dto.Date), dto.Name, dto.Amount);
+            var success = _incomeService.Update(dto.Id, DateTime.Parse(dto.Date), dto.Name, dto.Amount, dto.Notes);
 
             return Ok(new UpdateResultDto
             {
