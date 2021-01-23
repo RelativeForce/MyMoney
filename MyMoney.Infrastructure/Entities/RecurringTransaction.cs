@@ -15,9 +15,13 @@ namespace MyMoney.Infrastructure.Entities
    public class RecurringTransaction : RecurringEntity<ITransaction>, IRecurringTransaction
    {
       [Required]
+      [MaxLength(Constants.MaxNameLength)]
       public string Description { get; set; }
+
       [Required]
+      [MaxLength(Constants.MaxNotesLength)]
       public string Notes { get; set; }
+
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
 
