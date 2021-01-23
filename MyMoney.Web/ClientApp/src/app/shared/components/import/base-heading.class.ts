@@ -33,6 +33,7 @@ export abstract class BaseHeading<T> {
 
    public abstract get isIgnored(): boolean;
    public abstract propertyToType(property: T): 'text' | 'date' | 'number';
+   public abstract validate(input: string): string | null;
    public get inputType(): 'text' | 'date' | 'number' {
       return this.propertyToType(this.property);
    }

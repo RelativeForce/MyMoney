@@ -25,4 +25,33 @@ export class IncomeHeading extends BaseHeading<IncomeProperty> {
    public propertyToType(property: IncomeProperty): 'text' | 'date' | 'number' {
       return IncomeHeading.transactionPropertyToType(property);
    }
+
+   public validate(input: string): string | null {
+      switch (this.property) {
+         case IncomeProperty.amount:
+            const value: number | null = this.format(input);
+            if (value === null) {
+               return 'Invalid number format';
+            }
+
+            if (value < 0.01) {
+               return 'Amount cannot be less than 0.01';
+            }
+
+            return null;
+         case IncomeProperty.date:
+            if (!Date.parse(input)) {
+               return 'Invalid date format';
+            }
+
+            return null;
+         case IncomeProperty.name:
+            if (input === '') {
+               return 'Name must contain a value';
+            }
+
+            return null;
+         default: return null;
+      }
+   }
 }
