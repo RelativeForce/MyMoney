@@ -15,6 +15,7 @@ export interface IIncomeDto {
    remaining: number;
    date: string;
    name: string;
+   notes: string;
 }
 
 export class IIncomeSearchDto {

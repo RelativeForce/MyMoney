@@ -25,6 +25,7 @@ export class AddIncomesComponent implements OnInit {
          date: [new Date().toISOString().split('T')[0], [Validators.required]],
          name: ['', [Validators.required]],
          amount: [0, [Validators.required, Validators.min(0.01)]],
+         notes: [''],
       });
    }
 
@@ -45,11 +46,13 @@ export class AddIncomesComponent implements OnInit {
       const date = this.f.date.value;
       const name = this.f.name.value;
       const amount = this.f.amount.value;
+      const notes = this.f.notes.value;
 
       const income: IIncomeModel = {
          date,
          name,
          amount,
+         notes,
          remaining: amount,
          id: 0,
       };
