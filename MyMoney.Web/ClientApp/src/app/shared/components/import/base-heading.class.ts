@@ -1,17 +1,6 @@
 export abstract class BaseHeading<T> {
    constructor(public property: T) { }
 
-   public abstract get isIgnored(): boolean;
-   public abstract propertyToType(property: T): 'text' | 'date' | 'number';
-
-   public format(input: string): any | null {
-      return BaseHeading.formatWithType(this.propertyToType(this.property), input);
-   }
-
-   public get inputType(): 'text' | 'date' | 'number' {
-      return this.propertyToType(this.property);
-   }
-
    public static formatWithType(type: 'text' | 'date' | 'number', input: string): any | null {
       switch (type) {
          case 'number': return BaseHeading.formatAmount(input);
@@ -23,8 +12,9 @@ export abstract class BaseHeading<T> {
    private static formatAmount(input: string): number | null {
       const result = /-?[0-9][0-9,\.]+/g.exec(input) as RegExpExecArray | null;
 
-      if (result === null)
+      if (result === null) {
          return null;
+      }
 
       return Number.parseFloat(result[0]);
    }
@@ -35,5 +25,15 @@ export abstract class BaseHeading<T> {
       } catch (error) {
          return null;
       }
+   }
+
+   public format(input: string): any | null {
+      return BaseHeading.formatWithType(this.propertyToType(this.property), input);
+   }
+
+   public abstract get isIgnored(): boolean;
+   public abstract propertyToType(property: T): 'text' | 'date' | 'number';
+   public get inputType(): 'text' | 'date' | 'number' {
+      return this.propertyToType(this.property);
    }
 }
