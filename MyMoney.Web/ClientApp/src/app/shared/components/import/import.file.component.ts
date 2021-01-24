@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Row } from './row.class';
 import { groupBy } from '../../functions';
@@ -50,7 +50,7 @@ export class ImportFileComponent<T> {
             this.checkRows();
          };
          reader.readAsText(input.files[index]);
-      };
+      }
    }
 
    public resetHeadings(): void {

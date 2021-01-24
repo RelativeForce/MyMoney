@@ -29,6 +29,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
    ngOnDestroy(): void {
       this.transactionsChart.destroy();
-      this.runningTotalChart.destroy()
+      this.runningTotalChart.destroy();
    }
 }
