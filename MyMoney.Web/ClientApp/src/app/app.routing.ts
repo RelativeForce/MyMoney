@@ -6,7 +6,7 @@ import {
    BudgetsComponent,
    EditBudgetComponent,
    EditIncomeComponent,
-   EditTransactionsComponent,
+   EditTransactionComponent,
    ForgotPasswordComponent,
    HomeComponent,
    ImportIncomesComponent,
@@ -99,7 +99,7 @@ export const routes: Routes = [
          },
          {
             path: 'edit/:id',
-            component: EditTransactionsComponent,
+            component: EditTransactionComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Edit transaction'

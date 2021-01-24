@@ -5,7 +5,7 @@ export * from './transactions/add-transaction/add-transaction.component';
 export * from './transactions/transactions.component';
 export * from './budgets/budgets.component';
 export * from './budgets/add-budget/add-budget.component';
-export * from './transactions/edit/edit.transactions.component';
+export * from './transactions/edit-transaction/edit-transaction.component';
 export * from './budgets/edit-budget/edit-budget.component';
 export * from './incomes/incomes.component';
 export * from './incomes/add-income/add-income.component';

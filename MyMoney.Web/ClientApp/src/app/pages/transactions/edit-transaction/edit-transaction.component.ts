@@ -7,10 +7,10 @@ import { Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
 
 @Component({
-   templateUrl: './edit.transactions.component.html',
-   styleUrls: ['./edit.transactions.component.scss']
+   templateUrl: './edit-transaction.component.html',
+   styleUrls: ['./edit-transaction.component.scss']
 })
-export class EditTransactionsComponent implements OnInit {
+export class EditTransactionComponent implements OnInit {
    public editTransactionForm: FormGroup;
    public id: number;
    public parentId: number | null = null;
