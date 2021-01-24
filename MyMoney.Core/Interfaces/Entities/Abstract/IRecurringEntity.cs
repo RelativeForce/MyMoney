@@ -5,11 +5,11 @@ using System.Linq.Expressions;
 
 namespace MyMoney.Core.Interfaces.Entities.Abstract
 {
-   public interface IRecurringEntity<T> : IBaseEntity where T : IBaseEntity
+   public interface IRecurringEntity<TChild> : IBaseEntity where TChild : IRecurringChildEntity
    {
       public DateTime Start { get; set; }
       public DateTime End { get; set; }
       public Frequency Recurrence { get; set; }
-      public IList<T> Children(IRepository repository, Expression<Func<T, bool>> filter = null);
+      public IList<TChild> Children(IRepository repository, Expression<Func<TChild, bool>> filter = null);
    }
 }
