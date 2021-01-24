@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TransactionService } from '../../../shared/services';
+import { TransactionService } from '../../../../shared/services';
 import { IRecurringTransactionDto, Frequency, ITransactionDto } from 'src/app/shared/api';
 import { toFrequencyString, toInputDateString } from 'src/app/shared/functions';
 
