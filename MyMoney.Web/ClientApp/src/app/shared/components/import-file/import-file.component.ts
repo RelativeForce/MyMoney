@@ -6,7 +6,7 @@ import { IImportDataProvider } from './import-data-provider.interface';
 import { BaseHeading } from './base-heading.class';
 
 @Component({
-   templateUrl: './import.file.component.html',
+   templateUrl: './import-file.component.html',
    selector: 'mymoney-import-file'
 })
 export class ImportFileComponent<T> {

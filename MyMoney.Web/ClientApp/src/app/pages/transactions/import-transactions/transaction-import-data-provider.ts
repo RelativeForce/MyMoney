@@ -1,7 +1,7 @@
 import { ITransactionDto } from 'src/app/shared/api';
 import { TransactionService } from 'src/app/shared/services';
 import { TransactionProperty } from './transaction-property.enum';
-import { BaseHeading, Row, IImportDataProvider } from '../../../shared/components/import';
+import { BaseHeading, Row, IImportDataProvider } from '../../../shared/components/import-file';
 import { TransactionHeading } from './transaction-heading.class';
 
 const DUPLICATE_TRANSACTION_ERROR = 'Duplicate transaction: Two transactions with the same description cannot exist on the same day';

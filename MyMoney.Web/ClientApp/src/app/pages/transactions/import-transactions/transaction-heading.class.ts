@@ -1,5 +1,5 @@
 import { TransactionProperty } from './transaction-property.enum';
-import { BaseHeading } from '../../../shared/components/import';
+import { BaseHeading } from '../../../shared/components/import-file';
 
 export class TransactionHeading extends BaseHeading<TransactionProperty> {
    constructor(property: TransactionProperty) {
