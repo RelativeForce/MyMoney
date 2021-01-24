@@ -1,7 +1,7 @@
 import { IIncomeDto } from 'src/app/shared/api';
 import { IncomeService } from 'src/app/shared/services';
 import { IncomeProperty } from './income-property.enum';
-import { BaseHeading, Row, IImportDataProvider } from '../../../shared/components/import';
+import { BaseHeading, Row, IImportDataProvider } from '../../../shared/components/import-file';
 import { IncomeHeading } from './income-heading.class';
 
 const DUPLICATE_INCOME_ERROR = 'Duplicate income: Two incomes with the same name cannot exist on the same day';

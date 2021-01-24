@@ -5,9 +5,9 @@ import { BudgetService } from 'src/app/shared/services';
 import { IBudgetModel } from 'src/app/shared/state/types';
 
 @Component({
-   templateUrl: './edit.budgets.component.html'
+   templateUrl: './edit-budget.component.html'
 })
-export class EditBudgetsComponent implements OnInit {
+export class EditBudgetComponent implements OnInit {
 
    public editBudgetForm: FormGroup;
    public loading = false;

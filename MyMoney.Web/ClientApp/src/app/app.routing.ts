@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
 import {
-   AddBudgetsComponent,
-   AddIncomesComponent,
-   AddTransactionsComponent,
+   AddBudgetComponent,
+   AddIncomeComponent,
+   AddTransactionComponent,
    BudgetsComponent,
-   EditBudgetsComponent,
-   EditIncomesComponent,
-   EditTransactionsComponent,
+   EditBudgetComponent,
+   EditIncomeComponent,
+   EditBasicTransactionComponent,
    ForgotPasswordComponent,
    HomeComponent,
    ImportIncomesComponent,
@@ -18,7 +18,7 @@ import {
    TransactionsComponent,
    ProfileComponent,
    ChangePasswordComponent,
-   EditRecurringTransactionsComponent
+   EditRecurringTransactionComponent
 } from './pages';
 import { AuthenticationGuard } from './shared/guards/authenticated.guard';
 
@@ -83,7 +83,7 @@ export const routes: Routes = [
          },
          {
             path: 'add',
-            component: AddTransactionsComponent,
+            component: AddTransactionComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Add transaction'
@@ -99,7 +99,7 @@ export const routes: Routes = [
          },
          {
             path: 'edit/:id',
-            component: EditTransactionsComponent,
+            component: EditBasicTransactionComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Edit transaction'
@@ -107,7 +107,7 @@ export const routes: Routes = [
          },
          {
             path: 'edit-recurring/:id',
-            component: EditRecurringTransactionsComponent,
+            component: EditRecurringTransactionComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Edit recurring transaction'
@@ -129,7 +129,7 @@ export const routes: Routes = [
          },
          {
             path: 'add',
-            component: AddBudgetsComponent,
+            component: AddBudgetComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Add budget'
@@ -137,7 +137,7 @@ export const routes: Routes = [
          },
          {
             path: 'edit/:id',
-            component: EditBudgetsComponent,
+            component: EditBudgetComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Edit budget'
@@ -159,7 +159,7 @@ export const routes: Routes = [
          },
          {
             path: 'add',
-            component: AddIncomesComponent,
+            component: AddIncomeComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Add income'
@@ -175,7 +175,7 @@ export const routes: Routes = [
          },
          {
             path: 'edit/:id',
-            component: EditIncomesComponent,
+            component: EditIncomeComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Edit income'

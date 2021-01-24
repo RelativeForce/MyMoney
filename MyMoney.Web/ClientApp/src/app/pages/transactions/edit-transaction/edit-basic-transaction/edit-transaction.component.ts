@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TransactionService } from '../../../shared/services';
+import { TransactionService } from '../../../../shared/services';
 import { ITransactionModel } from 'src/app/shared/state/types';
 import { Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
 
 @Component({
-   templateUrl: './edit.transactions.component.html',
-   styleUrls: ['./edit.transactions.component.scss']
+   templateUrl: './edit-basic-transaction.component.html',
+   styleUrls: ['./edit-basic-transaction.component.scss']
 })
-export class EditTransactionsComponent implements OnInit {
+export class EditBasicTransactionComponent implements OnInit {
    public editTransactionForm: FormGroup;
    public id: number;
    public parentId: number | null = null;

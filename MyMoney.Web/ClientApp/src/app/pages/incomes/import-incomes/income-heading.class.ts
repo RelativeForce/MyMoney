@@ -1,5 +1,5 @@
 import { IncomeProperty } from './income-property.enum';
-import { BaseHeading } from '../../../shared/components/import';
+import { BaseHeading } from '../../../shared/components/import-file';
 
 export class IncomeHeading extends BaseHeading<IncomeProperty> {
    constructor(property: IncomeProperty) {

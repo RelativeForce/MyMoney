@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-   templateUrl: './add.transactions.component.html',
-   styleUrls: ['./add.transactions.component.scss']
+   templateUrl: './add-transaction.component.html',
+   styleUrls: ['./add-transaction.component.scss']
 })
-export class AddTransactionsComponent {
+export class AddTransactionComponent {
 
    public isRecurring = false;
 

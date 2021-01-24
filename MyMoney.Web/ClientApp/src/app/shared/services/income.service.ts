@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { IncomeApi, IDeleteResultDto, IIncomeListDto, IUpdateResultDto, IRunningTotalListDto, IIncomeSearchDto } from '../api';
+import { IncomeApi, IDeleteResultDto, IIncomeListDto, IUpdateResultDto, IRunningTotalListDto } from '../api';
 import {
    DeleteIncomeAction,
    RefreshIncomesAction,
