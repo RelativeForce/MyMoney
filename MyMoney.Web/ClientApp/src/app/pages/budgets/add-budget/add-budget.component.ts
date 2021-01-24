@@ -7,7 +7,7 @@ import { IBudgetModel } from 'src/app/shared/state/types';
 @Component({
    templateUrl: './add-budget.component.html'
 })
-export class AddBudgetsComponent implements OnInit {
+export class AddBudgetComponent implements OnInit {
 
    public addBudgetForm: FormGroup;
    public loading = false;
