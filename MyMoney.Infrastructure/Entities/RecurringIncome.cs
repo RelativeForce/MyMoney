@@ -8,11 +8,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyMoney.Infrastructure.Entities
 {
-   public class RecurringTransaction : RecurringEntity<ITransaction>, IRecurringTransaction
+   public class RecurringIncome : RecurringEntity<IIncome>, IRecurringIncome
    {
       [Required]
       [MaxLength(Constants.MaxNameLength)]
-      public string Description { get; set; }
+      public string Name { get; set; }
 
       [Required]
       [MaxLength(Constants.MaxNotesLength)]
@@ -21,17 +21,17 @@ namespace MyMoney.Infrastructure.Entities
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
 
-      protected override ITransaction BuildVirtualChild(DateTime date)
+      protected override IIncome BuildVirtualChild(DateTime date)
       {
-         return new Transaction
+         return new Income
          {
             Date = date,
             Amount = Amount,
-            Description = Description,
+            Name = Name,
             Notes = Notes,
             UserId = UserId,
             User = User,
-            Id = VirtualTransactionId--,
+            Id = VirtualIncomeId--,
             Parent = this,
             ParentId = Id
          };
@@ -39,13 +39,13 @@ namespace MyMoney.Infrastructure.Entities
 
       internal static void Configure(ModelBuilder model)
       {
-         model.Entity<RecurringTransaction>().HasIndex(t => new { t.UserId, t.Start, t.End, t.Recurrence, t.Description }).IsUnique();
-         model.Entity<RecurringTransaction>().HasOne(t => t.UserProxy).WithMany().IsRequired();
+         model.Entity<RecurringIncome>().HasIndex(t => new { t.UserId, t.Start, t.End, t.Recurrence, t.Name }).IsUnique();
+         model.Entity<RecurringIncome>().HasOne(t => t.UserProxy).WithMany().IsRequired();
       }
 
       /// <summary>
-      /// A virtual Id for transactions that only exist as part of a recurring transaction.
+      /// A virtual Id for incomes that only exist as part of a recurring income.
       /// </summary>
-      private static long VirtualTransactionId = -1;
+      private static long VirtualIncomeId = -1;
    }
 }

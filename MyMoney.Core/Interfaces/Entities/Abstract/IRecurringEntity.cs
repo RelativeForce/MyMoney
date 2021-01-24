@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace MyMoney.Core.Interfaces.Entities.Abstract
 {
-   public interface IRecurringEntity<TChild> : IBaseEntity where TChild : IRecurringChildEntity
+   public interface IRecurringEntity<TChild> : IUserFilteredEntity where TChild : IRecurringChildEntity
    {
       DateTime Start { get; set; }
       DateTime End { get; set; }

@@ -26,6 +26,18 @@ namespace MyMoney.Infrastructure.Entities
       [MaxLength(Constants.MaxNotesLength)]
       public string Notes { get; set; }
 
+      public long? ParentId { get; set; } = null;
+
+      [NotMapped]
+      public IRecurringIncome Parent
+      {
+         get => ParentProxy;
+         set => ParentProxy = value as RecurringIncome;
+      }
+
+      [ForeignKey(nameof(ParentId))]
+      public virtual RecurringIncome ParentProxy { get; set; } = null;
+
       [NotMapped]
       public IQueryable<ITransaction> Transactions => TransactionsProxy.Select(tb => tb.Transaction).Cast<ITransaction>().AsQueryable();
       public virtual ICollection<TransactionIncome> TransactionsProxy { get; set; } = new List<TransactionIncome>();
@@ -42,6 +54,7 @@ namespace MyMoney.Infrastructure.Entities
       {
          model.Entity<Income>().HasIndex(t => new { t.UserId, t.Date, t.Name }).IsUnique();
          model.Entity<Income>().HasOne(t => t.UserProxy).WithMany().IsRequired();
+         model.Entity<Income>().HasOne(t => t.ParentProxy).WithMany().IsRequired(false);
       }
    }
 }
