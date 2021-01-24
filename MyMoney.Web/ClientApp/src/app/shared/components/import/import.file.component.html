@@ -23,7 +23,7 @@
             <td *ngFor="let element of row.data; let elementIndex = index">
                <input type='{{headings[elementIndex].inputType}}' class="form-control" [value]="headings[elementIndex].format(element)"
                   (change)='changeElementValue($event.target.value, row.id, elementIndex)' [readonly]="headings[elementIndex].isIgnored"
-                  [disabled]="isLoading" [ngClass]="{ 'is-invalid': headings[elementIndex].validate(element) !== null }" />
+                  [disabled]="isLoading || isDone" [ngClass]="{ 'is-invalid': headings[elementIndex].validate(element) !== null }" />
                <div *ngIf="headings[elementIndex].validate(element) as validationError" class="invalid-feedback">
                   <div *ngIf="dataProvider.columnErrorMessage(headings) === null">{{ validationError }}</div>
                </div>

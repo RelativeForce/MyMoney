@@ -8,8 +8,8 @@ export class TransactionHeading extends BaseHeading<TransactionProperty> {
 
    public static transactionPropertyToType(property: TransactionProperty): 'text' | 'date' | 'number' {
       switch (property) {
-         case TransactionProperty.Amount: return 'number';
-         case TransactionProperty.Date: return 'date';
+         case TransactionProperty.amount: return 'number';
+         case TransactionProperty.date: return 'date';
          default: return 'text';
       }
    }
@@ -19,7 +19,7 @@ export class TransactionHeading extends BaseHeading<TransactionProperty> {
    }
 
    public get isIgnored() {
-      return this.property === TransactionProperty.Ignore;
+      return this.property === TransactionProperty.ignore;
    }
 
    public propertyToType(property: TransactionProperty): 'text' | 'date' | 'number' {
@@ -28,7 +28,7 @@ export class TransactionHeading extends BaseHeading<TransactionProperty> {
 
    public validate(input: string): string | null {
       switch (this.property) {
-         case TransactionProperty.Amount:
+         case TransactionProperty.amount:
             const value: number | null = this.format(input);
             if (value === null) {
                return 'Invalid number format';
@@ -39,13 +39,13 @@ export class TransactionHeading extends BaseHeading<TransactionProperty> {
             }
 
             return null;
-         case TransactionProperty.Date:
+         case TransactionProperty.date:
             if (!Date.parse(input)) {
                return 'Invalid date format';
             }
 
             return null;
-         case TransactionProperty.Description:
+         case TransactionProperty.description:
             if (input === '') {
                return 'Description must contain a value';
             }

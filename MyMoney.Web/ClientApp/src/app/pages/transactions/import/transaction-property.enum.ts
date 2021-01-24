@@ -1,7 +1,8 @@
+// eslint-disable-next-line no-shadow
 export enum TransactionProperty {
-   Description = 'Description',
-   Notes = 'Notes',
-   Amount = 'Amount',
-   Date = 'Date',
-   Ignore = 'Ignore'
+   description = 'Description',
+   notes = 'Notes',
+   amount = 'Amount',
+   date = 'Date',
+   ignore = 'Ignore'
 }
