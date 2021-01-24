@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import {
    AddBudgetComponent,
    AddIncomeComponent,
-   AddTransactionsComponent,
+   AddTransactionComponent,
    BudgetsComponent,
    EditBudgetComponent,
    EditIncomeComponent,
@@ -83,7 +83,7 @@ export const routes: Routes = [
          },
          {
             path: 'add',
-            component: AddTransactionsComponent,
+            component: AddTransactionComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Add transaction'

@@ -1,7 +1,7 @@
 export * from './home/home.component';
 export * from './auth/login/login.component';
 export * from './auth/register/register.component';
-export * from './transactions/add/add.transactions.component';
+export * from './transactions/add-transaction/add-transaction.component';
 export * from './transactions/transactions.component';
 export * from './budgets/budgets.component';
 export * from './budgets/add-budget/add-budget.component';
@@ -17,5 +17,5 @@ export * from './auth/forgot-password/forgot-password.component';
 export * from './auth/reset-password/reset-password.component';
 export * from './user/change-password/change-password.component';
 export * from './transactions/edit-recurring/edit-recurring.transactions.component';
-export * from './transactions/add/add-basic-transaction/add-basic-transaction.component';
-export * from './transactions/add/add-recurring-transaction/add-recurring-transaction.component';
+export * from './transactions/add-transaction/add-basic-transaction/add-basic-transaction.component';
+export * from './transactions/add-transaction/add-recurring-transaction/add-recurring-transaction.component';
