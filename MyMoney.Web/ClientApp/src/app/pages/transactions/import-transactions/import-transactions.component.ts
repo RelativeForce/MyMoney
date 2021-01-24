@@ -3,7 +3,7 @@ import { TransactionService } from 'src/app/shared/services';
 import { TransactionImportDataProvider } from './transaction-import-data-provider';
 
 @Component({
-   templateUrl: './import.transactions.component.html'
+   templateUrl: './import-transactions.component.html'
 })
 export class ImportTransactionsComponent {
    public dataProvider: TransactionImportDataProvider;

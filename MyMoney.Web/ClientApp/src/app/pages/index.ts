@@ -28,4 +28,4 @@ export * from './transactions/add-transaction/add-basic-transaction/add-basic-tr
 export * from './transactions/add-transaction/add-recurring-transaction/add-recurring-transaction.component';
 export * from './transactions/edit-transaction/edit-basic-transaction/edit-transaction.component';
 export * from './transactions/edit-transaction/edit-recurring-transaction/edit-recurring-transaction.component';
-export * from './transactions/import/import.transactions.component';
+export * from './transactions/import-transactions/import-transactions.component';
