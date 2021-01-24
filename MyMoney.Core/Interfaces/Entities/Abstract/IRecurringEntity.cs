@@ -7,9 +7,9 @@ namespace MyMoney.Core.Interfaces.Entities.Abstract
 {
    public interface IRecurringEntity<TChild> : IBaseEntity where TChild : IRecurringChildEntity
    {
-      public DateTime Start { get; set; }
-      public DateTime End { get; set; }
-      public Frequency Recurrence { get; set; }
-      public IList<TChild> Children(IRepository repository, Expression<Func<TChild, bool>> filter = null);
+      DateTime Start { get; set; }
+      DateTime End { get; set; }
+      Frequency Recurrence { get; set; }
+      IList<TChild> Children(IRepository repository, Expression<Func<TChild, bool>> filter = null);
    }
 }
