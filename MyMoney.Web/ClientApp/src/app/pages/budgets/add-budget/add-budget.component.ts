@@ -5,7 +5,7 @@ import { BudgetService } from 'src/app/shared/services';
 import { IBudgetModel } from 'src/app/shared/state/types';
 
 @Component({
-   templateUrl: './add.budgets.component.html'
+   templateUrl: './add-budget.component.html'
 })
 export class AddBudgetsComponent implements OnInit {
 
