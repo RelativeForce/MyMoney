@@ -6,10 +6,10 @@ import { IRecurringTransactionDto, Frequency, ITransactionDto } from 'src/app/sh
 import { toFrequencyString, toInputDateString } from 'src/app/shared/functions';
 
 @Component({
-   templateUrl: './edit-recurring.transactions.component.html',
-   styleUrls: ['./edit-recurring.transactions.component.scss']
+   templateUrl: './edit-recurring-transaction.component.html',
+   styleUrls: ['./edit-recurring-transaction.component.scss']
 })
-export class EditRecurringTransactionsComponent implements OnInit {
+export class EditRecurringTransactionComponent implements OnInit {
 
    public editTransactionForm: FormGroup;
    public id: number;

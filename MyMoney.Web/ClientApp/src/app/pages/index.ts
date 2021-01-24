@@ -16,6 +16,6 @@ export * from './user/profile/profile.component';
 export * from './auth/forgot-password/forgot-password.component';
 export * from './auth/reset-password/reset-password.component';
 export * from './user/change-password/change-password.component';
-export * from './transactions/edit-recurring/edit-recurring.transactions.component';
+export * from './transactions/edit-recurring-transaction/edit-recurring-transaction.component';
 export * from './transactions/add-transaction/add-basic-transaction/add-basic-transaction.component';
 export * from './transactions/add-transaction/add-recurring-transaction/add-recurring-transaction.component';

@@ -24,7 +24,7 @@ import {
    ForgotPasswordComponent,
    ResetPasswordComponent,
    ChangePasswordComponent,
-   EditRecurringTransactionsComponent,
+   EditRecurringTransactionComponent,
    AddBasicTransactionComponent,
    AddRecurringTransactionComponent,
 } from './pages';
@@ -65,7 +65,7 @@ import { routes } from './app.routing';
       ForgotPasswordComponent,
       ResetPasswordComponent,
       ChangePasswordComponent,
-      EditRecurringTransactionsComponent,
+      EditRecurringTransactionComponent,
       AddBasicTransactionComponent,
       AddRecurringTransactionComponent,
 
