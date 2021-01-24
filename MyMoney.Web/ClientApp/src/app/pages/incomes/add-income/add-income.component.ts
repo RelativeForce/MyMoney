@@ -5,9 +5,9 @@ import { IIncomeModel } from 'src/app/shared/state/types';
 import { IncomeService } from 'src/app/shared/services';
 
 @Component({
-   templateUrl: './add.incomes.component.html'
+   templateUrl: './add-income.component.html'
 })
-export class AddIncomesComponent implements OnInit {
+export class AddIncomeComponent implements OnInit {
 
    public addIncomeForm: FormGroup;
    public loading = false;

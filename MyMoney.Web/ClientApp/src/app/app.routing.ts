@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import {
    AddBudgetComponent,
-   AddIncomesComponent,
+   AddIncomeComponent,
    AddTransactionsComponent,
    BudgetsComponent,
    EditBudgetComponent,
-   EditIncomesComponent,
+   EditIncomeComponent,
    EditTransactionsComponent,
    ForgotPasswordComponent,
    HomeComponent,
@@ -159,7 +159,7 @@ export const routes: Routes = [
          },
          {
             path: 'add',
-            component: AddIncomesComponent,
+            component: AddIncomeComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Add income'
@@ -175,7 +175,7 @@ export const routes: Routes = [
          },
          {
             path: 'edit/:id',
-            component: EditIncomesComponent,
+            component: EditIncomeComponent,
             canActivate: [AuthenticationGuard],
             data: {
                title: 'Edit income'

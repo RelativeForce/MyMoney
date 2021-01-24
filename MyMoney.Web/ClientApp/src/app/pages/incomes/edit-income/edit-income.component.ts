@@ -7,9 +7,9 @@ import { IIncomeModel } from 'src/app/shared/state/types';
 import { toInputDateString } from 'src/app/shared/functions';
 
 @Component({
-   templateUrl: './edit.incomes.component.html'
+   templateUrl: './edit-income.component.html'
 })
-export class EditIncomesComponent implements OnInit {
+export class EditIncomeComponent implements OnInit {
 
    public editIncomeForm: FormGroup;
    public selectedBudgets: Set<number> = new Set();
