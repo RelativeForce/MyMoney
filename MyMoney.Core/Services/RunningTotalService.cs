@@ -8,18 +8,24 @@ namespace MyMoney.Core.Services
 {
    public class RunningTotalService : IRunningTotalService
    {
-      private readonly ITransactionService _transactionService;
+      private readonly IBasicTransactionService _basicTransactionService;
+      private readonly IRecurringTransactionService _recurringTransactionService;
       private readonly IIncomeService _incomeService;
 
-      public RunningTotalService(ITransactionService transactionService, IIncomeService incomeService)
+      public RunningTotalService(IBasicTransactionService basicTransactionService, IRecurringTransactionService recurringTransactionService, IIncomeService incomeService)
       {
-         _transactionService = transactionService;
+         _basicTransactionService = basicTransactionService;
+         _recurringTransactionService = recurringTransactionService;
          _incomeService = incomeService;
       }
 
       public IList<RunningTotal> RunningTotal(decimal initialTotal, DateTime start, DateTime end)
       {
-         var transactions = _transactionService
+         var basicTransactions = _basicTransactionService
+            .Between(start, end)
+            .Select(t => new RunningTotal(t));
+
+         var recurringTransactions = _recurringTransactionService
             .Between(start, end)
             .Select(t => new RunningTotal(t));
 
@@ -27,7 +33,8 @@ namespace MyMoney.Core.Services
             .Between(start, end)
             .Select(i => new RunningTotal(i));
 
-         var runningTotals = transactions
+         var runningTotals = basicTransactions
+            .Concat(recurringTransactions)
             .Concat(incomes)
             .OrderBy(rt => rt.Date)
             .ToList();

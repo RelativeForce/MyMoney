@@ -18,11 +18,41 @@ namespace MyMoney.Web.Controllers
    [Route("[controller]")]
    public class TransactionController : ControllerBase
    {
-      private readonly ITransactionService _transactionService;
+      private readonly IBasicTransactionService _basicTransactionService;
+      private readonly IRecurringTransactionService _recurringTransactionService;
 
-      public TransactionController(ITransactionService transactionService)
+      public TransactionController(IBasicTransactionService basicTransactionService, IRecurringTransactionService recurringTransactionService)
       {
-         _transactionService = transactionService;
+         _basicTransactionService = basicTransactionService;
+         _recurringTransactionService = recurringTransactionService;
+      }
+
+      [HttpPost(nameof(List))]
+      public IActionResult List([FromBody] DateRangeDto listParameters)
+      {
+         try
+         {
+            if (listParameters == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var basicTransactions = _basicTransactionService.Between(listParameters.Start, listParameters.End);
+            var recurringTransactions = _recurringTransactionService.Between(listParameters.Start, listParameters.End);
+
+            return Ok(new TransactionListDto
+            {
+               Transactions = basicTransactions
+                  .Concat(recurringTransactions)
+                  .OrderBy(t => t.Date)
+                  .Select(t => new TransactionDto(t))
+                  .ToList()
+            });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
       }
 
       #region Basic
@@ -37,7 +67,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _transactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.Notes, model.BudgetIds, model.IncomeIds);
+            var result = _basicTransactionService.Add(DateTime.Parse(model.Date), model.Description, model.Amount, model.Notes, model.BudgetIds, model.IncomeIds);
 
             if (result == null)
                return BadRequest("Invalid State");
@@ -60,7 +90,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var transaction = _transactionService.Find(findParameters.Id);
+            var transaction = _basicTransactionService.Find(findParameters.Id);
 
             if (transaction != null)
             {
@@ -75,29 +105,6 @@ namespace MyMoney.Web.Controllers
          }
       }
 
-      [HttpPost(nameof(List))]
-      public IActionResult List([FromBody] DateRangeDto listParameters)
-      {
-         try
-         {
-            if (listParameters == null || !ModelState.IsValid)
-            {
-               return BadRequest("Invalid State");
-            }
-
-            var transactions = _transactionService.Between(listParameters.Start, listParameters.End);
-
-            return Ok(new TransactionListDto
-            {
-               Transactions = transactions.Select(t => new TransactionDto(t)).ToList()
-            });
-         }
-         catch (Exception)
-         {
-            return BadRequest("Error while creating");
-         }
-      }
-
       [HttpPost(nameof(Update))]
       public IActionResult Update([FromBody] TransactionDto model)
       {
@@ -108,7 +115,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var success = _transactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, model.Notes, model.BudgetIds, model.IncomeIds);
+            var success = _basicTransactionService.Update(model.Id, DateTime.Parse(model.Date), model.Description, model.Amount, model.Notes, model.BudgetIds, model.IncomeIds);
 
             return Ok(new UpdateResultDto
             {
@@ -132,7 +139,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _transactionService.Delete(deleteParameters.Id);
+            var result = _basicTransactionService.Delete(deleteParameters.Id);
 
             return Ok(new DeleteResultDto { Success = result });
          }
@@ -156,7 +163,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _transactionService.AddRecurring(DateTime.Parse(model.Start), DateTime.Parse(model.End), model.Description, model.Amount, model.Notes, model.Recurrence);
+            var result = _recurringTransactionService.Add(DateTime.Parse(model.Start), DateTime.Parse(model.End), model.Description, model.Amount, model.Notes, model.Recurrence);
 
             if (result == null)
                return BadRequest("Invalid State");
@@ -179,7 +186,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _transactionService.Realise(model.Id, DateTime.Parse(model.Date));
+            var result = _recurringTransactionService.Realise(model.Id, DateTime.Parse(model.Date));
 
             if (result == null)
                return BadRequest("Invalid State");
@@ -202,11 +209,11 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var transaction = _transactionService.FindRecurring(findParameters.Id);
+            var transaction = _recurringTransactionService.Find(findParameters.Id);
 
             if (transaction != null)
             {
-               var children = _transactionService.GetChildTransactions(transaction);
+               var children = _recurringTransactionService.GetChildTransactions(transaction);
 
                return Ok(new RecurringTransactionDto(transaction, children));
             }
@@ -229,7 +236,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var success = _transactionService.UpdateRecurring(model.Id, DateTime.Parse(model.Start), DateTime.Parse(model.End), model.Description, model.Amount, model.Notes, model.Recurrence);
+            var success = _recurringTransactionService.Update(model.Id, DateTime.Parse(model.Start), DateTime.Parse(model.End), model.Description, model.Amount, model.Notes, model.Recurrence);
 
             return Ok(new UpdateResultDto
             {
@@ -253,7 +260,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _transactionService.DeleteRecurring(deleteParameters.Id);
+            var result = _recurringTransactionService.Delete(deleteParameters.Id);
 
             return Ok(new DeleteResultDto { Success = result });
          }
