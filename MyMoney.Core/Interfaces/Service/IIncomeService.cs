@@ -10,7 +10,7 @@ namespace MyMoney.Core.Interfaces.Service
       bool Update(long incomeId, DateTime date, string name, decimal amount, string notes);
       bool Delete(long incomeId);
       IIncome Find(long incomeId);
-      IList<IIncome> From(DateTime start, int count);
-      IList<IIncome> Between(DateTime start, DateTime end);
+      IEnumerable<IIncome> From(DateTime start, int count);
+      IEnumerable<IIncome> Between(DateTime start, DateTime end);
    }
 }

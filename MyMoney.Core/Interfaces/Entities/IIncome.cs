@@ -8,8 +8,9 @@ namespace MyMoney.Core.Interfaces.Entities
       string Name { get; set; }
       decimal Amount { get; set; }
       string Notes { get; set; }
+      IRecurringIncome Parent { get; set; }
 
       IQueryable<ITransaction> Transactions { get; }
-      void DeleteRelations(IRelationRepository relationRepository);
+      void DeleteAllTransactions(IRelationRepository relationRepository);
    }
 }

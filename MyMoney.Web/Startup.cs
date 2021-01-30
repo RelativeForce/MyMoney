@@ -42,6 +42,7 @@ namespace MyMoney.Web
          services.AddScoped<IBasicTransactionService, BasicTransactionService>();
          services.AddScoped<IRecurringTransactionService, RecurringTransactionService>();
          services.AddScoped<IIncomeService, IncomeService>();
+         services.AddScoped<IRecurringIncomeService, RecurringIncomeService>();
          services.AddScoped<IRunningTotalService, RunningTotalService>();
          services.AddScoped<IEntityFactory, EntityFactory>();
          services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();

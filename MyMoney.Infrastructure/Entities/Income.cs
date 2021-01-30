@@ -42,7 +42,7 @@ namespace MyMoney.Infrastructure.Entities
       public IQueryable<ITransaction> Transactions => TransactionsProxy.Select(tb => tb.Transaction).Cast<ITransaction>().AsQueryable();
       public virtual ICollection<TransactionIncome> TransactionsProxy { get; set; } = new List<TransactionIncome>();
 
-      public void DeleteRelations(IRelationRepository relationRepository)
+      public void DeleteAllTransactions(IRelationRepository relationRepository)
       {
          foreach (var transaction in TransactionsProxy.ToList())
          {

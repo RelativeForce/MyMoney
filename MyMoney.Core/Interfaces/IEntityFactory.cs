@@ -9,5 +9,6 @@ namespace MyMoney.Core.Interfaces
       IUser NewUser { get; }
       IIncome NewIncome { get; }
       IRecurringTransaction NewRecurringTransaction { get; }
+      IRecurringIncome NewRecurringIncome { get; }
    }
 }

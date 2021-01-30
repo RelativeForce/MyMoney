@@ -15,13 +15,15 @@ namespace MyMoney.Web.Controllers
    [Route("[controller]")]
    public class IncomeController : ControllerBase
    {
-      private readonly IIncomeService _incomeService;
+      private readonly IIncomeService _basicIncomeService;
       private readonly IRunningTotalService _runningTotalService;
+      private readonly IRecurringIncomeService _recurringIncomeService;
 
-      public IncomeController(IIncomeService incomeService, IRunningTotalService runningTotalService)
+      public IncomeController(IIncomeService incomeService, IRunningTotalService runningTotalService, IRecurringIncomeService recurringIncomeService)
       {
-         _incomeService = incomeService;
+         _basicIncomeService = incomeService;
          _runningTotalService = runningTotalService;
+         _recurringIncomeService = recurringIncomeService;
       }
 
       [HttpPost(nameof(Find))]
@@ -34,7 +36,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var income = _incomeService.Find(dto.Id);
+            var income = _basicIncomeService.Find(dto.Id);
 
             if (income != null)
             {
@@ -59,14 +61,16 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var incomes = _incomeService.Between(listParameters.Start, listParameters.End);
-
-            if (incomes == null)
-               return NotFound();
+            var basic = _basicIncomeService.Between(listParameters.Start, listParameters.End);
+            var recurring = _recurringIncomeService.Between(listParameters.Start, listParameters.End);
 
             return Ok(new IncomeListDto
             {
-               Incomes = incomes.Select(t => new IncomeDto(t)).ToList()
+               Incomes = basic
+                  .Concat(recurring)
+                  .OrderByDescending(i => i.Date)
+                  .Select(t => new IncomeDto(t))
+                  .ToList()
             });
          }
          catch (Exception)
@@ -85,14 +89,17 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var incomes = _incomeService.From(listParameters.Date, listParameters.Count);
-
-            if (incomes == null)
-               return NotFound();
+            var basic = _basicIncomeService.From(listParameters.Date, listParameters.Count);
+            var recurring = _recurringIncomeService.From(listParameters.Date, listParameters.Count);
 
             return Ok(new IncomeListDto
             {
-               Incomes = incomes.Select(t => new IncomeDto(t)).ToList()
+               Incomes = basic
+               .Concat(recurring)
+               .OrderByDescending(i => i.Date)
+               .Take(listParameters.Count)
+               .Select(t => new IncomeDto(t))
+               .ToList()
             });
          }
          catch (Exception)
@@ -137,7 +144,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _incomeService.Add(DateTime.Parse(dto.Date), dto.Name, dto.Amount, dto.Notes);
+            var result = _basicIncomeService.Add(DateTime.Parse(dto.Date), dto.Name, dto.Amount, dto.Notes);
 
             if (result == null)
                return BadRequest("Invalid income data");
@@ -160,7 +167,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var success = _incomeService.Update(dto.Id, DateTime.Parse(dto.Date), dto.Name, dto.Amount, dto.Notes);
+            var success = _basicIncomeService.Update(dto.Id, DateTime.Parse(dto.Date), dto.Name, dto.Amount, dto.Notes);
 
             return Ok(new UpdateResultDto
             {
@@ -184,7 +191,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _incomeService.Delete(deleteParameters.Id);
+            var result = _basicIncomeService.Delete(deleteParameters.Id);
 
             return Ok(new DeleteResultDto { Success = result });
          }
