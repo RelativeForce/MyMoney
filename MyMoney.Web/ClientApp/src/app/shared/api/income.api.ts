@@ -7,8 +7,6 @@ import {
    IIncomeDto,
    IIdDto,
    IUpdateResultDto,
-   IRunningTotalSearchDto,
-   IRunningTotalListDto,
    IDateRangeDto,
    IIncomeSearchDto
 } from './dtos.interface';
@@ -46,12 +44,6 @@ export class IncomeApi {
    public update(income: IIncomeDto): Observable<IUpdateResultDto> {
       return this.api
          .post<IIncomeDto, IUpdateResultDto>('/Income/Update', income)
-         .pipe(first());
-   }
-
-   public runningTotal(request: IRunningTotalSearchDto): Observable<IRunningTotalListDto> {
-      return this.api
-         .post<IRunningTotalSearchDto, IRunningTotalListDto>('/Income/RunningTotal', request)
          .pipe(first());
    }
 

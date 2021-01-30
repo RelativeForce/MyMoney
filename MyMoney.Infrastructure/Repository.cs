@@ -175,6 +175,9 @@ namespace MyMoney.Infrastructure
          if (typeof(T) == typeof(IRecurringTransaction))
             return _model.Set<RecurringTransaction>().Cast<IRecurringTransaction>().AsQueryable() as IQueryable<T>;
 
+         if (typeof(T) == typeof(IRecurringIncome))
+            return _model.Set<RecurringIncome>().Cast<IRecurringIncome>().AsQueryable() as IQueryable<T>;
+
          // Attempt to use entity directly
          return _model.Set<T>().AsQueryable();
       }

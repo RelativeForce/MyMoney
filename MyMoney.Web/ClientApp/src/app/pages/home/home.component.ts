@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BudgetService, IncomeService, TransactionService } from 'src/app/shared/services';
+import { BudgetService, TransactionService } from 'src/app/shared/services';
+import { HomeService } from 'src/app/shared/services/home.service';
 import { IChartDataProvider } from '../../shared/components/chart';
 import { RunningTotalChartDataProvider } from './running-total-chart-data-provider.class';
 import { TransactionsChartDataProvider } from './transactions-chart-data-provider.class';
@@ -15,11 +16,11 @@ export class HomeComponent implements OnInit, OnDestroy {
    constructor(
       transactionService: TransactionService,
       budgetService: BudgetService,
-      incomeService: IncomeService,
+      homeService: HomeService,
       router: Router,
    ) {
       this.transactionsChart = new TransactionsChartDataProvider(transactionService, budgetService, router);
-      this.runningTotalChart = new RunningTotalChartDataProvider(incomeService, router);
+      this.runningTotalChart = new RunningTotalChartDataProvider(homeService, router);
    }
 
    ngOnInit(): void {

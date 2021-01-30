@@ -3,4 +3,5 @@ export * from './transaction.service';
 export * from './budget.service';
 export * from './income.service';
 export * from './current-user.service';
+export * from './home.service';
 

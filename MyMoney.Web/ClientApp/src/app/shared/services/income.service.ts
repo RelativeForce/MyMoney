@@ -37,10 +37,6 @@ export class IncomeService {
       return this.incomeApi.listCount({ date, count: 10 });
    }
 
-   public getRunningTotal(initialTotal: number, dateRange: IDateRangeModel): Observable<IRunningTotalListDto> {
-      return this.incomeApi.runningTotal({ dateRange, initialTotal });
-   }
-
    public deleteIncome(incomeId: number): void {
       this.incomeApi
          .delete({ id: incomeId })

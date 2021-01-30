@@ -16,13 +16,11 @@ namespace MyMoney.Web.Controllers
    public class IncomeController : ControllerBase
    {
       private readonly IBasicIncomeService _basicIncomeService;
-      private readonly IRunningTotalService _runningTotalService;
       private readonly IRecurringIncomeService _recurringIncomeService;
 
-      public IncomeController(IBasicIncomeService incomeService, IRunningTotalService runningTotalService, IRecurringIncomeService recurringIncomeService)
+      public IncomeController(IBasicIncomeService incomeService, IRecurringIncomeService recurringIncomeService)
       {
          _basicIncomeService = incomeService;
-         _runningTotalService = runningTotalService;
          _recurringIncomeService = recurringIncomeService;
       }
 
@@ -105,32 +103,6 @@ namespace MyMoney.Web.Controllers
          catch (Exception)
          {
             return BadRequest("Error while listing incomes");
-         }
-      }
-
-      [HttpPost(nameof(RunningTotal))]
-      public IActionResult RunningTotal([FromBody] RunningTotalSearchDto dto)
-      {
-         try
-         {
-            if (dto == null || !ModelState.IsValid)
-            {
-               return BadRequest("Invalid State");
-            }
-
-            var runningTotals = _runningTotalService.RunningTotal(dto.InitialTotal, dto.dateRange.Start, dto.dateRange.End);
-
-            if (runningTotals == null)
-               return NotFound();
-
-            return Ok(new RunningTotalListDto
-            {
-               RunningTotals = runningTotals.Select(t => new RunningTotalDto(t)).ToList()
-            });
-         }
-         catch (Exception)
-         {
-            return BadRequest("Error while listing running total");
          }
       }
 
