@@ -15,11 +15,11 @@ namespace MyMoney.Web.Controllers
    [Route("[controller]")]
    public class IncomeController : ControllerBase
    {
-      private readonly IIncomeService _basicIncomeService;
+      private readonly IBasicIncomeService _basicIncomeService;
       private readonly IRunningTotalService _runningTotalService;
       private readonly IRecurringIncomeService _recurringIncomeService;
 
-      public IncomeController(IIncomeService incomeService, IRunningTotalService runningTotalService, IRecurringIncomeService recurringIncomeService)
+      public IncomeController(IBasicIncomeService incomeService, IRunningTotalService runningTotalService, IRecurringIncomeService recurringIncomeService)
       {
          _basicIncomeService = incomeService;
          _runningTotalService = runningTotalService;

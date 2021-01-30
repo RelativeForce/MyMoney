@@ -7,14 +7,14 @@ using MyMoney.Core.Interfaces.Service;
 
 namespace MyMoney.Core.Services
 {
-   public sealed class IncomeService : IIncomeService
+   public sealed class BasicIncomeService : IBasicIncomeService
    {
       private readonly IRepository _repository;
       private readonly IEntityFactory _entityFactory;
       private readonly ICurrentUserProvider _currentUserProvider;
       private readonly IRelationRepository _relationRepository;
 
-      public IncomeService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider, IRelationRepository relationRepository)
+      public BasicIncomeService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider, IRelationRepository relationRepository)
       {
          _repository = repository;
          _entityFactory = entityFactory;

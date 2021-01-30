@@ -4,7 +4,7 @@ using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Core.Interfaces.Service
 {
-   public interface IIncomeService
+   public interface IBasicIncomeService
    {
       IIncome Add(DateTime date, string name, decimal amount, string notes);
       bool Update(long incomeId, DateTime date, string name, decimal amount, string notes);
