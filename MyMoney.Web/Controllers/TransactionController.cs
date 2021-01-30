@@ -44,7 +44,7 @@ namespace MyMoney.Web.Controllers
             {
                Transactions = basicTransactions
                   .Concat(recurringTransactions)
-                  .OrderBy(t => t.Date)
+                  .OrderByDescending(t => t.Date)
                   .Select(t => new TransactionDto(t))
                   .ToList()
             });
