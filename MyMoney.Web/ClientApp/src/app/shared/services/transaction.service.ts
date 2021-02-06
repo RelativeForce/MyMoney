@@ -85,12 +85,12 @@ export class TransactionService {
       }), concatAll());
    }
 
-   public realiseTransaction(recurringTransactionId: number, date: string): Observable<ITransactionDto> {
-      return this.transactionApi.realise({ id: recurringTransactionId, date });
-   }
-
    public refreshTransactions(): void {
       this.store.dispatch(new RefreshTransactionsAction());
+   }
+
+   public realiseTransaction(recurringTransactionId: number, date: string): Observable<ITransactionDto> {
+      return this.transactionApi.realise({ id: recurringTransactionId, date });
    }
 
    public addRecurringTransaction(transaction: IRecurringTransactionDto): Observable<boolean> {

@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import { IncomeApi, IDeleteResultDto, IIncomeListDto, IUpdateResultDto, IRunningTotalListDto } from '../api';
+import {
+   IncomeApi,
+   IDeleteResultDto,
+   IIncomeListDto,
+   IUpdateResultDto,
+   IRecurringIncomeDto,
+   IIncomeDto
+} from '../api';
 import {
    DeleteIncomeAction,
    RefreshIncomesAction,
@@ -83,5 +90,43 @@ export class IncomeService {
 
    public refreshIncomes(): void {
       this.store.dispatch(new RefreshIncomesAction());
+   }
+
+   public realiseTransaction(recurringTransactionId: number, date: string): Observable<IIncomeDto> {
+      return this.incomeApi.realise({ id: recurringTransactionId, date });
+   }
+
+   public addRecurringTransaction(transaction: IRecurringIncomeDto): Observable<boolean> {
+      return this.incomeApi
+         .addRecurring(transaction)
+         .pipe(map(() => {
+            this.store.dispatch(new RefreshIncomesAction());
+            return true;
+         }));
+   }
+
+   public findRecurringTransaction(transactionId: number): Observable<IRecurringIncomeDto> {
+      return this.incomeApi.findRecurring({ id: transactionId });
+   }
+
+   public editRecurringTransaction(transaction: IRecurringIncomeDto): Observable<boolean> {
+      return this.incomeApi
+         .updateRecurring(transaction)
+         .pipe(map((status: IUpdateResultDto) => {
+            if (status.success) {
+               this.store.dispatch(new RefreshIncomesAction());
+            }
+            return status.success;
+         }));
+   }
+
+   public deleteRecurringTransaction(transactionId: number): void {
+      this.incomeApi
+         .deleteRecurring({ id: transactionId })
+         .subscribe((status: IDeleteResultDto) => {
+            if (status.success) {
+               this.store.dispatch(new DeleteIncomeAction(transactionId));
+            }
+         });
    }
 }
