@@ -4,7 +4,8 @@ import {
    UpdateIncomeAction,
    IncomeActionTypes,
    DeleteIncomeAction,
-   UpdateIncomesSearchAction
+   UpdateIncomesSearchAction,
+   DeleteRecurringIncomeAction
 } from '../actions';
 import { IDateRangeModel, IIncomeModel, IIncomesSearch } from '../types';
 
@@ -61,6 +62,15 @@ function deleteIncome(state: IIncomeState, action: DeleteIncomeAction): IIncomeS
    };
 }
 
+function deleteRecurringIncome(state: IIncomeState, action: DeleteRecurringIncomeAction): IIncomeState {
+   const transactionId: number = action.transactionId;
+
+   return {
+      ...state,
+      incomes: state.incomes.filter(t => t.parentId !== transactionId)
+   };
+}
+
 function updateSelectedSearchDate(state: IIncomeState, action: UpdateIncomesSearchAction): IIncomeState {
    const dateRange: IDateRangeModel = action.dateRange;
 
@@ -106,6 +116,8 @@ export function incomeReducer(state: IIncomeState = initialIncomeState, action: 
          return deleteIncome(state, action as DeleteIncomeAction);
       case IncomeActionTypes.updateSearchDate:
          return updateSelectedSearchDate(state, action as UpdateIncomesSearchAction);
+      case IncomeActionTypes.deleteRecurringIncome:
+         return deleteRecurringIncome(state, action as DeleteRecurringIncomeAction);
       case IncomeActionTypes.refreshIncomes:
          return refreshIncomes(state);
       default:

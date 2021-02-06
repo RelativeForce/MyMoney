@@ -6,6 +6,7 @@ export enum IncomeActionTypes {
    setIncomes = 'Set Incomes',
    updateIncome = 'Update Income',
    deleteIncome = 'Delete Income',
+   deleteRecurringIncome = 'Delete Recurring Income',
    updateSearchDate = 'Update Income Search Date',
    refreshIncomes = 'Refresh Incomes',
 }
@@ -26,6 +27,12 @@ export class DeleteIncomeAction implements Action {
    public type: string = IncomeActionTypes.deleteIncome;
 
    constructor(public readonly incomeId: number) { }
+}
+
+export class DeleteRecurringIncomeAction implements Action {
+   public type: string = IncomeActionTypes.deleteRecurringIncome;
+
+   constructor(public readonly transactionId: number) { }
 }
 
 export class UpdateIncomesSearchAction implements Action {
