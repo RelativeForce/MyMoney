@@ -55,6 +55,8 @@ export class AddIncomeComponent implements OnInit {
          notes,
          remaining: amount,
          id: 0,
+         parentFrequency: null,
+         parentId: null
       };
 
       this.incomeService.addIncome(income).subscribe(success => {

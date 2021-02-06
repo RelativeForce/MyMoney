@@ -73,7 +73,9 @@ export class IncomeImportDataProvider implements IImportDataProvider<IncomePrope
                amount,
                notes,
                id: 0,
-               remaining: amount
+               remaining: amount,
+               parentFrequency: null,
+               parentId: null
             },
             row: row
          };

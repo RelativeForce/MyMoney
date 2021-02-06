@@ -122,6 +122,8 @@ export class EditIncomeComponent implements OnInit {
          notes,
          remaining: 0,
          id: this.id,
+         parentId: null,
+         parentFrequency: null
       };
    }
 }

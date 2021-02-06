@@ -42,7 +42,7 @@ namespace MyMoney.Web.Controllers
                RunningTotals = runningTotals.Select(t => new RunningTotalDto(t)).ToList()
             });
          }
-         catch (Exception e)
+         catch (Exception)
          {
             return BadRequest("Error while listing running total");
          }

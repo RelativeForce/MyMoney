@@ -8,7 +8,9 @@ import {
    IIdDto,
    IUpdateResultDto,
    IDateRangeDto,
-   IIncomeSearchDto
+   IIncomeSearchDto,
+   IRecurringEntityChildDto,
+   IRecurringIncomeDto
 } from './dtos.interface';
 import { HttpHelper } from './http-helper.class';
 
@@ -50,6 +52,36 @@ export class IncomeApi {
    public find(id: IIdDto): Observable<IIncomeDto> {
       return this.api
          .post<IIdDto, IIncomeDto>('/Income/Find', id)
+         .pipe(first());
+   }
+
+   public realise(child: IRecurringEntityChildDto): Observable<IIncomeDto> {
+      return this.api
+         .post<IRecurringEntityChildDto, IIncomeDto>('/Income/Realise', child)
+         .pipe(first());
+   }
+
+   public addRecurring(income: IRecurringIncomeDto): Observable<IRecurringIncomeDto> {
+      return this.api
+         .post<IRecurringIncomeDto, IRecurringIncomeDto>('/Income/AddRecurring', income)
+         .pipe(first());
+   }
+
+   public findRecurring(id: IIdDto): Observable<IRecurringIncomeDto> {
+      return this.api
+         .post<IIdDto, IRecurringIncomeDto>('/Income/FindRecurring', id)
+         .pipe(first());
+   }
+
+   public updateRecurring(income: IRecurringIncomeDto): Observable<IUpdateResultDto> {
+      return this.api
+         .post<IRecurringIncomeDto, IUpdateResultDto>('/Income/UpdateRecurring', income)
+         .pipe(first());
+   }
+
+   public deleteRecurring(id: IIdDto): Observable<IDeleteResultDto> {
+      return this.api
+         .post<IIdDto, IDeleteResultDto>('/Income/DeleteRecurring', id)
          .pipe(first());
    }
 }

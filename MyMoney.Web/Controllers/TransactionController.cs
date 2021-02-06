@@ -177,7 +177,7 @@ namespace MyMoney.Web.Controllers
       }
 
       [HttpPost(nameof(Realise))]
-      public IActionResult Realise([FromBody] RecurringTransactionChildDto model)
+      public IActionResult Realise([FromBody] RecurringEntityChildDto model)
       {
          try
          {
