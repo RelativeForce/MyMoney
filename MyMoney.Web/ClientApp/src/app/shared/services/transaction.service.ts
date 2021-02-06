@@ -51,16 +51,6 @@ export class TransactionService {
          });
    }
 
-   public deleteRecurringTransaction(transactionId: number): void {
-      this.transactionApi
-         .deleteRecurring({ id: transactionId })
-         .subscribe((status: IDeleteResultDto) => {
-            if (status.success) {
-               this.store.dispatch(new DeleteRecurringTransactionAction(transactionId));
-            }
-         });
-   }
-
    public updateDateRange(dateRange: IDateRangeModel): void {
       this.store.dispatch(new UpdateDataRangeAction(dateRange));
    }
@@ -68,19 +58,6 @@ export class TransactionService {
    public addTransaction(transaction: ITransactionModel): Observable<boolean> {
       return this.transactionApi
          .add(transaction)
-         .pipe(map(() => {
-            this.store.dispatch(new RefreshTransactionsAction());
-            return true;
-         }));
-   }
-
-   public realiseTransaction(recurringTransactionId: number, date: string): Observable<ITransactionDto> {
-      return this.transactionApi.realise({ id: recurringTransactionId, date });
-   }
-
-   public addRecurringTransaction(transaction: IRecurringTransactionDto): Observable<boolean> {
-      return this.transactionApi
-         .addRecurring(transaction)
          .pipe(map(() => {
             this.store.dispatch(new RefreshTransactionsAction());
             return true;
@@ -98,6 +75,37 @@ export class TransactionService {
          }));
    }
 
+   public findTransaction(transactionId: number): Observable<ITransactionModel> {
+      return this.store.select(selectTransaction(transactionId)).pipe(map((transaction: ITransactionModel | undefined) => {
+         if (transaction !== undefined) {
+            return of(transaction);
+         }
+
+         return this.transactionApi.find({ id: transactionId });
+      }), concatAll());
+   }
+
+   public realiseTransaction(recurringTransactionId: number, date: string): Observable<ITransactionDto> {
+      return this.transactionApi.realise({ id: recurringTransactionId, date });
+   }
+
+   public refreshTransactions(): void {
+      this.store.dispatch(new RefreshTransactionsAction());
+   }
+
+   public addRecurringTransaction(transaction: IRecurringTransactionDto): Observable<boolean> {
+      return this.transactionApi
+         .addRecurring(transaction)
+         .pipe(map(() => {
+            this.store.dispatch(new RefreshTransactionsAction());
+            return true;
+         }));
+   }
+
+   public findRecurringTransaction(transactionId: number): Observable<IRecurringTransactionDto> {
+      return this.transactionApi.findRecurring({ id: transactionId });
+   }
+
    public editRecurringTransaction(transaction: IRecurringTransactionDto): Observable<boolean> {
       return this.transactionApi
          .updateRecurring(transaction)
@@ -109,21 +117,13 @@ export class TransactionService {
          }));
    }
 
-   public findTransaction(transactionId: number): Observable<ITransactionModel> {
-      return this.store.select(selectTransaction(transactionId)).pipe(map((transaction: ITransactionModel | undefined) => {
-         if (transaction !== undefined) {
-            return of(transaction);
-         }
-
-         return this.transactionApi.find({ id: transactionId });
-      }), concatAll());
-   }
-
-   public findRecurringTransaction(transactionId: number): Observable<IRecurringTransactionDto> {
-      return this.transactionApi.findRecurring({ id: transactionId });
-   }
-
-   public refreshTransactions(): void {
-      this.store.dispatch(new RefreshTransactionsAction());
+   public deleteRecurringTransaction(transactionId: number): void {
+      this.transactionApi
+         .deleteRecurring({ id: transactionId })
+         .subscribe((status: IDeleteResultDto) => {
+            if (status.success) {
+               this.store.dispatch(new DeleteRecurringTransactionAction(transactionId));
+            }
+         });
    }
 }
