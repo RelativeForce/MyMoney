@@ -50,7 +50,7 @@ function updateIncome(state: IIncomeState, action: UpdateIncomeAction): IIncomeS
 
 function realiseIncome(state: IIncomeState, action: RealiseIncomeAction): IIncomeState {
    const virtualId: number = action.virtualId;
-   const realId: number = action.virtualId;
+   const realId: number = action.realId;
 
    const incomes = state.incomes.map(t => ({
       ...t,

@@ -50,7 +50,7 @@ function updateTransaction(state: ITransactionState, action: UpdateTransactionAc
 
 function realiseTransaction(state: ITransactionState, action: RealiseTransactionAction): ITransactionState {
    const virtualId: number = action.virtualId;
-   const realId: number = action.virtualId;
+   const realId: number = action.realId;
 
    const transactions = state.transactions.map(t => ({
       ...t,
