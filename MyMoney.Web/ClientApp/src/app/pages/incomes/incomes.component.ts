@@ -8,7 +8,8 @@ import { selectIncomes, selectIncomesSearchParameters } from 'src/app/shared/sta
 import { IDateRangeModel } from 'src/app/shared/state/types';
 
 @Component({
-   templateUrl: './incomes.component.html'
+   templateUrl: './incomes.component.html',
+   styleUrls: ['./incomes.component.scss']
 })
 export class IncomesComponent implements OnInit {
 

@@ -51,7 +51,7 @@
             <td>{{income.name}}</td>
             <td>{{income.amount}}</td>
             <td [ngClass]="{ 'text-danger': income.showWarning }">{{income.remaining}}</td>
-            <td>
+            <td class="pull-right">
                <div class="btn-group">
                   <a class="btn btn-primary" routerLink="./edit/{{income.id}}" data-toggle="tooltip" data-placement="bottom"
                      title="Edit income {{income.id}}">🖉</a>

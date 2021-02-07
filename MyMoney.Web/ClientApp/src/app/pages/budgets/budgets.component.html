@@ -52,7 +52,7 @@
             <td>{{budget.amount}}</td>
             <td [ngClass]="{ 'text-danger': budget.showWarning }">{{budget.remaining}}</td>
             <td>{{budget.notes}}</td>
-            <td style="min-width:120px">
+            <td class="pull-right">
                <div class="btn-group">
                   <a class="btn btn-primary" routerLink="./edit/{{budget.id}}" data-toggle="tooltip" data-placement="bottom"
                      title="Edit budget {{budget.id}}">🖉</a>
