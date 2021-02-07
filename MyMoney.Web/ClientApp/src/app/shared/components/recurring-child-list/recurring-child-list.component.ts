@@ -13,10 +13,7 @@ export class RecurringChildListComponent {
    public realisingChild: number | null = null;
 
    @Input()
-   public dateMessage: string | null = null;
-
-   @Input()
-   public openToolTip = 'Open child';
+   public isValid = true;
 
    @Input()
    public children: IRecurringEntityChildDto[] = [];

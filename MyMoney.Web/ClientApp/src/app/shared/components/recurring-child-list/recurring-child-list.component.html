@@ -1,5 +1,5 @@
 <h4>Occurrences</h4>
-<div *ngIf="dateMessage !== null"> {{ dateMessage }} </div>
+<div *ngIf="!isValid"> Occurrences will be recalculated when changes are saved. </div>
 <div *ngIf="children.length > 0" [ngStyle]="{'max-height': '60vh', 'overflow-y': 'scroll'}">
    <table class="table">
       <tbody>
@@ -13,7 +13,7 @@
             <td class="pull-right">
                <div>
                   <button class="btn btn-primary" [disabled]="realisingChild !== null" (click)="onOpenChildClick(child)"
-                     data-toggle="tooltip" data-placement="bottom" title="{{openToolTip}} {{child.date}}">
+                     data-toggle="tooltip" data-placement="bottom" title="Edit {{child.date}}">
                      <span *ngIf="realisingChild !== child.id">🖉</span>
                      <span *ngIf="realisingChild === child.id" class="spinner-border spinner-border-sm"></span>
                   </button>

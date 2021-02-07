@@ -68,8 +68,8 @@
       </form>
    </div>
    <div class="col-5">
-      <mymoney-recurring-child-list [realisingChild]="realisingChild" [dateMessage]="dateMessage" [openToolTip]="'Edit income'"
-         [children]="children" (openChild)="addOrEditIncome($event)"></mymoney-recurring-child-list>
+      <mymoney-recurring-child-list [realisingChild]="realisingChild" [isValid]="isValid" [children]="children"
+         (openChild)="addOrEditIncome($event)"></mymoney-recurring-child-list>
    </div>
 </div>
 3

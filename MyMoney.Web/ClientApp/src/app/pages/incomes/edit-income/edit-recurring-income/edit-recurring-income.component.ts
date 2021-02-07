@@ -16,7 +16,7 @@ export class EditRecurringIncomeComponent implements OnInit {
    public loading = false;
    public realisingChild: number | null = null;
    public submitted = false;
-   public dateMessage: string | null = null;
+   public isValid = true;
    public children: { id: number; date: string }[] = [];
    public recurrenceOptions: { key: Frequency; value: string }[];
 
@@ -87,7 +87,7 @@ export class EditRecurringIncomeComponent implements OnInit {
 
    public onDurationOrRecurrenceChange(): void {
       this.children = [];
-      this.dateMessage = 'Occurrences will be recalculated when changes are saved.';
+      this.isValid = false;
    }
 
    public addOrEditIncome(child: { id: number; date: string }) {
