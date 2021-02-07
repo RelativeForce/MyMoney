@@ -78,13 +78,6 @@ export class EditRecurringIncomeComponent implements OnInit {
       return this.editIncomeForm.controls;
    }
 
-   public get nextChildIncome(): number | null {
-
-      const now = new Date(Date.now()).getTime();
-
-      return this.children.find(d => Date.parse(toInputDateString(d.date)) > now)?.id ?? null;
-   }
-
    public onDurationOrRecurrenceChange(): void {
       this.children = [];
       this.isValid = false;
