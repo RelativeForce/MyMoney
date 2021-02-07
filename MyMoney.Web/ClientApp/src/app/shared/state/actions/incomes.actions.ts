@@ -33,7 +33,7 @@ export class DeleteIncomeAction implements Action {
 export class DeleteRecurringIncomeAction implements Action {
    public type: string = IncomeActionTypes.deleteRecurringIncome;
 
-   constructor(public readonly transactionId: number) { }
+   constructor(public readonly incomeId: number) { }
 }
 
 export class RealiseIncomeAction implements Action {

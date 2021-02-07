@@ -79,11 +79,11 @@ function deleteIncome(state: IIncomeState, action: DeleteIncomeAction): IIncomeS
 }
 
 function deleteRecurringIncome(state: IIncomeState, action: DeleteRecurringIncomeAction): IIncomeState {
-   const transactionId: number = action.transactionId;
+   const incomeId: number = action.incomeId;
 
    return {
       ...state,
-      incomes: state.incomes.filter(t => t.parentId !== transactionId)
+      incomes: state.incomes.filter(t => t.parentId !== incomeId)
    };
 }
 
