@@ -142,8 +142,8 @@ export class EditBasicIncomeComponent implements OnInit {
          notes,
          remaining: 0,
          id: this.id,
-         parentId: null,
-         parentFrequency: null
+         parentId: this.parentId,
+         parentFrequency: this.parentFrequency,
       };
    }
 }
