@@ -37,7 +37,8 @@ import {
    FooterComponent,
    ImportFileComponent,
    IncomeSelectorComponent,
-   ToggleComponent
+   ToggleComponent,
+   RecurringChildListComponent,
 } from './shared/components';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
@@ -82,6 +83,7 @@ import { routes } from './app.routing';
       ToggleComponent,
       IncomeSelectorComponent,
       BudgetSelectorComponent,
+      RecurringChildListComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
