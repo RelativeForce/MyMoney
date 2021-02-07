@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { IncomeViewModel } from '../../classes';
 import { IncomeService } from 'src/app/shared/services';
+import { IIncomeDto } from '../../api';
 
 @Component({
    selector: 'mymoney-income-selector',
@@ -15,13 +16,27 @@ export class IncomeSelectorComponent implements OnChanges {
 
    public incomes: IncomeViewModel[] | null = null;
 
+   public realisingChild: number | null = null;
+
    constructor(private readonly incomeService: IncomeService) { }
 
-   public onIncomeCheckboxChange(event: any, id: number): void {
+   public onIncomeCheckboxChange(event: any, income: IncomeViewModel): void {
+
+      if (income.id < 0) {
+         this.realisingChild = income.id;
+         this.incomeService
+            .realiseIncome(income.parentId, income.date, income.id)
+            .subscribe((realChild: IIncomeDto) => {
+               this.realisingChild = null;
+               this.selectedIncomes.add(realChild.id);
+            });
+         return;
+      }
+
       if (event.target.checked) {
-         this.selectedIncomes.add(id);
+         this.selectedIncomes.add(income.id);
       } else {
-         this.selectedIncomes.delete(id);
+         this.selectedIncomes.delete(income.id);
       }
    }
 

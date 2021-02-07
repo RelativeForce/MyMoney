@@ -5,7 +5,8 @@ import {
    TransactionActionTypes,
    DeleteTransactionAction,
    UpdateDataRangeAction,
-   DeleteRecurringTransactionAction
+   DeleteRecurringTransactionAction,
+   RealiseTransactionAction
 } from '../actions';
 import { ITransactionModel, IDateRangeModel, ITransactionsSearch } from '../types';
 
@@ -40,6 +41,21 @@ function updateTransaction(state: ITransactionState, action: UpdateTransactionAc
    const transactions = state.transactions.map(t => t);
 
    transactions[index] = transaction;
+
+   return {
+      ...state,
+      transactions
+   };
+}
+
+function realiseTransaction(state: ITransactionState, action: RealiseTransactionAction): ITransactionState {
+   const virtualId: number = action.virtualId;
+   const realId: number = action.virtualId;
+
+   const transactions = state.transactions.map(t => ({
+      ...t,
+      id: t.id === virtualId ? realId : t.id
+   }));
 
    return {
       ...state,
@@ -106,6 +122,8 @@ export function transactionReducer(state: ITransactionState = initialTransaction
          return setTransactions(state, action as SetTransactionsAction);
       case TransactionActionTypes.updateTransaction:
          return updateTransaction(state, action as UpdateTransactionAction);
+      case TransactionActionTypes.realiseTransaction:
+         return realiseTransaction(state, action as RealiseTransactionAction);
       case TransactionActionTypes.deleteTransaction:
          return deleteTransaction(state, action as DeleteTransactionAction);
       case TransactionActionTypes.deleteRecurringTransaction:

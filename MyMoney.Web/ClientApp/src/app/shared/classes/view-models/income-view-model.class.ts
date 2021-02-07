@@ -1,3 +1,4 @@
+import { Frequency } from '../../api';
 import { IIncomeModel } from '../../state/types';
 
 export class IncomeViewModel {
@@ -7,6 +8,8 @@ export class IncomeViewModel {
    remaining: string;
    id: number;
    showWarning: boolean;
+   parentId: number | null;
+   parentFrequency: Frequency | null;
 
    constructor(model: IIncomeModel) {
       this.date = model.date;
@@ -15,5 +18,7 @@ export class IncomeViewModel {
       this.remaining = '£' + model.remaining;
       this.id = model.id;
       this.showWarning = model.remaining < 0;
+      this.parentId = model.parentId;
+      this.parentFrequency = model.parentFrequency;
    }
 }

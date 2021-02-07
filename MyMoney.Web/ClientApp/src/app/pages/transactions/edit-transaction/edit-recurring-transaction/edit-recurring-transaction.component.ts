@@ -94,7 +94,7 @@ export class EditRecurringTransactionComponent implements OnInit {
       if (child.id < 0) {
          this.realisingChild = child.id;
          this.transactionService
-            .realiseTransaction(this.id, child.date)
+            .realiseTransaction(this.id, child.date, child.id)
             .subscribe((realChild: ITransactionDto) => {
                this.realisingChild = null;
                this.router.navigate(['/transactions', 'edit', realChild.id]);
