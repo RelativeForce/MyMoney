@@ -1,4 +1,12 @@
-<h2>Edit income {{id}}</h2>
+<div class="header">
+   <h2 *ngIf="loadingIncome">Loading income {{id}}</h2>
+   <h2 *ngIf="!loadingIncome">Edit income {{id}} {{ frequencyString }}</h2>
+   <div>
+      <a class="btn btn-link" *ngIf="parentId !== null" routerLink="/incomes/edit-recurring/{{parentId}}">
+         Parent recurring income
+      </a>
+   </div>
+</div>
 <form [formGroup]="editIncomeForm" (ngSubmit)="onSubmit()">
    <div class="form-group">
       <label for="date">Date</label>
