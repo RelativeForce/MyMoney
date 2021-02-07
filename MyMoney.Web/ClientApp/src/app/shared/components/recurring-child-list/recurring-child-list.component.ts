@@ -10,7 +10,7 @@ import { toInputDateString } from 'src/app/shared/functions';
 export class RecurringChildListComponent {
 
    @Input()
-   public realisingChild: number | null = null;
+   public realisingChildId: number | null = null;
 
    @Input()
    public isValid = true;
@@ -21,7 +21,7 @@ export class RecurringChildListComponent {
    @Output()
    public openChild: EventEmitter<IRecurringEntityChildDto> = new EventEmitter<IRecurringEntityChildDto>();
 
-   public get nextChildIncome(): number | null {
+   public get nextChildId(): number | null {
 
       const now = new Date(Date.now()).getTime();
 
