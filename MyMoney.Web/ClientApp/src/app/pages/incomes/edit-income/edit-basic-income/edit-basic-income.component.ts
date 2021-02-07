@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IncomeService } from '../../../shared/services';
-import { BudgetViewModel } from '../../../shared/classes';
+import { IncomeService } from '../../../../shared/services';
+import { BudgetViewModel } from '../../../../shared/classes';
 import { IIncomeModel } from 'src/app/shared/state/types';
 import { toInputDateString } from 'src/app/shared/functions';
 
 @Component({
-   templateUrl: './edit-income.component.html'
+   templateUrl: './edit-basic-income.component.html'
 })
-export class EditIncomeComponent implements OnInit {
+export class EditBasicIncomeComponent implements OnInit {
 
    public editIncomeForm: FormGroup;
    public selectedBudgets: Set<number> = new Set();
