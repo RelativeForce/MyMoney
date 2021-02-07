@@ -18,6 +18,8 @@ export * from './budgets/edit-budget/edit-budget.component';
 // Income
 export * from './incomes/incomes.component';
 export * from './incomes/add-income/add-income.component';
+export * from './incomes/add-income/add-basic-income/add-basic-income.component';
+export * from './incomes/add-income/add-recurring-income/add-recurring-income.component';
 export * from './incomes/edit-income/edit-income.component';
 export * from './incomes/import-incomes/import-incomes.component';
 
