@@ -51,8 +51,8 @@
             <td>{{transaction.amount}}</td>
             <td class="pull-right">
                <div class="btn-group">
-                  <a class="btn btn-primary" routerLink="./edit/{{transaction.id}}" data-toggle="tooltip" data-placement="bottom"
-                     title=" Edit transaction {{transaction.id}}">🖉</a>
+                  <a class="btn btn-primary" *ngIf="transaction.id > 0" routerLink="./edit/{{transaction.id}}" data-toggle="tooltip"
+                     data-placement="bottom" title=" Edit transaction {{transaction.id}}">🖉</a>
                   <a class="btn btn-primary" *ngIf="transaction.parentId !== null" routerLink="./edit-recurring/{{transaction.parentId}}"
                      data-toggle="tooltip" data-placement="bottom" title="Edit recurring transaction {{transaction.parentId}}">🗐</a>
                   <button class="btn btn-danger" *ngIf="transaction.parentId !== null"
