@@ -28,6 +28,12 @@ export class IncomeSelectorComponent implements OnChanges {
             .realiseIncome(income.parentId, income.date, income.id)
             .subscribe((realChild: IIncomeDto) => {
                this.realisingChild = null;
+
+               // Updated model
+               const model = this.incomes.find(i => i.id === income.id);
+               model.id = realChild.id;
+               income.id = realChild.id;
+
                this.selectedIncomes.add(realChild.id);
             });
          return;
