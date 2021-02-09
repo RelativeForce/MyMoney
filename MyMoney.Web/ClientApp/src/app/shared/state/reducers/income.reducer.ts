@@ -4,7 +4,9 @@ import {
    UpdateIncomeAction,
    IncomeActionTypes,
    DeleteIncomeAction,
-   UpdateIncomesSearchAction
+   UpdateIncomesSearchAction,
+   DeleteRecurringIncomeAction,
+   RealiseIncomeAction
 } from '../actions';
 import { IDateRangeModel, IIncomeModel, IIncomesSearch } from '../types';
 
@@ -46,6 +48,21 @@ function updateIncome(state: IIncomeState, action: UpdateIncomeAction): IIncomeS
    };
 }
 
+function realiseIncome(state: IIncomeState, action: RealiseIncomeAction): IIncomeState {
+   const virtualId: number = action.virtualId;
+   const realId: number = action.realId;
+
+   const incomes = state.incomes.map(t => ({
+      ...t,
+      id: t.id === virtualId ? realId : t.id
+   }));
+
+   return {
+      ...state,
+      incomes
+   };
+}
+
 function deleteIncome(state: IIncomeState, action: DeleteIncomeAction): IIncomeState {
    const incomeId: number = action.incomeId;
 
@@ -58,6 +75,15 @@ function deleteIncome(state: IIncomeState, action: DeleteIncomeAction): IIncomeS
    return {
       ...state,
       incomes: incomes
+   };
+}
+
+function deleteRecurringIncome(state: IIncomeState, action: DeleteRecurringIncomeAction): IIncomeState {
+   const incomeId: number = action.incomeId;
+
+   return {
+      ...state,
+      incomes: state.incomes.filter(t => t.parentId !== incomeId)
    };
 }
 
@@ -104,8 +130,12 @@ export function incomeReducer(state: IIncomeState = initialIncomeState, action: 
          return updateIncome(state, action as UpdateIncomeAction);
       case IncomeActionTypes.deleteIncome:
          return deleteIncome(state, action as DeleteIncomeAction);
+      case IncomeActionTypes.deleteIncome:
+         return realiseIncome(state, action as RealiseIncomeAction);
       case IncomeActionTypes.updateSearchDate:
          return updateSelectedSearchDate(state, action as UpdateIncomesSearchAction);
+      case IncomeActionTypes.deleteRecurringIncome:
+         return deleteRecurringIncome(state, action as DeleteRecurringIncomeAction);
       case IncomeActionTypes.refreshIncomes:
          return refreshIncomes(state);
       default:

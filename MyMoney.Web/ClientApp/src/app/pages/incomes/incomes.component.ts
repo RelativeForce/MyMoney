@@ -8,7 +8,8 @@ import { selectIncomes, selectIncomesSearchParameters } from 'src/app/shared/sta
 import { IDateRangeModel } from 'src/app/shared/state/types';
 
 @Component({
-   templateUrl: './incomes.component.html'
+   templateUrl: './incomes.component.html',
+   styleUrls: ['./incomes.component.scss']
 })
 export class IncomesComponent implements OnInit {
 
@@ -70,6 +71,14 @@ export class IncomesComponent implements OnInit {
 
    public get f() {
       return this.dateForm.controls;
+   }
+
+   public deleteRecurringIncome(id: number): void {
+      if (!confirm(`Delete recurring income ${id}?`)) {
+         return;
+      }
+
+      this.incomeService.deleteRecurringIncome(id);
    }
 
    public deleteIncome(id: number): void {

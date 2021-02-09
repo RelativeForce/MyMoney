@@ -1,22 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IncomeService } from '../../../shared/services';
-import { BudgetViewModel } from '../../../shared/classes';
+import { IncomeService } from '../../../../shared/services';
+import { BudgetViewModel } from '../../../../shared/classes';
 import { IIncomeModel } from 'src/app/shared/state/types';
-import { toInputDateString } from 'src/app/shared/functions';
+import { toFrequencyString, toInputDateString } from 'src/app/shared/functions';
+import { Frequency } from 'src/app/shared/api';
 
 @Component({
-   templateUrl: './edit-income.component.html'
+   templateUrl: './edit-basic-income.component.html',
+   styleUrls: ['./edit-basic-income.component.scss']
 })
-export class EditIncomeComponent implements OnInit {
+export class EditBasicIncomeComponent implements OnInit {
 
    public editIncomeForm: FormGroup;
    public selectedBudgets: Set<number> = new Set();
    public budgets: BudgetViewModel[] = [];
    public id: number;
+   public parentId: number | null = null;
+   public parentFrequency: Frequency | null = null;
    public loading = false;
    public submitted = false;
+   public loadingIncome = true;
 
    constructor(
       private readonly formBuilder: FormBuilder,
@@ -54,7 +59,11 @@ export class EditIncomeComponent implements OnInit {
                this.f.name.patchValue(response.name);
                this.f.amount.patchValue(response.amount);
                this.f.notes.patchValue(response.notes);
-               this.enableForm();
+               this.parentId = response.parentId;
+               this.parentFrequency = response.parentFrequency;
+
+               this.loadingIncome = false;
+               this.enableForm(response.parentId !== null);
             },
                () => {
                   this.router.navigate(['/incomes']);
@@ -65,6 +74,14 @@ export class EditIncomeComponent implements OnInit {
 
    public get f() {
       return this.editIncomeForm.controls;
+   }
+
+   public get frequencyString(): string {
+      if (this.parentFrequency === null) {
+         return '';
+      }
+
+      return `(${toFrequencyString(this.parentFrequency)})`;
    }
 
    public onSubmit(): void {
@@ -98,10 +115,13 @@ export class EditIncomeComponent implements OnInit {
       this.f.notes.disable();
    }
 
-   private enableForm() {
-      this.f.amount.enable();
-      this.f.name.enable();
-      this.f.date.enable();
+   private enableForm(isChild: boolean) {
+      if (!isChild) {
+         this.f.date.enable();
+         this.f.name.enable();
+         this.f.amount.enable();
+      }
+
       this.f.notes.enable();
    }
 
@@ -122,6 +142,8 @@ export class EditIncomeComponent implements OnInit {
          notes,
          remaining: 0,
          id: this.id,
+         parentId: this.parentId,
+         parentFrequency: this.parentFrequency,
       };
    }
 }

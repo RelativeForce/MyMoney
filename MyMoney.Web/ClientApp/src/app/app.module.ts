@@ -16,8 +16,11 @@ import {
    EditBasicTransactionComponent,
    EditBudgetComponent,
    IncomesComponent,
-   EditIncomeComponent,
+   EditBasicIncomeComponent,
+   EditRecurringIncomeComponent,
    AddIncomeComponent,
+   AddBasicIncomeComponent,
+   AddRecurringIncomeComponent,
    ImportTransactionsComponent,
    ImportIncomesComponent,
    ProfileComponent,
@@ -34,7 +37,8 @@ import {
    FooterComponent,
    ImportFileComponent,
    IncomeSelectorComponent,
-   ToggleComponent
+   ToggleComponent,
+   RecurringChildListComponent,
 } from './shared/components';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
@@ -58,7 +62,10 @@ import { routes } from './app.routing';
       EditBudgetComponent,
       IncomesComponent,
       AddIncomeComponent,
-      EditIncomeComponent,
+      AddBasicIncomeComponent,
+      AddRecurringIncomeComponent,
+      EditBasicIncomeComponent,
+      EditRecurringIncomeComponent,
       ImportTransactionsComponent,
       ImportIncomesComponent,
       ProfileComponent,
@@ -76,6 +83,7 @@ import { routes } from './app.routing';
       ToggleComponent,
       IncomeSelectorComponent,
       BudgetSelectorComponent,
+      RecurringChildListComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

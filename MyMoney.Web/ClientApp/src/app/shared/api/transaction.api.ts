@@ -4,7 +4,7 @@ import { first } from 'rxjs/operators';
 import {
    IDeleteResultDto,
    IIdDto,
-   IRecurringTransactionChildDto,
+   IRecurringEntityChildDto,
    IRecurringTransactionDto,
    ITransactionDto,
    ITransactionListDto,
@@ -30,9 +30,9 @@ export class TransactionApi {
          .pipe(first());
    }
 
-   public realise(child: IRecurringTransactionChildDto): Observable<ITransactionDto> {
+   public realise(child: IRecurringEntityChildDto): Observable<ITransactionDto> {
       return this.api
-         .post<IRecurringTransactionChildDto, ITransactionDto>('/Transaction/Realise', child)
+         .post<IRecurringEntityChildDto, ITransactionDto>('/Transaction/Realise', child)
          .pipe(first());
    }
 

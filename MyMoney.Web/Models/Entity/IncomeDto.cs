@@ -1,4 +1,5 @@
-﻿using MyMoney.Core.Interfaces.Entities;
+﻿using MyMoney.Core.Data;
+using MyMoney.Core.Interfaces.Entities;
 using System.Linq;
 
 namespace MyMoney.Web.Models.Entity
@@ -10,6 +11,8 @@ namespace MyMoney.Web.Models.Entity
       public string Notes { get; set; }
       public decimal Amount { get; set; }
       public decimal Remaining { get; set; }
+      public long? ParentId { get; set; }
+      public Frequency? ParentFrequency { get; set; }
 
       public IncomeDto()
       {
@@ -23,6 +26,8 @@ namespace MyMoney.Web.Models.Entity
          Notes = model.Notes;
          Amount = model.Amount;
          Remaining = model.Amount - model.Transactions.Select(t => t.Amount).Sum();
+         ParentFrequency = model.Parent?.Recurrence;
+         ParentId = model.Parent?.Id;
       }
    }
 }

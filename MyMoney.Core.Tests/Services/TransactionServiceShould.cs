@@ -413,7 +413,7 @@ namespace MyMoney.Core.Tests.Services
 
       #region Common
 
-      private TransactionService NewService => new TransactionService(_repositoryMock.Object, _relationRepoMock.Object, _entityFactoryMock.Object, _currentUserProvider.Object);
+      private BasicTransactionService NewService => new BasicTransactionService(_repositoryMock.Object, _relationRepoMock.Object, _entityFactoryMock.Object, _currentUserProvider.Object);
 
       #endregion
    }

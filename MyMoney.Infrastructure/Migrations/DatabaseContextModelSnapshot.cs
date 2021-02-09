@@ -72,14 +72,52 @@ namespace MyMoney.Infrastructure.Migrations
                        .IsRequired()
                        .HasMaxLength(1000);
 
+                b.Property<long?>("ParentId");
+
                 b.Property<long>("UserId");
 
                 b.HasKey("Id");
+
+                b.HasIndex("ParentId");
 
                 b.HasIndex("UserId", "Date", "Name")
                        .IsUnique();
 
                 b.ToTable("Incomes");
+             });
+
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.RecurringIncome", b =>
+             {
+                b.Property<long>("Id")
+                       .ValueGeneratedOnAdd()
+                       .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                       .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+
+                b.Property<decimal>("Amount")
+                       .HasColumnType("decimal(18,2)");
+
+                b.Property<DateTime>("End");
+
+                b.Property<string>("Name")
+                       .IsRequired()
+                       .HasMaxLength(100);
+
+                b.Property<string>("Notes")
+                       .IsRequired()
+                       .HasMaxLength(1000);
+
+                b.Property<int>("Recurrence");
+
+                b.Property<DateTime>("Start");
+
+                b.Property<long>("UserId");
+
+                b.HasKey("Id");
+
+                b.HasIndex("UserId", "Start", "End", "Recurrence", "Name")
+                       .IsUnique();
+
+                b.ToTable("RecurringIncomes");
              });
 
          modelBuilder.Entity("MyMoney.Infrastructure.Entities.RecurringTransaction", b =>
@@ -211,6 +249,18 @@ namespace MyMoney.Infrastructure.Migrations
              });
 
          modelBuilder.Entity("MyMoney.Infrastructure.Entities.Income", b =>
+             {
+                b.HasOne("MyMoney.Infrastructure.Entities.RecurringIncome", "ParentProxy")
+                       .WithMany()
+                       .HasForeignKey("ParentId");
+
+                b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
+                       .WithMany()
+                       .HasForeignKey("UserId")
+                       .OnDelete(DeleteBehavior.Cascade);
+             });
+
+         modelBuilder.Entity("MyMoney.Infrastructure.Entities.RecurringIncome", b =>
              {
                 b.HasOne("MyMoney.Infrastructure.Entities.User", "UserProxy")
                        .WithMany()

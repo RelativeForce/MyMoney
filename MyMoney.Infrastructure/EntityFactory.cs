@@ -11,5 +11,6 @@ namespace MyMoney.Infrastructure
       public IUser NewUser => new User();
       public IIncome NewIncome => new Income();
       public IRecurringTransaction NewRecurringTransaction => new RecurringTransaction();
+      public IRecurringIncome NewRecurringIncome => new RecurringIncome();
    }
 }

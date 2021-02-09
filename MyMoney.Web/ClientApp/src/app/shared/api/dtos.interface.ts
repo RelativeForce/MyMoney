@@ -16,6 +16,8 @@ export interface IIncomeDto {
    date: string;
    name: string;
    notes: string;
+   parentId: number | null;
+   parentFrequency: Frequency | null;
 }
 
 export class IIncomeSearchDto {
@@ -142,10 +144,21 @@ export interface IRecurringTransactionDto {
    amount: number;
    id: number;
    recurrence: Frequency;
-   children: IRecurringTransactionChildDto[];
+   children: IRecurringEntityChildDto[];
 }
 
-export interface IRecurringTransactionChildDto {
+export interface IRecurringEntityChildDto {
    date: string;
    id: number;
+}
+
+export interface IRecurringIncomeDto {
+   start: string;
+   end: string;
+   name: string;
+   notes: string;
+   amount: number;
+   id: number;
+   recurrence: Frequency;
+   children: IRecurringEntityChildDto[];
 }

@@ -15,7 +15,7 @@ namespace MyMoney.Web.Models.Entity
       public string Description { get; set; }
       public string Notes { get; set; }
       public decimal Amount { get; set; }
-      public IList<RecurringTransactionChildDto> Children { get; set; }
+      public IList<RecurringEntityChildDto> Children { get; set; }
 
       public RecurringTransactionDto()
       {
@@ -24,14 +24,14 @@ namespace MyMoney.Web.Models.Entity
 
       public RecurringTransactionDto(IRecurringTransaction model, IList<ITransaction> children) : this(model)
       {
-         Children = children.Select(t => new RecurringTransactionChildDto(t)).ToList();
+         Children = children.Select(t => new RecurringEntityChildDto(t)).ToList();
       }
 
       public RecurringTransactionDto(IRecurringTransaction model) : base(model.Id)
       {
          Start = model.Start.ToShortDateString();
          End = model.End.ToShortDateString();
-         Children = new List<RecurringTransactionChildDto>();
+         Children = new List<RecurringEntityChildDto>();
          Description = model.Description;
          Notes = model.Notes;
          Amount = model.Amount;

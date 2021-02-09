@@ -51,12 +51,16 @@
             <td>{{income.name}}</td>
             <td>{{income.amount}}</td>
             <td [ngClass]="{ 'text-danger': income.showWarning }">{{income.remaining}}</td>
-            <td>
+            <td class="pull-right">
                <div class="btn-group">
-                  <a class="btn btn-primary" routerLink="./edit/{{income.id}}" data-toggle="tooltip" data-placement="bottom"
-                     title="Edit income {{income.id}}">🖉</a>
-                  <button class="btn btn-danger" (click)="deleteIncome(income.id)" data-toggle="tooltip" data-placement="bottom"
-                     title="Delete income {{income.id}}">✕</button>
+                  <a class="btn btn-primary" *ngIf="income.id > 0" routerLink="./edit/{{income.id}}" data-toggle="tooltip"
+                     data-placement="bottom" title=" Edit income {{income.id}}">🖉</a>
+                  <a class="btn btn-primary" *ngIf="income.parentId !== null" routerLink="./edit-recurring/{{income.parentId}}"
+                     data-toggle="tooltip" data-placement="bottom" title="Edit recurring income {{income.parentId}}">🗐</a>
+                  <button class="btn btn-danger" *ngIf="income.parentId !== null" (click)="deleteRecurringIncome(income.parentId)"
+                     data-toggle="tooltip" data-placement="bottom" title="Delete recurring income {{income.parentId}}">✕</button>
+                  <button class="btn btn-danger" *ngIf="income.parentId === null" (click)="deleteIncome(income.id)" data-toggle="tooltip"
+                     data-placement="bottom" title="Delete income {{income.id}}">✕</button>
                </div>
             </td>
          </tr>

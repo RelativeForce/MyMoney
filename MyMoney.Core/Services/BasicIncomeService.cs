@@ -7,14 +7,14 @@ using MyMoney.Core.Interfaces.Service;
 
 namespace MyMoney.Core.Services
 {
-   public sealed class IncomeService : IIncomeService
+   public sealed class BasicIncomeService : IBasicIncomeService
    {
       private readonly IRepository _repository;
       private readonly IEntityFactory _entityFactory;
       private readonly ICurrentUserProvider _currentUserProvider;
       private readonly IRelationRepository _relationRepository;
 
-      public IncomeService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider, IRelationRepository relationRepository)
+      public BasicIncomeService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider, IRelationRepository relationRepository)
       {
          _repository = repository;
          _entityFactory = entityFactory;
@@ -53,7 +53,7 @@ namespace MyMoney.Core.Services
          return _repository.Add(income);
       }
 
-      public IList<IIncome> From(DateTime start, int count)
+      public IEnumerable<IIncome> From(DateTime start, int count)
       {
          if (count <= 0)
             return new List<IIncome>();
@@ -62,21 +62,22 @@ namespace MyMoney.Core.Services
 
          return _repository
             .UserFiltered<IIncome>(user)
+            .Where(i => i.ParentId == null)
             .Where(i => i.Date <= start)
             .OrderByDescending(i => i.Date)
             .Take(count)
-            .ToList();
+            .AsEnumerable();
       }
 
-      public IList<IIncome> Between(DateTime start, DateTime end)
+      public IEnumerable<IIncome> Between(DateTime start, DateTime end)
       {
          var user = _currentUserProvider.CurrentUser;
 
          return _repository
             .UserFiltered<IIncome>(user)
+            .Where(i => i.ParentId == null)
             .Where(i => i.Date >= start && i.Date <= end)
-            .OrderByDescending(i => i.Date)
-            .ToList();
+            .AsEnumerable();
       }
 
       public bool Update(long incomeId, DateTime date, string name, decimal amount, string notes)
@@ -108,7 +109,7 @@ namespace MyMoney.Core.Services
          if (income == null || income.UserId != userId)
             return false;
 
-         income.DeleteRelations(_relationRepository);
+         income.DeleteAllTransactions(_relationRepository);
 
          return _repository.Delete(income);
       }

@@ -1,4 +1,5 @@
 ﻿using MyMoney.Core.Interfaces.Entities;
+using MyMoney.Core.Interfaces.Entities.Abstract;
 using MyMoney.Web.Models.Entity;
 using System;
 using System.Collections.Generic;
@@ -7,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace MyMoney.Web.Models.Response
 {
-   public class RecurringTransactionChildDto : EntityDto
+   public class RecurringEntityChildDto : EntityDto
    {
       public string Date { get; set; }
 
-      public RecurringTransactionChildDto() : base()
+      public RecurringEntityChildDto() : base()
       { 
          // Required for deserialisation
       }
 
-      public RecurringTransactionChildDto(ITransaction model) : base(model.Id)
+      public RecurringEntityChildDto(IRecurringChildEntity model) : base(model.Id)
       {
          Date = model.Date.ToShortDateString();
       }

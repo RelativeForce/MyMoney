@@ -7,7 +7,8 @@ import { IAppState } from 'src/app/shared/state/app-state';
 import { selectBudgets, selectBudgetsSearchParameters } from 'src/app/shared/state/selectors/budget.selector';
 
 @Component({
-   templateUrl: './budgets.component.html'
+   templateUrl: './budgets.component.html',
+   styleUrls: ['./budgets.component.scss']
 })
 export class BudgetsComponent implements OnInit {
 

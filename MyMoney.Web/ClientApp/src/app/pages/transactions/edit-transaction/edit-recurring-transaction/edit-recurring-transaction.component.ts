@@ -16,7 +16,7 @@ export class EditRecurringTransactionComponent implements OnInit {
    public loading = false;
    public realisingChild: number | null = null;
    public submitted = false;
-   public dateMessage: string | null = null;
+   public isValid = true;
    public children: { id: number; date: string }[] = [];
    public recurrenceOptions: { key: Frequency; value: string }[];
 
@@ -78,23 +78,16 @@ export class EditRecurringTransactionComponent implements OnInit {
       return this.editTransactionForm.controls;
    }
 
-   public get nextChildTransaction(): number | null {
-
-      const now = new Date(Date.now()).getTime();
-
-      return this.children.find(d => Date.parse(toInputDateString(d.date)) > now)?.id ?? null;
-   }
-
    public onDurationOrRecurrenceChange(): void {
       this.children = [];
-      this.dateMessage = 'Occurrences will be recalculated when changes are saved.';
+      this.isValid = false;
    }
 
    public addOrEditTransaction(child: { id: number; date: string }) {
       if (child.id < 0) {
          this.realisingChild = child.id;
          this.transactionService
-            .realiseTransaction(this.id, child.date)
+            .realiseTransaction(this.id, child.date, child.id)
             .subscribe((realChild: ITransactionDto) => {
                this.realisingChild = null;
                this.router.navigate(['/transactions', 'edit', realChild.id]);

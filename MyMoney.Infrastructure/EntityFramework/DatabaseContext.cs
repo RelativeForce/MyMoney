@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyMoney.Infrastructure.Entities;
-using Budget = MyMoney.Infrastructure.Entities.Budget;
-using Transaction = MyMoney.Infrastructure.Entities.Transaction;
 
 namespace MyMoney.Infrastructure.EntityFramework
 {
@@ -18,6 +16,7 @@ namespace MyMoney.Infrastructure.EntityFramework
          TransactionBudget.Configure(modelBuilder);
          TransactionIncome.Configure(modelBuilder);
          RecurringTransaction.Configure(modelBuilder);
+         RecurringIncome.Configure(modelBuilder);
       }
 
       public virtual DbSet<Transaction> Transactions { get; set; }
@@ -25,5 +24,6 @@ namespace MyMoney.Infrastructure.EntityFramework
       public virtual DbSet<User> Users { get; set; }
       public virtual DbSet<Income> Incomes { get; set; }
       public virtual DbSet<RecurringTransaction> RecurringTransactions { get; set; }
+      public virtual DbSet<RecurringIncome> RecurringIncomes { get; set; }
    }
 }

@@ -1,7 +1,7 @@
 import { IChartDataProvider } from '../../shared/components/chart';
 import { Router } from '@angular/router';
 import { ISeriesItem } from 'src/app/shared/interfaces';
-import { IncomeService } from 'src/app/shared/services';
+import { HomeService } from 'src/app/shared/services';
 import { IDateRangeModel } from 'src/app/shared/state/types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ISeries } from 'src/app/shared/interfaces/series.interface';
@@ -19,7 +19,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
    private year: number;
 
    constructor(
-      private readonly budgetService: IncomeService,
+      private readonly homeService: HomeService,
       private readonly router: Router,
    ) {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
@@ -74,7 +74,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
 
    private loadChartData() {
       this.subChartTitle = `${this.year}`;
-      this.budgetService
+      this.homeService
          .getRunningTotal(0, this.dateRange)
          .subscribe((runningTotalList) => this.updateChart(runningTotalList.runningTotals));
    }

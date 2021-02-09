@@ -1,0 +1,74 @@
+<h2>Edit recurring income {{id}}</h2>
+<div class="row">
+   <div class="col-7">
+      <form [formGroup]="editIncomeForm" (ngSubmit)="onSubmit()">
+         <label>Duration</label>
+         <div class="form-inline">
+            <div class="input-group mb-3 pr-2" [ngStyle]="{ 'width': '50%'}">
+               <div class="input-group-prepend">
+                  <span class="input-group-text">Start</span>
+               </div>
+               <input type="date" formControlName="start" class="form-control" (change)="onDurationOrRecurrenceChange()"
+                  [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
+               <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
+                  <div *ngIf="f.start.errors.required">Start is required</div>
+               </div>
+            </div>
+            <div class="input-group mb-3" [ngStyle]="{ 'width': '50%'}">
+               <div class="input-group-prepend">
+                  <span class="input-group-text">End</span>
+               </div>
+               <input type="date" formControlName="end" class="form-control" (change)="onDurationOrRecurrenceChange()"
+                  [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
+               <div *ngIf="submitted && f.end.errors" class="invalid-feedback">
+                  <div *ngIf="f.end.errors.required">End is required</div>
+               </div>
+            </div>
+         </div>
+         <div class="form-group">
+            <label for="recurrence">Recurrence</label>
+            <select class="form-control" formControlName="recurrence" [ngClass]="{ 'is-invalid': submitted && f.recurrence.errors }"
+               (change)="onDurationOrRecurrenceChange()">
+               <option *ngFor="let opt of recurrenceOptions" [value]="opt.key" [selected]="opt.key == f.recurrence.value">{{ opt.value }}
+               </option>
+            </select>
+            <div *ngIf="submitted && f.recurrence.errors" class="invalid-feedback">
+               <div *ngIf="f.recurrence.errors.required">Recurrence is required</div>
+               <div *ngIf="f.recurrence.errors.min || f.recurrence.errors.max">Invalid recurrence value</div>
+            </div>
+         </div>
+         <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+               <div *ngIf="f.name.errors.required">Name is required</div>
+            </div>
+         </div>
+         <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" />
+            <div *ngIf="submitted && f.amount.errors" class="invalid-feedback">
+               <div *ngIf="f.amount.errors.required">Amount is required</div>
+               <div *ngIf="f.amount.errors.min">Amount cannot be less than 0.01</div>
+            </div>
+         </div>
+         <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea formControlName="notes" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }"
+               rows="3"></textarea>
+            <div *ngIf="submitted && f.notes.errors" class="invalid-feedback"></div>
+         </div>
+         <div class="form-group">
+            <button [disabled]="loading" class="btn btn-primary">
+               <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+               Save changes
+            </button>
+            <a routerLink="/incomes" class="btn btn-link">Cancel</a>
+         </div>
+      </form>
+   </div>
+   <div class="col-5">
+      <mymoney-recurring-child-list [realisingChildId]="realisingChild" [isValid]="isValid" [children]="children"
+         (openChild)="addOrEditIncome($event)"></mymoney-recurring-child-list>
+   </div>
+</div>

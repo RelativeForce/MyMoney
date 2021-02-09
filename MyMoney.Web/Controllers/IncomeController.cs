@@ -15,38 +15,13 @@ namespace MyMoney.Web.Controllers
    [Route("[controller]")]
    public class IncomeController : ControllerBase
    {
-      private readonly IIncomeService _incomeService;
-      private readonly IRunningTotalService _runningTotalService;
+      private readonly IBasicIncomeService _basicIncomeService;
+      private readonly IRecurringIncomeService _recurringIncomeService;
 
-      public IncomeController(IIncomeService incomeService, IRunningTotalService runningTotalService)
+      public IncomeController(IBasicIncomeService incomeService, IRecurringIncomeService recurringIncomeService)
       {
-         _incomeService = incomeService;
-         _runningTotalService = runningTotalService;
-      }
-
-      [HttpPost(nameof(Find))]
-      public IActionResult Find([FromBody] IdDto dto)
-      {
-         try
-         {
-            if (dto == null || !ModelState.IsValid)
-            {
-               return BadRequest("Invalid State");
-            }
-
-            var income = _incomeService.Find(dto.Id);
-
-            if (income != null)
-            {
-               return Ok(new IncomeDto(income));
-            }
-
-            return NotFound("Income does not exist");
-         }
-         catch (Exception)
-         {
-            return BadRequest("Error while finding income");
-         }
+         _basicIncomeService = incomeService;
+         _recurringIncomeService = recurringIncomeService;
       }
 
       [HttpPost(nameof(List))]
@@ -59,14 +34,16 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var incomes = _incomeService.Between(listParameters.Start, listParameters.End);
-
-            if (incomes == null)
-               return NotFound();
+            var basic = _basicIncomeService.Between(listParameters.Start, listParameters.End);
+            var recurring = _recurringIncomeService.Between(listParameters.Start, listParameters.End);
 
             return Ok(new IncomeListDto
             {
-               Incomes = incomes.Select(t => new IncomeDto(t)).ToList()
+               Incomes = basic
+                  .Concat(recurring)
+                  .OrderByDescending(i => i.Date)
+                  .Select(t => new IncomeDto(t))
+                  .ToList()
             });
          }
          catch (Exception)
@@ -85,14 +62,17 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var incomes = _incomeService.From(listParameters.Date, listParameters.Count);
-
-            if (incomes == null)
-               return NotFound();
+            var basic = _basicIncomeService.From(listParameters.Date, listParameters.Count);
+            var recurring = _recurringIncomeService.From(listParameters.Date, listParameters.Count);
 
             return Ok(new IncomeListDto
             {
-               Incomes = incomes.Select(t => new IncomeDto(t)).ToList()
+               Incomes = basic
+               .Concat(recurring)
+               .OrderByDescending(i => i.Date)
+               .Take(listParameters.Count)
+               .Select(t => new IncomeDto(t))
+               .ToList()
             });
          }
          catch (Exception)
@@ -101,8 +81,10 @@ namespace MyMoney.Web.Controllers
          }
       }
 
-      [HttpPost(nameof(RunningTotal))]
-      public IActionResult RunningTotal([FromBody] RunningTotalSearchDto dto)
+      #region Basic
+
+      [HttpPost(nameof(Find))]
+      public IActionResult Find([FromBody] IdDto dto)
       {
          try
          {
@@ -111,19 +93,18 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var runningTotals = _runningTotalService.RunningTotal(dto.InitialTotal, dto.dateRange.Start, dto.dateRange.End);
+            var income = _basicIncomeService.Find(dto.Id);
 
-            if (runningTotals == null)
-               return NotFound();
-
-            return Ok(new RunningTotalListDto
+            if (income != null)
             {
-               RunningTotals = runningTotals.Select(t => new RunningTotalDto(t)).ToList()
-            });
+               return Ok(new IncomeDto(income));
+            }
+
+            return NotFound("Income does not exist");
          }
          catch (Exception)
          {
-            return BadRequest("Error while listing running total");
+            return BadRequest("Error while finding income");
          }
       }
 
@@ -137,7 +118,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _incomeService.Add(DateTime.Parse(dto.Date), dto.Name, dto.Amount, dto.Notes);
+            var result = _basicIncomeService.Add(DateTime.Parse(dto.Date), dto.Name, dto.Amount, dto.Notes);
 
             if (result == null)
                return BadRequest("Invalid income data");
@@ -160,7 +141,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var success = _incomeService.Update(dto.Id, DateTime.Parse(dto.Date), dto.Name, dto.Amount, dto.Notes);
+            var success = _basicIncomeService.Update(dto.Id, DateTime.Parse(dto.Date), dto.Name, dto.Amount, dto.Notes);
 
             return Ok(new UpdateResultDto
             {
@@ -184,7 +165,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var result = _incomeService.Delete(deleteParameters.Id);
+            var result = _basicIncomeService.Delete(deleteParameters.Id);
 
             return Ok(new DeleteResultDto { Success = result });
          }
@@ -193,5 +174,128 @@ namespace MyMoney.Web.Controllers
             return BadRequest("Error while deleting");
          }
       }
+
+      #endregion Basic
+
+      #region Recurring
+
+      [HttpPost(nameof(AddRecurring))]
+      public IActionResult AddRecurring([FromBody] RecurringIncomeDto model)
+      {
+         try
+         {
+            if (model == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var result = _recurringIncomeService.Add(DateTime.Parse(model.Start), DateTime.Parse(model.End), model.Name, model.Amount, model.Notes, model.Recurrence);
+
+            if (result == null)
+               return BadRequest("Invalid State");
+
+            return Ok(new RecurringIncomeDto(result));
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
+      }
+
+      [HttpPost(nameof(Realise))]
+      public IActionResult Realise([FromBody] RecurringEntityChildDto model)
+      {
+         try
+         {
+            if (model == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var result = _recurringIncomeService.Realise(model.Id, DateTime.Parse(model.Date));
+
+            if (result == null)
+               return BadRequest("Invalid State");
+
+            return Ok(new IncomeDto(result));
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while creating");
+         }
+      }
+
+      [HttpPost(nameof(FindRecurring))]
+      public IActionResult FindRecurring([FromBody] IdDto findParameters)
+      {
+         try
+         {
+            if (findParameters == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var income = _recurringIncomeService.Find(findParameters.Id);
+
+            if (income != null)
+            {
+               var children = _recurringIncomeService.GetChildIncomes(income);
+
+               return Ok(new RecurringIncomeDto(income, children));
+            }
+
+            return NotFound("Recurriung income does not exist");
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while searching");
+         }
+      }
+
+      [HttpPost(nameof(UpdateRecurring))]
+      public IActionResult UpdateRecurring([FromBody] RecurringIncomeDto model)
+      {
+         try
+         {
+            if (model == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var success = _recurringIncomeService.Update(model.Id, DateTime.Parse(model.Start), DateTime.Parse(model.End), model.Name, model.Amount, model.Notes, model.Recurrence);
+
+            return Ok(new UpdateResultDto
+            {
+               Success = success,
+               Error = success ? "" : "Invalid recurring income information"
+            });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while updating");
+         }
+      }
+
+      [HttpPost(nameof(DeleteRecurring))]
+      public IActionResult DeleteRecurring([FromBody] IdDto deleteParameters)
+      {
+         try
+         {
+            if (deleteParameters == null || !ModelState.IsValid)
+            {
+               return BadRequest("Invalid State");
+            }
+
+            var result = _recurringIncomeService.Delete(deleteParameters.Id);
+
+            return Ok(new DeleteResultDto { Success = result });
+         }
+         catch (Exception)
+         {
+            return BadRequest("Error while deleting");
+         }
+      }
+
+      #endregion Recurring
    }
 }
