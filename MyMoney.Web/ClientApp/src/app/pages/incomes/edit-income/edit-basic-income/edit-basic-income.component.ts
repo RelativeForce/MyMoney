@@ -45,7 +45,7 @@ export class EditBasicIncomeComponent implements OnInit {
          this.editIncomeForm = this.formBuilder.group({
             date: ['', [Validators.required]],
             name: ['', [Validators.required]],
-            amount: [0, [Validators.required, Validators.min(0.01)]],
+            amount: [0.01, [Validators.required, Validators.min(0.01)]],
             notes: [''],
          });
 

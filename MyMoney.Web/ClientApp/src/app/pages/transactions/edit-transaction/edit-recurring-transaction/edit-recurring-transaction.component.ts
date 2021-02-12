@@ -49,7 +49,7 @@ export class EditRecurringTransactionComponent implements OnInit {
             start: ['', [Validators.required]],
             end: ['', [Validators.required]],
             description: ['', [Validators.required]],
-            amount: [0, [Validators.required, Validators.min(0.01)]],
+            amount: [0.01, [Validators.required, Validators.min(0.01)]],
             notes: [''],
             recurrence: [Frequency.month, [Validators.required, Validators.min(Frequency.day), Validators.max(Frequency.year)]]
          });
