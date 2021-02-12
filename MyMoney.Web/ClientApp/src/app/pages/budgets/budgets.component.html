@@ -25,12 +25,13 @@
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">
-         <button [disabled]="loading" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Refresh budgets">
+         <button [disabled]="loading" class="btn btn-primary material-icons" data-toggle="tooltip" data-placement="bottom"
+            title="Refresh budgets">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            <div *ngIf="!loading" class="spin">↻</div>
+            <div *ngIf="!loading" class="spin">refresh</div>
          </button>
-         <a class="btn btn-success" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new budget">
-            <div class="plus"></div>
+         <a class="btn btn-success material-icons" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new budget">
+            add
          </a>
       </div>
    </div>
@@ -54,10 +55,10 @@
             <td>{{budget.notes}}</td>
             <td class="pull-right">
                <div class="btn-group">
-                  <a class="btn btn-primary" routerLink="./edit/{{budget.id}}" data-toggle="tooltip" data-placement="bottom"
-                     title="Edit budget {{budget.id}}">🖉</a>
-                  <button class="btn btn-danger" (click)="delete(budget.id)" data-toggle="tooltip" data-placement="bottom"
-                     title="Delete budget {{budget.id}}">✕</button>
+                  <a class="btn btn-primary material-icons" routerLink="./edit/{{budget.id}}" data-toggle="tooltip" data-placement="bottom"
+                     title="Edit budget {{budget.id}}">edit</a>
+                  <button class="btn btn-danger material-icons" (click)="delete(budget.id)" data-toggle="tooltip" data-placement="bottom"
+                     title="Delete budget {{budget.id}}">delete</button>
                </div>
             </td>
          </tr>

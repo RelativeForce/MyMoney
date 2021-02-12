@@ -22,15 +22,17 @@
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">
-         <button [disabled]="loading" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Refresh transactions">
+         <button [disabled]="loading" class="btn btn-primary material-icons" data-toggle="tooltip" data-placement="bottom"
+            title="Refresh transactions">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            <div *ngIf="!loading" class="spin">↻</div>
+            <div *ngIf="!loading" class="spin">refresh</div>
          </button>
-         <a class="btn btn-success" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new transaction">
-            <div class="plus"></div>
+         <a class="btn btn-success material-icons" routerLink="./add" data-toggle="tooltip" data-placement="bottom"
+            title="Add new transaction">
+            add
          </a>
-         <a class="btn btn-success" routerLink="./import" data-toggle="tooltip" data-placement="bottom"
-            title="Import transactions from file">🗁</a>
+         <a class="btn btn-success material-icons" routerLink="./import" data-toggle="tooltip" data-placement="bottom"
+            title="Import transactions from file">upload</a>
       </div>
    </div>
 </form>
@@ -51,15 +53,17 @@
             <td>{{transaction.amount}}</td>
             <td class="pull-right">
                <div class="btn-group">
-                  <a class="btn btn-primary" *ngIf="transaction.id > 0" routerLink="./edit/{{transaction.id}}" data-toggle="tooltip"
-                     data-placement="bottom" title=" Edit transaction {{transaction.id}}">🖉</a>
-                  <a class="btn btn-primary" *ngIf="transaction.parentId !== null" routerLink="./edit-recurring/{{transaction.parentId}}"
-                     data-toggle="tooltip" data-placement="bottom" title="Edit recurring transaction {{transaction.parentId}}">🗐</a>
-                  <button class="btn btn-danger" *ngIf="transaction.parentId !== null"
+                  <a class="btn btn-primary material-icons" *ngIf="transaction.id > 0" routerLink="./edit/{{transaction.id}}"
+                     data-toggle="tooltip" data-placement="bottom" title=" Edit transaction {{transaction.id}}">edit</a>
+                  <a class="btn btn-primary material-icons" *ngIf="transaction.parentId !== null"
+                     routerLink="./edit-recurring/{{transaction.parentId}}" data-toggle="tooltip" data-placement="bottom"
+                     title="Edit recurring transaction {{transaction.parentId}}">list</a>
+                  <button class="btn btn-danger material-icons" *ngIf="transaction.parentId !== null"
                      (click)="deleteRecurringTransaction(transaction.parentId)" data-toggle="tooltip" data-placement="bottom"
-                     title="Delete recurring transaction {{transaction.parentId}}">✕</button>
-                  <button class="btn btn-danger" *ngIf="transaction.parentId === null" (click)="deleteTransaction(transaction.id)"
-                     data-toggle="tooltip" data-placement="bottom" title="Delete transaction {{transaction.id}}">✕</button>
+                     title="Delete recurring transaction {{transaction.parentId}}">delete</button>
+                  <button class="btn btn-danger material-icons" *ngIf="transaction.parentId === null"
+                     (click)="deleteTransaction(transaction.id)" data-toggle="tooltip" data-placement="bottom"
+                     title="Delete transaction {{transaction.id}}">delete</button>
                </div>
             </td>
          </tr>
