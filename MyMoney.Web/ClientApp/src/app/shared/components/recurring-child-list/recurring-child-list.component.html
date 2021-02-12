@@ -12,11 +12,12 @@
             </td>
             <td class="pull-right">
                <div>
-                  <button class="btn btn-primary material-icons" [disabled]="realisingChildId !== null" (click)="onOpenChildClick(child)"
-                     data-toggle="tooltip" data-placement="bottom" title="Edit {{child.date}}">
-                     <span *ngIf="realisingChildId !== child.id">edit</span>
-                     <span *ngIf="realisingChildId === child.id" class="spinner-border spinner-border-sm"></span>
+                  <button class="btn btn-primary material-icons" [disabled]="realisingChildId !== null"
+                     *ngIf="realisingChildId !== child.id" (click)="onOpenChildClick(child)" data-toggle="tooltip" data-placement="bottom"
+                     title="Edit {{child.date}}">
+                     edit
                   </button>
+                  <span *ngIf="realisingChildId === child.id" class="spinner-border spinner-border-sm"></span>
                </div>
             </td>
          </tr>
