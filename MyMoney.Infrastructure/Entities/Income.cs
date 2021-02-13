@@ -42,14 +42,6 @@ namespace MyMoney.Infrastructure.Entities
       public IQueryable<ITransaction> Transactions => TransactionsProxy.Select(tb => tb.Transaction).Cast<ITransaction>().AsQueryable();
       public virtual ICollection<TransactionIncome> TransactionsProxy { get; set; } = new List<TransactionIncome>();
 
-      public void DeleteAllTransactions(IRelationRepository relationRepository)
-      {
-         foreach (var transaction in TransactionsProxy.ToList())
-         {
-            relationRepository.Delete(transaction);
-         }
-      }
-
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<Income>().HasIndex(t => new { t.UserId, t.Date, t.Name }).IsUnique();

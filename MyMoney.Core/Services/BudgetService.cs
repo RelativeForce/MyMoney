@@ -94,8 +94,6 @@ namespace MyMoney.Core.Services
          if (budget == null || budget.UserId != userId)
             return false;
 
-         budget.DeleteRelations(_relationRepository);
-
          return _repository.Delete(budget);
       }
    }

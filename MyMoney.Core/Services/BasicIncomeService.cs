@@ -118,8 +118,6 @@ namespace MyMoney.Core.Services
          if (income == null || income.UserId != userId)
             return false;
 
-         income.DeleteAllTransactions(_relationRepository);
-
          return _repository.Delete(income);
       }
    }

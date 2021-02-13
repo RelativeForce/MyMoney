@@ -178,11 +178,8 @@ namespace MyMoney.Core.Services
             .Where(t => t.ParentId == transactionId)
             .ToList();
 
-         foreach (var child in children)
-         {
-            if (!_repository.Delete(child))
-               return false;
-         }
+         if (!_repository.DeleteRange(children))
+            return false;
 
          return _repository.Delete(transaction);
       }
