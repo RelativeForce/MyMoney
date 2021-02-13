@@ -54,12 +54,7 @@
             <td [ngClass]="{ 'text-danger': budget.showWarning }">{{budget.remaining}}</td>
             <td>{{budget.notes}}</td>
             <td class="pull-right">
-               <div class="btn-group">
-                  <a class="btn btn-primary material-icons" routerLink="./edit/{{budget.id}}" data-toggle="tooltip" data-placement="bottom"
-                     title="Edit budget {{budget.id}}">edit</a>
-                  <button class="btn btn-danger material-icons" (click)="delete(budget.id)" data-toggle="tooltip" data-placement="bottom"
-                     title="Delete budget {{budget.id}}">delete</button>
-               </div>
+               <mymoney-budget-buttons [budget]="budget" (deleteBudget)="deleteBudget(budget.id)"></mymoney-budget-buttons>
             </td>
          </tr>
       </tbody>

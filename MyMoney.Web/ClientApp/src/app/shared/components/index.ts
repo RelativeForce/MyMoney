@@ -9,3 +9,4 @@ export * from './basic-income-buttons/basic-income-buttons.component';
 export * from './recurring-income-buttons/recurring-income-buttons.component';
 export * from './basic-transaction-buttons/basic-transaction-buttons.component';
 export * from './recurring-transaction-buttons/recurring-transaction-buttons.component';
+export * from './budget-buttons/budget-buttons.component';

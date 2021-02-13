@@ -43,6 +43,7 @@ import {
    RecurringIncomeButtonsComponent,
    BasicTransactionButtonsComponent,
    RecurringTransactionButtonsComponent,
+   BudgetButtonsComponent,
 } from './shared/components';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
@@ -92,6 +93,7 @@ import { routes } from './app.routing';
       RecurringIncomeButtonsComponent,
       BasicTransactionButtonsComponent,
       RecurringTransactionButtonsComponent,
+      BudgetButtonsComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
