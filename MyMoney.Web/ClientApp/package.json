@@ -4,11 +4,11 @@
    "scripts": {
       "ng": "ng",
       "start": "ng serve",
-      "update": "ng update",
       "build": "ng build",
       "build:ssr": "ng run MyMoney.Web:server:dev",
       "test": "ng test",
       "lint": "ng lint",
+      "update": "ng update",
       "e2e": "ng e2e"
    },
    "private": true,
