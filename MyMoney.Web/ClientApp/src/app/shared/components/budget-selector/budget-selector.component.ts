@@ -40,8 +40,8 @@ export class BudgetSelectorComponent implements OnChanges {
       }
    }
 
-   public onBudgetCheckboxChange(event: any, id: number): void {
-      if (event.target.checked) {
+   public onBudgetCheckboxChange(newValue: boolean, id: number): void {
+      if (newValue) {
          this.selectedBudgets.add(id);
       } else {
          this.selectedBudgets.delete(id);

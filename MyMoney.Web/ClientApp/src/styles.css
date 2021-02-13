@@ -1,27 +1,47 @@
-code {
-   color: #e01a76;
-}
-
 .btn-primary {
    color: #fff;
    background-color: #1b6ec2;
    border-color: #1861ac;
 }
 
-.plus {
-   display:inline-block;
-   position: relative;
-   top: 3px;
-   width:18px;
-   height:18px;
-
-   background:
-     linear-gradient(#fff,#fff),
-     linear-gradient(#fff,#fff);
-   background-position:center;
-   background-size: 100% 2px, 2px 100%; /*thickness = 2px, length = 50% (25px)*/
-   background-repeat:no-repeat;
+.btn.material-icons {
+   padding: 5px;
 }
+
+.icon-dropdown-item{
+   display: flex;
+   flex-direction: row;
+   justify-self: start;
+}
+
+.icon-dropdown-item > span{
+   padding-right: 8px;
+}
+
+.material-icons {
+   font-family: 'Material Icons';
+   font-weight: normal;
+   font-style: normal;
+   font-size: 24px;  /* Preferred icon size */
+   display: inline-block;
+   line-height: 1;
+   text-transform: none;
+   letter-spacing: normal;
+   word-wrap: normal;
+   white-space: nowrap;
+   direction: ltr;
+
+   /* Support for all WebKit browsers. */
+   -webkit-font-smoothing: antialiased;
+   /* Support for Safari and Chrome. */
+   text-rendering: optimizeLegibility;
+
+   /* Support for Firefox. */
+   -moz-osx-font-smoothing: grayscale;
+
+   /* Support for IE. */
+   font-feature-settings: 'liga';
+ }
 
 .sticky-bottom {
    position: -webkit-sticky; /* Safari */
@@ -39,34 +59,11 @@ code {
    text-align: center;
 }
 
+.spinner-border{
+   margin: 4px;
+}
+
 .inline {
    display: flex;
     flex-wrap: wrap;
-}
-
-.arrow {
-   border: solid black;
-   border-width: 0 3px 3px 0;
-   display: inline-block;
-   padding: 3px;
-}
-
-.right {
-   transform: rotate(-45deg);
-   -webkit-transform: rotate(-45deg);
-}
-
-.left {
-   transform: rotate(135deg);
-   -webkit-transform: rotate(135deg);
-}
-
-.up {
-   transform: rotate(-135deg);
-   -webkit-transform: rotate(-135deg);
-}
-
-.down {
-   transform: rotate(45deg);
-   -webkit-transform: rotate(45deg);
 }

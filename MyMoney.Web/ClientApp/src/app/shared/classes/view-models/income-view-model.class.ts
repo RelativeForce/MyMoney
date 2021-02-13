@@ -1,4 +1,5 @@
 import { Frequency } from '../../api';
+import { toFrequencyString } from '../../functions';
 import { IIncomeModel } from '../../state/types';
 
 export class IncomeViewModel {
@@ -20,5 +21,9 @@ export class IncomeViewModel {
       this.showWarning = model.remaining < 0;
       this.parentId = model.parentId;
       this.parentFrequency = model.parentFrequency;
+
+      if (model.parentId !== null) {
+         this.name += ` (${toFrequencyString(model.parentFrequency)})`;
+      }
    }
 }

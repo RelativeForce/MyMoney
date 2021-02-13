@@ -1,0 +1,8 @@
+<div class="btn-group">
+   <a class="btn btn-primary material-icons" *ngIf="income.id > 0" routerLink="./edit/{{income.id}}" data-toggle="tooltip"
+      data-placement="bottom" title="Edit notes for child income">comment</a>
+   <a class="btn btn-primary material-icons" routerLink="./edit-recurring/{{income.parentId}}" data-toggle="tooltip" data-placement="bottom"
+      title="Edit recurring income {{income.parentId}}">edit</a>
+   <button class="btn btn-danger material-icons" (click)="onDeleteRecurringIncomeClicked()" data-toggle="tooltip" data-placement="bottom"
+      title="Delete recurring income {{income.parentId}}">delete</button>
+</div>

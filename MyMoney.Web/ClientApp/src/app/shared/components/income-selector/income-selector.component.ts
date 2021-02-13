@@ -20,7 +20,7 @@ export class IncomeSelectorComponent implements OnChanges {
 
    constructor(private readonly incomeService: IncomeService) { }
 
-   public onIncomeCheckboxChange(event: any, income: IncomeViewModel): void {
+   public onIncomeCheckboxChange(newValue: boolean, income: IncomeViewModel): void {
       if (income.id < 0) {
 
          this.realisingChild = income.id;
@@ -39,7 +39,7 @@ export class IncomeSelectorComponent implements OnChanges {
          return;
       }
 
-      if (event.target.checked) {
+      if (newValue) {
          this.selectedIncomes.add(income.id);
       } else {
          this.selectedIncomes.delete(income.id);

@@ -1,0 +1,6 @@
+<div class="btn-group">
+   <a class="btn btn-primary material-icons" routerLink="./edit/{{budget.id}}" data-toggle="tooltip" data-placement="bottom"
+      title="Edit budget {{budget.id}}">edit</a>
+   <button class="btn btn-danger material-icons" (click)="onDeleteBudgetClicked()" data-toggle="tooltip" data-placement="bottom"
+      title="Delete budget {{budget.id}}">delete</button>
+</div>
