@@ -1,8 +1,8 @@
 <div class="btn-group">
    <a class="btn btn-primary material-icons" *ngIf="transaction.id > 0" routerLink="./edit/{{transaction.id}}" data-toggle="tooltip"
-      data-placement="bottom" title=" Edit transaction {{transaction.id}}">edit</a>
+      data-placement="bottom" title="Edit notes for child transaction">comment</a>
    <a class="btn btn-primary material-icons" routerLink="./edit-recurring/{{transaction.parentId}}" data-toggle="tooltip"
-      data-placement="bottom" title="Edit recurring transaction {{transaction.parentId}}">list</a>
+      data-placement="bottom" title="Edit recurring transaction {{transaction.parentId}}">edit</a>
    <button class="btn btn-danger material-icons" (click)="onDeleteRecurringTransactionClicked()" data-toggle="tooltip"
       data-placement="bottom" title="Delete recurring transaction {{transaction.parentId}}">delete</button>
 </div>
