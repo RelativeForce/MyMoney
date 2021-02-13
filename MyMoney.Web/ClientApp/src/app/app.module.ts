@@ -41,6 +41,8 @@ import {
    RecurringChildListComponent,
    BasicIncomeButtonsComponent,
    RecurringIncomeButtonsComponent,
+   BasicTransactionButtonsComponent,
+   RecurringTransactionButtonsComponent,
 } from './shared/components';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/state/app-state';
@@ -88,6 +90,8 @@ import { routes } from './app.routing';
       RecurringChildListComponent,
       BasicIncomeButtonsComponent,
       RecurringIncomeButtonsComponent,
+      BasicTransactionButtonsComponent,
+      RecurringTransactionButtonsComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

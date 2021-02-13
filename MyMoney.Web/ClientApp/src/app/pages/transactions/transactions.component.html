@@ -52,19 +52,10 @@
             <td>{{transaction.description}}</td>
             <td>{{transaction.amount}}</td>
             <td class="pull-right">
-               <div class="btn-group">
-                  <a class="btn btn-primary material-icons" *ngIf="transaction.id > 0" routerLink="./edit/{{transaction.id}}"
-                     data-toggle="tooltip" data-placement="bottom" title=" Edit transaction {{transaction.id}}">edit</a>
-                  <a class="btn btn-primary material-icons" *ngIf="transaction.parentId !== null"
-                     routerLink="./edit-recurring/{{transaction.parentId}}" data-toggle="tooltip" data-placement="bottom"
-                     title="Edit recurring transaction {{transaction.parentId}}">list</a>
-                  <button class="btn btn-danger material-icons" *ngIf="transaction.parentId !== null"
-                     (click)="deleteRecurringTransaction(transaction.parentId)" data-toggle="tooltip" data-placement="bottom"
-                     title="Delete recurring transaction {{transaction.parentId}}">delete</button>
-                  <button class="btn btn-danger material-icons" *ngIf="transaction.parentId === null"
-                     (click)="deleteTransaction(transaction.id)" data-toggle="tooltip" data-placement="bottom"
-                     title="Delete transaction {{transaction.id}}">delete</button>
-               </div>
+               <mymoney-basic-transaction-buttons *ngIf="transaction.parentId === null" [transaction]="transaction"
+                  (deleteTransaction)="deleteTransaction(transaction.id)"></mymoney-basic-transaction-buttons>
+               <mymoney-recurring-transaction-buttons *ngIf="transaction.parentId !== null" [transaction]="transaction"
+                  (deleteRecurringTransaction)="deleteRecurringTransaction(transaction.parentId)"></mymoney-recurring-transaction-buttons>
             </td>
          </tr>
       </tbody>

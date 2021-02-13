@@ -56,7 +56,7 @@
                <mymoney-basic-income-buttons *ngIf="income.parentId === null" [income]="income" (deleteIncome)="deleteIncome(income.id)">
                </mymoney-basic-income-buttons>
                <mymoney-recurring-income-buttons *ngIf="income.parentId !== null" [income]="income"
-                  (deleteRecurringIncome)="deleteRecurringIncome(income.id)"></mymoney-recurring-income-buttons>
+                  (deleteRecurringIncome)="deleteRecurringIncome(income.parentId)"></mymoney-recurring-income-buttons>
             </td>
          </tr>
       </tbody>

@@ -7,3 +7,5 @@ export * from './budget-selector/budget-selector.component';
 export * from './recurring-child-list/recurring-child-list.component';
 export * from './basic-income-buttons/basic-income-buttons.component';
 export * from './recurring-income-buttons/recurring-income-buttons.component';
+export * from './basic-transaction-buttons/basic-transaction-buttons.component';
+export * from './recurring-transaction-buttons/recurring-transaction-buttons.component';
