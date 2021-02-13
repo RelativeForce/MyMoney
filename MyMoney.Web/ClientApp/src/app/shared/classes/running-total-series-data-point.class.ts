@@ -25,7 +25,7 @@ export class RunningTotalSeriesDataPoint implements ISeriesDataPoint {
          if (runningTotal.parentId === null || this.id > 0) {
             this.link = ['/incomes', 'edit', this.id];
          } else {
-            // TODO: Recurring income link
+            this.link = ['/incomes', 'edit-recurring', runningTotal.parentId];
          }
       } else if (this.amount < 0) {
          if (runningTotal.parentId === null || this.id > 0) {
