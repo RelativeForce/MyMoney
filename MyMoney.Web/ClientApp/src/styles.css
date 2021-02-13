@@ -8,6 +8,16 @@
    padding: 5px;
 }
 
+.icon-dropdown-item{
+   display: flex;
+   flex-direction: row;
+   justify-self: start;
+}
+
+.icon-dropdown-item > span{
+   padding-right: 8px;
+}
+
 .material-icons {
    font-family: 'Material Icons';
    font-weight: normal;
