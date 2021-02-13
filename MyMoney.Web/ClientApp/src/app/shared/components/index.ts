@@ -5,3 +5,5 @@ export * from './toggle/toggle.component';
 export * from './income-selector/income-selector.component';
 export * from './budget-selector/budget-selector.component';
 export * from './recurring-child-list/recurring-child-list.component';
+export * from './basic-income-buttons/basic-income-buttons.component';
+export * from './recurring-income-buttons/recurring-income-buttons.component';

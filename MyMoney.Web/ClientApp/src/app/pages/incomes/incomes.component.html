@@ -53,18 +53,10 @@
             <td>{{income.amount}}</td>
             <td [ngClass]="{ 'text-danger': income.showWarning }">{{income.remaining}}</td>
             <td class="pull-right">
-               <div class="btn-group">
-                  <a class="btn btn-primary material-icons" *ngIf="income.id > 0" routerLink="./edit/{{income.id}}" data-toggle="tooltip"
-                     data-placement="bottom" title=" Edit income {{income.id}}">edit</a>
-                  <a class="btn btn-primary material-icons" *ngIf="income.parentId !== null"
-                     routerLink="./edit-recurring/{{income.parentId}}" data-toggle="tooltip" data-placement="bottom"
-                     title="Edit recurring income {{income.parentId}}">list</a>
-                  <button class="btn btn-danger material-icons" *ngIf="income.parentId !== null"
-                     (click)="deleteRecurringIncome(income.parentId)" data-toggle="tooltip" data-placement="bottom"
-                     title="Delete recurring income {{income.parentId}}">delete</button>
-                  <button class="btn btn-danger material-icons" *ngIf="income.parentId === null" (click)="deleteIncome(income.id)"
-                     data-toggle="tooltip" data-placement="bottom" title="Delete income {{income.id}}">delete</button>
-               </div>
+               <mymoney-basic-income-buttons *ngIf="income.parentId === null" [income]="income" (deleteIncome)="deleteIncome(income.id)">
+               </mymoney-basic-income-buttons>
+               <mymoney-recurring-income-buttons *ngIf="income.parentId !== null" [income]="income"
+                  (deleteRecurringIncome)="deleteRecurringIncome(income.id)"></mymoney-recurring-income-buttons>
             </td>
          </tr>
       </tbody>
