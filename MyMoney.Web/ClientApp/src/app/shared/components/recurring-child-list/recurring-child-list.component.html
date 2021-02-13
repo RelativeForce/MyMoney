@@ -13,9 +13,14 @@
             <td class="pull-right">
                <div>
                   <button class="btn btn-primary material-icons" [disabled]="realisingChildId !== null"
-                     *ngIf="realisingChildId !== child.id" (click)="onOpenChildClick(child)" data-toggle="tooltip" data-placement="bottom"
-                     title="Edit {{child.date}}">
-                     edit
+                     *ngIf="realisingChildId !== child.id && child.id > 0" (click)="onOpenChildClick(child)" data-toggle="tooltip"
+                     data-placement="bottom" title="Edit notes for {{child.date}}">
+                     comment
+                  </button>
+                  <button class="btn btn-success material-icons" [disabled]="realisingChildId !== null"
+                     *ngIf="realisingChildId !== child.id && child.id < 0" (click)="onOpenChildClick(child)" data-toggle="tooltip"
+                     data-placement="bottom" title="Add notes for {{child.date}}">
+                     comment
                   </button>
                   <span *ngIf="realisingChildId === child.id" class="spinner-border spinner-border-sm"></span>
                </div>
