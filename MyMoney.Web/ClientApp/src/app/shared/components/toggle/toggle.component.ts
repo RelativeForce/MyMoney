@@ -21,7 +21,7 @@ export class ToggleComponent {
       this.checked = new EventEmitter<boolean>();
    }
 
-   public onChecked(event: any): void {
-      this.checked.emit(event.target.checked);
+   public onChecked(newValue: boolean): void {
+      this.checked.emit(newValue);
    }
 }
