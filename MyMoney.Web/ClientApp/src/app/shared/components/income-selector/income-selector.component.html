@@ -19,18 +19,9 @@
       <tr *ngFor="let income of incomes; let i = index">
          <td>
             <span *ngIf="realisingChild === income.id" class="spinner-border spinner-border-sm"></span>
-            <div (click)="onIncomeCheckboxChange(!selectedIncomes.has(income.id), income)" [ngClass]="{
-                  'check-box-enabled': realisingChild === null,
-                  'check-box-disabled': realisingChild !== null
-               }">
-               <span *ngIf="realisingChild !== income.id && selectedIncomes.has(income.id)"
-                  class="material-icons check-box check-box-checked">
-                  check_box
-               </span>
-               <span *ngIf="realisingChild !== income.id && !selectedIncomes.has(income.id)" class="material-icons check-box">
-                  check_box_outline_blank
-               </span>
-            </div>
+            <mymoney-check-box *ngIf="realisingChild !== income.id" [isChecked]="selectedIncomes.has(income.id)"
+               (change)="onIncomeCheckboxChange($event, income)" [disabled]="realisingChild !== null">
+            </mymoney-check-box>
          </td>
          <td>{{income.date}}</td>
          <td>{{income.name}}</td>

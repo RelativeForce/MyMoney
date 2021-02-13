@@ -18,14 +18,8 @@
    <tbody>
       <tr *ngFor="let budget of budgets; let i = index">
          <td>
-            <div (click)="onBudgetCheckboxChange(!selectedBudgets.has(budget.id), budget.id)" class="check-box-enabled">
-               <span *ngIf="selectedBudgets.has(budget.id)" class="material-icons check-box check-box-checked">
-                  check_box
-               </span>
-               <span *ngIf="!selectedBudgets.has(budget.id)" class="material-icons check-box">
-                  check_box_outline_blank
-               </span>
-            </div>
+            <mymoney-check-box [isChecked]="selectedBudgets.has(budget.id)" (change)="onBudgetCheckboxChange($event, budget.id)">
+            </mymoney-check-box>
          </td>
          <td>{{budget.name}}</td>
          <td>{{budget.amount}}</td>
