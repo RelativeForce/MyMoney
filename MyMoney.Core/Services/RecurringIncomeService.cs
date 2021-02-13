@@ -27,13 +27,13 @@ namespace MyMoney.Core.Services
 
          var recurring = _repository
             .UserFiltered<IRecurringIncome>(userId)
-            .Where(rt =>
-               (rt.Start >= start && rt.Start <= end) || // Starts in the range
-               (rt.End >= start && rt.End <= end) || // Ends in the range
-               (rt.Start <= start && rt.End >= end)) // Spans the range
+            .Where(ri =>
+               (ri.Start >= start && ri.Start <= end) || // Starts in the range
+               (ri.End >= start && ri.End <= end) || // Ends in the range
+               (ri.Start <= start && ri.End >= end)) // Spans the range
             .AsEnumerable()
-            .Select(rt => rt.Children(_repository, t => t.Date >= start && t.Date <= end))
-            .SelectMany(vt => vt);
+            .Select(ri => ri.Children(_repository, i => i.Date >= start && i.Date <= end))
+            .SelectMany(vi => vi);
 
          return recurring;
       }
@@ -44,11 +44,11 @@ namespace MyMoney.Core.Services
 
          var recurring = _repository
             .UserFiltered<IRecurringIncome>(userId)
-            .Where(rt => rt.Start <= date)
+            .Where(ri => ri.Start <= date)
             .AsEnumerable()
-            .Select(rt => rt.Children(_repository, t => t.Date <= date))
-            .SelectMany(vt => vt)
-            .OrderByDescending(t => t.Date)
+            .Select(ri => ri.Children(_repository, i => i.Date <= date))
+            .SelectMany(vi => vi)
+            .OrderByDescending(i => i.Date)
             .Take(count);
 
          return recurring;
@@ -59,8 +59,7 @@ namespace MyMoney.Core.Services
          if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return null;
 
-         if (notes == null)
-            notes = "";
+         notes ??= string.Empty;
 
          if (start > end)
          {
@@ -127,8 +126,7 @@ namespace MyMoney.Core.Services
          if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return false;
 
-         if (notes == null)
-            notes = "";
+         notes ??= string.Empty;
 
          if (start > end)
          {
@@ -158,30 +156,29 @@ namespace MyMoney.Core.Services
 
          var children = _repository
             .UserFiltered<IIncome>(user)
-            .Where(t => t.ParentId == incomeId)
-            .Where(t => !trimBounds || t.Date > end)
+            .Where(i => i.ParentId == incomeId)
             .ToList();
 
-         if (clearChildren || trimBounds)
+         if (clearChildren)
+            return _repository.DeleteRange(children);
+
+         if (trimBounds)
          {
-            // Clear the children that are invalid as a result of the change
-            foreach (var child in children)
-            {
-               _repository.Delete(child);
-            }
+            var invalidChildren = children.Where(i => i.Date > end);
 
-            return true;
+            if (!_repository.DeleteRange(invalidChildren))
+               return false;
+            
+            children = children.Where(i => i.Date <= end).ToList();
          }
-
+         
          foreach (var child in children)
          {
             child.Name = name;
             child.Amount = amount;
-
-            _repository.Update(child);
          }
 
-         return true;
+         return _repository.UpdateRange(children);
       }
 
       public bool Delete(long incomeId)
@@ -194,14 +191,11 @@ namespace MyMoney.Core.Services
 
          var children = _repository
             .UserFiltered<IIncome>(userId)
-            .Where(t => t.ParentId == incomeId)
+            .Where(i => i.ParentId == incomeId)
             .ToList();
 
-         foreach (var child in children)
-         {
-            if (!_repository.Delete(child))
-               return false;
-         }
+         if (!_repository.DeleteRange(children))
+            return false;
 
          return _repository.Delete(income);
       }

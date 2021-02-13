@@ -43,8 +43,7 @@ namespace MyMoney.Core.Services
          if (string.IsNullOrWhiteSpace(description) || amount < 0.01m)
             return null;
 
-         if (notes == null)
-            notes = "";
+         notes ??= string.Empty;
 
          if (start > end)
          {
@@ -111,8 +110,7 @@ namespace MyMoney.Core.Services
          if (string.IsNullOrWhiteSpace(description) || amount < 0.01m)
             return false;
 
-         if (notes == null)
-            notes = "";
+         notes ??= string.Empty;
 
          if (start > end)
          {
@@ -143,29 +141,28 @@ namespace MyMoney.Core.Services
          var children = _repository
             .UserFiltered<ITransaction>(user)
             .Where(t => t.ParentId == transactionId)
-            .Where(t => !trimBounds || t.Date > end)
             .ToList();
 
-         if (clearChildren || trimBounds)
-         {
-            // Clear the children that are invalid as a result of the change
-            foreach (var child in children)
-            {
-               _repository.Delete(child);
-            }
+         if (clearChildren)
+            return _repository.DeleteRange(children);
 
-            return true;
+         if (trimBounds)
+         {
+            var invalidChildren = children.Where(t => t.Date > end);
+
+            if (!_repository.DeleteRange(invalidChildren))
+               return false;
+
+            children = children.Where(t => t.Date <= end).ToList();
          }
 
          foreach (var child in children)
          {
             child.Description = description;
             child.Amount = amount;
-
-            _repository.Update(child);
          }
 
-         return true;
+         return _repository.UpdateRange(children);
       }
 
       public bool Delete(long transactionId)
