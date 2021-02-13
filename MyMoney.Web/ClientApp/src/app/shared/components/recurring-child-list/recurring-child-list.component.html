@@ -22,7 +22,9 @@
                      data-placement="bottom" title="Add notes for {{child.date}}">
                      comment
                   </button>
-                  <span *ngIf="realisingChildId === child.id" class="spinner-border spinner-border-sm"></span>
+                  <button *ngIf="realisingChildId === child.id" [disabled]="true" class="btn btn-primary material-icons">
+                     <span class="spinner-border spinner-border-sm"></span>
+                  </button>
                </div>
             </td>
          </tr>
