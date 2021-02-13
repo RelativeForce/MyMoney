@@ -16,6 +16,11 @@ export class CheckBoxComponent {
    public change: EventEmitter<boolean> = new EventEmitter<boolean>();
 
    public onChangeClick(newValue: boolean) {
+      if (this.disabled) {
+         // Ignore click when disabled
+         return;
+      }
+
       this.change.emit(newValue);
    }
 }

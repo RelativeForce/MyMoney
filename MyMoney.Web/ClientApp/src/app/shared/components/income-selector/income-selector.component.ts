@@ -21,10 +21,6 @@ export class IncomeSelectorComponent implements OnChanges {
    constructor(private readonly incomeService: IncomeService) { }
 
    public onIncomeCheckboxChange(newValue: boolean, income: IncomeViewModel): void {
-      if (this.realisingChild !== null) {
-         return;
-      }
-
       if (income.id < 0) {
 
          this.realisingChild = income.id;
