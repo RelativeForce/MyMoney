@@ -11,6 +11,5 @@ namespace MyMoney.Core.Interfaces.Entities
       IRecurringIncome Parent { get; set; }
 
       IQueryable<ITransaction> Transactions { get; }
-      void DeleteAllTransactions(IRelationRepository relationRepository);
    }
 }

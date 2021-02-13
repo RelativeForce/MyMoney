@@ -11,6 +11,5 @@ namespace MyMoney.Core.Interfaces.Entities
       string Name { get; set; }
       string Notes { get; set; }
       IQueryable<ITransaction> Transactions { get; }
-      void DeleteRelations(IRelationRepository relationRepository);
    }
 }

@@ -35,12 +35,12 @@ namespace MyMoney.Core.Services
 
       public IIncome Add(DateTime date, string name, decimal amount, string notes)
       {
-         var user = _currentUserProvider.CurrentUser;
-
          if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return null;
 
          notes ??= string.Empty;
+
+         var user = _currentUserProvider.CurrentUser;
 
          var income = _entityFactory.NewIncome;
          income.UserId = user.Id;
@@ -93,6 +93,15 @@ namespace MyMoney.Core.Services
          if (income == null || income.UserId != userId)
             return false;
 
+         var basicDataHasChanged =
+            income.Amount != amount ||
+            income.Date != date ||
+            income.Name != name;
+
+         // Cannot edit the basic data of a recuring income child
+         if (income.ParentId != null && basicDataHasChanged)
+            return false;
+
          income.Amount = amount;
          income.Date = date;
          income.Name = name;
@@ -108,8 +117,6 @@ namespace MyMoney.Core.Services
 
          if (income == null || income.UserId != userId)
             return false;
-
-         income.DeleteAllTransactions(_relationRepository);
 
          return _repository.Delete(income);
       }

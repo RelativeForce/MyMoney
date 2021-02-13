@@ -40,8 +40,7 @@ namespace MyMoney.Core.Services
          if (string.IsNullOrWhiteSpace(description) || amount < 0.01m)
             return null;
 
-         if (notes == null)
-            notes = "";
+         notes ??= string.Empty;
 
          var user = _currentUserProvider.CurrentUser;
 
@@ -58,9 +57,7 @@ namespace MyMoney.Core.Services
          var addedTransaction = _repository.Add(transaction);
 
          if (addedTransaction == null)
-         {
             return null;
-         }
 
          // Add relations
          transaction.UpdateBudgets(_repository, _relationRepository, budgetIds);
@@ -85,8 +82,7 @@ namespace MyMoney.Core.Services
          if (string.IsNullOrWhiteSpace(description) || amount < 0.01m)
             return false;
 
-         if (notes == null)
-            notes = "";
+         notes ??= string.Empty;
 
          var transaction = _repository.FindById<ITransaction>(transactionId);
          var userId = _currentUserProvider.CurrentUserId;

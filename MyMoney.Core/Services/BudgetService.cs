@@ -34,14 +34,12 @@ namespace MyMoney.Core.Services
 
       public IBudget Add(int month, int year, string name, decimal amount, string notes)
       {
-         var user = _currentUserProvider.CurrentUser;
-
-         notes ??= "";
-         name ??= $"Budget for {month}/{year}";
-
-         if (month <= 0 || year <= 0 || month > 12 || amount < 0.01m)
+         if (string.IsNullOrWhiteSpace(name) || month <= 0 || year <= 0 || month > 12 || amount < 0.01m)
             return null;
-         
+
+         notes ??= string.Empty;
+
+         var user = _currentUserProvider.CurrentUser;
 
          var budget = _entityFactory.NewBudget;
          budget.UserId = user.Id;
@@ -68,11 +66,10 @@ namespace MyMoney.Core.Services
 
       public bool Update(long budgetId, int month, int year, string name, decimal amount, string notes)
       {
-         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(notes))
+         if (string.IsNullOrWhiteSpace(name) || month <= 0 || year <= 0 || month > 12 || amount < 0.01m)
             return false;
 
-         if (month <= 0 || year <= 0 || month > 12 || amount < 0.01m)
-            return false;
+         notes ??= string.Empty;
 
          var budget = _repository.FindById<IBudget>(budgetId);
          var userId = _currentUserProvider.CurrentUserId;
@@ -96,8 +93,6 @@ namespace MyMoney.Core.Services
 
          if (budget == null || budget.UserId != userId)
             return false;
-
-         budget.DeleteRelations(_relationRepository);
 
          return _repository.Delete(budget);
       }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using MyMoney.Core.Interfaces;
@@ -62,10 +63,51 @@ namespace MyMoney.Infrastructure
          }
       }
 
+      public bool DeleteRange<T>(IEnumerable<T> items) where T : class, IBaseEntity
+      {
+         if (items == null)
+            return false;
+
+         try
+         {
+            _model.RemoveRange(items);
+            _model.SaveChanges();
+
+            return true;
+         }
+         catch (Exception e)
+         {
+            Console.WriteLine(e);
+            return false;
+         }
+      }
+
       public bool Update<T>(T item) where T : class, IBaseEntity
       {
          if (item == null)
             return false;
+
+         // TODO: Check validity of item
+
+         try
+         {
+            _model.SaveChanges();
+
+            return true;
+         }
+         catch (Exception e)
+         {
+            Console.WriteLine(e);
+            return false;
+         }
+      }
+
+      public bool UpdateRange<T>(IEnumerable<T> items) where T : class, IBaseEntity
+      {
+         if (items == null)
+            return false;
+
+         // TODO: Check validity of item
 
          try
          {

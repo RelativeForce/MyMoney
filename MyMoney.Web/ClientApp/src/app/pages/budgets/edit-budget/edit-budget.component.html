@@ -40,9 +40,8 @@
    </div>
    <div class="form-group">
       <label for="notes">Notes</label>
-      <input type="text" formControlName="notes" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }" />
+      <textarea formControlName="notes" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }" rows="3"></textarea>
       <div *ngIf="submitted && f.notes.errors" class="invalid-feedback">
-         <div *ngIf="f.notes.errors.required">Notes is required</div>
       </div>
    </div>
    <div class="form-group">
