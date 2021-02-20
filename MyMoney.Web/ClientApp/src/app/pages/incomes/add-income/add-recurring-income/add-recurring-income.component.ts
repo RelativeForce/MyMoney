@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IncomeService } from 'src/app/shared/services';
 import { IRecurringIncomeDto, Frequency } from 'src/app/shared/api';
-import { toFrequencyString } from 'src/app/shared/functions';
+import { frequencyOptions } from 'src/app/shared/constants';
+import { frequencyValidator, minAmountValidator } from 'src/app/shared/common-validators';
 
 @Component({
    selector: 'mymoney-add-recurring-income',
@@ -14,20 +15,13 @@ export class AddRecurringIncomeComponent implements OnInit {
    public addIncomeForm: FormGroup;
    public loading = false;
    public submitted = false;
-   public recurrenceOptions: { key: Frequency; value: string }[];
+   public recurrenceOptions: { key: Frequency; value: string }[] = frequencyOptions;
 
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly incomeService: IncomeService,
-   ) {
-      this.recurrenceOptions = [
-         { key: Frequency.day, value: toFrequencyString(Frequency.day) },
-         { key: Frequency.week, value: toFrequencyString(Frequency.week) },
-         { key: Frequency.month, value: toFrequencyString(Frequency.month) },
-         { key: Frequency.year, value: toFrequencyString(Frequency.year) },
-      ];
-   }
+   ) { }
 
    public ngOnInit(): void {
 
@@ -39,8 +33,8 @@ export class AddRecurringIncomeComponent implements OnInit {
          start: [start.toISOString().split('T')[0], [Validators.required]],
          end: [end.toISOString().split('T')[0], [Validators.required]],
          name: ['', [Validators.required]],
-         amount: [0.01, [Validators.required, Validators.min(0.01)]],
-         recurrence: [Frequency.month, [Validators.required, Validators.min(Frequency.day), Validators.max(Frequency.year)]],
+         amount: [0.01, [Validators.required, minAmountValidator]],
+         recurrence: [Frequency.month, [Validators.required, frequencyValidator]],
          notes: ['']
       });
    }

@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IncomeService } from '../../../../shared/services';
 import { IRecurringIncomeDto, Frequency, IIncomeDto } from 'src/app/shared/api';
-import { toFrequencyString, toInputDateString } from 'src/app/shared/functions';
+import { toInputDateString } from 'src/app/shared/functions';
+import { frequencyOptions } from 'src/app/shared/constants';
+import { frequencyValidator, minAmountValidator } from 'src/app/shared/common-validators';
 
 @Component({
    templateUrl: './edit-recurring-income.component.html',
@@ -18,21 +20,14 @@ export class EditRecurringIncomeComponent implements OnInit {
    public submitted = false;
    public isValid = true;
    public children: { id: number; date: string }[] = [];
-   public recurrenceOptions: { key: Frequency; value: string }[];
+   public recurrenceOptions: { key: Frequency; value: string }[] = frequencyOptions;
 
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly incomeService: IncomeService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
-   ) {
-      this.recurrenceOptions = [
-         { key: Frequency.day, value: toFrequencyString(Frequency.day) },
-         { key: Frequency.week, value: toFrequencyString(Frequency.week) },
-         { key: Frequency.month, value: toFrequencyString(Frequency.month) },
-         { key: Frequency.year, value: toFrequencyString(Frequency.year) },
-      ];
-   }
+   ) { }
 
    public ngOnInit(): void {
 
@@ -49,9 +44,9 @@ export class EditRecurringIncomeComponent implements OnInit {
             start: ['', [Validators.required]],
             end: ['', [Validators.required]],
             name: ['', [Validators.required]],
-            amount: [0.01, [Validators.required, Validators.min(0.01)]],
+            amount: [0.01, [Validators.required, minAmountValidator]],
             notes: [''],
-            recurrence: [Frequency.month, [Validators.required, Validators.min(Frequency.day), Validators.max(Frequency.year)]]
+            recurrence: [Frequency.month, [Validators.required, frequencyValidator]]
          });
 
          this.disableForm();

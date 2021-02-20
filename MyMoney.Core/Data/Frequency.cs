@@ -9,16 +9,22 @@ namespace MyMoney.Core.Data
       Week = 1,
       Month = 2,
       Year = 3,
+      Fortnight = 4,
+      FourWeek = 5,
    }
 
    public static class FrequencyExtensions
    {
+      const int DaysInWeek = 7;
+
       public static DateTime Add(this DateTime date, Frequency period)
       {
          return period switch
          {
             Frequency.Day => date.AddDays(1),
-            Frequency.Week => date.AddDays(7),
+            Frequency.Week => date.AddDays(DaysInWeek),
+            Frequency.Fortnight => date.AddDays(2 * DaysInWeek),
+            Frequency.FourWeek => date.AddDays(4 * DaysInWeek),
             Frequency.Month => date.AddMonths(1),
             Frequency.Year => date.AddYears(1),
             _ => throw new ArgumentException($"Invalid value '{period}' for {nameof(Frequency)}"),

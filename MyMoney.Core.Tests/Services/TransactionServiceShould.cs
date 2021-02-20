@@ -34,6 +34,7 @@ namespace MyMoney.Core.Tests.Services
       {
          var now = DateTime.Now;
          const decimal amount = 45;
+         const string notes = "test notes";
 
          _repositoryMock
              .Setup(m => m.Add(It.IsAny<ITransaction>()))
@@ -47,7 +48,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Add(now, invalidDescription, amount, "", new long[0], new long[0]);
+         var result = service.Add(now, invalidDescription, amount, notes, new long[0], new long[0]);
 
          Assert.Null(result);
 
@@ -61,6 +62,7 @@ namespace MyMoney.Core.Tests.Services
          var now = DateTime.Now;
          const decimal amount = 45;
          const string description = "test description";
+         const string notes = "test notes";
          const long userId = 7;
          const long transactionId = 44;
 
@@ -74,6 +76,10 @@ namespace MyMoney.Core.Tests.Services
 
          var mockTransaction = new Mock<ITransaction>(MockBehavior.Strict);
          mockTransaction.SetupAllProperties();
+         mockTransaction
+            .Setup(m => m.UpdateBudgets(_repositoryMock.Object, _relationRepoMock.Object, It.Is<long[]>(budgetIds => !budgetIds.Any())));
+         mockTransaction
+            .Setup(m => m.UpdateIncomes(_repositoryMock.Object, _relationRepoMock.Object, It.Is<long[]>(incomeIds => !incomeIds.Any())));
 
          _repositoryMock
              .Setup(m => m.Add(It.Is<ITransaction>(t =>
@@ -81,7 +87,10 @@ namespace MyMoney.Core.Tests.Services
                  t.User.Equals(mockUser.Object) &&
                  t.Date.Equals(now) &&
                  t.Amount == amount &&
-                 t.Description == description)))
+                 t.Description == description &&
+                 t.Notes == notes &&
+                 t.Parent == null &&
+                 t.ParentId == null)))
              .Returns((ITransaction t) =>
              {
                 // Set the Id
@@ -105,7 +114,10 @@ namespace MyMoney.Core.Tests.Services
                  t.User.Equals(mockUser.Object) &&
                  t.Date.Equals(now) &&
                  t.Amount == amount &&
-                 t.Description == description)))
+                 t.Description == description &&
+                 t.Notes == notes &&
+                 t.Parent == null &&
+                 t.ParentId == null)))
              .Returns((ITransaction t) => true)
              .Verifiable();
 
@@ -116,7 +128,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Add(now, description, amount, "", new long[0], new long[0]);
+         var result = service.Add(now, description, amount, notes, new long[0], new long[0]);
 
          Assert.NotNull(result);
          Assert.Equal(now, result.Date);
@@ -144,6 +156,7 @@ namespace MyMoney.Core.Tests.Services
          var now = DateTime.Now;
          const decimal amount = 45;
          const long transactionId = 7;
+         const string notes = "test notes";
 
          _repositoryMock
              .Setup(m => m.Update(It.IsAny<ITransaction>()))
@@ -157,7 +170,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Update(transactionId, now, invalidDescription, amount, "", new long[0], new long[0]);
+         var result = service.Update(transactionId, now, invalidDescription, amount, notes, new long[0], new long[0]);
 
          Assert.False(result);
 
@@ -173,6 +186,7 @@ namespace MyMoney.Core.Tests.Services
          const long transactionId = 7;
          const long userId = 9;
          const string description = "test";
+         const string notes = "test notes";
 
          var mockUser = new Mock<IUser>(MockBehavior.Strict);
          mockUser.Setup(m => m.Id).Returns(userId);
@@ -209,7 +223,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Update(transactionId, now, description, amount, "", new long[0], new long[0]);
+         var result = service.Update(transactionId, now, description, amount, notes, new long[0], new long[0]);
 
          Assert.False(result);
 
@@ -225,6 +239,7 @@ namespace MyMoney.Core.Tests.Services
          const long transactionId = 7;
          const long userId = 9;
          const string description = "test";
+         const string notes = "test notes";
 
          var mockUser = new Mock<IUser>(MockBehavior.Strict);
          mockUser.Setup(m => m.Id).Returns(userId);
@@ -256,7 +271,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Update(transactionId, now, description, amount, "", new long[0], new long[0]);
+         var result = service.Update(transactionId, now, description, amount, notes, new long[0], new long[0]);
 
          Assert.False(result);
 
@@ -274,6 +289,7 @@ namespace MyMoney.Core.Tests.Services
          const long transactionId = 7;
          const long userId = 9;
          const string description = "test";
+         const string notes = "test notes";
 
          var mockUser = new Mock<IUser>(MockBehavior.Strict);
          mockUser.Setup(m => m.Id).Returns(userId);
@@ -287,6 +303,10 @@ namespace MyMoney.Core.Tests.Services
          mockTransaction.SetupAllProperties();
          mockTransaction.Object.Id = transactionId;
          mockTransaction.Object.UserId = userId;
+         mockTransaction
+            .Setup(m => m.UpdateBudgets(_repositoryMock.Object, _relationRepoMock.Object, It.Is<long[]>(budgetIds => !budgetIds.Any())));
+         mockTransaction
+            .Setup(m => m.UpdateIncomes(_repositoryMock.Object, _relationRepoMock.Object, It.Is<long[]>(incomeIds => !incomeIds.Any())));
 
          _repositoryMock
             .Setup(m => m.UserFiltered<IBudget>(mockUser.Object))
@@ -310,7 +330,7 @@ namespace MyMoney.Core.Tests.Services
 
          var service = NewService;
 
-         var result = service.Update(transactionId, now, description, amount, "", new long[0], new long[0]);
+         var result = service.Update(transactionId, now, description, amount, notes, new long[0], new long[0]);
 
          Assert.Equal(expectedResult, result);
 

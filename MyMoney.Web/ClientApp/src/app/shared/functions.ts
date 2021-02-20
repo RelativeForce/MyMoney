@@ -34,6 +34,8 @@ export function toFrequencyString(frequency: Frequency): string {
    switch (frequency) {
       case Frequency.day: return 'Daily';
       case Frequency.week: return 'Weekly';
+      case Frequency.fortnight: return 'Fortnightly';
+      case Frequency.fourWeek: return 'Four weekly';
       case Frequency.month: return 'Monthly';
       case Frequency.year: return 'Annually';
    }

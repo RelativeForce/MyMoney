@@ -23,6 +23,20 @@ namespace MyMoney.Core.Tests.Services
       }
 
       [Fact]
+      public void ShouldAddFortnightPeriodToDate()
+      {
+         var now = DateTime.Now;
+         Assert.Equal(now.AddDays(14), now.Add(Frequency.Fortnight));
+      }
+
+      [Fact]
+      public void ShouldAddFourWeekPeriodToDate()
+      {
+         var now = DateTime.Now;
+         Assert.Equal(now.AddDays(28), now.Add(Frequency.FourWeek));
+      }
+
+      [Fact]
       public void ShouldAddMonthPeriodToDate()
       {
          var now = DateTime.Now;
@@ -91,6 +105,54 @@ namespace MyMoney.Core.Tests.Services
       }
 
       #endregion Week
+
+      #region Fortnight
+
+      [Fact]
+      public void ShouldCountFortnightsInYear()
+      {
+         var start2019 = DateTime.Parse("01/01/2019");
+         var end2019 = DateTime.Parse("31/12/2019");
+
+         // Note: Not whole fortnights
+         Assert.Equal(27, Frequency.Fortnight.CountBetween(start2019, end2019));
+      }
+
+      [Fact]
+      public void ShouldCountFortnightsInMonth()
+      {
+         var startJanuary2019 = DateTime.Parse("01/01/2019");
+         var endFebuary2019 = DateTime.Parse("31/01/2019");
+
+         // Note: Not whole fortnights
+         Assert.Equal(3, Frequency.Fortnight.CountBetween(startJanuary2019, endFebuary2019));
+      }
+
+      #endregion Fortnight
+
+      #region FourWeek
+
+      [Fact]
+      public void ShouldCountFourWeekInYear()
+      {
+         var start2019 = DateTime.Parse("01/01/2019");
+         var end2019 = DateTime.Parse("31/12/2019");
+
+         // Note: Not whole four week periods
+         Assert.Equal(14, Frequency.FourWeek.CountBetween(start2019, end2019));
+      }
+
+      [Fact]
+      public void ShouldCountFourWeekInMonth()
+      {
+         var startJanuary2019 = DateTime.Parse("01/01/2019");
+         var endFebuary2019 = DateTime.Parse("31/01/2019");
+
+         // Note: Not whole four week periods
+         Assert.Equal(2, Frequency.FourWeek.CountBetween(startJanuary2019, endFebuary2019));
+      }
+
+      #endregion FourWeek
 
       #region Month
 
