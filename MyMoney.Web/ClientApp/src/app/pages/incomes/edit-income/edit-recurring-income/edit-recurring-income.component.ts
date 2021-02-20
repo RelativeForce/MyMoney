@@ -5,6 +5,7 @@ import { IncomeService } from '../../../../shared/services';
 import { IRecurringIncomeDto, Frequency, IIncomeDto } from 'src/app/shared/api';
 import { toInputDateString } from 'src/app/shared/functions';
 import { frequencyOptions } from 'src/app/shared/constants';
+import { frequencyValidator } from 'src/app/shared/common-validators';
 
 @Component({
    templateUrl: './edit-recurring-income.component.html',
@@ -45,7 +46,7 @@ export class EditRecurringIncomeComponent implements OnInit {
             name: ['', [Validators.required]],
             amount: [0.01, [Validators.required, Validators.min(0.01)]],
             notes: [''],
-            recurrence: [Frequency.month, [Validators.required, Validators.min(Frequency.day), Validators.max(Frequency.year)]]
+            recurrence: [Frequency.month, [Validators.required, frequencyValidator]]
          });
 
          this.disableForm();

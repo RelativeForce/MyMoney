@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TransactionService } from 'src/app/shared/services';
 import { IRecurringTransactionDto, Frequency } from 'src/app/shared/api';
 import { frequencyOptions } from 'src/app/shared/constants';
+import { frequencyValidator } from 'src/app/shared/common-validators';
 
 @Component({
    selector: 'mymoney-add-recurring-transaction',
@@ -33,7 +34,7 @@ export class AddRecurringTransactionComponent implements OnInit {
          end: [end.toISOString().split('T')[0], [Validators.required]],
          description: ['', [Validators.required]],
          amount: [0.01, [Validators.required, Validators.min(0.01)]],
-         recurrence: [Frequency.month, [Validators.required, Validators.min(Frequency.day), Validators.max(Frequency.year)]],
+         recurrence: [Frequency.month, [Validators.required, frequencyValidator]],
          notes: ['']
       });
    }
