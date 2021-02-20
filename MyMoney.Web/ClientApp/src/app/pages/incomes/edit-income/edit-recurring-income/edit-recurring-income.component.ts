@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IncomeService } from '../../../../shared/services';
 import { IRecurringIncomeDto, Frequency, IIncomeDto } from 'src/app/shared/api';
-import { toFrequencyString, toInputDateString } from 'src/app/shared/functions';
+import { frequencyOptions, toInputDateString } from 'src/app/shared/functions';
 
 @Component({
    templateUrl: './edit-recurring-income.component.html',
@@ -26,12 +26,7 @@ export class EditRecurringIncomeComponent implements OnInit {
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
    ) {
-      this.recurrenceOptions = [
-         { key: Frequency.day, value: toFrequencyString(Frequency.day) },
-         { key: Frequency.week, value: toFrequencyString(Frequency.week) },
-         { key: Frequency.month, value: toFrequencyString(Frequency.month) },
-         { key: Frequency.year, value: toFrequencyString(Frequency.year) },
-      ];
+      this.recurrenceOptions = frequencyOptions;
    }
 
    public ngOnInit(): void {

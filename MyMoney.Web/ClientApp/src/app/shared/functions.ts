@@ -34,7 +34,18 @@ export function toFrequencyString(frequency: Frequency): string {
    switch (frequency) {
       case Frequency.day: return 'Daily';
       case Frequency.week: return 'Weekly';
+      case Frequency.fortnight: return 'Fortnightly';
+      case Frequency.fourWeek: return 'Four weekly';
       case Frequency.month: return 'Monthly';
       case Frequency.year: return 'Annually';
    }
 }
+
+export const frequencyOptions: { key: Frequency; value: string }[] = [
+   { key: Frequency.day, value: toFrequencyString(Frequency.day) },
+   { key: Frequency.week, value: toFrequencyString(Frequency.week) },
+   { key: Frequency.fortnight, value: toFrequencyString(Frequency.fortnight) },
+   { key: Frequency.fourWeek, value: toFrequencyString(Frequency.fourWeek) },
+   { key: Frequency.month, value: toFrequencyString(Frequency.month) },
+   { key: Frequency.year, value: toFrequencyString(Frequency.year) },
+];

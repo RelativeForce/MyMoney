@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IncomeService } from 'src/app/shared/services';
 import { IRecurringIncomeDto, Frequency } from 'src/app/shared/api';
-import { toFrequencyString } from 'src/app/shared/functions';
+import { frequencyOptions } from 'src/app/shared/functions';
 
 @Component({
    selector: 'mymoney-add-recurring-income',
@@ -21,12 +21,7 @@ export class AddRecurringIncomeComponent implements OnInit {
       private readonly router: Router,
       private readonly incomeService: IncomeService,
    ) {
-      this.recurrenceOptions = [
-         { key: Frequency.day, value: toFrequencyString(Frequency.day) },
-         { key: Frequency.week, value: toFrequencyString(Frequency.week) },
-         { key: Frequency.month, value: toFrequencyString(Frequency.month) },
-         { key: Frequency.year, value: toFrequencyString(Frequency.year) },
-      ];
+      this.recurrenceOptions = frequencyOptions;
    }
 
    public ngOnInit(): void {
