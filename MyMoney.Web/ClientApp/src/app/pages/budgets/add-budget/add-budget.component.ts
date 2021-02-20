@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { minAmountValidator } from 'src/app/shared/common-validators';
 import { BudgetService } from 'src/app/shared/services';
 import { IBudgetModel } from 'src/app/shared/state/types';
 
@@ -28,7 +29,7 @@ export class AddBudgetComponent implements OnInit {
       this.addBudgetForm = this.formBuilder.group({
          year: [year, [Validators.required, Validators.min(1980)]],
          month: [month, [Validators.required, Validators.min(1), Validators.max(12)]],
-         amount: [0.01, [Validators.required, Validators.min(0.01)]],
+         amount: [0.01, [Validators.required, minAmountValidator]],
          name: ['', [Validators.required]],
          notes: ['', []]
       });

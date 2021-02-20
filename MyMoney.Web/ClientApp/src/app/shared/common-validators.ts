@@ -11,3 +11,5 @@ export const frequencyValidator: ValidatorFn = (frequencyControl) => {
 
    return null;
 };
+
+export const minAmountValidator: ValidatorFn = Validators.min(0.01);

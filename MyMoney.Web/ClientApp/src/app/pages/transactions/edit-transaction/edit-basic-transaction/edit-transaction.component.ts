@@ -5,6 +5,7 @@ import { TransactionService } from '../../../../shared/services';
 import { ITransactionModel } from 'src/app/shared/state/types';
 import { Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
+import { minAmountValidator } from 'src/app/shared/common-validators';
 
 @Component({
    templateUrl: './edit-basic-transaction.component.html',
@@ -32,7 +33,7 @@ export class EditBasicTransactionComponent implements OnInit {
       this.editTransactionForm = this.formBuilder.group({
          date: ['', [Validators.required]],
          description: ['', [Validators.required]],
-         amount: [0.01, [Validators.required, Validators.min(0.01)]],
+         amount: [0.01, [Validators.required, minAmountValidator]],
          notes: ['']
       });
 

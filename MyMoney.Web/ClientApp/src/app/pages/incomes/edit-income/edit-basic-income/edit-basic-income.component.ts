@@ -6,6 +6,7 @@ import { BudgetViewModel } from '../../../../shared/classes';
 import { IIncomeModel } from 'src/app/shared/state/types';
 import { toFrequencyString, toInputDateString } from 'src/app/shared/functions';
 import { Frequency } from 'src/app/shared/api';
+import { minAmountValidator } from 'src/app/shared/common-validators';
 
 @Component({
    templateUrl: './edit-basic-income.component.html',
@@ -45,7 +46,7 @@ export class EditBasicIncomeComponent implements OnInit {
          this.editIncomeForm = this.formBuilder.group({
             date: ['', [Validators.required]],
             name: ['', [Validators.required]],
-            amount: [0.01, [Validators.required, Validators.min(0.01)]],
+            amount: [0.01, [Validators.required, minAmountValidator]],
             notes: [''],
          });
 

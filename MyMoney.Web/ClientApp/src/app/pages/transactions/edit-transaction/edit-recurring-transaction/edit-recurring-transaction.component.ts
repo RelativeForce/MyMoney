@@ -5,7 +5,7 @@ import { TransactionService } from '../../../../shared/services';
 import { IRecurringTransactionDto, Frequency, ITransactionDto } from 'src/app/shared/api';
 import { toInputDateString } from 'src/app/shared/functions';
 import { frequencyOptions } from 'src/app/shared/constants';
-import { frequencyValidator } from 'src/app/shared/common-validators';
+import { frequencyValidator, minAmountValidator } from 'src/app/shared/common-validators';
 
 @Component({
    templateUrl: './edit-recurring-transaction.component.html',
@@ -44,7 +44,7 @@ export class EditRecurringTransactionComponent implements OnInit {
             start: ['', [Validators.required]],
             end: ['', [Validators.required]],
             description: ['', [Validators.required]],
-            amount: [0.01, [Validators.required, Validators.min(0.01)]],
+            amount: [0.01, [Validators.required, minAmountValidator]],
             notes: [''],
             recurrence: [Frequency.month, [Validators.required, frequencyValidator]]
          });
