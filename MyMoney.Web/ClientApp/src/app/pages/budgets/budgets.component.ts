@@ -5,6 +5,7 @@ import { BudgetService } from 'src/app/shared/services';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/shared/state/app-state';
 import { selectBudgets, selectBudgetsSearchParameters } from 'src/app/shared/state/selectors/budget.selector';
+import { monthValidator } from 'src/app/shared/common-validators';
 
 @Component({
    templateUrl: './budgets.component.html',
@@ -39,7 +40,7 @@ export class BudgetsComponent implements OnInit {
 
             this.monthIdForm = this.formBuilder.group({
                year: [year, [Validators.required, Validators.min(1980)]],
-               month: [month, [Validators.required, Validators.min(1), Validators.max(12)]]
+               month: [month, [Validators.required, monthValidator]]
             });
          });
 

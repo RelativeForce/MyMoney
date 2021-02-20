@@ -18,8 +18,7 @@
          <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.month.errors }" />
          <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
             <div *ngIf="f.month.errors.required">Month is required</div>
-            <div *ngIf="f.month.errors.min">Month cannot be less than 1</div>
-            <div *ngIf="f.month.errors.max">Month cannot be greater than 12</div>
+            <div *ngIf="f.month.errors.invalidMonth">Month must be 1 - 12</div>
          </div>
       </div>
    </div>

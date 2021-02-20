@@ -13,3 +13,14 @@ export const frequencyValidator: ValidatorFn = (frequencyControl) => {
 };
 
 export const minAmountValidator: ValidatorFn = Validators.min(0.01);
+
+export const monthValidator: ValidatorFn = (monthControl) => {
+   const minErrors = Validators.min(1)(monthControl);
+   const maxErrors = Validators.max(12)(monthControl);
+
+   if (minErrors || maxErrors) {
+      return { invalidMonth: true };
+   }
+
+   return null;
+};
