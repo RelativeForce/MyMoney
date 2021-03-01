@@ -13,6 +13,7 @@ namespace MyMoney.Infrastructure.EntityFramework
          Transaction.Configure(modelBuilder);
          Income.Configure(modelBuilder);
          User.Configure(modelBuilder);
+         UserFeature.Configure(modelBuilder);
          TransactionBudget.Configure(modelBuilder);
          TransactionIncome.Configure(modelBuilder);
          RecurringTransaction.Configure(modelBuilder);

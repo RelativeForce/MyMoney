@@ -1,4 +1,5 @@
-﻿using MyMoney.Core.Interfaces.Entities;
+﻿using MyMoney.Core.Data;
+using MyMoney.Core.Interfaces.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,11 @@ namespace MyMoney.Web.Models.Entity
       public string Email { get; set; }
       public string DateOfBirth { get; set; }
       public string FullName { get; set; }
+      public List<FeatureFlags> Features { get; set; }
 
       public UserDto()
       {
-         // Required for recieving dto
+         // Required for receiving dto
       }
 
       public UserDto(IUser user)
@@ -22,6 +24,7 @@ namespace MyMoney.Web.Models.Entity
          Email = user.Email;
          DateOfBirth = user.DateOfBirth.ToShortDateString();
          FullName = user.FullName;
+         Features = user.Features.Select(uf => uf.Feature).ToList();
       }
    }
 }

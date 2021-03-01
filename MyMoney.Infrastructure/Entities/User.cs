@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Net.Mail;
 using Microsoft.EntityFrameworkCore;
 using MyMoney.Core.Interfaces.Entities;
@@ -17,6 +19,9 @@ namespace MyMoney.Infrastructure.Entities
       public DateTime DateOfBirth { get; set; }
       [Required]
       public string FullName { get; set; }
+      [NotMapped]
+      public IQueryable<IUserFeature> Features => FeaturesProxy.Cast<IUserFeature>().AsQueryable();
+      public virtual ICollection<UserFeature> FeaturesProxy { get; set; } = new List<UserFeature>();
 
       internal static void Configure(ModelBuilder model)
       {

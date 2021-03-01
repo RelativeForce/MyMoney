@@ -1,6 +1,7 @@
 ﻿using MyMoney.Core.Interfaces.Entities.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyMoney.Core.Interfaces.Entities
 {
@@ -10,6 +11,7 @@ namespace MyMoney.Core.Interfaces.Entities
       string Password { get; set; }
       DateTime DateOfBirth { get; set; }
       string FullName { get; set; }
+      IQueryable<IUserFeature> Features { get; }
 
       IEnumerable<string> ValidationErrors();
    }

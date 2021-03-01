@@ -114,6 +114,7 @@ export interface IUserDto {
    email: string;
    dateOfBirth: string;
    fullName: string;
+   features: FeatureFlags[];
 }
 
 export interface IBasicResultDto {
@@ -163,4 +164,9 @@ export interface IRecurringIncomeDto {
    id: number;
    recurrence: Frequency;
    children: IRecurringEntityChildDto[];
+}
+
+export enum FeatureFlags {
+   budgets = 0,
+   incomesToTransactions = 1
 }
