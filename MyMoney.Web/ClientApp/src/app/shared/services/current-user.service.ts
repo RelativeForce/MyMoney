@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { IBasicResultDto, IUserDto } from '../api';
+import { filter, map } from 'rxjs/operators';
+import { FeatureFlags, IBasicResultDto, IUserDto } from '../api';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';
 import { ClearSessionAction, SetUserAction } from '../state/actions';
@@ -23,6 +23,12 @@ export class CurrentUserService {
 
    public currentUser(): Observable<IUser | null> {
       return this.store.select(selectCurrentUser);
+   }
+
+   public hasFeature(featureFlag: FeatureFlags): Observable<boolean> {
+      return this.store
+         .select(selectCurrentUser)
+         .pipe(map((u) => u.features.includes(featureFlag)));
    }
 
    public updateCurrentUser(newData: IUser): Observable<IBasicResultDto> {
