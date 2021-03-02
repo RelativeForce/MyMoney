@@ -1,4 +1,4 @@
-import { Frequency } from './api';
+import { FeatureFlags, Frequency } from './api';
 
 export function groupBy<T, K>(list: T[], toKey: (item: T) => K): Map<K, T[]> {
    const map = new Map<K, T[]>();
@@ -38,5 +38,12 @@ export function toFrequencyString(frequency: Frequency): string {
       case Frequency.fourWeek: return 'Four weekly';
       case Frequency.month: return 'Monthly';
       case Frequency.year: return 'Annually';
+   }
+}
+
+export function toFeatureFlagString(featureFlag: FeatureFlags): string {
+   switch (featureFlag) {
+      case FeatureFlags.budgets: return 'Budgets';
+      case FeatureFlags.incomesToTransactions: return 'Incomes to transactions';
    }
 }

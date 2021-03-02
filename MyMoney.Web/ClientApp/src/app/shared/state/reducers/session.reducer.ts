@@ -30,11 +30,7 @@ function setUser(state: ISessionState, action: SetUserAction) {
 
    return {
       ...state,
-      currentUser: {
-         email: user.email,
-         dateOfBirth: user.dateOfBirth,
-         fullName: user.fullName,
-      }
+      currentUser: user
    };
 }
 

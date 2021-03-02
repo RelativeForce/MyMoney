@@ -66,7 +66,8 @@ export class ProfileComponent implements OnInit {
       const newData: IUserDto = {
          email,
          fullName,
-         dateOfBirth
+         dateOfBirth,
+         features: []
       };
 
       this.currentUserService.updateCurrentUser(newData)
