@@ -1,4 +1,5 @@
 ﻿using System;
+using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Core.Results;
 
@@ -10,7 +11,7 @@ namespace MyMoney.Core.Interfaces.Service
       LoginResult Register(string email, string password, DateTime dateOfBirth, string fullName);
       IUser GetById(long userId);
       void SendForgotPasswordEmail(string email, string baseUrl);
-      BasicResult Update(long userId, string email, string fullName, DateTime dateOfBirth);
+      BasicResult Update(long userId, string email, string fullName, DateTime dateOfBirth, FeatureFlags[] features);
       BasicResult ChangePassword(long userId, string password);
    }
 }

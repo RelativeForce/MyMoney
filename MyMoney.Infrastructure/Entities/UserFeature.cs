@@ -19,6 +19,18 @@ namespace MyMoney.Infrastructure.Entities
       [ForeignKey(nameof(UserId))]
       public virtual User UserProxy { get; set; }
 
+      public UserFeature()
+      {
+         // Required by EF
+      }
+
+      public UserFeature(User user, FeatureFlags feature)
+      {
+         User = user;
+         Feature = feature;
+         UserId = user.Id;
+      }
+
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<UserFeature>().HasKey(uf => new { uf.UserId, uf.Feature });

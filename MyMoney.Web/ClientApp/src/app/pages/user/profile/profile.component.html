@@ -22,13 +22,7 @@
          <div *ngIf="f.dateOfBirth.errors.required">Date of birth is required</div>
       </div>
    </div>
-   <thead>
-      <tr>
-         <th scope="col"></th>
-         <th scope="col">Name</th>
-      </tr>
-   </thead>
-   <tbody>
+   <tbody class="table">
       <tr *ngFor="let feature of features; let i = index">
          <td>
             <mymoney-check-box [isChecked]="activeFeatures.has(feature.key)" (change)="onFeatureCheckboxChange($event, feature.key)">

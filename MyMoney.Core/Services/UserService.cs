@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using MyMoney.Core.Data;
 using MyMoney.Core.Email;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Email;
@@ -87,7 +88,7 @@ namespace MyMoney.Core.Services
          return LoginResult.SuccessResult(_tokenProvider.NewToken(user));
       }
 
-      public BasicResult Update(long userId, string email, string fullName, DateTime dateOfBirth)
+      public BasicResult Update(long userId, string email, string fullName, DateTime dateOfBirth, FeatureFlags[] features)
       {
          var user = GetById(userId);
          if (user == null)
@@ -105,6 +106,8 @@ namespace MyMoney.Core.Services
          if (userWithEmail.Id != user.Id)
             return BasicResult.FailResult("Email already exists");
 
+         user.UpdateFeatures(features);
+         
          var success = _repository.Update(user);
          if (!success)
             return BasicResult.FailResult("Database Error");

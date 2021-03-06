@@ -49,7 +49,7 @@ namespace MyMoney.Web.Controllers
          {
             var userId = _userProvider.CurrentUserId;
 
-            var result = _userService.Update(userId, dto.Email, dto.FullName, DateTime.Parse(dto.DateOfBirth));
+            var result = _userService.Update(userId, dto.Email, dto.FullName, DateTime.Parse(dto.DateOfBirth), dto.Features.ToArray());
 
             return Ok(new BasicResultDto(result));
          }

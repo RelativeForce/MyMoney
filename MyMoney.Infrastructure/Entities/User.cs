@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Net.Mail;
 using Microsoft.EntityFrameworkCore;
+using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities.Abstract;
 
@@ -26,6 +27,16 @@ namespace MyMoney.Infrastructure.Entities
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<User>().HasIndex(t => new { t.Email }).IsUnique();
+      }
+
+      public void UpdateFeatures(FeatureFlags[] features)
+      {
+         FeaturesProxy.Clear();
+
+         foreach (var feature in features)
+         {
+            FeaturesProxy.Add(new UserFeature(this, feature));
+         }
       }
 
       public IEnumerable<string> ValidationErrors()
