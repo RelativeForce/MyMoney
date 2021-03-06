@@ -28,7 +28,7 @@ export class CurrentUserService {
    public hasFeature(featureFlag: FeatureFlags): Observable<boolean> {
       return this.store
          .select(selectCurrentUser)
-         .pipe(map((u) => u.features.includes(featureFlag)));
+         .pipe(map((u) => u?.features.includes(featureFlag) ?? false));
    }
 
    public updateCurrentUser(newData: IUser): Observable<IBasicResultDto> {

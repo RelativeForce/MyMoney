@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TransactionService } from '../../../../shared/services';
+import { CurrentUserService, TransactionService } from '../../../../shared/services';
 import { ITransactionModel } from 'src/app/shared/state/types';
-import { Frequency } from 'src/app/shared/api';
+import { FeatureFlags, Frequency } from 'src/app/shared/api';
 import { toFrequencyString } from 'src/app/shared/functions';
 import { minAmountValidator } from 'src/app/shared/common-validators';
 
@@ -16,6 +16,7 @@ export class EditBasicTransactionComponent implements OnInit {
    public id: number;
    public parentId: number | null = null;
    public parentFrequency: Frequency | null = null;
+   public showBudgets = false;
    public loading = false;
    public submitted = false;
    public loadingTransaction = true;
@@ -26,6 +27,7 @@ export class EditBasicTransactionComponent implements OnInit {
    constructor(
       private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
+      private readonly currentUserService: CurrentUserService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute) {
       this.id = 0;
@@ -70,6 +72,10 @@ export class EditBasicTransactionComponent implements OnInit {
                () => this.router.navigate(['/transactions'])
             );
       });
+
+      this.currentUserService
+         .hasFeature(FeatureFlags.budgets)
+         .subscribe((showBudgets) => this.showBudgets = showBudgets);
    }
 
    public get selectedDate(): Date | null {

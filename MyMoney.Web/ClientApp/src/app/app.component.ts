@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, Router, RoutesRecognized } from '@angular/router';
+import { FeatureFlags } from './shared/api';
 import { CurrentUserService } from './shared/services';
 import { IUser } from './shared/state/types';
 
@@ -8,16 +9,19 @@ import { IUser } from './shared/state/types';
 export class AppComponent implements OnInit {
 
    public user: IUser | null;
+   public showBudgets: boolean;
 
    constructor(
       private readonly currentUserService: CurrentUserService,
       private readonly titleService: Title,
       private readonly router: Router) {
       this.user = null;
+      this.showBudgets = false;
    }
 
    public ngOnInit(): void {
       this.currentUserService.currentUser().subscribe((user) => this.user = user);
+      this.currentUserService.hasFeature(FeatureFlags.budgets).subscribe((showBudgets) => this.showBudgets = showBudgets);
 
       this.router.events.subscribe((data) => {
          if (data instanceof RoutesRecognized) {

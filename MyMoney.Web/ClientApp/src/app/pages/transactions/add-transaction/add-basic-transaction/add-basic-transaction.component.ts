@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ITransactionModel } from 'src/app/shared/state/types';
-import { TransactionService } from 'src/app/shared/services';
+import { CurrentUserService, TransactionService } from 'src/app/shared/services';
 import { minAmountValidator } from 'src/app/shared/common-validators';
+import { FeatureFlags } from 'src/app/shared/api';
 
 @Component({
    selector: 'mymoney-add-basic-transaction',
@@ -13,6 +14,7 @@ export class AddBasicTransactionComponent implements OnInit {
    public addTransactionForm: FormGroup;
    public loading = false;
    public submitted = false;
+   public showBudgets = false;
 
    public selectedBudgets: Set<number> = new Set();
    public selectedIncomes: Set<number> = new Set();
@@ -21,6 +23,7 @@ export class AddBasicTransactionComponent implements OnInit {
       private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly transactionService: TransactionService,
+      private readonly currentUserService: CurrentUserService,
    ) {
    }
 
@@ -31,6 +34,10 @@ export class AddBasicTransactionComponent implements OnInit {
          amount: [0.01, [Validators.required, minAmountValidator]],
          notes: ['']
       });
+
+      this.currentUserService
+         .hasFeature(FeatureFlags.budgets)
+         .subscribe((showBudgets) => this.showBudgets = showBudgets);
    }
 
    public get f() {
