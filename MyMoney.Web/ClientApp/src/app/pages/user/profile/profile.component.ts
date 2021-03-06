@@ -4,10 +4,11 @@ import { CurrentUserService } from '../../../shared/services';
 import { toInputDateString } from '../../../shared/functions';
 import { filter } from 'rxjs/operators';
 import { IUser } from 'src/app/shared/state/types';
-import { IBasicResultDto, IUserDto } from 'src/app/shared/api';
+import { FeatureFlags, IBasicResultDto, IUserDto } from 'src/app/shared/api';
 import { IAppState } from 'src/app/shared/state/app-state';
 import { Store } from '@ngrx/store';
 import { SetUserAction } from 'src/app/shared/state/actions';
+import { featureOptions } from 'src/app/shared/constants';
 
 @Component({
    templateUrl: 'profile.component.html'
@@ -17,6 +18,8 @@ export class ProfileComponent implements OnInit {
    public loading = false;
    public submitted = false;
    public error: string | null = null;
+   public activeFeatures: Set<FeatureFlags> = new Set<FeatureFlags>();
+   public features = featureOptions;
 
    constructor(
       private readonly formBuilder: FormBuilder,
@@ -41,8 +44,19 @@ export class ProfileComponent implements OnInit {
             this.f.fullName.patchValue(currentUser.fullName);
             this.f.email.patchValue(currentUser.email);
 
+            this.activeFeatures.clear();
+            currentUser.features.forEach(f => this.activeFeatures.add(f));
+
             this.enableForm();
          });
+   }
+
+   public onFeatureCheckboxChange(newValue: boolean, id: FeatureFlags): void {
+      if (newValue) {
+         this.activeFeatures.add(id);
+      } else {
+         this.activeFeatures.delete(id);
+      }
    }
 
    public get f() {
@@ -67,7 +81,7 @@ export class ProfileComponent implements OnInit {
          email,
          fullName,
          dateOfBirth,
-         features: []
+         features: Array.from(this.activeFeatures)
       };
 
       this.currentUserService.updateCurrentUser(newData)

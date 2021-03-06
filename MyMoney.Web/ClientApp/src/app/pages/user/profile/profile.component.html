@@ -22,6 +22,21 @@
          <div *ngIf="f.dateOfBirth.errors.required">Date of birth is required</div>
       </div>
    </div>
+   <thead>
+      <tr>
+         <th scope="col"></th>
+         <th scope="col">Name</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr *ngFor="let feature of features; let i = index">
+         <td>
+            <mymoney-check-box [isChecked]="activeFeatures.has(feature.key)" (change)="onFeatureCheckboxChange($event, feature.key)">
+            </mymoney-check-box>
+         </td>
+         <td>{{feature.value}}</td>
+      </tr>
+   </tbody>
    <div class="form-group">
       <button [disabled]="loading" class="btn btn-primary">
          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
