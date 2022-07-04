@@ -15,7 +15,7 @@ using MyMoney.Infrastructure;
 using MyMoney.Infrastructure.Email;
 using MyMoney.Infrastructure.EntityFramework;
 using MyMoney.Web.Utility;
-using MySql.Data.EntityFrameworkCore;
+using MySql.EntityFrameworkCore;
 using System;
 
 namespace MyMoney.Web
@@ -88,7 +88,7 @@ namespace MyMoney.Web
             {
                options
                   .UseLazyLoadingProxies()
-                  .UseMySql(DatabaseConstants.DatabaseConnection);
+                  .UseMySQL(DatabaseConstants.DatabaseConnection);
             }
          });
       }
