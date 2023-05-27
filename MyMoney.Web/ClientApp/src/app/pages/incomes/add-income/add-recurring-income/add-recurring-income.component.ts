@@ -40,10 +40,6 @@ export class AddRecurringIncomeComponent implements OnInit {
       this.addIncomeFormControls.end.setValue(toDateString(end));
    }
 
-   public get f() {
-      return this.addIncomeForm.controls;
-   }
-
    public onSubmit(): void {
       this.submitted = true;
 

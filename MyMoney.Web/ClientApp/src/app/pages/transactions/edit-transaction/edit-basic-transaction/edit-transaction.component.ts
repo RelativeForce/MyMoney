@@ -76,10 +76,6 @@ export class EditBasicTransactionComponent implements OnInit {
       return this.loadingTransaction ? null : new Date(this.editTransactionFormControls.date.value ?? '');
    }
 
-   public get f() {
-      return this.editTransactionForm.controls;
-   }
-
    public toInputDateString(text: string): string {
       const month = Number.parseInt(text.split('/')[1], 10);
 
