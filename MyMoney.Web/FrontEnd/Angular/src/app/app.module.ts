@@ -4,7 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { JwtInterceptor } from './shared/api';
 import {
   HomeComponent,
   LoginComponent,
@@ -106,14 +105,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     StoreModule.forRoot(appReducer),
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true
-    },
-    Title
-   ],
+  providers: [Title],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

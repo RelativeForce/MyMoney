@@ -53,12 +53,7 @@ namespace MyMoney.Web
          // In production, the Angular files will be served from this directory
          services.AddSpaStaticFiles(configuration =>
          {
-            configuration.RootPath = FrontEndConstants.TargetFrontEndFramework switch
-            {
-               FrontEndConstants.FrontEndFramework.Anuglar => "FrontEnd/Angular/dist",
-               FrontEndConstants.FrontEndFramework.React => "FrontEnd/React/dist",
-               _ => "FrontEnd/Angular/dist",
-            };
+            configuration.RootPath = $"FrontEnd/{FrontEndConstants.TargetFrontEndFramework}/dist";
          });
 
          services.AddAuthentication(x =>
