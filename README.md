@@ -27,6 +27,7 @@ Follow these steps to install and start a local instance of MyMoney.
 | `MyMoney_Database_Connection` | The connection string to the database. Defaults to the local SQL express server instance. | `Server=.\SQLEXPRESS; Initial Catalog=MyMoney; Trusted_Connection=True; MultipleActiveResultSets=true; Integrated Security=True` | yes |
 | `MyMoney_Database_Engine` | The database type of the connection. Only `MySQL` and `SQLServer` are supported. | `SQLServer` | yes |
 | `MyMoney_Local_Web_App_Path` | The folder path you would like to install the app into. | `.\Web` | yes |
+| `MyMoney_Front_End_Framework` | The framework to use for the front end. | `Angular` | yes |
 | `MyMoney_GitHub_URL` | The URL to the public GitHub repository. | `https://github.com/RelativeForce/MyMoney` | yes |
 | `MyMoney_Asset_File_Name` | The filename of the asset to download. Requires `{0}` Major version number, `{1}` Minor version number and `{2}` Hotfix number. | `MyMoney_win64_{0}-{1}-{2}.zip` | yes |
 | `MyMoney_Token_Secret` | The secret used for generating the user JWT tokens. You can generate one [here](https://www.grc.com/passwords.htm). | `dqSRHqsruH3U75hFSg1Y5LCOcON7G90iXGomYbaFuH4G10f2PIexSes3QlyidLC` | yes |
