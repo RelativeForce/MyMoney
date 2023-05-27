@@ -16,8 +16,6 @@ export class StartSessionAction implements Action {
 
 export class ClearSessionAction implements Action {
    public type: string = SessionActionTypes.clearSession;
-
-   constructor() { }
 }
 
 export class SetUserAction implements Action {

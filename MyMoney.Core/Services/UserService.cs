@@ -174,8 +174,8 @@ namespace MyMoney.Core.Services
 
       private static string HashPassword(string password)
       {
-         byte[] salt;
-         new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+         byte[] salt = new byte[16];
+         RandomNumberGenerator.Create().GetBytes(salt);
 
          var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
          byte[] hash = pbkdf2.GetBytes(20);

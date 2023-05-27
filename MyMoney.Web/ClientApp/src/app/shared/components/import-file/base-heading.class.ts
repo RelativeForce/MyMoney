@@ -1,3 +1,5 @@
+import { toDateString } from "../../functions";
+
 export abstract class BaseHeading<T> {
    constructor(public property: T) { }
 
@@ -29,7 +31,7 @@ export abstract class BaseHeading<T> {
 
    private static formatDate(input: string): string | null {
       try {
-         return new Date(Date.parse(input)).toISOString().split('T')[0];
+         return toDateString(new Date(Date.parse(input)));
       } catch (error) {
          return null;
       }

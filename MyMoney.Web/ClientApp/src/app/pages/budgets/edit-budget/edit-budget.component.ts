@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { minAmountValidator, monthValidator } from 'src/app/shared/common-validators';
 import { BudgetService } from 'src/app/shared/services';
@@ -11,16 +11,23 @@ import { IBudgetModel } from 'src/app/shared/state/types';
 export class EditBudgetComponent implements OnInit {
 
    public editBudgetForm: FormGroup;
+   public editBudgetFormControls = {
+      year: new FormControl(1980, [Validators.required, Validators.min(1980)]),
+      month: new FormControl(1, [Validators.required, monthValidator]),
+      amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
+      name: new FormControl('', [Validators.required]),
+      notes: new FormControl('', [])
+   };
    public loading = false;
    public submitted = false;
-   public id: number;
+   public id = 0;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
       private readonly budgetService: BudgetService,
    ) {
+      this.editBudgetForm = new FormGroup(this.editBudgetFormControls);
    }
 
    public ngOnInit(): void {
@@ -34,32 +41,20 @@ export class EditBudgetComponent implements OnInit {
 
          this.id = Number.parseInt(idStr, 10);
 
-         this.editBudgetForm = this.formBuilder.group({
-            year: [1980, [Validators.required, Validators.min(1980)]],
-            month: [1, [Validators.required, monthValidator]],
-            amount: [0.01, [Validators.required, minAmountValidator]],
-            name: ['', [Validators.required]],
-            notes: ['', []]
-         });
-
          this.disableForm();
 
          this.budgetService.findBudget(this.id).subscribe(response => {
-            this.f.year.patchValue(response.year);
-            this.f.month.patchValue(response.month);
-            this.f.amount.patchValue(response.amount);
-            this.f.name.patchValue(response.name);
-            this.f.notes.patchValue(response.notes);
+            this.editBudgetFormControls.year.patchValue(response.year);
+            this.editBudgetFormControls.month.patchValue(response.month);
+            this.editBudgetFormControls.amount.patchValue(response.amount);
+            this.editBudgetFormControls.name.patchValue(response.name);
+            this.editBudgetFormControls.notes.patchValue(response.notes);
             this.enableForm();
          },
             error => {
                this.router.navigate(['/budgets']);
             });
       });
-   }
-
-   public get f() {
-      return this.editBudgetForm.controls;
    }
 
    public onSubmit(): void {
@@ -73,12 +68,12 @@ export class EditBudgetComponent implements OnInit {
       this.loading = true;
 
       const budget: IBudgetModel = {
-         month: this.f.month.value,
-         year: this.f.year.value,
-         name: this.f.name.value,
-         amount: this.f.amount.value,
-         remaining: this.f.amount.value,
-         notes: this.f.notes.value,
+         month: this.editBudgetFormControls.month.value ?? 0,
+         year: this.editBudgetFormControls.year.value ?? 0,
+         name: this.editBudgetFormControls.name.value ?? '',
+         amount: this.editBudgetFormControls.amount.value ?? 0,
+         remaining: this.editBudgetFormControls.amount.value ?? 0,
+         notes: this.editBudgetFormControls.notes.value ?? '',
          id: this.id
       };
 
@@ -95,18 +90,18 @@ export class EditBudgetComponent implements OnInit {
    }
 
    private disableForm() {
-      this.f.year.disable();
-      this.f.month.disable();
-      this.f.amount.disable();
-      this.f.name.disable();
-      this.f.notes.disable();
+      this.editBudgetFormControls.year.disable();
+      this.editBudgetFormControls.month.disable();
+      this.editBudgetFormControls.amount.disable();
+      this.editBudgetFormControls.name.disable();
+      this.editBudgetFormControls.notes.disable();
    }
 
    private enableForm() {
-      this.f.year.enable();
-      this.f.month.enable();
-      this.f.amount.enable();
-      this.f.name.enable();
-      this.f.notes.enable();
+      this.editBudgetFormControls.year.enable();
+      this.editBudgetFormControls.month.enable();
+      this.editBudgetFormControls.amount.enable();
+      this.editBudgetFormControls.name.enable();
+      this.editBudgetFormControls.notes.enable();
    }
 }

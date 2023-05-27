@@ -1,30 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../../shared/services';
 
 @Component({
    templateUrl: './forgot-password.component.html'
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent {
 
    public forgotPasswordForm: FormGroup;
+   public forgotPasswordFormControls = {
+      email: new FormControl('', [Validators.required])
+   };
    public loading = false;
    public submitted = false;
    public message: string | null = null;
 
-   constructor(
-      private readonly formBuilder: FormBuilder,
-      private readonly authenticationService: AuthenticationService,
-   ) { }
-
-   public ngOnInit(): void {
-      this.forgotPasswordForm = this.formBuilder.group({
-         email: ['', [Validators.required]]
-      });
-   }
-
-   public get f() {
-      return this.forgotPasswordForm.controls;
+   constructor(private readonly authenticationService: AuthenticationService) {
+      this.forgotPasswordForm = new FormGroup(this.forgotPasswordFormControls);
    }
 
    public onSubmit(): void {
@@ -37,7 +29,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.loading = true;
       this.message = null;
 
-      const email = this.f.email.value;
+      const email = this.forgotPasswordFormControls.email.value ?? '';
 
       this.authenticationService.forgotPassword(email)
          .subscribe(

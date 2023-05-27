@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IncomeService } from 'src/app/shared/services';
 import { IRecurringIncomeDto, Frequency } from 'src/app/shared/api';
 import { frequencyOptions } from 'src/app/shared/constants';
 import { frequencyValidator, minAmountValidator } from 'src/app/shared/common-validators';
+import { toDateString } from 'src/app/shared/functions';
 
 @Component({
    selector: 'mymoney-add-recurring-income',
@@ -13,34 +14,30 @@ import { frequencyValidator, minAmountValidator } from 'src/app/shared/common-va
 export class AddRecurringIncomeComponent implements OnInit {
 
    public addIncomeForm: FormGroup;
+   public addIncomeFormControls = {
+      start: new FormControl(toDateString(new Date()), [Validators.required]),
+      end: new FormControl(toDateString(new Date()), [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
+      recurrence: new FormControl(Frequency.month, [Validators.required, frequencyValidator]),
+      notes: new FormControl(''),
+   };
    public loading = false;
    public submitted = false;
    public recurrenceOptions: { key: Frequency; value: string }[] = frequencyOptions;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly incomeService: IncomeService,
-   ) { }
+   ) { 
+      this.addIncomeForm = new FormGroup(this.addIncomeFormControls);
+   }
 
    public ngOnInit(): void {
-
-      const start = new Date();
       const end = new Date();
       end.setMonth(end.getMonth() + 3);
 
-      this.addIncomeForm = this.formBuilder.group({
-         start: [start.toISOString().split('T')[0], [Validators.required]],
-         end: [end.toISOString().split('T')[0], [Validators.required]],
-         name: ['', [Validators.required]],
-         amount: [0.01, [Validators.required, minAmountValidator]],
-         recurrence: [Frequency.month, [Validators.required, frequencyValidator]],
-         notes: ['']
-      });
-   }
-
-   public get f() {
-      return this.addIncomeForm.controls;
+      this.addIncomeFormControls.end.setValue(toDateString(end));
    }
 
    public onSubmit(): void {
@@ -53,12 +50,12 @@ export class AddRecurringIncomeComponent implements OnInit {
 
       this.loading = true;
 
-      const start: string = new Date(this.f.start.value).toLocaleDateString();
-      const end: string = new Date(this.f.end.value).toLocaleDateString();
-      const name = this.f.name.value;
-      const amount = this.f.amount.value;
-      const notes = this.f.notes.value;
-      const recurrence = Number.parseInt(this.f.recurrence.value, 10) as Frequency;
+      const start: string = new Date(this.addIncomeFormControls.start.value ?? '').toLocaleDateString();
+      const end: string = new Date(this.addIncomeFormControls.end.value ?? '').toLocaleDateString();
+      const name = this.addIncomeFormControls.name.value ?? '';
+      const amount = this.addIncomeFormControls.amount.value ?? 0;
+      const notes = this.addIncomeFormControls.notes.value ?? '';
+      const recurrence = this.addIncomeFormControls.recurrence.value ?? Frequency.day;
 
       const income: IRecurringIncomeDto = {
          start,

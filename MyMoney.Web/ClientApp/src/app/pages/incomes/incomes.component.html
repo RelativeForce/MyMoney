@@ -6,9 +6,9 @@
             <span class="input-group-text">Start</span>
          </div>
          <input type="date" formControlName="start" class="form-control" (change)="updateIncomes()"
-            [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
-         <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
-            <div *ngIf="f.start.errors.required">Start is required</div>
+            [ngClass]="{ 'is-invalid': submitted && dateRangeFormControls.start.errors }" />
+         <div *ngIf="submitted && dateRangeFormControls.start.errors" class="invalid-feedback">
+            <div *ngIf="dateRangeFormControls.start.errors['required']">Start is required</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2">
@@ -16,9 +16,9 @@
             <span class="input-group-text">End</span>
          </div>
          <input type="date" formControlName="end" class="form-control" (change)="updateIncomes()"
-            [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
-         <div *ngIf="submitted && f.end.errors" class="invalid-feedback">
-            <div *ngIf="f.end.errors.required">End is required</div>
+            [ngClass]="{ 'is-invalid': submitted && dateRangeFormControls.end.errors }" />
+         <div *ngIf="submitted && dateRangeFormControls.end.errors" class="invalid-feedback">
+            <div *ngIf="dateRangeFormControls.end.errors['required']">End is required</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">

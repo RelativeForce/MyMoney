@@ -4,7 +4,10 @@ import { ActivatedRouteSnapshot, Router, RoutesRecognized } from '@angular/route
 import { CurrentUserService } from './shared/services';
 import { IUser } from './shared/state/types';
 
-@Component({ selector: 'mymoney-root', templateUrl: 'app.component.html' })
+@Component({
+  selector: 'mymoney-root',
+  templateUrl: 'app.component.html',
+})
 export class AppComponent implements OnInit {
 
    public user: IUser | null;
@@ -37,7 +40,7 @@ export class AppComponent implements OnInit {
 
    private getTitle(route: ActivatedRouteSnapshot): string | null {
 
-      const title: string | null = route.data?.title ?? null;
+      const title: string | null = route.title ?? null;
 
       for (const childRoute of route.children) {
          const childTitle = this.getTitle(childRoute);

@@ -10,7 +10,7 @@
       <tr>
          <th scope="col" *ngFor="let heading of headings; let i = index">
             <div class="form-group">
-               <select class="form-control" style="min-width: 130px;" (change)="onColumnChange($event.target.value, i)">
+               <select class="form-control" style="min-width: 130px;" (change)="onColumnChange($event, i)">
                   <option *ngFor="let field of dataProvider.fields" value="{{field}}">{{ field }}</option>
                </select>
             </div>
@@ -22,7 +22,7 @@
          <tr [ngClass]="{'alert alert-warning': row.error !== null}" data-toggle="tooltip" data-placement="top" title="{{row.error}}">
             <td *ngFor="let element of row.data; let elementIndex = index">
                <input type='{{headings[elementIndex].inputType}}' class="form-control" [value]="headings[elementIndex].format(element)"
-                  (change)='changeElementValue($event.target.value, row.id, elementIndex)' [readonly]="headings[elementIndex].isIgnored"
+                  (change)='changeElementValue($event, row.id, elementIndex)' [readonly]="headings[elementIndex].isIgnored"
                   [disabled]="isLoading || isDone" [ngClass]="{ 'is-invalid': headings[elementIndex].validate(element) !== null }" />
                <div *ngIf="headings[elementIndex].validate(element) as validationError" class="invalid-feedback">
                   <div *ngIf="dataProvider.columnErrorMessage(headings) === null">{{ validationError }}</div>

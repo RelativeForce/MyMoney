@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IncomeService } from '../../../../shared/services';
 import { IRecurringIncomeDto, Frequency, IIncomeDto } from 'src/app/shared/api';
@@ -14,7 +14,15 @@ import { frequencyValidator, minAmountValidator } from 'src/app/shared/common-va
 export class EditRecurringIncomeComponent implements OnInit {
 
    public editIncomeForm: FormGroup;
-   public id: number;
+   public editIncomeFormControls = {
+      start: new FormControl('', [Validators.required]),
+      end: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
+      notes: new FormControl(''),
+      recurrence: new FormControl(Frequency.month, [Validators.required, frequencyValidator])
+   };
+   public id = 0;
    public loading = false;
    public realisingChild: number | null = null;
    public submitted = false;
@@ -23,11 +31,12 @@ export class EditRecurringIncomeComponent implements OnInit {
    public recurrenceOptions: { key: Frequency; value: string }[] = frequencyOptions;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly incomeService: IncomeService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
-   ) { }
+   ) {
+      this.editIncomeForm = new FormGroup(this.editIncomeFormControls);
+   }
 
    public ngOnInit(): void {
 
@@ -40,26 +49,17 @@ export class EditRecurringIncomeComponent implements OnInit {
 
          this.id = Number.parseInt(idStr, 10);
 
-         this.editIncomeForm = this.formBuilder.group({
-            start: ['', [Validators.required]],
-            end: ['', [Validators.required]],
-            name: ['', [Validators.required]],
-            amount: [0.01, [Validators.required, minAmountValidator]],
-            notes: [''],
-            recurrence: [Frequency.month, [Validators.required, frequencyValidator]]
-         });
-
          this.disableForm();
 
          this.incomeService
             .findRecurringIncome(this.id)
             .subscribe((response: IRecurringIncomeDto) => {
-               this.f.start.patchValue(toInputDateString(response.start));
-               this.f.end.patchValue(toInputDateString(response.end));
-               this.f.name.patchValue(response.name);
-               this.f.recurrence.patchValue(response.recurrence);
-               this.f.amount.patchValue(response.amount);
-               this.f.notes.patchValue(response.notes);
+               this.editIncomeFormControls.start.patchValue(toInputDateString(response.start));
+               this.editIncomeFormControls.end.patchValue(toInputDateString(response.end));
+               this.editIncomeFormControls.name.patchValue(response.name);
+               this.editIncomeFormControls.recurrence.patchValue(response.recurrence);
+               this.editIncomeFormControls.amount.patchValue(response.amount);
+               this.editIncomeFormControls.notes.patchValue(response.notes);
 
                this.children = response.children;
                this.enableForm();
@@ -67,10 +67,6 @@ export class EditRecurringIncomeComponent implements OnInit {
                () => this.router.navigate(['/incomes'])
             );
       });
-   }
-
-   public get f() {
-      return this.editIncomeForm.controls;
    }
 
    public onDurationOrRecurrenceChange(): void {
@@ -100,7 +96,7 @@ export class EditRecurringIncomeComponent implements OnInit {
          return;
       }
 
-      if (this.f.start.dirty || this.f.recurrence.dirty) {
+      if (this.editIncomeFormControls.start.dirty || this.editIncomeFormControls.recurrence.dirty) {
          const message = 'Changing the start or recurrence will erase all manual changes to the income occurrences.\n\n' + 'Continue?';
 
          if (!confirm(message)) {
@@ -125,30 +121,30 @@ export class EditRecurringIncomeComponent implements OnInit {
    }
 
    private disableForm() {
-      this.f.start.disable();
-      this.f.end.disable();
-      this.f.name.disable();
-      this.f.recurrence.disable();
-      this.f.amount.disable();
-      this.f.notes.disable();
+      this.editIncomeFormControls.start.disable();
+      this.editIncomeFormControls.end.disable();
+      this.editIncomeFormControls.name.disable();
+      this.editIncomeFormControls.recurrence.disable();
+      this.editIncomeFormControls.amount.disable();
+      this.editIncomeFormControls.notes.disable();
    }
 
    private enableForm() {
-      this.f.start.enable();
-      this.f.end.enable();
-      this.f.name.enable();
-      this.f.recurrence.enable();
-      this.f.amount.enable();
-      this.f.notes.enable();
+      this.editIncomeFormControls.start.enable();
+      this.editIncomeFormControls.end.enable();
+      this.editIncomeFormControls.name.enable();
+      this.editIncomeFormControls.recurrence.enable();
+      this.editIncomeFormControls.amount.enable();
+      this.editIncomeFormControls.notes.enable();
    }
 
    private get asIncomeModel(): IRecurringIncomeDto {
-      const start: string = new Date(this.f.start.value).toLocaleDateString();
-      const end: string = new Date(this.f.end.value).toLocaleDateString();
-      const name = this.f.name.value;
-      const amount = this.f.amount.value;
-      const notes = this.f.notes.value;
-      const recurrence = Number.parseInt(this.f.recurrence.value, 10) as Frequency;
+      const start: string = new Date(this.editIncomeFormControls.start.value ?? '').toLocaleDateString();
+      const end: string = new Date(this.editIncomeFormControls.end.value ?? '').toLocaleDateString();
+      const name = this.editIncomeFormControls.name.value ?? '';
+      const amount = this.editIncomeFormControls.amount.value ?? 0;
+      const notes = this.editIncomeFormControls.notes.value ?? '';
+      const recurrence = this.editIncomeFormControls.recurrence.value ?? Frequency.day;
 
       return {
          start,

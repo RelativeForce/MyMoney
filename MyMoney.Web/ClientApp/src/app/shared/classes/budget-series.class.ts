@@ -4,7 +4,6 @@ import { BudgetSeriesDataPoint } from './budget-series-data-point.class';
 
 export class BudgetSeries implements ISeries {
    public name: string; // Must be unique
-   public text: string;
    public series: BudgetSeriesDataPoint[];
    private remaining: number;
 

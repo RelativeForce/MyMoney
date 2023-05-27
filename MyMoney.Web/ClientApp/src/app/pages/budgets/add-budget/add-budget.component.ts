@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { minAmountValidator, monthValidator } from 'src/app/shared/common-validators';
 import { BudgetService } from 'src/app/shared/services';
@@ -11,14 +11,22 @@ import { IBudgetModel } from 'src/app/shared/state/types';
 export class AddBudgetComponent implements OnInit {
 
    public addBudgetForm: FormGroup;
+   public addBudgetFormControls = {
+      year: new FormControl(1980, [Validators.required, Validators.min(1980)]),
+      month: new FormControl(1, [Validators.required, monthValidator]),
+      amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
+      name: new FormControl('', [Validators.required]),
+      notes: new FormControl('', [])
+   };
    public loading = false;
    public submitted = false;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly budgetService: BudgetService,
-   ) { }
+   ) {
+      this.addBudgetForm = new FormGroup(this.addBudgetFormControls);
+   }
 
    public ngOnInit(): void {
       const today = new Date();
@@ -26,17 +34,8 @@ export class AddBudgetComponent implements OnInit {
       const year = today.getFullYear();
       const month = today.getMonth() + 1;
 
-      this.addBudgetForm = this.formBuilder.group({
-         year: [year, [Validators.required, Validators.min(1980)]],
-         month: [month, [Validators.required, monthValidator]],
-         amount: [0.01, [Validators.required, minAmountValidator]],
-         name: ['', [Validators.required]],
-         notes: ['', []]
-      });
-   }
-
-   public get f() {
-      return this.addBudgetForm.controls;
+      this.addBudgetFormControls.year.setValue(year);
+      this.addBudgetFormControls.month.setValue(month);
    }
 
    public onSubmit(): void {
@@ -49,11 +48,11 @@ export class AddBudgetComponent implements OnInit {
 
       this.loading = true;
 
-      const year = this.f.year.value;
-      const month = this.f.month.value;
-      const amount = this.f.amount.value;
-      const name = this.f.name.value;
-      const notes = this.f.notes.value;
+      const year = this.addBudgetFormControls.year.value ?? 0;
+      const month = this.addBudgetFormControls.month.value ?? 0;
+      const amount = this.addBudgetFormControls.amount.value ?? 0;
+      const name = this.addBudgetFormControls.name.value ?? '';
+      const notes = this.addBudgetFormControls.notes.value ?? '';
 
       const budget: IBudgetModel = {
          month,

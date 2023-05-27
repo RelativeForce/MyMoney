@@ -1,43 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-
 import { AuthenticationService } from '../../../shared/services';
 import { ILoginResultDto, IRegisterDto } from '../../../shared/api';
+import { toDateString } from 'src/app/shared/functions';
 
 @Component({
    templateUrl: 'register.component.html'
 })
 export class RegisterComponent implements OnInit {
    public registerForm: FormGroup;
+   public registerFormControls = {
+      email: new FormControl('', [Validators.required]),
+      fullName: new FormControl('', [Validators.required]),
+      dateOfBirth: new FormControl(toDateString(new Date()), [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]),
+      confirmPassword: new FormControl('')
+   };
    public loading = false;
    public submitted = false;
    public error: string | null = null;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly authenticationService: AuthenticationService,
    ) {
+      this.registerForm = new FormGroup(this.registerFormControls);
    }
 
    public ngOnInit(): void {
-      this.registerForm = this.formBuilder.group({
-         email: ['', [Validators.required]],
-         fullName: ['', [Validators.required]],
-         dateOfBirth: [new Date().toISOString().split('T')[0], [Validators.required]],
-         password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]],
-         confirmPassword: ['']
-      });
-
       this.registerForm.valueChanges.subscribe(() => {
          this.checkPasswords();
       });
-   }
-
-   public get f() {
-      return this.registerForm.controls;
    }
 
    public onSubmit(): void {
@@ -72,12 +67,12 @@ export class RegisterComponent implements OnInit {
    }
 
    private checkPasswords() {
-      const isInvalid = this.f.password.value !== this.f.confirmPassword.value;
+      const isInvalid = this.registerFormControls.password.value !== this.registerFormControls.confirmPassword.value;
 
       if (isInvalid) {
-         this.f.confirmPassword.setErrors({ notSame: true });
+         this.registerFormControls.confirmPassword.setErrors({ notSame: true });
       } else {
-         this.f.confirmPassword.setErrors(null);
+         this.registerFormControls.confirmPassword.setErrors(null);
       }
    }
 }

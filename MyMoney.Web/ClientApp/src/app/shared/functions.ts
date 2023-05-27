@@ -4,12 +4,9 @@ export function groupBy<T, K>(list: T[], toKey: (item: T) => K): Map<K, T[]> {
    const map = new Map<K, T[]>();
    list.forEach((item: T) => {
       const key: K = toKey(item);
-      const collection: T[] = map.get(key);
-      if (!collection) {
-         map.set(key, [item]);
-      } else {
-         collection.push(item);
-      }
+      const collection: T[] = map.get(key) ?? [];
+      collection.push(item);
+      map.set(key, collection);
    });
    return map;
 }
@@ -30,7 +27,11 @@ export function randomColor(): string {
    return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
 }
 
-export function toFrequencyString(frequency: Frequency): string {
+export function toDateString(date: Date) : string {
+   return date.toISOString().split('T')[0];
+}
+
+export function toFrequencyString(frequency: Frequency | null): string {
    switch (frequency) {
       case Frequency.day: return 'Daily';
       case Frequency.week: return 'Weekly';
@@ -38,5 +39,6 @@ export function toFrequencyString(frequency: Frequency): string {
       case Frequency.fourWeek: return 'Four weekly';
       case Frequency.month: return 'Monthly';
       case Frequency.year: return 'Annually';
+      default: return 'Daily';
    }
 }

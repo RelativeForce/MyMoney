@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { version } from '../../../../../package.json';
+import packageInfo from '../../../../../package.json';
 
 @Component({
    templateUrl: './footer.component.html',
@@ -7,7 +7,5 @@ import { version } from '../../../../../package.json';
 })
 export class FooterComponent {
 
-   public versionString: string = version;
-
-   constructor() { }
+   public versionString: string = packageInfo.version;
 }

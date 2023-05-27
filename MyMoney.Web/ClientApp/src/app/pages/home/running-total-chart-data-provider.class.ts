@@ -24,7 +24,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
    ) {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
       this.seriesData = this.seriesDataSubject.asObservable();
-
+      this.subChartTitle = '';
       this.chartTitle = 'Total savings';
       this.yAxisLabel = 'Balance (£)';
       this.colorScheme = {
@@ -42,7 +42,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
    }
 
    public onSelect(item: ISeriesItem): void {
-      this.router.navigate(item.link);
+      this.router.navigate(item.link ?? ['./']);
    }
 
    public next(): void {

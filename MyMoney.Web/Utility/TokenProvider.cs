@@ -37,7 +37,7 @@ namespace MyMoney.Web.Utility
 
       private static DateTime GetExpiryDateTime()
       {
-         return DateTime.UtcNow.AddHours(1);
+         return DateTime.UtcNow.AddHours(2);
       }
 
       private static byte[] GetKey()

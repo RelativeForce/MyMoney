@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../../shared/services';
 import { ITransactionModel } from 'src/app/shared/state/types';
@@ -13,6 +13,12 @@ import { minAmountValidator } from 'src/app/shared/common-validators';
 })
 export class EditBasicTransactionComponent implements OnInit {
    public editTransactionForm: FormGroup;
+   public editTransactionFormControls = {
+      date: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
+      notes: new FormControl(''),
+   };
    public id: number;
    public parentId: number | null = null;
    public parentFrequency: Frequency | null = null;
@@ -24,18 +30,12 @@ export class EditBasicTransactionComponent implements OnInit {
    public selectedIncomes: Set<number> = new Set();
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute) {
       this.id = 0;
 
-      this.editTransactionForm = this.formBuilder.group({
-         date: ['', [Validators.required]],
-         description: ['', [Validators.required]],
-         amount: [0.01, [Validators.required, minAmountValidator]],
-         notes: ['']
-      });
+      this.editTransactionForm = new FormGroup(this.editTransactionFormControls);
 
       this.disableForm();
    }
@@ -57,10 +57,10 @@ export class EditBasicTransactionComponent implements OnInit {
                response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
                response.incomeIds.forEach(iid => this.selectedIncomes.add(iid));
 
-               this.f.date.patchValue(this.toInputDateString(response.date));
-               this.f.description.patchValue(response.description);
-               this.f.amount.patchValue(response.amount);
-               this.f.notes.patchValue(response.notes);
+               this.editTransactionFormControls.date.patchValue(this.toInputDateString(response.date));
+               this.editTransactionFormControls.description.patchValue(response.description);
+               this.editTransactionFormControls.amount.patchValue(response.amount);
+               this.editTransactionFormControls.notes.patchValue(response.notes);
                this.parentId = response.parentId;
                this.parentFrequency = response.parentFrequency;
 
@@ -73,11 +73,7 @@ export class EditBasicTransactionComponent implements OnInit {
    }
 
    public get selectedDate(): Date | null {
-      return this.loadingTransaction ? null : new Date(this.f.date.value);
-   }
-
-   public get f() {
-      return this.editTransactionForm.controls;
+      return this.loadingTransaction ? null : new Date(this.editTransactionFormControls.date.value ?? '');
    }
 
    public toInputDateString(text: string): string {
@@ -125,32 +121,32 @@ export class EditBasicTransactionComponent implements OnInit {
    }
 
    private disableForm() {
-      this.f.date.disable();
-      this.f.description.disable();
-      this.f.amount.disable();
-      this.f.notes.disable();
+      this.editTransactionFormControls.date.disable();
+      this.editTransactionFormControls.description.disable();
+      this.editTransactionFormControls.amount.disable();
+      this.editTransactionFormControls.notes.disable();
    }
 
    private enableForm(isChild: boolean) {
 
       if (!isChild) {
-         this.f.date.enable();
-         this.f.description.enable();
-         this.f.amount.enable();
+         this.editTransactionFormControls.date.enable();
+         this.editTransactionFormControls.description.enable();
+         this.editTransactionFormControls.amount.enable();
       }
 
-      this.f.notes.enable();
+      this.editTransactionFormControls.notes.enable();
    }
 
    private get asTransactionModel(): ITransactionModel {
 
-      const date = new Date(this.f.date.value);
+      const date = new Date(this.editTransactionFormControls.date.value ?? '');
 
       const dateString: string = date.toLocaleDateString();
 
-      const description = this.f.description.value;
-      const amount = this.f.amount.value;
-      const notes = this.f.notes.value;
+      const description = this.editTransactionFormControls.description.value ?? '';
+      const amount = this.editTransactionFormControls.amount.value ?? 0;
+      const notes = this.editTransactionFormControls.notes.value ?? '';
 
       return {
          date: dateString,

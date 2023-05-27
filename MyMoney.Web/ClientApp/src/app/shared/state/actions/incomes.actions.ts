@@ -50,6 +50,4 @@ export class UpdateIncomesSearchAction implements Action {
 
 export class RefreshIncomesAction implements Action {
    public type: string = IncomeActionTypes.refreshIncomes;
-
-   constructor() { }
 }

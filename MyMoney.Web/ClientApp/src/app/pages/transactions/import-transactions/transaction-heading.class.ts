@@ -28,8 +28,9 @@ export class TransactionHeading extends BaseHeading<TransactionProperty> {
 
    public validate(input: string): string | null {
       switch (this.property) {
-         case TransactionProperty.amount:
+         case TransactionProperty.amount: {
             const value: number | null = this.format(input);
+
             if (value === null) {
                return 'Invalid number format';
             }
@@ -39,6 +40,7 @@ export class TransactionHeading extends BaseHeading<TransactionProperty> {
             }
 
             return null;
+         }
          case TransactionProperty.date:
             if (!Date.parse(input)) {
                return 'Invalid date format';

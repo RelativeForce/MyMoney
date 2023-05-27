@@ -13,7 +13,7 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
    public homeLink: string;
 
    constructor(private readonly transactionService: TransactionService) {
-      this.fields = Object.keys(TransactionProperty).map(k => TransactionProperty[k] as TransactionProperty);
+      this.fields = Object.values(TransactionProperty);
       this.homeLink = '/transactions';
    }
 
@@ -83,7 +83,7 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
          };
       }
 
-      const transactionRows = rows.map(toTransaction).filter(t => t !== null);
+      const transactionRows = rows.map(toTransaction).filter(t => t !== null).map(t => t!);
 
       for (const transactionRow of transactionRows) {
          this.transactionService.addTransaction(transactionRow.transaction).subscribe((success: boolean) => {

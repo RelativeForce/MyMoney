@@ -1,16 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ITransactionModel } from 'src/app/shared/state/types';
 import { TransactionService } from 'src/app/shared/services';
 import { minAmountValidator } from 'src/app/shared/common-validators';
+import { toDateString } from 'src/app/shared/functions';
 
 @Component({
    selector: 'mymoney-add-basic-transaction',
    templateUrl: './add-basic-transaction.component.html',
 })
-export class AddBasicTransactionComponent implements OnInit {
+export class AddBasicTransactionComponent {
    public addTransactionForm: FormGroup;
+   public addTransactionFormControls = {
+      date: new FormControl(toDateString(new Date()), [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
+      notes: new FormControl('')
+   };
    public loading = false;
    public submitted = false;
 
@@ -18,27 +25,14 @@ export class AddBasicTransactionComponent implements OnInit {
    public selectedIncomes: Set<number> = new Set();
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly transactionService: TransactionService,
    ) {
-   }
-
-   public ngOnInit(): void {
-      this.addTransactionForm = this.formBuilder.group({
-         date: [new Date().toISOString().split('T')[0], [Validators.required]],
-         description: ['', [Validators.required]],
-         amount: [0.01, [Validators.required, minAmountValidator]],
-         notes: ['']
-      });
-   }
-
-   public get f() {
-      return this.addTransactionForm.controls;
+      this.addTransactionForm = new FormGroup(this.addTransactionFormControls);
    }
 
    public get selectedDate(): Date {
-      return new Date(this.f.date.value);
+      return new Date(this.addTransactionFormControls.date.value ?? '');
    }
 
    public onSubmit(): void {
@@ -51,10 +45,10 @@ export class AddBasicTransactionComponent implements OnInit {
 
       this.loading = true;
 
-      const date = this.f.date.value;
-      const description = this.f.description.value;
-      const amount = this.f.amount.value;
-      const notes = this.f.notes.value;
+      const date = this.addTransactionFormControls.date.value  ?? '';
+      const description = this.addTransactionFormControls.description.value ?? '';
+      const amount = this.addTransactionFormControls.amount.value ?? 0;
+      const notes = this.addTransactionFormControls.notes.value ?? '';
 
       const transaction: ITransactionModel = {
          date,

@@ -2,24 +2,24 @@
 <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
    <div class="form-group">
       <label for="email">Email</label>
-      <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-      <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-         <div *ngIf="f.email.errors.required">Email is required</div>
+      <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && profileFormControls.email.errors }" />
+      <div *ngIf="submitted && profileFormControls.email.errors" class="invalid-feedback">
+         <div *ngIf="profileFormControls.email.errors['required']">Email is required</div>
       </div>
    </div>
    <div class="form-group">
       <label for="fullName">Full name</label>
-      <input type="text" formControlName="fullName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fullName.errors }" />
-      <div *ngIf="submitted && f.fullName.errors" class="invalid-feedback">
-         <div *ngIf="f.fullName.errors.required">Full name is required</div>
+      <input type="text" formControlName="fullName" class="form-control" [ngClass]="{ 'is-invalid': submitted && profileFormControls.fullName.errors }" />
+      <div *ngIf="submitted && profileFormControls.fullName.errors" class="invalid-feedback">
+         <div *ngIf="profileFormControls.fullName.errors['required']">Full name is required</div>
       </div>
    </div>
    <div class="form-group">
       <label for="dateOfBirth">Data of birth</label>
       <input type="date" formControlName="dateOfBirth" class="form-control"
-         [ngClass]="{ 'is-invalid': submitted && f.dateOfBirth.errors }" />
-      <div *ngIf="submitted && f.dateOfBirth.errors" class="invalid-feedback">
-         <div *ngIf="f.dateOfBirth.errors.required">Date of birth is required</div>
+         [ngClass]="{ 'is-invalid': submitted && profileFormControls.dateOfBirth.errors }" />
+      <div *ngIf="submitted && profileFormControls.dateOfBirth.errors" class="invalid-feedback">
+         <div *ngIf="profileFormControls.dateOfBirth.errors['required']">Date of birth is required</div>
       </div>
    </div>
    <div class="form-group">

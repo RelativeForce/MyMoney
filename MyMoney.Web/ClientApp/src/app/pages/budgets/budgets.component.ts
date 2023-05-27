@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BudgetViewModel } from '../../shared/classes';
 import { BudgetService } from 'src/app/shared/services';
 import { Store } from '@ngrx/store';
@@ -15,14 +15,19 @@ export class BudgetsComponent implements OnInit {
 
    public budgets: BudgetViewModel[] = [];
    public monthIdForm: FormGroup;
-   public loading: Boolean = false;
-   public submitted: Boolean = false;
+   public monthIdFormControls = {
+      year: new FormControl(0, [Validators.required, Validators.min(1980)]),
+      month: new FormControl(0, [Validators.required, monthValidator])
+   };
+   public loading = false;
+   public submitted = false;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly budgetService: BudgetService,
       private readonly store: Store<IAppState>
-   ) { }
+   ) {
+      this.monthIdForm = new FormGroup(this.monthIdFormControls);
+   }
 
    public ngOnInit(): void {
       this.store
@@ -38,10 +43,8 @@ export class BudgetsComponent implements OnInit {
             const month = searchParams.month;
             const year = searchParams.year;
 
-            this.monthIdForm = this.formBuilder.group({
-               year: [year, [Validators.required, Validators.min(1980)]],
-               month: [month, [Validators.required, monthValidator]]
-            });
+            this.monthIdFormControls.year.setValue(year);
+            this.monthIdFormControls.month.setValue(month);
          });
 
       this.budgetService.refreshBudgets();
@@ -54,16 +57,12 @@ export class BudgetsComponent implements OnInit {
          return;
       }
 
-      const year = this.f.year.value as number;
-      const month = this.f.month.value as number;
+      const year = this.monthIdFormControls.year.value as number;
+      const month = this.monthIdFormControls.month.value as number;
 
       this.loading = true;
 
       this.budgetService.updateMonthId(month, year);
-   }
-
-   public get f() {
-      return this.monthIdForm.controls;
    }
 
    public deleteBudget(id: number): void {

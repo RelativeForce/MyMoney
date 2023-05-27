@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CurrentUserService } from '../../../shared/services';
-import { toInputDateString } from '../../../shared/functions';
-import { filter } from 'rxjs/operators';
+import { toDateString, toInputDateString } from '../../../shared/functions';
+import { filter, map } from 'rxjs/operators';
 import { IUser } from 'src/app/shared/state/types';
 import { IBasicResultDto, IUserDto } from 'src/app/shared/api';
 import { IAppState } from 'src/app/shared/state/app-state';
@@ -14,39 +14,37 @@ import { SetUserAction } from 'src/app/shared/state/actions';
 })
 export class ProfileComponent implements OnInit {
    public profileForm: FormGroup;
+   public profileFormControls = {
+      email: new FormControl('', [Validators.required]),
+      fullName: new FormControl('', [Validators.required]),
+      dateOfBirth: new FormControl(toDateString(new Date()), [Validators.required]),
+   }
    public loading = false;
    public submitted = false;
    public error: string | null = null;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly currentUserService: CurrentUserService,
       private readonly store: Store<IAppState>,
    ) {
+      this.profileForm = new FormGroup(this.profileFormControls);
    }
 
    public ngOnInit(): void {
-      this.profileForm = this.formBuilder.group({
-         email: ['', [Validators.required]],
-         fullName: ['', [Validators.required]],
-         dateOfBirth: [new Date().toISOString().split('T')[0], [Validators.required]],
-      });
-
       this.disableForm();
 
       this.currentUserService.currentUser()
-         .pipe(filter((currentUser: IUser | null) => currentUser !== null))
+         .pipe(
+            filter((currentUser: IUser | null) => currentUser !== null),
+            map((currentUser: IUser | null) => currentUser!),
+         )
          .subscribe((currentUser: IUser) => {
-            this.f.dateOfBirth.patchValue(toInputDateString(currentUser.dateOfBirth));
-            this.f.fullName.patchValue(currentUser.fullName);
-            this.f.email.patchValue(currentUser.email);
+            this.profileFormControls.dateOfBirth.patchValue(toInputDateString(currentUser.dateOfBirth));
+            this.profileFormControls.fullName.patchValue(currentUser.fullName);
+            this.profileFormControls.email.patchValue(currentUser.email);
 
             this.enableForm();
          });
-   }
-
-   public get f() {
-      return this.profileForm.controls;
    }
 
    public onSubmit(): void {
@@ -59,9 +57,9 @@ export class ProfileComponent implements OnInit {
       this.loading = true;
       this.error = null;
 
-      const email: string = this.f.email.value;
-      const fullName: string = this.f.fullName.value;
-      const dateOfBirth: string = this.f.dateOfBirth.value;
+      const email: string = this.profileFormControls.email.value ?? '';
+      const fullName: string = this.profileFormControls.fullName.value ?? '';
+      const dateOfBirth: string = this.profileFormControls.dateOfBirth.value ?? '';
 
       const newData: IUserDto = {
          email,
@@ -92,14 +90,14 @@ export class ProfileComponent implements OnInit {
    }
 
    private disableForm() {
-      this.f.email.disable();
-      this.f.fullName.disable();
-      this.f.dateOfBirth.disable();
+      this.profileFormControls.email.disable();
+      this.profileFormControls.fullName.disable();
+      this.profileFormControls.dateOfBirth.disable();
    }
 
    private enableForm() {
-      this.f.email.enable();
-      this.f.fullName.enable();
-      this.f.dateOfBirth.enable();
+      this.profileFormControls.email.enable();
+      this.profileFormControls.fullName.enable();
+      this.profileFormControls.dateOfBirth.enable();
    }
 }

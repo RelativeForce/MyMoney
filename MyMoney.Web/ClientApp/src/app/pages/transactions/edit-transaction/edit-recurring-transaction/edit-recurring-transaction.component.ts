@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../../shared/services';
 import { IRecurringTransactionDto, Frequency, ITransactionDto } from 'src/app/shared/api';
@@ -14,7 +14,15 @@ import { frequencyValidator, minAmountValidator } from 'src/app/shared/common-va
 export class EditRecurringTransactionComponent implements OnInit {
 
    public editTransactionForm: FormGroup;
-   public id: number;
+   public editTransactionFormControls = {
+      start: new FormControl('', [Validators.required]),
+      end: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
+      notes: new FormControl(''),
+      recurrence: new FormControl<Frequency>(Frequency.month, [Validators.required, frequencyValidator])
+   };
+   public id = 0;
    public loading = false;
    public realisingChild: number | null = null;
    public submitted = false;
@@ -23,11 +31,12 @@ export class EditRecurringTransactionComponent implements OnInit {
    public recurrenceOptions: { key: Frequency; value: string }[] = frequencyOptions;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
-   ) { }
+   ) { 
+      this.editTransactionForm = new FormGroup(this.editTransactionFormControls);
+   }
 
    public ngOnInit(): void {
 
@@ -40,26 +49,17 @@ export class EditRecurringTransactionComponent implements OnInit {
 
          this.id = Number.parseInt(idStr, 10);
 
-         this.editTransactionForm = this.formBuilder.group({
-            start: ['', [Validators.required]],
-            end: ['', [Validators.required]],
-            description: ['', [Validators.required]],
-            amount: [0.01, [Validators.required, minAmountValidator]],
-            notes: [''],
-            recurrence: [Frequency.month, [Validators.required, frequencyValidator]]
-         });
-
          this.disableForm();
 
          this.transactionService
             .findRecurringTransaction(this.id)
             .subscribe((response: IRecurringTransactionDto) => {
-               this.f.start.patchValue(toInputDateString(response.start));
-               this.f.end.patchValue(toInputDateString(response.end));
-               this.f.description.patchValue(response.description);
-               this.f.recurrence.patchValue(response.recurrence);
-               this.f.amount.patchValue(response.amount);
-               this.f.notes.patchValue(response.notes);
+               this.editTransactionFormControls.start.patchValue(toInputDateString(response.start));
+               this.editTransactionFormControls.end.patchValue(toInputDateString(response.end));
+               this.editTransactionFormControls.description.patchValue(response.description);
+               this.editTransactionFormControls.recurrence.patchValue(response.recurrence);
+               this.editTransactionFormControls.amount.patchValue(response.amount);
+               this.editTransactionFormControls.notes.patchValue(response.notes);
 
                this.children = response.children;
                this.enableForm();
@@ -67,10 +67,6 @@ export class EditRecurringTransactionComponent implements OnInit {
                () => this.router.navigate(['/transactions'])
             );
       });
-   }
-
-   public get f() {
-      return this.editTransactionForm.controls;
    }
 
    public onDurationOrRecurrenceChange(): void {
@@ -100,7 +96,7 @@ export class EditRecurringTransactionComponent implements OnInit {
          return;
       }
 
-      if (this.f.start.dirty || this.f.recurrence.dirty) {
+      if (this.editTransactionFormControls.start.dirty || this.editTransactionFormControls.recurrence.dirty) {
          const message = 'Changing the start or recurrence will erase all manual changes to the transaction occurrences.\n\n' + 'Continue?';
 
          if (!confirm(message)) {
@@ -125,30 +121,30 @@ export class EditRecurringTransactionComponent implements OnInit {
    }
 
    private disableForm() {
-      this.f.start.disable();
-      this.f.end.disable();
-      this.f.description.disable();
-      this.f.recurrence.disable();
-      this.f.amount.disable();
-      this.f.notes.disable();
+      this.editTransactionFormControls.start.disable();
+      this.editTransactionFormControls.end.disable();
+      this.editTransactionFormControls.description.disable();
+      this.editTransactionFormControls.recurrence.disable();
+      this.editTransactionFormControls.amount.disable();
+      this.editTransactionFormControls.notes.disable();
    }
 
    private enableForm() {
-      this.f.start.enable();
-      this.f.end.enable();
-      this.f.description.enable();
-      this.f.recurrence.enable();
-      this.f.amount.enable();
-      this.f.notes.enable();
+      this.editTransactionFormControls.start.enable();
+      this.editTransactionFormControls.end.enable();
+      this.editTransactionFormControls.description.enable();
+      this.editTransactionFormControls.recurrence.enable();
+      this.editTransactionFormControls.amount.enable();
+      this.editTransactionFormControls.notes.enable();
    }
 
    private get asTransactionModel(): IRecurringTransactionDto {
-      const start: string = new Date(this.f.start.value).toLocaleDateString();
-      const end: string = new Date(this.f.end.value).toLocaleDateString();
-      const description = this.f.description.value;
-      const amount = this.f.amount.value;
-      const notes = this.f.notes.value;
-      const recurrence = Number.parseInt(this.f.recurrence.value, 10) as Frequency;
+      const start: string = new Date(this.editTransactionFormControls.start.value ?? '').toLocaleDateString();
+      const end: string = new Date(this.editTransactionFormControls.end.value ?? '').toLocaleDateString();
+      const description = this.editTransactionFormControls.description.value ?? '';
+      const amount = this.editTransactionFormControls.amount.value ?? 0;
+      const notes = this.editTransactionFormControls.notes.value ?? '';
+      const recurrence = this.editTransactionFormControls.recurrence.value ?? Frequency.day;
 
       return {
          start,

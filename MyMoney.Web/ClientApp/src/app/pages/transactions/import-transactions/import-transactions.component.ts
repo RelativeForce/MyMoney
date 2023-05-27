@@ -3,6 +3,7 @@ import { TransactionService } from 'src/app/shared/services';
 import { TransactionImportDataProvider } from './transaction-import-data-provider';
 
 @Component({
+   selector: 'mymoney-import-transactions',
    templateUrl: './import-transactions.component.html'
 })
 export class ImportTransactionsComponent {

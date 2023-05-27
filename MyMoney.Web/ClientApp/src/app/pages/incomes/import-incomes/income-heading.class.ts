@@ -28,7 +28,7 @@ export class IncomeHeading extends BaseHeading<IncomeProperty> {
 
    public validate(input: string): string | null {
       switch (this.property) {
-         case IncomeProperty.amount:
+         case IncomeProperty.amount: {
             const value: number | null = this.format(input);
             if (value === null) {
                return 'Invalid number format';
@@ -39,6 +39,7 @@ export class IncomeHeading extends BaseHeading<IncomeProperty> {
             }
 
             return null;
+         }
          case IncomeProperty.date:
             if (!Date.parse(input)) {
                return 'Invalid date format';

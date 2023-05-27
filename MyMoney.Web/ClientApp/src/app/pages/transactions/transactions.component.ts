@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TransactionService } from '../../shared/services';
 import { TransactionViewModel } from '../../shared/classes';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/shared/state/app-state';
 import { selectTransactions, selectTransactionsDateRange } from 'src/app/shared/state/selectors/transaction.selector';
 import { IDateRangeModel } from '../../shared/state/types';
+import { toDateString } from 'src/app/shared/functions';
 
 @Component({
    templateUrl: './transactions.component.html',
@@ -14,16 +15,21 @@ import { IDateRangeModel } from '../../shared/state/types';
 export class TransactionsComponent implements OnInit {
 
    public transactions: TransactionViewModel[] = [];
-   public dateRange: IDateRangeModel;
+   public dateRange: IDateRangeModel = { start: new Date(), end: new Date() };
    public dateRangeForm: FormGroup;
-   public loading: Boolean = false;
-   public submitted: Boolean = false;
+   public dateRangeFormControls = {
+      start: new FormControl(toDateString(this.dateRange.start), [Validators.required]),
+      end: new FormControl(toDateString(this.dateRange.end), [Validators.required])
+   }
+   public loading = false;
+   public submitted = false;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly transactionService: TransactionService,
       private readonly store: Store<IAppState>
-   ) { }
+   ) {
+      this.dateRangeForm = new FormGroup(this.dateRangeFormControls);
+   }
 
    public ngOnInit(): void {
       this.store
@@ -38,10 +44,8 @@ export class TransactionsComponent implements OnInit {
          .subscribe((dateRange) => {
             this.dateRange = dateRange;
 
-            this.dateRangeForm = this.formBuilder.group({
-               start: [this.start, [Validators.required]],
-               end: [this.end, [Validators.required]]
-            });
+            this.dateRangeFormControls.start.setValue(toDateString(dateRange.start));
+            this.dateRangeFormControls.end.setValue(toDateString(dateRange.end));
          });
 
       this.transactionService.refreshTransactions();
@@ -55,10 +59,6 @@ export class TransactionsComponent implements OnInit {
       return this.formatDate(this.dateRange.end);
    }
 
-   public get f() {
-      return this.dateRangeForm.controls;
-   }
-
    public updateTransactions(): void {
 
       this.submitted = true;
@@ -69,7 +69,10 @@ export class TransactionsComponent implements OnInit {
 
       this.loading = true;
 
-      this.dateRange = { start: this.f.start.value, end: this.f.end.value };
+      this.dateRange = { 
+         start: new Date(this.dateRangeFormControls.start.value ?? ''),
+         end: new Date(this.dateRangeFormControls.end.value ?? '')
+      };
 
       this.transactionService.updateDateRange(this.dateRange);
    }
