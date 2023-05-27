@@ -3,7 +3,7 @@
   "compileOnSave": true,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist",
+    "outDir": "./lib",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
