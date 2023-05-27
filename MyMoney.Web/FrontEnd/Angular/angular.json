@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mymoney": {
+    "mymoney-angular": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "my-money",
+      "prefix": "mymoney-angular",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -75,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "mymoney:build:production"
+              "browserTarget": "mymoney-angular:build:production"
             },
             "development": {
-              "browserTarget": "mymoney:build:development"
+              "browserTarget": "mymoney-angular:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -86,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "mymoney:build"
+            "browserTarget": "mymoney-angular:build"
           }
         },
         "test": {
