@@ -1,6 +1,5 @@
-import { Frequency } from '../../api';
 import { toFrequencyString } from '../../functions';
-import { IIncomeDto } from '../../api';
+import { IIncomeDto, Frequency } from '../../api/dtos';
 
 export class IncomeViewModel {
    date: string;

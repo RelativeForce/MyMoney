@@ -1,4 +1,4 @@
-import { Frequency } from './api';
+import { Frequency } from './api/dtos';
 
 export function groupBy<T, K>(list: T[], toKey: (item: T) => K): Map<K, T[]> {
    const map = new Map<K, T[]>();

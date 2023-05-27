@@ -1,4 +1,4 @@
-import { Frequency } from './api';
+import { Frequency } from './api/dtos';
 import { toFrequencyString } from './functions';
 
 export const SESSION_LOCAL_STORAGE_KEY = 'my-money:session';

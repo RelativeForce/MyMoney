@@ -1,4 +1,4 @@
-import { IBudgetDto } from '../../api';
+import { IBudgetDto } from '../../api/dtos';
 
 export class BudgetViewModel {
    id: number;

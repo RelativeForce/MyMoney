@@ -1,4 +1,4 @@
-import { IRunningTotalDto } from '../api';
+import { IRunningTotalDto } from '../api/dtos';
 import { ISeries } from '../interfaces/series.interface';
 import { RunningTotalSeriesDataPoint } from './running-total-series-data-point.class';
 

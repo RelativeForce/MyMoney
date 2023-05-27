@@ -1,5 +1,5 @@
 import { ISeriesDataPoint } from '../interfaces/series-data-point.interface';
-import { ITransactionDto } from '../api';
+import { ITransactionDto } from '../api/dtos';
 
 const DEFAULT_TEXT = 'Initial budget';
 

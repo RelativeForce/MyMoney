@@ -1,4 +1,4 @@
-import { ITransactionDto, IBudgetDto } from '../api';
+import { ITransactionDto, IBudgetDto } from '../api/dtos';
 import { ISeries } from '../interfaces/series.interface';
 import { BudgetSeriesDataPoint } from './budget-series-data-point.class';
 

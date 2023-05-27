@@ -1,4 +1,4 @@
-import { IRunningTotalDto } from '../api';
+import { IRunningTotalDto } from '../api/dtos';
 import { ISeriesDataPoint } from '../interfaces/series-data-point.interface';
 
 const DEFAULT_TEXT = 'Initial total';

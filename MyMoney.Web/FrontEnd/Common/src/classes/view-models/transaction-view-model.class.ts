@@ -1,5 +1,5 @@
 import { toFrequencyString } from '../../functions';
-import { ITransactionDto } from '../../api';
+import { ITransactionDto } from '../../api/dtos';
 
 export class TransactionViewModel {
    date: string;
