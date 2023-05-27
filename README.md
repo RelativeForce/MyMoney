@@ -1,6 +1,6 @@
 # MyMoney
 
-Welcome to MyMoney, a simple money management website written by Joshua Eddy. MyMoney is built using ASP.Net Core 3.1 with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.0.
+Welcome to MyMoney, a simple money management website written by Joshua Eddy. MyMoney is built using ASP.Net 6.0 with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.3.
 
 ## Issue process
 If you would like a new feature to be added please create a new feature issue.
