@@ -20,18 +20,19 @@ export class IncomeSelectorComponent implements OnChanges {
 
    constructor(private readonly incomeService: IncomeService) { }
 
-   public onIncomeCheckboxChange(newValue: boolean, income: IncomeViewModel): void {
-      if (income.id < 0) {
-
+  public onIncomeCheckboxChange(newValue: boolean, income: IncomeViewModel): void {
+    if (income.id < 0 && income.parentId && this.incomes) {
+      const incomes = this.incomes;
          this.realisingChild = income.id;
+
          this.incomeService
             .realiseIncome(income.parentId, income.date, income.id)
             .subscribe((realChild: IIncomeDto) => {
                this.realisingChild = null;
 
                // Updated model
-               const model = this.incomes.find(i => i.id === income.id);
-               model.id = realChild.id;
+               const model = incomes.find(i => i.id === income.id);
+               model!.id = realChild.id;
                income.id = realChild.id;
 
                this.selectedIncomes.add(realChild.id);
@@ -47,9 +48,9 @@ export class IncomeSelectorComponent implements OnChanges {
    }
 
    public ngOnChanges(changes: SimpleChanges): void {
-      if (changes.date) {
-         const oldDate: Date | null | undefined = changes.date.previousValue;
-         const newDate: Date | null = changes.date.currentValue;
+      if (changes['date']) {
+         const oldDate: Date | null | undefined = changes['date'].previousValue;
+         const newDate: Date | null = changes['date'].currentValue;
 
          if (newDate === null) {
             return;

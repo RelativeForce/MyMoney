@@ -9,9 +9,9 @@
                   <span class="input-group-text">Start</span>
                </div>
                <input type="date" formControlName="start" class="form-control" (change)="onDurationOrRecurrenceChange()"
-                  [ngClass]="{ 'is-invalid': submitted && f.start.errors }" />
-               <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
-                  <div *ngIf="f.start.errors.required">Start is required</div>
+                  [ngClass]="{ 'is-invalid': submitted && editIncomeFormControls.start.errors }" />
+               <div *ngIf="submitted && editIncomeFormControls.start.errors" class="invalid-feedback">
+                  <div *ngIf="editIncomeFormControls.start.errors['required']">Start is required</div>
                </div>
             </div>
             <div class="input-group mb-3" [ngStyle]="{ 'width': '50%'}">
@@ -19,44 +19,44 @@
                   <span class="input-group-text">End</span>
                </div>
                <input type="date" formControlName="end" class="form-control" (change)="onDurationOrRecurrenceChange()"
-                  [ngClass]="{ 'is-invalid': submitted && f.end.errors }" />
-               <div *ngIf="submitted && f.end.errors" class="invalid-feedback">
-                  <div *ngIf="f.end.errors.required">End is required</div>
+                  [ngClass]="{ 'is-invalid': submitted && editIncomeFormControls.end.errors }" />
+               <div *ngIf="submitted && editIncomeFormControls.end.errors" class="invalid-feedback">
+                  <div *ngIf="editIncomeFormControls.end.errors['required']">End is required</div>
                </div>
             </div>
          </div>
          <div class="form-group">
             <label for="recurrence">Recurrence</label>
-            <select class="form-control" formControlName="recurrence" [ngClass]="{ 'is-invalid': submitted && f.recurrence.errors }"
+            <select class="form-control" formControlName="recurrence" [ngClass]="{ 'is-invalid': submitted && editIncomeFormControls.recurrence.errors }"
                (change)="onDurationOrRecurrenceChange()">
-               <option *ngFor="let opt of recurrenceOptions" [value]="opt.key" [selected]="opt.key == f.recurrence.value">{{ opt.value }}
+               <option *ngFor="let opt of recurrenceOptions" [value]="opt.key" [selected]="opt.key == editIncomeFormControls.recurrence.value">{{ opt.value }}
                </option>
             </select>
-            <div *ngIf="submitted && f.recurrence.errors" class="invalid-feedback">
-               <div *ngIf="f.recurrence.errors.required">Recurrence is required</div>
-               <div *ngIf="f.recurrence.errors.invalidFrequency">Invalid recurrence value</div>
+            <div *ngIf="submitted && editIncomeFormControls.recurrence.errors" class="invalid-feedback">
+               <div *ngIf="editIncomeFormControls.recurrence.errors['required']">Recurrence is required</div>
+               <div *ngIf="editIncomeFormControls.recurrence.errors['invalidFrequency']">Invalid recurrence value</div>
             </div>
          </div>
          <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
-            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-               <div *ngIf="f.name.errors.required">Name is required</div>
+            <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && editIncomeFormControls.name.errors }" />
+            <div *ngIf="submitted && editIncomeFormControls.name.errors" class="invalid-feedback">
+               <div *ngIf="editIncomeFormControls.name.errors['required']">Name is required</div>
             </div>
          </div>
          <div class="form-group">
             <label for="amount">Amount</label>
-            <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" />
-            <div *ngIf="submitted && f.amount.errors" class="invalid-feedback">
-               <div *ngIf="f.amount.errors.required">Amount is required</div>
-               <div *ngIf="f.amount.errors.min">Amount cannot be less than 0.01</div>
+            <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && editIncomeFormControls.amount.errors }" />
+            <div *ngIf="submitted && editIncomeFormControls.amount.errors" class="invalid-feedback">
+               <div *ngIf="editIncomeFormControls.amount.errors['required']">Amount is required</div>
+               <div *ngIf="editIncomeFormControls.amount.errors['min']">Amount cannot be less than 0.01</div>
             </div>
          </div>
          <div class="form-group">
             <label for="notes">Notes</label>
-            <textarea formControlName="notes" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }"
+            <textarea formControlName="notes" class="form-control" [ngClass]="{ 'is-invalid': submitted && editIncomeFormControls.notes.errors }"
                rows="3"></textarea>
-            <div *ngIf="submitted && f.notes.errors" class="invalid-feedback"></div>
+            <div *ngIf="submitted && editIncomeFormControls.notes.errors" class="invalid-feedback"></div>
          </div>
          <div class="form-group">
             <button [disabled]="loading" class="btn btn-primary">

@@ -25,7 +25,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
    ) {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
       this.seriesData = this.seriesDataSubject.asObservable();
-
+      this.subChartTitle = '';
       this.chartTitle = 'Transactions';
       this.yAxisLabel = 'Remaining in budget (£)';
       this.colorScheme = { domain: [] };
@@ -42,7 +42,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
    }
 
    public onSelect(item: ISeriesItem): void {
-      this.router.navigate(item.link);
+      this.router.navigate(item.link ?? ['./']);
    }
 
    public next(): void {

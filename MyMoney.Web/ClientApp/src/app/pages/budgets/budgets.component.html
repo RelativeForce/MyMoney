@@ -5,22 +5,22 @@
          <div class="input-group-prepend">
             <span class="input-group-text">Year</span>
          </div>
-         <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.year.errors }"
+         <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && monthIdFormControls.year.errors }"
             (change)="updateBudgets()" />
-         <div *ngIf="submitted && f.year.errors" class="invalid-feedback">
-            <div *ngIf="f.year.errors.required">Year is required</div>
-            <div *ngIf="f.year.errors.min">Year cannot be less than 1980</div>
+         <div *ngIf="submitted && monthIdFormControls.year.errors" class="invalid-feedback">
+            <div *ngIf="monthIdFormControls.year.errors['required']">Year is required</div>
+            <div *ngIf="monthIdFormControls.year.errors['min']">Year cannot be less than 1980</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2">
          <div class="input-group-prepend">
             <span class="input-group-text">Month</span>
          </div>
-         <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.month.errors }"
+         <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && monthIdFormControls.month.errors }"
             (change)="updateBudgets()" />
-         <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
-            <div *ngIf="f.month.errors.required">Month is required</div>
-            <div *ngIf="f.month.errors.invalidMonth">Month must be 1 - 12</div>
+         <div *ngIf="submitted && monthIdFormControls.month.errors" class="invalid-feedback">
+            <div *ngIf="monthIdFormControls.month.errors['required']">Month is required</div>
+            <div *ngIf="monthIdFormControls.month.errors['invalidMonth']">Month must be 1 - 12</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">

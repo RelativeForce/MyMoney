@@ -21,17 +21,19 @@ export class RunningTotalSeriesDataPoint implements ISeriesDataPoint {
       this.name = runningTotal?.name ?? DEFAULT_TEXT;
       this.link = null;
 
-      if (this.amount > 0) {
-         if (runningTotal.parentId === null || this.id > 0) {
-            this.link = ['/incomes', 'edit', this.id];
-         } else {
-            this.link = ['/incomes', 'edit-recurring', runningTotal.parentId];
-         }
-      } else if (this.amount < 0) {
-         if (runningTotal.parentId === null || this.id > 0) {
-            this.link = ['/transactions', 'edit', this.id];
-         } else {
-            this.link = ['/transactions', 'edit-recurring', runningTotal.parentId];
+      if (runningTotal !== null) {
+         if (this.amount > 0) {
+            if (runningTotal.parentId === null || this.id > 0) {
+               this.link = ['/incomes', 'edit', this.id];
+            } else {
+               this.link = ['/incomes', 'edit-recurring', runningTotal.parentId];
+            }
+         } else if (this.amount < 0) {
+            if (runningTotal.parentId === null || this.id > 0) {
+               this.link = ['/transactions', 'edit', this.id];
+            } else {
+               this.link = ['/transactions', 'edit-recurring', runningTotal.parentId];
+            }
          }
       }
    }

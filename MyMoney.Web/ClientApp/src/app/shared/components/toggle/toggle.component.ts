@@ -11,7 +11,7 @@ export class ToggleComponent {
    public value: boolean;
 
    @Input()
-   public text: string;
+   public text!: string;
 
    @Output()
    public checked: EventEmitter<boolean>;

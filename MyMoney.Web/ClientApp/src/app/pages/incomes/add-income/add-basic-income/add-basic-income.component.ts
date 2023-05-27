@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IIncomeModel } from 'src/app/shared/state/types';
 import { IncomeService } from 'src/app/shared/services';
@@ -12,27 +12,23 @@ import { minAmountValidator } from 'src/app/shared/common-validators';
 export class AddBasicIncomeComponent implements OnInit {
 
    public addIncomeForm: FormGroup;
+   public addIncomeFormControls = {
+      date: new FormControl(new Date().toISOString().split('T')[0], [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
+      notes: new FormControl(''),
+   };
    public loading = false;
    public submitted = false;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly incomeService: IncomeService,
    ) {
+      this.addIncomeForm = new FormGroup(this.addIncomeFormControls);
    }
 
    public ngOnInit(): void {
-      this.addIncomeForm = this.formBuilder.group({
-         date: [new Date().toISOString().split('T')[0], [Validators.required]],
-         name: ['', [Validators.required]],
-         amount: [0.01, [Validators.required, minAmountValidator]],
-         notes: [''],
-      });
-   }
-
-   public get f() {
-      return this.addIncomeForm.controls;
    }
 
    public onSubmit(): void {
@@ -45,10 +41,10 @@ export class AddBasicIncomeComponent implements OnInit {
 
       this.loading = true;
 
-      const date = this.f.date.value;
-      const name = this.f.name.value;
-      const amount = this.f.amount.value;
-      const notes = this.f.notes.value;
+      const date = this.addIncomeFormControls.date.value ?? '';
+      const name = this.addIncomeFormControls.name.value ?? '';
+      const amount = this.addIncomeFormControls.amount.value ?? 0;
+      const notes = this.addIncomeFormControls.notes.value ?? '';
 
       const income: IIncomeModel = {
          date,

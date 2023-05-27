@@ -18,9 +18,9 @@ export class BudgetSelectorComponent implements OnChanges {
    constructor(private readonly budgetService: BudgetService) { }
 
    public ngOnChanges(changes: SimpleChanges): void {
-      if (changes.date) {
-         const oldDate: Date | null | undefined = changes.date.previousValue;
-         const newDate: Date | null = changes.date.currentValue;
+      if (changes['date']) {
+         const oldDate: Date | null | undefined = changes['date'].previousValue;
+         const newDate: Date | null = changes['date'].currentValue;
 
          if (newDate === null) {
             return;

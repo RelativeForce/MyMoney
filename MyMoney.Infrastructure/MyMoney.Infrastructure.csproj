@@ -27,10 +27,4 @@
     <ProjectReference Include="..\MyMoney.Core\MyMoney.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Microsoft.EntityFrameworkCore.SqlServer">
-      <HintPath>..\..\..\..\..\.nuget\packages\microsoft.entityframeworkcore.sqlserver\2.0.3\lib\netstandard2.0\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

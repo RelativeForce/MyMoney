@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TransactionService } from 'src/app/shared/services';
 import { IRecurringTransactionDto, Frequency } from 'src/app/shared/api';
@@ -13,34 +13,30 @@ import { frequencyValidator, minAmountValidator } from 'src/app/shared/common-va
 export class AddRecurringTransactionComponent implements OnInit {
 
    public addTransactionForm: FormGroup;
+   public addTransactionFormControls = {
+      start: new FormControl(new Date().toISOString().split('T')[0], [Validators.required]),
+      end: new FormControl(new Date().toISOString().split('T')[0], [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
+      recurrence: new FormControl(Frequency.month, [Validators.required, frequencyValidator]),
+      notes: new FormControl('')
+   };
    public loading = false;
    public submitted = false;
    public recurrenceOptions: { key: Frequency; value: string }[] = frequencyOptions;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly transactionService: TransactionService,
-   ) { }
+   ) {
+      this.addTransactionForm = new FormGroup(this.addTransactionFormControls);
+   }
 
    public ngOnInit(): void {
-
-      const start = new Date();
       const end = new Date();
       end.setMonth(end.getMonth() + 3);
 
-      this.addTransactionForm = this.formBuilder.group({
-         start: [start.toISOString().split('T')[0], [Validators.required]],
-         end: [end.toISOString().split('T')[0], [Validators.required]],
-         description: ['', [Validators.required]],
-         amount: [0.01, [Validators.required, minAmountValidator]],
-         recurrence: [Frequency.month, [Validators.required, frequencyValidator]],
-         notes: ['']
-      });
-   }
-
-   public get f() {
-      return this.addTransactionForm.controls;
+      this.addTransactionFormControls.end.setValue(end.toISOString().split('T')[0]);
    }
 
    public onSubmit(): void {
@@ -53,12 +49,12 @@ export class AddRecurringTransactionComponent implements OnInit {
 
       this.loading = true;
 
-      const start: string = new Date(this.f.start.value).toLocaleDateString();
-      const end: string = new Date(this.f.end.value).toLocaleDateString();
-      const description = this.f.description.value;
-      const amount = this.f.amount.value;
-      const notes = this.f.notes.value;
-      const recurrence = Number.parseInt(this.f.recurrence.value, 10) as Frequency;
+      const start: string = new Date(this.addTransactionFormControls.start.value ?? '').toLocaleDateString();
+      const end: string = new Date(this.addTransactionFormControls.end.value ?? '').toLocaleDateString();
+      const description = this.addTransactionFormControls.description.value ?? '';
+      const amount = this.addTransactionFormControls.amount.value ?? 0;
+      const notes = this.addTransactionFormControls.notes.value ?? '';
+      const recurrence = this.addTransactionFormControls.recurrence.value ?? Frequency.day;
 
       const transaction: IRecurringTransactionDto = {
          start,

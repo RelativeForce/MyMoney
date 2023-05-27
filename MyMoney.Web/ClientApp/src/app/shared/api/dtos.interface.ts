@@ -20,12 +20,12 @@ export interface IIncomeDto {
    parentFrequency: Frequency | null;
 }
 
-export class IIncomeSearchDto {
+export interface IIncomeSearchDto {
    date: Date;
    count: number;
 }
 
-export class IBudgetSearchDto {
+export interface IBudgetSearchDto {
    month: number;
    year: number;
 }
@@ -47,7 +47,7 @@ export interface IDeleteResultDto {
    success: boolean;
 }
 
-export class IIdDto {
+export interface IIdDto {
    id: number;
 }
 

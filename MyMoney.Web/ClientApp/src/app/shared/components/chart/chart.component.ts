@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ISeriesItem } from 'src/app/shared/interfaces';
 import { IChartDataProvider } from './chart-data-provider.interface';
+import { LegendPosition } from '@swimlane/ngx-charts';
 
 @Component({
    templateUrl: './chart.component.html',
@@ -12,6 +13,8 @@ export class ChartComponent {
 
    @Input()
    public showLegend = true;
+
+   public LegendPosition = LegendPosition;
 
    constructor() { }
 

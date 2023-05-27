@@ -13,7 +13,7 @@ export class IncomeImportDataProvider implements IImportDataProvider<IncomePrope
    public homeLink: string;
 
    constructor(private readonly incomeService: IncomeService) {
-      this.fields = Object.keys(IncomeProperty).map(k => IncomeProperty[k] as IncomeProperty);
+      this.fields = Object.values(IncomeProperty);
       this.homeLink = '/incomes';
    }
 
@@ -81,7 +81,7 @@ export class IncomeImportDataProvider implements IImportDataProvider<IncomePrope
          };
       }
 
-      const incomeRows = rows.map(toTransaction).filter(t => t !== null);
+      const incomeRows = rows.map(toTransaction).filter(t => t !== null).map(t => t!);
 
       for (const incomeRow of incomeRows) {
          this.incomeService.addIncome(incomeRow.income).subscribe((success: boolean) => {

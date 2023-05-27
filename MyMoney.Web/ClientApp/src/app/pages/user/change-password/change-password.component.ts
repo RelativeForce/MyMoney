@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { CurrentUserService } from '../../../shared/services';
 import { IBasicResultDto } from '../../../shared/api';
@@ -10,30 +10,25 @@ import { IBasicResultDto } from '../../../shared/api';
 })
 export class ChangePasswordComponent implements OnInit {
    public changePasswordForm: FormGroup;
+   public changePasswordFormControls = {
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]),
+      confirmPassword: new FormControl('')
+   }
    public loading = false;
    public submitted = false;
    public error: string | null = null;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly router: Router,
       private readonly currentUserService: CurrentUserService,
    ) {
+      this.changePasswordForm = new FormGroup(this.changePasswordFormControls);
    }
 
    public ngOnInit(): void {
-      this.changePasswordForm = this.formBuilder.group({
-         password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]],
-         confirmPassword: ['']
-      });
-
       this.changePasswordForm.valueChanges.subscribe(() => {
          this.checkPasswords();
       });
-   }
-
-   public get f() {
-      return this.changePasswordForm.controls;
    }
 
    public onSubmit(): void {
@@ -46,7 +41,7 @@ export class ChangePasswordComponent implements OnInit {
       this.loading = true;
       this.error = null;
 
-      const password: string = this.f.password.value;
+      const password: string = this.changePasswordFormControls.password.value ?? '';
 
       this.currentUserService.updatePassword(password)
          .pipe(first())
@@ -67,12 +62,12 @@ export class ChangePasswordComponent implements OnInit {
    }
 
    private checkPasswords() {
-      const isInvalid = this.f.password.value !== this.f.confirmPassword.value;
+      const isInvalid = this.changePasswordFormControls.password.value !== this.changePasswordFormControls.confirmPassword.value;
 
       if (isInvalid) {
-         this.f.confirmPassword.setErrors({ notSame: true });
+         this.changePasswordFormControls.confirmPassword.setErrors({ notSame: true });
       } else {
-         this.f.confirmPassword.setErrors(null);
+         this.changePasswordFormControls.confirmPassword.setErrors(null);
       }
    }
 }

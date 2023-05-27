@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IncomeService } from '../../shared/services';
 import { IncomeViewModel } from '../../shared/classes';
 import { Store } from '@ngrx/store';
@@ -8,22 +8,28 @@ import { selectIncomes, selectIncomesSearchParameters } from 'src/app/shared/sta
 import { IDateRangeModel } from 'src/app/shared/state/types';
 
 @Component({
+   selector: 'mymoney-incomes',
    templateUrl: './incomes.component.html',
    styleUrls: ['./incomes.component.scss']
 })
 export class IncomesComponent implements OnInit {
 
    public incomes: IncomeViewModel[] = [];
-   public dateRange: IDateRangeModel;
+   public dateRange: IDateRangeModel = { start: new Date(), end: new Date() };
    public dateForm: FormGroup;
+   public dateRangeFormControls = {
+      start: new FormControl(this.dateRange.start.toISOString().split('T')[0], [Validators.required]),
+      end: new FormControl(this.dateRange.end.toISOString().split('T')[0], [Validators.required])
+   }
    public loading: Boolean = false;
    public submitted: Boolean = false;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly incomeService: IncomeService,
       private readonly store: Store<IAppState>
-   ) { }
+   ) {
+      this.dateForm = new FormGroup(this.dateRangeFormControls);
+   }
 
    public ngOnInit(): void {
       this.store
@@ -38,10 +44,8 @@ export class IncomesComponent implements OnInit {
          .subscribe((searchParameters) => {
             this.dateRange = searchParameters.dateRange;
 
-            this.dateForm = this.formBuilder.group({
-               start: [this.start, [Validators.required]],
-               end: [this.end, [Validators.required]]
-            });
+            this.dateRangeFormControls.start.setValue(searchParameters.dateRange.start.toISOString().split('T')[0]);
+            this.dateRangeFormControls.end.setValue(searchParameters.dateRange.end.toISOString().split('T')[0]);
          });
 
       this.incomeService.refreshIncomes();
@@ -64,13 +68,12 @@ export class IncomesComponent implements OnInit {
 
       this.loading = true;
 
-      this.dateRange = { start: this.f.start.value, end: this.f.end.value };
+      this.dateRange = { 
+         start: new Date(this.dateRangeFormControls.start.value ?? ''),
+         end: new Date(this.dateRangeFormControls.end.value ?? ''),
+       };
 
       this.incomeService.updateDate(this.dateRange);
-   }
-
-   public get f() {
-      return this.dateForm.controls;
    }
 
    public deleteRecurringIncome(id: number): void {

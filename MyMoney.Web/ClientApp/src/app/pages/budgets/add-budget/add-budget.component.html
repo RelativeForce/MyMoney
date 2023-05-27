@@ -5,42 +5,42 @@
          <div class="input-group-prepend">
             <span class="input-group-text">Year</span>
          </div>
-         <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.year.errors }" />
-         <div *ngIf="submitted && f.year.errors" class="invalid-feedback">
-            <div *ngIf="f.year.errors.required">Year is required</div>
-            <div *ngIf="f.year.errors.min">Year cannot be less than 1980</div>
+         <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && addBudgetFormControls.year.errors }" />
+         <div *ngIf="submitted && addBudgetFormControls.year.errors" class="invalid-feedback">
+            <div *ngIf="addBudgetFormControls.year.errors['required']">Year is required</div>
+            <div *ngIf="addBudgetFormControls.year.errors['min']">Year cannot be less than 1980</div>
          </div>
       </div>
       <div class="input-group mb-3">
          <div class="input-group-prepend">
             <span class="input-group-text">Month</span>
          </div>
-         <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.month.errors }" />
-         <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
-            <div *ngIf="f.month.errors.required">Month is required</div>
-            <div *ngIf="f.month.errors.invalidMonth">Month must be 1 - 12</div>
+         <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && addBudgetFormControls.month.errors }" />
+         <div *ngIf="submitted && addBudgetFormControls.month.errors" class="invalid-feedback">
+            <div *ngIf="addBudgetFormControls.month.errors['required']">Month is required</div>
+            <div *ngIf="addBudgetFormControls.month.errors['invalidMonth']">Month must be 1 - 12</div>
          </div>
       </div>
    </div>
    <div class="form-group">
       <label for="name">Name</label>
-      <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
-      <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-         <div *ngIf="f.name.errors.required">Name is required</div>
+      <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && addBudgetFormControls.name.errors }" />
+      <div *ngIf="submitted && addBudgetFormControls.name.errors" class="invalid-feedback">
+         <div *ngIf="addBudgetFormControls.name.errors['required']">Name is required</div>
       </div>
    </div>
    <div class="form-group">
       <label for="amount">Amount</label>
-      <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" />
-      <div *ngIf="submitted && f.amount.errors" class="invalid-feedback">
-         <div *ngIf="f.amount.errors.required">Amount is required</div>
-         <div *ngIf="f.amount.errors.min">Amount cannot be less than 0.01</div>
+      <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && addBudgetFormControls.amount.errors }" />
+      <div *ngIf="submitted && addBudgetFormControls.amount.errors" class="invalid-feedback">
+         <div *ngIf="addBudgetFormControls.amount.errors['required']">Amount is required</div>
+         <div *ngIf="addBudgetFormControls.amount.errors['min']">Amount cannot be less than 0.01</div>
       </div>
    </div>
    <div class="form-group">
       <label for="notes">Notes</label>
-      <textarea formControlName="notes" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }" rows="3"></textarea>
-      <div *ngIf="submitted && f.notes.errors" class="invalid-feedback">
+      <textarea formControlName="notes" class="form-control" [ngClass]="{ 'is-invalid': submitted && addBudgetFormControls.notes.errors }" rows="3"></textarea>
+      <div *ngIf="submitted && addBudgetFormControls.notes.errors" class="invalid-feedback">
       </div>
    </div>
    <div class="form-group">

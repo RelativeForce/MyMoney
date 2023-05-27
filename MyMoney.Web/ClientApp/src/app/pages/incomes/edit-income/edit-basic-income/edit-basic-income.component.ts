@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IncomeService } from '../../../../shared/services';
 import { BudgetViewModel } from '../../../../shared/classes';
@@ -15,9 +15,15 @@ import { minAmountValidator } from 'src/app/shared/common-validators';
 export class EditBasicIncomeComponent implements OnInit {
 
    public editIncomeForm: FormGroup;
+   public editIncomeFormControls = {
+      date: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
+      notes: new FormControl(''),
+   };
    public selectedBudgets: Set<number> = new Set();
    public budgets: BudgetViewModel[] = [];
-   public id: number;
+   public id: number = 0;
    public parentId: number | null = null;
    public parentFrequency: Frequency | null = null;
    public loading = false;
@@ -25,11 +31,11 @@ export class EditBasicIncomeComponent implements OnInit {
    public loadingIncome = true;
 
    constructor(
-      private readonly formBuilder: FormBuilder,
       private readonly incomeService: IncomeService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute
    ) {
+      this.editIncomeForm = new FormGroup(this.editIncomeFormControls);
    }
 
    public ngOnInit(): void {
@@ -43,23 +49,16 @@ export class EditBasicIncomeComponent implements OnInit {
 
          this.id = Number.parseInt(idStr, 10);
 
-         this.editIncomeForm = this.formBuilder.group({
-            date: ['', [Validators.required]],
-            name: ['', [Validators.required]],
-            amount: [0.01, [Validators.required, minAmountValidator]],
-            notes: [''],
-         });
-
          this.disableForm();
 
          this.incomeService
             .findIncome(this.id)
             .subscribe((response: IIncomeModel) => {
 
-               this.f.date.patchValue(toInputDateString(response.date));
-               this.f.name.patchValue(response.name);
-               this.f.amount.patchValue(response.amount);
-               this.f.notes.patchValue(response.notes);
+               this.editIncomeFormControls.date.patchValue(toInputDateString(response.date));
+               this.editIncomeFormControls.name.patchValue(response.name);
+               this.editIncomeFormControls.amount.patchValue(response.amount);
+               this.editIncomeFormControls.notes.patchValue(response.notes);
                this.parentId = response.parentId;
                this.parentFrequency = response.parentFrequency;
 
@@ -70,11 +69,6 @@ export class EditBasicIncomeComponent implements OnInit {
                   this.router.navigate(['/incomes']);
                });
       });
-   }
-
-
-   public get f() {
-      return this.editIncomeForm.controls;
    }
 
    public get frequencyString(): string {
@@ -110,31 +104,31 @@ export class EditBasicIncomeComponent implements OnInit {
    }
 
    private disableForm() {
-      this.f.amount.disable();
-      this.f.name.disable();
-      this.f.date.disable();
-      this.f.notes.disable();
+      this.editIncomeFormControls.amount.disable();
+      this.editIncomeFormControls.name.disable();
+      this.editIncomeFormControls.date.disable();
+      this.editIncomeFormControls.notes.disable();
    }
 
    private enableForm(isChild: boolean) {
       if (!isChild) {
-         this.f.date.enable();
-         this.f.name.enable();
-         this.f.amount.enable();
+         this.editIncomeFormControls.date.enable();
+         this.editIncomeFormControls.name.enable();
+         this.editIncomeFormControls.amount.enable();
       }
 
-      this.f.notes.enable();
+      this.editIncomeFormControls.notes.enable();
    }
 
    private get asIncomeModel(): IIncomeModel {
 
-      const date = new Date(this.f.date.value);
+      const date = new Date(this.editIncomeFormControls.date.value ?? '');
 
       const dateString: string = date.toLocaleDateString();
 
-      const name = this.f.name.value;
-      const amount = this.f.amount.value;
-      const notes = this.f.notes.value;
+      const name = this.editIncomeFormControls.name.value ?? '';
+      const amount = this.editIncomeFormControls.amount.value ?? 0;
+      const notes = this.editIncomeFormControls.notes.value ?? '';
 
       return {
          date: dateString,
