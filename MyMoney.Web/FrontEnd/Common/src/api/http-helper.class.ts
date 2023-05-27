@@ -1,7 +1,7 @@
 import { Observable, from, map, switchMap  } from 'rxjs';
 
 export class HttpHelper {
-   public post<Req, Res>(url: string, payload: Req, userToken?: string): Observable<Res> {
+   public post<RequestBodyType, ResponseBodyType>(url: string, payload: RequestBodyType, userToken?: string): Observable<ResponseBodyType> {
 
       if (userToken === undefined) {
          const annonymousRequest = fetch(url, {
@@ -12,7 +12,7 @@ export class HttpHelper {
             }
          });
 
-         return HttpHelper.send<Res>(annonymousRequest);
+         return HttpHelper.send<ResponseBodyType>(annonymousRequest);
       }
 
       const userRequest = fetch(url, {
@@ -24,14 +24,14 @@ export class HttpHelper {
          }
       });
 
-      return HttpHelper.send<Res>(userRequest);
+      return HttpHelper.send<ResponseBodyType>(userRequest);
    }
 
-   private static send<Res>(request: Promise<Response>) : Observable<Res>{
-      return from(request).pipe(switchMap((r: Response) => HttpHelper.toResult<Res>(r.json())));
+   private static send<ResponseBodyType>(request: Promise<Response>) : Observable<ResponseBodyType>{
+      return from(request).pipe(switchMap((r: Response) => HttpHelper.toResult<ResponseBodyType>(r.json())));
    }
 
-   private static toResult<Res>(jsonBody: Promise<any>) : Observable<Res> {
-      return from(jsonBody).pipe(map(rb => rb as Res));
+   private static toResult<ResponseBodyType>(jsonBody: Promise<any>) : Observable<ResponseBodyType> {
+      return from(jsonBody).pipe(map(rb => rb as ResponseBodyType));
    }
 }
