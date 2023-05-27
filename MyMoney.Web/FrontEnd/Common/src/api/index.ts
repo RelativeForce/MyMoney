@@ -4,3 +4,4 @@ export * from './dtos.interface';
 export * from './income.api';
 export * from './authentication.api';
 export * from './home.api';
+export * from './http-helper.class';

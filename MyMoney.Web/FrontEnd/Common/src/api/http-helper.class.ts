@@ -7,6 +7,9 @@ export class HttpHelper {
          const annonymousRequest = fetch(url, {
             method: 'POST',
             body: JSON.stringify(payload),
+            headers: {
+               "Content-Type": "application/json",
+            }
          });
 
          return from(annonymousRequest).pipe(map(r => r.json() as Res));
@@ -16,8 +19,8 @@ export class HttpHelper {
          method: 'POST',
          body: JSON.stringify(payload),
          headers: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            Authorization: `Bearer ${userToken}`
+            Authorization: `Bearer ${userToken}`,
+            "Content-Type": "application/json",
          }
       });
 
