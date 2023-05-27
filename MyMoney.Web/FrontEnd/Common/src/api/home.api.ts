@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IRunningTotalSearchDto, IRunningTotalListDto } from './dtos.interface';
+import { IRunningTotalSearchDto, IRunningTotalListDto } from './dtos';
 import { HttpHelper } from './http-helper.class';
 
 export class HomeApi {

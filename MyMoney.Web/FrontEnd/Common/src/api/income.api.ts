@@ -10,7 +10,7 @@ import {
    IIncomeSearchDto,
    IRecurringEntityChildDto,
    IRecurringIncomeDto
-} from './dtos.interface';
+} from './dtos';
 import { HttpHelper } from './http-helper.class';
 
 export class IncomeApi {

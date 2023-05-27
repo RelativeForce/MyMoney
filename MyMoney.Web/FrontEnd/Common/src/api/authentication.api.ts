@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IBasicResultDto, IForgotPasswordDto, ILoginDto, ILoginResultDto, IPasswordDto, IRegisterDto } from './dtos.interface';
+import { IBasicResultDto, IForgotPasswordDto, ILoginDto, ILoginResultDto, IPasswordDto, IRegisterDto } from './dtos';
 import { HttpHelper } from './http-helper.class';
 
 

@@ -7,7 +7,7 @@ import {
    IBudgetDto,
    IIdDto,
    IUpdateResultDto
-} from './dtos.interface';
+} from './dtos';
 import { HttpHelper } from './http-helper.class';
 
 

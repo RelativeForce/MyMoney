@@ -9,7 +9,7 @@ import {
    ITransactionListDto,
    IUpdateResultDto,
    IDateRangeDto
-} from './dtos.interface';
+} from './dtos';
 import { HttpHelper } from './http-helper.class';
 
 export class TransactionApi {

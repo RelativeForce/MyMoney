@@ -14,7 +14,7 @@ export class HttpHelper extends CommonHttpHelper {
         super();
         
         this.sessionToken$ = store
-        .select(selectCurrentSession)
-        .pipe(map((session: ISessionModel | null) => session?.token ?? null));
+            .select(selectCurrentSession)
+            .pipe(map((session: ISessionModel | null) => session?.token ?? null));
     }
 }
