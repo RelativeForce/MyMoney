@@ -6,7 +6,7 @@ export function groupBy<T, K>(list: T[], toKey: (item: T) => K): Map<K, T[]> {
       const key: K = toKey(item);
       const collection: T[] = map.get(key) ?? [];
       collection.push(item);
-      map.set(key, [item]);
+      map.set(key, collection);
    });
    return map;
 }
