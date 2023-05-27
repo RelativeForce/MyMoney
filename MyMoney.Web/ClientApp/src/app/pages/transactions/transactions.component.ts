@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/shared/state/app-state';
 import { selectTransactions, selectTransactionsDateRange } from 'src/app/shared/state/selectors/transaction.selector';
 import { IDateRangeModel } from '../../shared/state/types';
+import { toDateString } from 'src/app/shared/functions';
 
 @Component({
    templateUrl: './transactions.component.html',
@@ -17,11 +18,11 @@ export class TransactionsComponent implements OnInit {
    public dateRange: IDateRangeModel = { start: new Date(), end: new Date() };
    public dateRangeForm: FormGroup;
    public dateRangeFormControls = {
-      start: new FormControl(this.dateRange.start.toISOString().split('T')[0], [Validators.required]),
-      end: new FormControl(this.dateRange.end.toISOString().split('T')[0], [Validators.required])
+      start: new FormControl(toDateString(this.dateRange.start), [Validators.required]),
+      end: new FormControl(toDateString(this.dateRange.end), [Validators.required])
    }
-   public loading: Boolean = false;
-   public submitted: Boolean = false;
+   public loading = false;
+   public submitted = false;
 
    constructor(
       private readonly transactionService: TransactionService,
@@ -43,8 +44,8 @@ export class TransactionsComponent implements OnInit {
          .subscribe((dateRange) => {
             this.dateRange = dateRange;
 
-            this.dateRangeFormControls.start.setValue(dateRange.start.toISOString().split('T')[0]);
-            this.dateRangeFormControls.end.setValue(dateRange.end.toISOString().split('T')[0]);
+            this.dateRangeFormControls.start.setValue(toDateString(dateRange.start));
+            this.dateRangeFormControls.end.setValue(toDateString(dateRange.end));
          });
 
       this.transactionService.refreshTransactions();

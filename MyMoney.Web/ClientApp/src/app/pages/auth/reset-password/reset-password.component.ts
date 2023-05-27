@@ -17,7 +17,7 @@ export class ResetPasswordComponent implements OnInit {
    public loading = false;
    public submitted = false;
    public error: string | null = null;
-   private token: string = '';
+   private token = '';
 
    constructor(
       private readonly activatedRoute: ActivatedRoute,

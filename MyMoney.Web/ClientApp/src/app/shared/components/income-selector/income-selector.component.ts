@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { IncomeViewModel } from '../../classes';
 import { IncomeService } from 'src/app/shared/services';
 import { IIncomeDto } from '../../api';

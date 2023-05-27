@@ -23,7 +23,7 @@ export class EditBasicIncomeComponent implements OnInit {
    };
    public selectedBudgets: Set<number> = new Set();
    public budgets: BudgetViewModel[] = [];
-   public id: number = 0;
+   public id = 0;
    public parentId: number | null = null;
    public parentFrequency: Frequency | null = null;
    public loading = false;

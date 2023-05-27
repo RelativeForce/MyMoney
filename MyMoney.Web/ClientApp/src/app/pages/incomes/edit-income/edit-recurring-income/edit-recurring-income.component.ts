@@ -22,7 +22,7 @@ export class EditRecurringIncomeComponent implements OnInit {
       notes: new FormControl(''),
       recurrence: new FormControl(Frequency.month, [Validators.required, frequencyValidator])
    };
-   public id: number = 0;
+   public id = 0;
    public loading = false;
    public realisingChild: number | null = null;
    public submitted = false;

@@ -19,8 +19,8 @@ export class BudgetsComponent implements OnInit {
       year: new FormControl(0, [Validators.required, Validators.min(1980)]),
       month: new FormControl(0, [Validators.required, monthValidator])
    };
-   public loading: Boolean = false;
-   public submitted: Boolean = false;
+   public loading = false;
+   public submitted = false;
 
    constructor(
       private readonly budgetService: BudgetService,

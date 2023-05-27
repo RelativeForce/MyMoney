@@ -1,3 +1,3 @@
 import { IDateRangeDto } from '../../api';
 
-export type IDateRangeModel = {} & IDateRangeDto;
+export type IDateRangeModel = IDateRangeDto;

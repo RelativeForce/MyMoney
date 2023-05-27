@@ -5,6 +5,7 @@ import { IncomeService } from 'src/app/shared/services';
 import { IRecurringIncomeDto, Frequency } from 'src/app/shared/api';
 import { frequencyOptions } from 'src/app/shared/constants';
 import { frequencyValidator, minAmountValidator } from 'src/app/shared/common-validators';
+import { toDateString } from 'src/app/shared/functions';
 
 @Component({
    selector: 'mymoney-add-recurring-income',
@@ -14,8 +15,8 @@ export class AddRecurringIncomeComponent implements OnInit {
 
    public addIncomeForm: FormGroup;
    public addIncomeFormControls = {
-      start: new FormControl(new Date().toISOString().split('T')[0], [Validators.required]),
-      end: new FormControl(new Date().toISOString().split('T')[0], [Validators.required]),
+      start: new FormControl(toDateString(new Date()), [Validators.required]),
+      end: new FormControl(toDateString(new Date()), [Validators.required]),
       name: new FormControl('', [Validators.required]),
       amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
       recurrence: new FormControl(Frequency.month, [Validators.required, frequencyValidator]),
@@ -36,7 +37,7 @@ export class AddRecurringIncomeComponent implements OnInit {
       const end = new Date();
       end.setMonth(end.getMonth() + 3);
 
-      this.addIncomeFormControls.end.setValue(end.toISOString().split('T')[0]);
+      this.addIncomeFormControls.end.setValue(toDateString(end));
    }
 
    public get f() {

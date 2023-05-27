@@ -4,16 +4,17 @@ import { Router } from '@angular/router';
 import { IIncomeModel } from 'src/app/shared/state/types';
 import { IncomeService } from 'src/app/shared/services';
 import { minAmountValidator } from 'src/app/shared/common-validators';
+import { toDateString } from 'src/app/shared/functions';
 
 @Component({
    selector: 'mymoney-add-basic-income',
    templateUrl: './add-basic-income.component.html'
 })
-export class AddBasicIncomeComponent implements OnInit {
+export class AddBasicIncomeComponent {
 
    public addIncomeForm: FormGroup;
    public addIncomeFormControls = {
-      date: new FormControl(new Date().toISOString().split('T')[0], [Validators.required]),
+      date: new FormControl(toDateString(new Date()), [Validators.required]),
       name: new FormControl('', [Validators.required]),
       amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
       notes: new FormControl(''),
@@ -26,9 +27,6 @@ export class AddBasicIncomeComponent implements OnInit {
       private readonly incomeService: IncomeService,
    ) {
       this.addIncomeForm = new FormGroup(this.addIncomeFormControls);
-   }
-
-   public ngOnInit(): void {
    }
 
    public onSubmit(): void {

@@ -130,7 +130,7 @@ export function incomeReducer(state: IIncomeState = initialIncomeState, action: 
          return updateIncome(state, action as UpdateIncomeAction);
       case IncomeActionTypes.deleteIncome:
          return deleteIncome(state, action as DeleteIncomeAction);
-      case IncomeActionTypes.deleteIncome:
+      case IncomeActionTypes.realiseIncome:
          return realiseIncome(state, action as RealiseIncomeAction);
       case IncomeActionTypes.updateSearchDate:
          return updateSelectedSearchDate(state, action as UpdateIncomesSearchAction);

@@ -1,3 +1,3 @@
 import { IBudgetDto } from '../../api';
 
-export type IBudgetModel = {} & IBudgetDto;
+export type IBudgetModel = IBudgetDto;

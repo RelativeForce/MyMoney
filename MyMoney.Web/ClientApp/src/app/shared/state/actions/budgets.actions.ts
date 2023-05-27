@@ -36,6 +36,4 @@ export class UpdateSearchMonthIdAction implements Action {
 
 export class RefreshBudgetsAction implements Action {
    public type: string = BudgetActionTypes.refreshBudgets;
-
-   constructor() { }
 }

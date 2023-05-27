@@ -1,3 +1,3 @@
 import { ITransactionDto } from '../../api';
 
-export type ITransactionModel = {} & ITransactionDto;
+export type ITransactionModel = ITransactionDto;

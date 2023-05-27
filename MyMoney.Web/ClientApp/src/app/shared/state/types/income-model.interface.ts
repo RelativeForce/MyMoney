@@ -1,3 +1,3 @@
 import { IIncomeDto } from '../../api';
 
-export type IIncomeModel = {} & IIncomeDto;
+export type IIncomeModel = IIncomeDto;

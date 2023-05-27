@@ -50,6 +50,4 @@ export class UpdateDataRangeAction implements Action {
 
 export class RefreshTransactionsAction implements Action {
    public type: string = TransactionActionTypes.refreshTransactions;
-
-   constructor() { }
 }

@@ -9,8 +9,6 @@ export class AddTransactionComponent {
 
    public isRecurring = false;
 
-   constructor() { }
-
    public onRecurringChanged(checked: boolean): void {
       this.isRecurring = checked;
    }

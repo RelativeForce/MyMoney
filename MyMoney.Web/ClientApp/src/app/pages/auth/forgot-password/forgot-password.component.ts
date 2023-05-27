@@ -5,7 +5,7 @@ import { AuthenticationService } from '../../../shared/services';
 @Component({
    templateUrl: './forgot-password.component.html'
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent {
 
    public forgotPasswordForm: FormGroup;
    public forgotPasswordFormControls = {
@@ -17,9 +17,6 @@ export class ForgotPasswordComponent implements OnInit {
 
    constructor(private readonly authenticationService: AuthenticationService) {
       this.forgotPasswordForm = new FormGroup(this.forgotPasswordFormControls);
-   }
-
-   public ngOnInit(): void {
    }
 
    public onSubmit(): void {

@@ -16,8 +16,6 @@ export class ChartComponent {
 
    public LegendPosition = LegendPosition;
 
-   constructor() { }
-
    public onSelect(item: ISeriesItem): void {
       this.dataProvider.onSelect(item);
    }

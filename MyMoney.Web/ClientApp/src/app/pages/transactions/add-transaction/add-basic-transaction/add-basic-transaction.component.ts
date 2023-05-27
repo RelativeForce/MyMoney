@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ITransactionModel } from 'src/app/shared/state/types';
 import { TransactionService } from 'src/app/shared/services';
 import { minAmountValidator } from 'src/app/shared/common-validators';
+import { toDateString } from 'src/app/shared/functions';
 
 @Component({
    selector: 'mymoney-add-basic-transaction',
    templateUrl: './add-basic-transaction.component.html',
 })
-export class AddBasicTransactionComponent implements OnInit {
+export class AddBasicTransactionComponent {
    public addTransactionForm: FormGroup;
    public addTransactionFormControls = {
-      date: new FormControl(new Date().toISOString().split('T')[0], [Validators.required]),
+      date: new FormControl(toDateString(new Date()), [Validators.required]),
       description: new FormControl('', [Validators.required]),
       amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
       notes: new FormControl('')
@@ -28,9 +29,6 @@ export class AddBasicTransactionComponent implements OnInit {
       private readonly transactionService: TransactionService,
    ) {
       this.addTransactionForm = new FormGroup(this.addTransactionFormControls);
-   }
-
-   public ngOnInit(): void {
    }
 
    public get selectedDate(): Date {

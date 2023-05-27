@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CurrentUserService } from '../../../shared/services';
-import { toInputDateString } from '../../../shared/functions';
+import { toDateString, toInputDateString } from '../../../shared/functions';
 import { filter, map } from 'rxjs/operators';
 import { IUser } from 'src/app/shared/state/types';
 import { IBasicResultDto, IUserDto } from 'src/app/shared/api';
@@ -17,7 +17,7 @@ export class ProfileComponent implements OnInit {
    public profileFormControls = {
       email: new FormControl('', [Validators.required]),
       fullName: new FormControl('', [Validators.required]),
-      dateOfBirth: new FormControl(new Date().toISOString().split('T')[0], [Validators.required]),
+      dateOfBirth: new FormControl(toDateString(new Date()), [Validators.required]),
    }
    public loading = false;
    public submitted = false;

@@ -8,6 +8,4 @@ import packageInfo from '../../../../../package.json';
 export class FooterComponent {
 
    public versionString: string = packageInfo.version;
-
-   constructor() { }
 }

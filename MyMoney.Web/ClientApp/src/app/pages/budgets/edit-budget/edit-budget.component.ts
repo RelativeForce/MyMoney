@@ -20,7 +20,7 @@ export class EditBudgetComponent implements OnInit {
    };
    public loading = false;
    public submitted = false;
-   public id: number = 0;
+   public id = 0;
 
    constructor(
       private readonly router: Router,

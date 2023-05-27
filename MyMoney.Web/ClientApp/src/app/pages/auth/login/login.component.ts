@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../../shared/services';
 @Component({
    templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
    public loginForm: FormGroup;
    public loginFormControls = {
@@ -25,9 +25,6 @@ export class LoginComponent implements OnInit {
       private readonly router: Router
    ) {
       this.loginForm = new FormGroup(this.loginFormControls);
-   }
-
-   public ngOnInit(): void {
    }
 
    public onSubmit(): void {

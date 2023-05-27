@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/shared/state/app-state';
 import { selectIncomes, selectIncomesSearchParameters } from 'src/app/shared/state/selectors/income.selector';
 import { IDateRangeModel } from 'src/app/shared/state/types';
+import { toDateString } from 'src/app/shared/functions';
 
 @Component({
    selector: 'mymoney-incomes',
@@ -18,11 +19,11 @@ export class IncomesComponent implements OnInit {
    public dateRange: IDateRangeModel = { start: new Date(), end: new Date() };
    public dateForm: FormGroup;
    public dateRangeFormControls = {
-      start: new FormControl(this.dateRange.start.toISOString().split('T')[0], [Validators.required]),
-      end: new FormControl(this.dateRange.end.toISOString().split('T')[0], [Validators.required])
+      start: new FormControl(toDateString(this.dateRange.start), [Validators.required]),
+      end: new FormControl(toDateString(this.dateRange.end), [Validators.required])
    }
-   public loading: Boolean = false;
-   public submitted: Boolean = false;
+   public loading = false;
+   public submitted = false;
 
    constructor(
       private readonly incomeService: IncomeService,
@@ -44,8 +45,8 @@ export class IncomesComponent implements OnInit {
          .subscribe((searchParameters) => {
             this.dateRange = searchParameters.dateRange;
 
-            this.dateRangeFormControls.start.setValue(searchParameters.dateRange.start.toISOString().split('T')[0]);
-            this.dateRangeFormControls.end.setValue(searchParameters.dateRange.end.toISOString().split('T')[0]);
+            this.dateRangeFormControls.start.setValue(toDateString(searchParameters.dateRange.start));
+            this.dateRangeFormControls.end.setValue(toDateString(searchParameters.dateRange.end));
          });
 
       this.incomeService.refreshIncomes();
