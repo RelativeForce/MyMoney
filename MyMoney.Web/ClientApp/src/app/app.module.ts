@@ -97,7 +97,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CheckBoxComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
