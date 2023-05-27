@@ -6,7 +6,9 @@
     <TypeScriptToolsVersion>3.9</TypeScriptToolsVersion>
     <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
     <IsPackable>false</IsPackable>
-    <SpaRoot>ClientApp\</SpaRoot>
+    <FrontEndFramework>$(MyMoney_Front_End_FrameWork)</FrontEndFramework>
+    <SpaRoot Condition=" '$(FrontEndFramework)' == '' ">FrontEnd\Angular\</SpaRoot>
+    <SpaRoot Condition=" '$(FrontEndFramework)' != '' ">FrontEnd\$(FrontEndFramework)\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 
     <!-- Set this to true if you enable server-side prerendering -->

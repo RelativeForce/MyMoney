@@ -22,6 +22,9 @@ namespace MyMoney.Core
       public const string EmailAddress = "MyMoney_Email_Address";
       public const string EmailPassword = "MyMoney_Email_Password";
 
+      // FrontEnd
+      public const string FrontEndFramework = "MyMoney_Front_End_Framework";
+
       public static void LogVariableValue(string environmentVariable, string value, bool isDefault = false)
       {
          Console.WriteLine($"{environmentVariable}: '{value}'{(isDefault ? " (default)" : "")}");
