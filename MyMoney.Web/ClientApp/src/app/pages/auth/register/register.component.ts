@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-
 import { AuthenticationService } from '../../../shared/services';
 import { ILoginResultDto, IRegisterDto } from '../../../shared/api';
+import { toDateString } from 'src/app/shared/functions';
 
 @Component({
    templateUrl: 'register.component.html'
@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
    public registerFormControls = {
       email: new FormControl('', [Validators.required]),
       fullName: new FormControl('', [Validators.required]),
-      dateOfBirth: new FormControl(new Date().toISOString().split('T')[0], [Validators.required]),
+      dateOfBirth: new FormControl(toDateString(new Date()), [Validators.required]),
       password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]),
       confirmPassword: new FormControl('')
    };
