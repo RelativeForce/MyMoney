@@ -7,7 +7,6 @@ import { IUser } from './shared/state/types';
 @Component({
   selector: 'mymoney-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
 
