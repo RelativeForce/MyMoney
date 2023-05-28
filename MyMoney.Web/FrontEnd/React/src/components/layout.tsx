@@ -6,7 +6,7 @@ import Footer from './footer';
 import Link from 'next/link';
 import { selectCurrentSession, selectCurrentUser, clearSession, fetchUser, selectCurrentUserState } from '@/state/sessionSlice';
 import { ISessionModel } from 'mymoney-common/lib/interfaces';
-import { checkSession } from '@/functions/checkSession';
+import { checkSession } from '@/functions/check-session';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';

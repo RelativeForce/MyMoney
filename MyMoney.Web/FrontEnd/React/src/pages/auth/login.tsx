@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 import { selectCurrentSession, startSession } from "@/state/sessionSlice";
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { isValidSession } from "@/functions/checkSession";
+import { isValidSession } from "@/functions/check-session";
 import { redirect } from "@/hooks/redirect";
 import TextInput from "@/components/text-input";
 import { FormControlState } from "@/interfaces/form-conrtol-props";

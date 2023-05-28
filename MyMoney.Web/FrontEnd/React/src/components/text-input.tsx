@@ -13,7 +13,6 @@ export default function TextInput(props: TextInputProps) {
                 </div>
             ));
         }
-
     }
 
     return (

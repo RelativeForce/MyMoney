@@ -24,7 +24,7 @@ export function checkSession(dispatch: Dispatch<AnyAction>, router: NextRouter, 
             }
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 
     dispatch(clearSession());
