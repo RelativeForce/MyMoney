@@ -8,6 +8,7 @@ export interface FormControlProps<T> {
     defaultValue: T;
     errors: { [key: string]: string; } | null;
     autoComplete?: string;
+    type?: string;
 }
 
 export interface FormControlState<T> {

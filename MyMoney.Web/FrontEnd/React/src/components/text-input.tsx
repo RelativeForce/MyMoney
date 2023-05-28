@@ -21,7 +21,8 @@ export default function TextInput(props: TextInputProps) {
             <div className="form-group">
                 <label htmlFor={props.name}>{props.labelText}</label>
                 <input
-                    type="text" name={props.name}
+                    type={props.type ?? 'text'}
+                    name={props.name}
                     className={`form-control ${props.showErrors && props.errors ? 'is-invalid' : ''}`}
                     defaultValue={props.defaultValue}
                     onChange={props.onChange}

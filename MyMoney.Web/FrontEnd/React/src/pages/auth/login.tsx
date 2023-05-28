@@ -25,7 +25,7 @@ export default function Login() {
   const [emailState, setEmailState] = useState<FormControlState<string>>({ value: '', errors: null });
   const [passwordState, setPasswordState] = useState<FormControlState<string>>({ value: '', errors: null });
   const dispatch = useDispatch();
-  
+
   const hasValidSession = session !== null && isValidSession(session);
   redirect(router, '/', hasValidSession, [session?.token]);
 
@@ -57,9 +57,8 @@ export default function Login() {
 
     const passwordErrors = requiredValidator(passwordState.value, 'Password is required');
     setPasswordState({ value: passwordState.value, errors: passwordErrors });
-    
-    if (emailErrors || passwordErrors)
-    {
+
+    if (emailErrors || passwordErrors) {
       return;
     }
 
@@ -94,21 +93,24 @@ export default function Login() {
     <>
       <h2>Login</h2>
       <form>
-        <TextInput 
-        name={"email"} 
-        labelText={"Email"} 
-        showErrors={submitted} 
-        onChange={updateEmail} 
-        defaultValue={emailState.value} 
-        errors={emailState.errors} ></TextInput>
-        <TextInput 
-        name={"password"} 
-        labelText={"Password"} 
-        showErrors={submitted} 
-        
-        onChange={updatePassword} 
-        defaultValue={passwordState.value}
-         errors={passwordState.errors} ></TextInput>
+        <TextInput
+          name={"email"}
+          labelText={"Email"}
+          showErrors={submitted}
+          onChange={updateEmail}
+          defaultValue={emailState.value}
+          errors={emailState.errors}
+        />
+        <TextInput
+          name={"password"}
+          labelText={"Password"}
+          showErrors={submitted}
+          onChange={updatePassword}
+          defaultValue={passwordState.value}
+          errors={passwordState.errors}
+          autoComplete="current-password"
+          type="password"
+        />
         <div className="form-group">
           <button disabled={loading} type="button" onClick={login} className="btn btn-primary">
             {loading ? (<span className="spinner-border spinner-border-sm mr-1"></span>) : ''}
@@ -117,7 +119,7 @@ export default function Login() {
           <Link className="btn btn-link" href="/auth/register">Register</Link>
           <Link className="btn btn-link" href="/auth/forgot-password">Forgot password</Link>
         </div>
-        { error !== null ? (<div className="alert alert-danger" role="alert">Login failed: {error}</div>) : '' }
+        {error !== null ? (<div className="alert alert-danger" role="alert">Login failed: {error}</div>) : ''}
       </form>
     </>
   );
