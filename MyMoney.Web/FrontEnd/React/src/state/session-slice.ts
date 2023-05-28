@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { IUserDto } from 'mymoney-common/lib/api/dtos';
+import { ILoginDto, ILoginResultDto, IUserDto } from 'mymoney-common/lib/api/dtos';
 import { ISessionModel } from 'mymoney-common/lib/interfaces';
 import { SESSION_LOCAL_STORAGE_KEY } from 'mymoney-common/lib/constants';
 import { ISessionState, IAppState, AsyncStatus, IUserState } from './types';
 import { first } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { UserApi } from 'mymoney-common/lib/api';
+import { AuthenticationApi, UserApi } from 'mymoney-common/lib/api';
 import { HttpHelper } from '@/classess/http-helper';
 
 export const initialUserState: IUserState = {
@@ -19,12 +19,23 @@ export const initialSessionState: ISessionState = {
    currentUser: initialUserState
 };
 
-export const fetchUser = createAsyncThunk('session/fetchUser', async (token: string) => {
-   const httpHelper = new HttpHelper(token);
+export const fetchUser = createAsyncThunk('session/fetchUser', async (sessionToken: string) => {
+   const httpHelper = new HttpHelper(sessionToken);
    const api = new UserApi(httpHelper);
 
    try {
       return await firstValueFrom(api.currentUserDetails().pipe(first()));
+   } catch (error: any) {
+      return error.message;
+   }
+});
+
+export const login = createAsyncThunk('session/login', async (credentials: ILoginDto) => {
+   const httpHelper = new HttpHelper(null);
+   const api = new AuthenticationApi(httpHelper);
+
+   try {
+      return await firstValueFrom(api.login(credentials).pipe(first()));
    } catch (error: any) {
       return error.message;
    }
@@ -105,6 +116,20 @@ export const sessionSlice = createSlice({
                   status: AsyncStatus.failed,
                   error: action.error.message ?? null,
                }
+            };
+         })
+         .addCase(login.fulfilled, (state: ISessionState, action: { payload : ILoginResultDto }) => {
+            const sesssion: ISessionModel = {
+               sessionEnd: action.payload.validTo,
+               token: action.payload.token
+            };
+
+            localStorage.setItem(SESSION_LOCAL_STORAGE_KEY, JSON.stringify(sesssion));
+            console.log('Session: Cached in local storage');
+
+            return {
+               ...state,
+               currentSession: sesssion,
             };
          });
    }

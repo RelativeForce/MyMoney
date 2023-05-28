@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<any>();
   const router = useRouter();
 
-  useEffect(() => checkSession(dispatch, router, session), [session?.token, dispatch]);
+  useEffect(() => checkSession(dispatch, router, session), [session?.token]);
 
   useEffect(() => {
     if (!session?.token || userState.status !== AsyncStatus.empty) {

@@ -1,13 +1,9 @@
-import { HttpHelper } from "@/classess/http-helper";
 import Link from "next/link";
 import { ChangeEventHandler, useState } from "react"
 import { useDispatch } from 'react-redux';
-import { AuthenticationApi } from 'mymoney-common/lib/api';
-import { ILoginDto, ILoginResultDto } from 'mymoney-common/lib/api/dtos';
+import { ILoginDto } from 'mymoney-common/lib/api/dtos';
 import { ISessionModel } from 'mymoney-common/lib/interfaces';
-import { first, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { selectCurrentSession, startSession } from "@/state/session-slice";
+import { login, selectCurrentSession } from "@/state/session-slice";
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { isValidSession } from "@/functions/check-session";
@@ -24,7 +20,7 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const [emailState, setEmailState] = useState<FormControlState<string>>({ value: '', errors: null });
   const [passwordState, setPasswordState] = useState<FormControlState<string>>({ value: '', errors: null });
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
 
   const hasValidSession = session !== null && isValidSession(session);
   redirect(router, '/', hasValidSession, [session?.token]);
@@ -43,7 +39,7 @@ export default function Login() {
     setPasswordState({ value: password, errors });
   }
 
-  function login() {
+  function loginClicked() {
     setSubmitted(true);
 
     if (loading) {
@@ -63,28 +59,8 @@ export default function Login() {
     setLoading(true);
     setError(null);
 
-    const httpHelper = new HttpHelper(null);
-    const api = new AuthenticationApi(httpHelper);
-
     const credentials: ILoginDto = { email: emailState.value, password: passwordState.value };
-
-    api.login(credentials)
-      .pipe(
-        first(),
-        catchError((error) => {
-          setError('Unknown error');
-          console.error(error);
-          return of(null)
-        }),
-      )
-      .subscribe((loginResult: ILoginResultDto | null) => {
-        if (!loginResult) {
-          return;
-        }
-
-        dispatch(startSession(loginResult.token, loginResult.validTo));
-        void router.push('/');
-      });
+    dispatch(login(credentials));
   }
 
   return (
@@ -110,7 +86,7 @@ export default function Login() {
           type="password"
         />
         <div className="form-group">
-          <button disabled={loading} type="button" onClick={login} className="btn btn-primary">
+          <button disabled={loading} type="button" onClick={loginClicked} className="btn btn-primary">
             {loading ? (<span className="spinner-border spinner-border-sm mr-1"></span>) : ''}
             Login
           </button>
