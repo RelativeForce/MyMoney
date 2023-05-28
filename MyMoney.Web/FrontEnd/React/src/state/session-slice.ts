@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { IUserDto } from 'mymoney-common/lib/api/dtos';
 import { ISessionModel } from 'mymoney-common/lib/interfaces';
 import { SESSION_LOCAL_STORAGE_KEY } from 'mymoney-common/lib/constants';
@@ -28,7 +28,6 @@ export const fetchUser = createAsyncThunk('session/fetchUser', async (token: str
    } catch (error: any) {
       return error.message;
    }
-
 });
 
 export const sessionSlice = createSlice({
@@ -76,7 +75,7 @@ export const sessionSlice = createSlice({
          }
       },
    },
-   extraReducers(builder) {
+   extraReducers(builder: ActionReducerMapBuilder<ISessionState>) {
       builder
          .addCase(fetchUser.pending, (state: ISessionState) => {
             return {
