@@ -82,7 +82,7 @@ export default function Login() {
           return;
         }
 
-        dispatch(startSession({ token: loginResult.token, sessionEnd: loginResult.validTo }));
+        dispatch(startSession(loginResult.token, loginResult.validTo));
         void router.push('/');
       });
   }

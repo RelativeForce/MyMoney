@@ -13,14 +13,19 @@ export const sessionSlice = createSlice({
    name: 'session',
    initialState: initialSessionState,
    reducers: {
-      startSession: (state: ISessionState, { payload }: { payload: ISessionModel }) => {
-         localStorage.setItem(SESSION_LOCAL_STORAGE_KEY, JSON.stringify(payload));
-         console.log('Session: Cached in local storage');
+      startSession: {
+         reducer: (state: ISessionState, { payload }: { payload: ISessionModel }) => {
+            localStorage.setItem(SESSION_LOCAL_STORAGE_KEY, JSON.stringify(payload));
+            console.log('Session: Cached in local storage');
 
-         return {
-            ...state,
-            currentSession: payload
-         };
+            return {
+               ...state,
+               currentSession: payload
+            };
+         },
+         prepare: (token: string, sessionEnd: string) => {
+            return { payload: { token, sessionEnd } };
+         }
       },
       clearSession: (state: ISessionState) => {
 
@@ -33,16 +38,20 @@ export const sessionSlice = createSlice({
             currentUser: null
          };
       },
-      setUser: (state: ISessionState, { payload }: { payload: IUserDto }) => {
-
-         return {
-            ...state,
-            currentUser: {
-               email: payload.email,
-               dateOfBirth: payload.dateOfBirth,
-               fullName: payload.fullName,
-            }
-         };
+      setUser: {
+         reducer: (state: ISessionState, { payload }: { payload: IUserDto }) => {
+            return {
+               ...state,
+               currentUser: {
+                  email: payload.email,
+                  dateOfBirth: payload.dateOfBirth,
+                  fullName: payload.fullName,
+               }
+            };
+         },
+         prepare: (user: IUserDto) => {
+            return { payload: user };
+         }
       },
    }
 });

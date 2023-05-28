@@ -19,7 +19,7 @@ export function checkSession(dispatch: Dispatch<AnyAction>, router: NextRouter, 
 
             if (isValidSession(browserSession)) {
                 console.log('Session: Using cached session from local storage');
-                dispatch(startSession({ token: browserSession.token, sessionEnd: browserSession.sessionEnd }));
+                dispatch(startSession(browserSession.token, browserSession.sessionEnd));
                 return;
             }
         }
