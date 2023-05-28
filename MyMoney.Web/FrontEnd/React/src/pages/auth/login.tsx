@@ -92,16 +92,16 @@ export default function Login() {
       <h2>Login</h2>
       <form>
         <TextInput
-          name={"email"}
-          labelText={"Email"}
+          name="email"
+          labelText="Email"
           showErrors={submitted}
           onChange={updateEmail}
           defaultValue={emailState.value}
           errors={emailState.errors}
         />
         <TextInput
-          name={"password"}
-          labelText={"Password"}
+          name="password"
+          labelText="Password"
           showErrors={submitted}
           onChange={updatePassword}
           defaultValue={passwordState.value}
