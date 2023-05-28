@@ -33,7 +33,6 @@ export default function Login() {
     const email: string = event.target.value;
 
     const errors = requiredValidator(email, 'Email is required');
-
     setEmailState({ value: email, errors });
   }
 
@@ -41,7 +40,6 @@ export default function Login() {
     const password: string = event.target.value;
 
     const errors = requiredValidator(password, 'Password is required');
-
     setPasswordState({ value: password, errors });
   }
 
