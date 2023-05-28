@@ -2,6 +2,7 @@
 
 import { IUserDto } from 'mymoney-common/lib/api/dtos';
 import { useState } from "react";
+import Footer from './footer';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<IUserDto | null>({
@@ -56,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="container">
           {children}
         </div>
-        {/* TODO: Footer component*/}
+        <Footer></Footer>
       </div>
     </>
   )
