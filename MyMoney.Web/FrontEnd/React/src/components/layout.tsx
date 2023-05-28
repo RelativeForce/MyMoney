@@ -4,50 +4,30 @@ import { IUserDto } from 'mymoney-common/lib/api/dtos';
 import { useSelector } from 'react-redux';
 import Footer from './footer';
 import Link from 'next/link';
-import { selectCurrentSession, selectCurrentUser, clearSession, setUser } from '@/state/sessionSlice';
+import { selectCurrentSession, selectCurrentUser, clearSession, fetchUser, selectCurrentUserState } from '@/state/sessionSlice';
 import { ISessionModel } from 'mymoney-common/lib/interfaces';
 import { checkSession } from '@/functions/checkSession';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { HttpHelper } from '@/classess/HttpHelper';
-import { UserApi } from 'mymoney-common/lib/api';
-import { useSessionToken } from '@/hooks/useSessionToken';
-import { first, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { useEffect } from 'react';
+import { AsyncStatus, IUserState } from '@/state/types';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const session: ISessionModel | null = useSelector(selectCurrentSession);
+  const userState: IUserState = useSelector(selectCurrentUserState);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const router = useRouter();
 
-  useSessionToken(() => checkSession(dispatch, router, session));
+  useEffect(() => checkSession(dispatch, router, session), [session?.token, dispatch]);
 
-  useSessionToken(() => {
-    if (!session?.token) {
+  useEffect(() => {
+    if (!session?.token || userState.status !== AsyncStatus.empty) {
       return;
     }
 
-    const httpHelper = new HttpHelper(session.token);
-    const api = new UserApi(httpHelper);
-
-    api.currentUserDetails()
-      .pipe(
-        first(),
-        catchError((error) => {
-          console.error(error);
-          return of(null)
-        }),
-      )
-      .subscribe((user: IUserDto | null) => {
-        if (!user) {
-          return;
-        }
-
-        dispatch(setUser(user));
-        void router.push('/');
-      });
-  });
+    dispatch(fetchUser(session.token));
+  }, [session?.token, dispatch]);
 
   const user: IUserDto | null = useSelector(selectCurrentUser);
 

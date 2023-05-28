@@ -1,4 +1,4 @@
-import { HttpHelper } from "@/classess/HttpHelper";
+import { HttpHelper } from "@/classess/http-helper";
 import Link from "next/link";
 import { ChangeEventHandler, useState } from "react"
 import { useDispatch } from 'react-redux';
