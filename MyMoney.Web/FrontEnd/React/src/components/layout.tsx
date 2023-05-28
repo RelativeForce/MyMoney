@@ -1,19 +1,54 @@
 'use client';
 
 import { IUserDto } from 'mymoney-common/lib/api/dtos';
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Footer from './footer';
 import Link from 'next/link';
+import { selectCurrentSession, selectCurrentUser, clearSession, setUser } from '@/state/sessionSlice';
+import { ISessionModel } from 'mymoney-common/lib/interfaces';
+import { checkSession } from '@/functions/checkSession';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
+import { HttpHelper } from '@/classess/HttpHelper';
+import { UserApi } from 'mymoney-common/lib/api';
+import { useSessionToken } from '@/hooks/useSessionToken';
+import { first, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<IUserDto | null>({
-    dateOfBirth: '',
-    fullName: 'Test user',
-    email: ''
+  const session: ISessionModel | null = useSelector(selectCurrentSession);
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  useSessionToken(() => checkSession(dispatch, router, session));
+
+  useSessionToken(() => {
+    const httpHelper = new HttpHelper(session?.token ?? null);
+    const api = new UserApi(httpHelper);
+
+    api.currentUserDetails()
+      .pipe(
+        first(),
+        catchError((error) => {
+          console.error(error);
+          return of(null)
+        }),
+      )
+      .subscribe((user: IUserDto | null) => {
+        if (!user) {
+          return;
+        }
+
+        dispatch(setUser(user));
+        void router.push('/');
+      });
   });
 
+  const user: IUserDto | null = useSelector(selectCurrentUser);
+
   function logout() {
-    alert('Logged out');
+    dispatch(clearSession());
   }
 
   return (

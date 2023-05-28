@@ -1,6 +1,6 @@
-import { redirect } from '@/hooks/redirect';
+import { useRedirect } from '@/hooks/redirect';
 
 export default function Auth() {
-  redirect('/auth/login');
+  useRedirect('/auth/login');
   return (<></>);
 }
