@@ -24,7 +24,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   useSessionToken(() => checkSession(dispatch, router, session));
 
   useSessionToken(() => {
-    const httpHelper = new HttpHelper(session?.token ?? null);
+    if (!session?.token) {
+      return;
+    }
+
+    const httpHelper = new HttpHelper(session.token);
     const api = new UserApi(httpHelper);
 
     api.currentUserDetails()

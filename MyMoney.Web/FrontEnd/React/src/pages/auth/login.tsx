@@ -12,6 +12,9 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { isValidSession } from "@/functions/checkSession";
 import { redirect } from "@/hooks/redirect";
+import TextInput from "@/components/text-input";
+import { FormControlState } from "@/interfaces/form-conrtol-props";
+import { requiredValidator } from "@/functions/validators";
 
 export default function Login() {
   const router = useRouter();
@@ -19,21 +22,27 @@ export default function Login() {
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [emailState, setEmailState] = useState<FormControlState<string>>({ value: '', errors: null });
+  const [passwordState, setPasswordState] = useState<FormControlState<string>>({ value: '', errors: null });
   const dispatch = useDispatch();
   
   const hasValidSession = session !== null && isValidSession(session);
   redirect(router, '/', hasValidSession, [session?.token]);
-  
+
   const updateEmail: ChangeEventHandler<HTMLInputElement> = (event) => {
     const email: string = event.target.value;
-    setEmail(email);
+
+    const errors = requiredValidator(email, 'Email is required');
+
+    setEmailState({ value: email, errors });
   }
 
   const updatePassword: ChangeEventHandler<HTMLInputElement> = (event) => {
     const password: string = event.target.value;
-    setPassword(password);
+
+    const errors = requiredValidator(password, 'Password is required');
+
+    setPasswordState({ value: password, errors });
   }
 
   function login() {
@@ -43,9 +52,14 @@ export default function Login() {
       return;
     }
 
-    if (!email || !password)
+    const emailErrors = requiredValidator(emailState.value, 'Email is required');
+    setEmailState({ value: emailState.value, errors: emailErrors });
+
+    const passwordErrors = requiredValidator(passwordState.value, 'Password is required');
+    setPasswordState({ value: passwordState.value, errors: passwordErrors });
+    
+    if (emailErrors || passwordErrors)
     {
-      setError('Invalid form data');
       return;
     }
 
@@ -55,7 +69,7 @@ export default function Login() {
     const httpHelper = new HttpHelper(null);
     const api = new AuthenticationApi(httpHelper);
 
-    const credentials: ILoginDto = { email, password };
+    const credentials: ILoginDto = { email: emailState.value, password: passwordState.value };
 
     api.login(credentials)
       .pipe(
@@ -80,16 +94,23 @@ export default function Login() {
     <>
       <h2>Login</h2>
       <form>
+        <TextInput 
+        name={"email"} 
+        labelText={"Email"} 
+        showErrors={submitted} 
+        onChange={updateEmail} 
+        defaultValue={emailState.value} 
+        errors={emailState.errors} ></TextInput>
+        <TextInput 
+        name={"password"} 
+        labelText={"Password"} 
+        showErrors={submitted} 
+        
+        onChange={updatePassword} 
+        defaultValue={passwordState.value}
+         errors={passwordState.errors} ></TextInput>
         <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input type="text" name="email" className={`form-control ${submitted ? 'is-invalid' : ''}`} defaultValue={email} onChange={updateEmail}/>
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input type="password" name="password" className={`form-control ${submitted ? 'is-invalid' : ''}`} autoComplete="current-password" defaultValue={password} onChange={updatePassword} />
-        </div>
-        <div className="form-group">
-          <button disabled={loading} onClick={login} className="btn btn-primary">
+          <button disabled={loading} type="button" onClick={login} className="btn btn-primary">
             {loading ? (<span className="spinner-border spinner-border-sm mr-1"></span>) : ''}
             Login
           </button>
