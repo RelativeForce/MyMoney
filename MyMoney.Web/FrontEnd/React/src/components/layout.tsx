@@ -4,7 +4,7 @@ import { IUserDto } from 'mymoney-common/lib/api/dtos';
 import { useSelector } from 'react-redux';
 import Footer from './footer';
 import Link from 'next/link';
-import { selectCurrentSession, selectCurrentUser, clearSession, fetchUser, selectCurrentUserState } from '@/state/sessionSlice';
+import { selectCurrentSession, selectCurrentUser, clearSession, fetchUser, selectCurrentUserState } from '@/state/session-slice';
 import { ISessionModel } from 'mymoney-common/lib/interfaces';
 import { checkSession } from '@/functions/check-session';
 import { useDispatch } from 'react-redux';

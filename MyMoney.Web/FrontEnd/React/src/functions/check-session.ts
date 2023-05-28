@@ -1,5 +1,5 @@
 import { ISessionModel } from "mymoney-common/lib/interfaces";
-import { startSession, clearSession } from "@/state/sessionSlice";
+import { startSession, clearSession } from "@/state/session-slice";
 import { AnyAction } from 'redux';
 import { SESSION_LOCAL_STORAGE_KEY } from 'mymoney-common/lib/constants';
 import { Dispatch } from "react";

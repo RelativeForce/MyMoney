@@ -7,7 +7,7 @@ import { ILoginDto, ILoginResultDto } from 'mymoney-common/lib/api/dtos';
 import { ISessionModel } from 'mymoney-common/lib/interfaces';
 import { first, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { selectCurrentSession, startSession } from "@/state/sessionSlice";
+import { selectCurrentSession, startSession } from "@/state/session-slice";
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { isValidSession } from "@/functions/check-session";
