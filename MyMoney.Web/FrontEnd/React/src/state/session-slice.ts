@@ -45,7 +45,7 @@ export const sessionSlice = createSlice({
    name: 'session',
    initialState: initialSessionState,
    reducers: {
-      startSession: {
+      setSession: {
          reducer: (state: ISessionState, { payload }: { payload: ISessionModel }) => {
             localStorage.setItem(SESSION_LOCAL_STORAGE_KEY, JSON.stringify(payload));
             console.log('Session: Cached in local storage');
@@ -135,7 +135,7 @@ export const sessionSlice = createSlice({
    }
 });
 
-export const { startSession, clearSession, setUser } = sessionSlice.actions;
+export const { setSession, clearSession, setUser } = sessionSlice.actions;
 
 export const selectSessionState = (state: IAppState): ISessionState => state.session;
 export const selectCurrentSession = (state: IAppState): ISessionModel | null => selectSessionState(state).currentSession;

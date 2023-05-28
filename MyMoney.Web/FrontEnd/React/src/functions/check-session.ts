@@ -1,5 +1,5 @@
 import { ISessionModel } from "mymoney-common/lib/interfaces";
-import { startSession, clearSession } from "@/state/session-slice";
+import { setSession, clearSession } from "@/state/session-slice";
 import { AnyAction } from 'redux';
 import { SESSION_LOCAL_STORAGE_KEY } from 'mymoney-common/lib/constants';
 import { Dispatch } from "react";
@@ -19,7 +19,7 @@ export function checkSession(dispatch: Dispatch<AnyAction>, router: NextRouter, 
 
             if (isValidSession(browserSession)) {
                 console.log('Session: Using cached session from local storage');
-                dispatch(startSession(browserSession.token, browserSession.sessionEnd));
+                dispatch(setSession(browserSession.token, browserSession.sessionEnd));
                 return;
             }
         }
