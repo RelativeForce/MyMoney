@@ -8,7 +8,7 @@ export function useRedirect(path: string, condition?: boolean, deps?: Dependency
 
 export function redirect(router: NextRouter, path: string, condition?: boolean, deps?: DependencyList) {
     useEffect(() => { 
-        if (condition !== undefined && condition) {
+        if (condition === undefined || condition) {
             return void router.push(path);
         }
     }, deps ?? []);
