@@ -1,7 +1,7 @@
 'use client';
 
 import { IUserDto } from 'mymoney-common/lib/api/dtos';
-import { useState } from "react";
+import { useState } from 'react';
 import Footer from './footer';
 import Link from 'next/link';
 
@@ -11,6 +11,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     fullName: 'Test user',
     email: ''
   });
+
+  function logout() {
+    alert('Logged out');
+  }
 
   return (
     <>
@@ -45,9 +49,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <Link className="dropdown-item icon-dropdown-item" href="/user/change-password">
                     <span className="material-icons">vpn_key</span> Change password
                   </Link>
-                  <button className="dropdown-item icon-dropdown-item" > {/* TODO: Logout on click */}
-                    <span className="material-icons">logout</span>Logout
-                  </button>
+                  <Link className="dropdown-item icon-dropdown-item" onClick={logout} href="/auth/login">
+                    <span className="material-icons">logout</span> Logout
+                  </Link>
                 </div>
               </li>
             </ul>
