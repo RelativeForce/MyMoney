@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Footer from './footer';
 import Link from 'next/link';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<IUserDto | null>({
     dateOfBirth: '',
     fullName: 'Test user',
