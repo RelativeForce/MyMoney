@@ -1,20 +1,9 @@
 'use client';
 
-import './globals.css'
-import 'bootstrap/dist/css/bootstrap.css'
 import { IUserDto } from 'mymoney-common/lib/api/dtos';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export const metadata = {
-  title: 'My Money - React',
-  description: 'For all your budgeting needs',
-}
-
-export default function RootLayout({children} : {children: React.ReactNode}) {
-  useEffect(() => {
-    require("bootstrap/dist/js/bootstrap.bundle.min.js");
-  }, []);
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<IUserDto | null>({
     dateOfBirth: '',
     fullName: 'Test user',
@@ -22,18 +11,7 @@ export default function RootLayout({children} : {children: React.ReactNode}) {
   });
 
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <title>MyMoney</title>
-        <base href="/" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
-      </head>
-      <body>
+    <>
       <div className="sticky-top">
         {user !== null ? (
           <nav className="navbar navbar-expand navbar-dark bg-dark justify-content-between">
@@ -76,12 +54,10 @@ export default function RootLayout({children} : {children: React.ReactNode}) {
       </div>
       <div className="jumbotron">
         <div className="container">
-          {/* TODO: Display children */}
+          {children}
         </div>
         {/* TODO: Footer component*/}
       </div>
-        {children}
-        </body>
-    </html>
+    </>
   )
 }

@@ -1,4 +1,4 @@
-import { Observable, first, from, map, switchMap  } from 'rxjs';
+import { Observable, first, from, switchMap  } from 'rxjs';
 
 export abstract class HttpHelper {
    protected readonly abstract sessionToken$: Observable<string | null>;
@@ -18,15 +18,19 @@ export abstract class HttpHelper {
                }
             });
       
-            return HttpHelper.send<ResponseBodyType>(userRequest);
+            return from(HttpHelper.send<ResponseBodyType>(userRequest));
          }));
    }
 
-   private static send<ResponseBodyType>(request: Promise<Response>) : Observable<ResponseBodyType>{
-      return from(request).pipe(first(), switchMap((r: Response) => HttpHelper.toResult<ResponseBodyType>(r.json())));
-   }
+   private static async send<ResponseBodyType>(request: Promise<Response>) : Promise<ResponseBodyType>{
+      const response = await request;
 
-   private static toResult<ResponseBodyType>(jsonBody: Promise<any>) : Observable<ResponseBodyType> {
-      return from(jsonBody).pipe(first(), map(rb => rb as ResponseBodyType));
+      const responseText = await response.text();
+
+      if (!response.ok) { 
+         throw new Error(`Status: ${response.status}\n Response: ${responseText}`);
+      }
+
+      return JSON.parse(responseText) as ResponseBodyType;
    }
 }
