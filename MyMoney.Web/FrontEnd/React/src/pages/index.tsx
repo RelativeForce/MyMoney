@@ -1,7 +1,7 @@
-export default function Incomes() {
+export default function Home() {
   return (
     <>
       Home
     </>
-  )
+  );
 }

@@ -3,6 +3,7 @@
 import { IUserDto } from 'mymoney-common/lib/api/dtos';
 import { useState } from "react";
 import Footer from './footer';
+import Link from 'next/link';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<IUserDto | null>({
@@ -16,19 +17,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <div className="sticky-top">
         {user !== null ? (
           <nav className="navbar navbar-expand navbar-dark bg-dark justify-content-between">
-            <a className="navbar-brand">MyMoney</a> {/* TODO: Redirect to home */}
+            <Link className="navbar-brand" href="/">MyMoney</Link>
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <a className="nav-link">Home</a> {/* TODO: Redirect to home */}
+                <Link className="nav-link" href="/">Home</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link">Transactions</a> {/* TODO: Redirect to transactions */}
+                <Link className="nav-link" href="/transactions">Transactions</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link">Budgets</a> {/* TODO: Redirect to budgets */}
+                <Link className="nav-link" href="/budgets">Budgets</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link">Incomes</a> {/* TODO: Redirect to incomes */}
+                <Link className="nav-link" href="/incomes">Incomes</Link>
               </li>
             </ul>
             <ul className="navbar-nav">
@@ -38,12 +39,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   {user.fullName}
                 </a>
                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuLink">
-                  <a className="dropdown-item icon-dropdown-item"> {/* TODO: Redirect to user profile */}
-                    <span className="material-icons">person</span>Profile
-                  </a>
-                  <a className="dropdown-item icon-dropdown-item"> {/* TODO: Redirect to change password */}
-                    <span className="material-icons">vpn_key</span>Change password
-                  </a>
+                  <Link className="dropdown-item icon-dropdown-item" href="/user/profile">
+                    <span className="material-icons">person</span> Profile
+                  </Link>
+                  <Link className="dropdown-item icon-dropdown-item" href="/user/change-password">
+                    <span className="material-icons">vpn_key</span> Change password
+                  </Link>
                   <button className="dropdown-item icon-dropdown-item" > {/* TODO: Logout on click */}
                     <span className="material-icons">logout</span>Logout
                   </button>
