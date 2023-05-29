@@ -4,30 +4,23 @@ import { IUserDto } from 'mymoney-common/lib/api/dtos';
 import { useSelector } from 'react-redux';
 import Footer from './footer';
 import Link from 'next/link';
-import { selectCurrentSession, selectCurrentUser, clearSession, fetchUser, selectCurrentUserState } from '@/state/session-slice';
-import { ISessionModel } from 'mymoney-common/lib/interfaces';
-import { checkSession } from '@/functions/check-session';
+import { selectCurrentUser, clearSession, fetchUser, selectCurrentUserState } from '@/state/session-slice';
 import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import { AsyncStatus, IAsyncState } from '@/state/types';
+import { redirectUnauthorisedUserToLogin, useUserSession } from '@/hooks/user-session';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const session: ISessionModel | null = useSelector(selectCurrentSession);
-  const userState: IAsyncState<IUserDto | null> = useSelector(selectCurrentUserState);
+  redirectUnauthorisedUserToLogin();
 
   const dispatch = useDispatch<any>();
-  const router = useRouter();
-
-  useEffect(() => checkSession(dispatch, router, session), [session?.token]);
-
-  useEffect(() => {
-    if (!session?.token || userState.status !== AsyncStatus.empty) {
+  const userState: IAsyncState<IUserDto | null> = useSelector(selectCurrentUserState);
+  useUserSession((sessionToken) => {
+    if (userState.status !== AsyncStatus.empty) {
       return;
     }
 
-    dispatch(fetchUser(session.token));
-  }, [session?.token, dispatch]);
+    dispatch(fetchUser(sessionToken));
+  }, [dispatch]);
 
   const user: IUserDto | null = useSelector(selectCurrentUser);
 

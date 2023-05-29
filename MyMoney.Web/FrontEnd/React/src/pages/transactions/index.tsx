@@ -37,7 +37,7 @@ export default function Transactions() {
       }
 
       dispatch(fetchTransactions(request));
-   }, [dispatch, tranactionState]);
+   }, [tranactionState]);
 
    const updateStart: ChangeEventHandler<HTMLInputElement> = (event) => {
       const start: string = event.target.value;
