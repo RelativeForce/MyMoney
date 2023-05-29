@@ -10,11 +10,11 @@ import { checkSession } from '@/functions/check-session';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { AsyncStatus, IUserState } from '@/state/types';
+import { AsyncStatus, IAsyncState } from '@/state/types';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const session: ISessionModel | null = useSelector(selectCurrentSession);
-  const userState: IUserState = useSelector(selectCurrentUserState);
+  const userState: IAsyncState<IUserDto | null> = useSelector(selectCurrentUserState);
 
   const dispatch = useDispatch<any>();
   const router = useRouter();
