@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { ChangeEventHandler, useEffect, useState } from "react"
 import { useDispatch } from 'react-redux';
-import { ISessionModel } from 'mymoney-common/lib/interfaces';
-import { selectCurrentSession } from "@/state/session-slice";
 import { useSelector } from 'react-redux';
 import InlineInput from "@/components/inline-input";
 import BasicTransactionButtons from "@/components/basic-transaction-buttons";
@@ -10,7 +8,7 @@ import { FormControlState } from "@/interfaces/form-conrtol-props";
 import { requiredValidator } from "@/functions/validators";
 import { IFetchTransactionsRequest, fetchTransactions, refreshTransactions, selectTransactionState, setDataRange } from "@/state/transactions-slice";
 import { AsyncStatus, ITransactionState } from "@/state/types";
-import RecurringTransactionButtons from "@/components/recurring-transaction-buttons copy";
+import RecurringTransactionButtons from "@/components/recurring-transaction-buttons";
 import { useUserSession } from "@/hooks/user-session";
 
 export default function Transactions() {

@@ -6,7 +6,7 @@ export default function BasicTransactionButtons({ transaction, onDeleteClicked }
         <div className="btn-group">
             <Link
                 className="btn btn-primary material-icons"
-                href={`/edit/${transaction.id}`}
+                href={`/transactions/edit?id=${transaction.id}`}
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title={`Edit transaction ${transaction.id}`}

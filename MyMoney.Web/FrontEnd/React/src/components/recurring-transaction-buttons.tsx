@@ -7,7 +7,7 @@ export default function RecurringTransactionButtons({ transaction, onDeleteClick
             {transaction.id > 0 ? (
                 <Link
                     className="btn btn-primary material-icons"
-                    href={`/edit/${transaction.id}`}
+                    href={`/transactions/edit?id=${transaction.id}`}
                     data-toggle="tooltip"
                     data-placement="bottom"
                     title="Edit notes for child transaction"
@@ -18,7 +18,7 @@ export default function RecurringTransactionButtons({ transaction, onDeleteClick
 
             <Link
                 className="btn btn-primary material-icons"
-                href={`/edit-recurring/${transaction.parentId}`}
+                href={`/transactions/edit-recurring?id=${transaction.parentId}`}
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title={`Edit recurring transaction ${transaction.parentId}`}
