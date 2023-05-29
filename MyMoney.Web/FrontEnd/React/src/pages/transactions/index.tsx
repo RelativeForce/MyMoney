@@ -6,10 +6,11 @@ import InlineInput from "@/components/inline-input";
 import BasicTransactionButtons from "@/components/basic-transaction-buttons";
 import { FormControlState } from "@/interfaces/form-conrtol-props";
 import { requiredValidator } from "@/functions/validators";
-import { IFetchTransactionsRequest, fetchTransactions, refreshTransactions, selectTransactionState, setDataRange } from "@/state/transactions-slice";
+import { IFetchTransactionsRequest, deleteRecurringTransaction, deleteTransaction, fetchTransactions, refreshTransactions, selectTransactionState, setDataRange } from "@/state/transactions-slice";
 import { AsyncStatus, ITransactionState } from "@/state/types";
 import RecurringTransactionButtons from "@/components/recurring-transaction-buttons";
 import { useUserSession } from "@/hooks/user-session";
+import { selectCurrentSessionToken } from "@/state/session-slice";
 
 export default function Transactions() {
    const tranactionState: ITransactionState = useSelector(selectTransactionState);
@@ -73,12 +74,21 @@ export default function Transactions() {
       dispatch(refreshTransactions());
    }
 
-   const deleteTransaction = (transactionId: number) => {
-      // TODO: Delete transaction
+   const sessionToken: string | null = useSelector(selectCurrentSessionToken);
+   const onDeleteTransactionClicked = (transactionId: number) => {
+      if (!sessionToken) {
+         return;
+      }
+
+      dispatch(deleteTransaction({ transactionId, sessionToken }));
    }
 
-   const deleteRecurringTransaction = (recurringTransactionId: number) => {
-      // TODO: Delete recurring
+   const onDeleteRecurringTransactionClicked= (recurringTransactionId: number | null) => {
+      if (!sessionToken || !recurringTransactionId) {
+         return;
+      }
+
+      dispatch(deleteRecurringTransaction({ recurringTransactionId, sessionToken }));
    }
 
    const rows = [];
@@ -92,9 +102,9 @@ export default function Transactions() {
             <td className="pull-right">
                {transaction.parentId ?
                   (
-                     <RecurringTransactionButtons transaction={transaction} onDeleteClicked={() => deleteRecurringTransaction(transaction.parentId ?? 0)} />
+                     <RecurringTransactionButtons transaction={transaction} onDeleteClicked={() => onDeleteRecurringTransactionClicked(transaction.parentId)} />
                   ) : (
-                     <BasicTransactionButtons transaction={transaction} onDeleteClicked={() => deleteTransaction(transaction.id)} />
+                     <BasicTransactionButtons transaction={transaction} onDeleteClicked={() => onDeleteTransactionClicked(transaction.id)} />
                   )
                }
             </td>

@@ -22,11 +22,6 @@ export const initialTransactionListState: IAsyncState<ITransactionDto[]> = {
    error: null,
 };
 
-export interface IFetchTransactionsRequest {
-   sessionToken: string;
-   dateRange: IDateRangeModel;
-}
-
 export const initialTransactionsState: ITransactionState = {
    transactions: initialTransactionListState,
    searchParameters: {
@@ -34,6 +29,11 @@ export const initialTransactionsState: ITransactionState = {
       refresh: true,
    }
 };
+
+export interface IFetchTransactionsRequest {
+   sessionToken: string;
+   dateRange: IDateRangeModel;
+}
 
 export const fetchTransactions = createAsyncThunk('transactions/fetchTransactions', async ({ sessionToken, dateRange }: IFetchTransactionsRequest) => {
    const dateRangeDto: IDateRangeDto = {
@@ -46,6 +46,38 @@ export const fetchTransactions = createAsyncThunk('transactions/fetchTransaction
 
    try {
       return await firstValueFrom(api.list(dateRangeDto).pipe(first(), map((listDto: ITransactionListDto) => listDto.transactions)));
+   } catch (error: any) {
+      return error.message;
+   }
+});
+
+export interface IDeleteTransactionRequest {
+   sessionToken: string;
+   transactionId: number;
+}
+
+export const deleteTransaction = createAsyncThunk('transactions/deleteTransaction', async ({ sessionToken, transactionId }: IDeleteTransactionRequest) => {
+   const httpHelper = new HttpHelper(sessionToken);
+   const api = new TransactionApi(httpHelper);
+
+   try {
+      return await firstValueFrom(api.delete({ id: transactionId }).pipe(first()));
+   } catch (error: any) {
+      return error.message;
+   }
+});
+
+export interface IDeleteRecurringTransactionRequest {
+   sessionToken: string;
+   recurringTransactionId: number;
+}
+
+export const deleteRecurringTransaction = createAsyncThunk('transactions/deleteRecurringTransaction', async ({ sessionToken, recurringTransactionId }: IDeleteRecurringTransactionRequest) => {
+   const httpHelper = new HttpHelper(sessionToken);
+   const api = new TransactionApi(httpHelper);
+
+   try {
+      return await firstValueFrom(api.deleteRecurring({ id: recurringTransactionId }).pipe(first()));
    } catch (error: any) {
       return error.message;
    }
@@ -114,6 +146,32 @@ export const transactionsSlice = createSlice({
                   data: [],
                   status: AsyncStatus.failed,
                   error: action.error.message ?? null,
+               }
+            };
+         })
+         .addCase(deleteTransaction.fulfilled, (state: ITransactionState, { meta: { arg }, payload }) => {
+            if (!payload.success) {
+               return state;
+            }
+
+            return {
+               ...state,
+               transactions: {
+                  ...state.transactions,
+                  data: state.transactions.data.filter(t => t.id !== arg.transactionId),
+               }
+            };
+         })
+         .addCase(deleteRecurringTransaction.fulfilled, (state: ITransactionState, { meta: { arg }, payload }) => {
+            if (!payload.success) {
+               return state;
+            }
+
+            return {
+               ...state,
+               transactions: {
+                  ...state.transactions,
+                  data: state.transactions.data.filter(t => t.parentId !== arg.recurringTransactionId),
                }
             };
          });
