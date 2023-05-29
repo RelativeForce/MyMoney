@@ -139,7 +139,8 @@ export const { setSession, clearSession, setUser } = sessionSlice.actions;
 
 export const selectSessionState = (state: IAppState): ISessionState => state.session;
 export const selectCurrentSession = (state: IAppState): ISessionModel | null => selectSessionState(state).currentSession;
-export const selectCurrentUser = (state: IAppState): IUserDto | null => selectSessionState(state).currentUser.data;
+export const selectCurrentSessionToken = (state: IAppState): string | null => selectCurrentSession(state)?.token ?? null;
+export const selectCurrentUser = (state: IAppState): IUserDto | null => selectCurrentUserState(state).data;
 export const selectCurrentUserState = (state: IAppState): IAsyncState<IUserDto | null> => selectSessionState(state).currentUser;
 
 export default sessionSlice.reducer;

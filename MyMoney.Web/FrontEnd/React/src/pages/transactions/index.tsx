@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ChangeEventHandler, useEffect, useState } from "react"
 import { useDispatch } from 'react-redux';
 import { ISessionModel } from 'mymoney-common/lib/interfaces';
-import { toDateString } from 'mymoney-common/lib/functions';
 import { selectCurrentSession } from "@/state/session-slice";
 import { useSelector } from 'react-redux';
 import InlineInput from "@/components/inline-input";
@@ -12,10 +11,10 @@ import { requiredValidator } from "@/functions/validators";
 import { IFetchTransactionsRequest, fetchTransactions, refreshTransactions, selectTransactionState, setDataRange } from "@/state/transactions-slice";
 import { AsyncStatus, ITransactionState } from "@/state/types";
 import RecurringTransactionButtons from "@/components/recurring-transaction-buttons copy";
+import { useUserSession } from "@/hooks/user-session";
 
 export default function Transactions() {
    const tranactionState: ITransactionState = useSelector(selectTransactionState);
-   const session: ISessionModel | null = useSelector(selectCurrentSession);
    const dispatch = useDispatch<any>();
    const [startState, setStartState] = useState<FormControlState>({ value: '', errors: null });
    const [endState, setEndState] = useState<FormControlState>({ value: '', errors: null });
@@ -27,22 +26,18 @@ export default function Transactions() {
 
    const loading = tranactionState.transactions.status === AsyncStatus.loading;
 
-   useEffect(() => {
-      if (!session?.token) {
-         return; // User not logged in
-      }
-
+   useUserSession((sessionToken: string) => {
       if (loading || (!loading && !tranactionState.searchParameters.refresh)) {
          return;
       }
 
       const request: IFetchTransactionsRequest = {
-         sessionToken: session.token,
+         sessionToken,
          dateRange: tranactionState.searchParameters.dateRange
       }
 
       dispatch(fetchTransactions(request));
-   }, [session?.token, dispatch, tranactionState]);
+   }, [dispatch, tranactionState]);
 
    const updateStart: ChangeEventHandler<HTMLInputElement> = (event) => {
       const start: string = event.target.value;
