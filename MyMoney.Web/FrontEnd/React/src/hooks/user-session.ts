@@ -29,9 +29,8 @@ export function redirectUnauthorisedUserToLogin() {
     const session: ISessionModel | null = useSelector(selectCurrentSession);
 
     useEffect(() => {
-
         if (isValidSession(session)) {
-            return;
+            return; // Do nothing when user session is valid
         }
 
         try {
@@ -62,10 +61,12 @@ export function redirectLoggedInUserToHome() {
     const session: ISessionModel | null = useSelector(selectCurrentSession);
 
     useEffect(() => {
-        if (session !== null && isValidSession(session)) {
-            console.log('Session: Redirect to home');
-            void router.push('/');
+        if (session === null || !isValidSession(session)) {
+            return; // Do nothing when no user is logged in
         }
+
+        console.log('Session: Redirect to home');
+        void router.push('/');
     }, [session?.token]);
 }
 
