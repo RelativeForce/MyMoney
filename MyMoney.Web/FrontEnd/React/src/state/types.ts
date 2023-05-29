@@ -37,4 +37,4 @@ export interface ITransactionsSearch {
 export interface IDateRangeModel {
     start: string;
     end: string;
-};
+}
