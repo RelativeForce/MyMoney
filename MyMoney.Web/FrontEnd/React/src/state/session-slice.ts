@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs
 import { ILoginDto, ILoginResultDto, IUserDto } from 'mymoney-common/lib/api/dtos';
 import { ISessionModel } from 'mymoney-common/lib/interfaces';
 import { SESSION_LOCAL_STORAGE_KEY } from 'mymoney-common/lib/constants';
-import { ISessionState, IAppState, AsyncStatus, IUserState } from './types';
+import { ISessionState, IAppState, AsyncStatus, IAsyncState } from './types';
 import { first } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { AuthenticationApi, UserApi } from 'mymoney-common/lib/api';
 import { HttpHelper } from '@/classess/http-helper';
 
-export const initialUserState: IUserState = {
+export const initialUserState: IAsyncState<IUserDto | null> = {
    data: null,
    status: AsyncStatus.empty,
    error: null,
@@ -19,8 +19,13 @@ export const initialSessionState: ISessionState = {
    currentUser: initialUserState
 };
 
-export const fetchUser = createAsyncThunk('session/fetchUser', async (sessionToken: string) => {
-   const httpHelper = new HttpHelper(sessionToken);
+export const fetchUser = createAsyncThunk('session/fetchUser', async (_, { getState, rejectWithValue }) => {
+   const state = getState() as IAppState;
+   if (!state.session.currentSession?.token){
+      return rejectWithValue("No user session");
+   }
+
+   const httpHelper = new HttpHelper(state.session.currentSession.token);
    const api = new UserApi(httpHelper);
 
    try {
@@ -57,7 +62,7 @@ export const sessionSlice = createSlice({
          },
          prepare: (token: string, sessionEnd: string) => {
             return { payload: { token, sessionEnd } };
-         }
+         },
       },
       clearSession: (state: ISessionState) => {
 
@@ -139,7 +144,8 @@ export const { setSession, clearSession, setUser } = sessionSlice.actions;
 
 export const selectSessionState = (state: IAppState): ISessionState => state.session;
 export const selectCurrentSession = (state: IAppState): ISessionModel | null => selectSessionState(state).currentSession;
-export const selectCurrentUser = (state: IAppState): IUserDto | null => selectSessionState(state).currentUser.data;
-export const selectCurrentUserState = (state: IAppState): IUserState => selectSessionState(state).currentUser;
+export const selectCurrentSessionToken = (state: IAppState): string | null => selectCurrentSession(state)?.token ?? null;
+export const selectCurrentUser = (state: IAppState): IUserDto | null => selectCurrentUserState(state).data;
+export const selectCurrentUserState = (state: IAppState): IAsyncState<IUserDto | null> => selectSessionState(state).currentUser;
 
 export default sessionSlice.reducer;

@@ -1,18 +1,18 @@
-import { IUserDto } from 'mymoney-common/lib/api/dtos';
+import { ITransactionDto, IUserDto } from 'mymoney-common/lib/api/dtos';
 import { ISessionModel } from 'mymoney-common/lib/interfaces';
 
 export interface ISessionState {
     currentSession: ISessionModel | null;
-    currentUser: IUserState;
+    currentUser: IAsyncState<IUserDto | null>;
 }
-
-export type IUserState = IAsyncState & { data: IUserDto | null };
 
 export interface IAppState {
     session: ISessionState;
+    transactions: ITransactionState;
 }
 
-interface IAsyncState {
+export interface IAsyncState<T> {
+    data: T;
     status: AsyncStatus,
     error: string | null;
 }
@@ -22,4 +22,19 @@ export enum AsyncStatus {
     loading = 'loading',
     succeeded = 'succeeded',
     failed = 'failed',
+}
+
+export interface ITransactionState {
+    transactions: IAsyncState<ITransactionDto[]>;
+    searchParameters: ITransactionsSearch;
+}
+
+export interface ITransactionsSearch {
+    dateRange: IDateRangeModel;
+    refresh: boolean,
+}
+
+export interface IDateRangeModel {
+    start: string;
+    end: string;
 }

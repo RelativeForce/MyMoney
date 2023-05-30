@@ -1,8 +1,6 @@
 import { FormControlProps } from "@/interfaces/form-conrtol-props";
 
-export type TextInputProps = FormControlProps<string>;
-
-export default function TextInput(props: TextInputProps) {
+export default function InlineInput(props: FormControlProps) {
     const errors = [];
 
     if (props.errors !== null) {
@@ -17,8 +15,10 @@ export default function TextInput(props: TextInputProps) {
 
     return (
         <>
-            <div className="form-group">
-                <label htmlFor={props.name}>{props.labelText}</label>
+            <div className="input-group mb-3 pr-2">
+                <div className="input-group-prepend">
+                    <span className="input-group-text">{props.labelText}</span>
+                </div>
                 <input
                     type={props.type ?? 'text'}
                     name={props.name}

@@ -2,28 +2,21 @@ import Link from "next/link";
 import { ChangeEventHandler, useState } from "react"
 import { useDispatch } from 'react-redux';
 import { ILoginDto } from 'mymoney-common/lib/api/dtos';
-import { ISessionModel } from 'mymoney-common/lib/interfaces';
-import { login, selectCurrentSession } from "@/state/session-slice";
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { isValidSession } from "@/functions/check-session";
-import { redirect } from "@/hooks/redirect";
-import TextInput from "@/components/text-input";
+import { login } from "@/state/session-slice";
+import Input from "@/components/input";
 import { FormControlState } from "@/interfaces/form-conrtol-props";
 import { requiredValidator } from "@/functions/validators";
+import { redirectLoggedInUserToHome } from "@/hooks/user-session";
 
 export default function Login() {
-  const router = useRouter();
-  const session: ISessionModel | null = useSelector(selectCurrentSession);
+  redirectLoggedInUserToHome();
+
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [emailState, setEmailState] = useState<FormControlState<string>>({ value: '', errors: null });
-  const [passwordState, setPasswordState] = useState<FormControlState<string>>({ value: '', errors: null });
+  const [emailState, setEmailState] = useState<FormControlState>({ value: '', errors: null });
+  const [passwordState, setPasswordState] = useState<FormControlState>({ value: '', errors: null });
   const dispatch = useDispatch<any>();
-
-  const hasValidSession = session !== null && isValidSession(session);
-  redirect(router, '/', hasValidSession, [session?.token]);
 
   const updateEmail: ChangeEventHandler<HTMLInputElement> = (event) => {
     const email: string = event.target.value;
@@ -39,7 +32,7 @@ export default function Login() {
     setPasswordState({ value: password, errors });
   }
 
-  function loginClicked() {
+  const loginClicked = ()=> {
     setSubmitted(true);
 
     if (loading) {
@@ -60,14 +53,21 @@ export default function Login() {
     setError(null);
 
     const credentials: ILoginDto = { email: emailState.value, password: passwordState.value };
-    dispatch(login(credentials));
+
+    try {
+      dispatch(login(credentials)).unwrap();
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <>
       <h2>Login</h2>
       <form>
-        <TextInput
+        <Input
           name="email"
           labelText="Email"
           showErrors={submitted}
@@ -75,7 +75,7 @@ export default function Login() {
           defaultValue={emailState.value}
           errors={emailState.errors}
         />
-        <TextInput
+        <Input
           name="password"
           labelText="Password"
           showErrors={submitted}
