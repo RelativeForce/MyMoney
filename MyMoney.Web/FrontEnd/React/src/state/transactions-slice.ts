@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { TransactionApi } from 'mymoney-common/lib/api';
 import { HttpHelper } from '@/classess/http-helper';
 import { toDateString } from 'mymoney-common/lib/functions';
+import { BaseThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk';
 
 function defaultDateRange(): IDateRangeModel {
    const end: Date = new Date();
@@ -30,19 +31,19 @@ export const initialTransactionsState: ITransactionState = {
    }
 };
 
-export interface IFetchTransactionsRequest {
-   sessionToken: string;
-   dateRange: IDateRangeModel;
-}
+export const fetchTransactions = createAsyncThunk('transactions/fetchTransactions', async ({ dateRange }: { dateRange: IDateRangeModel }, { getState, rejectWithValue }) => {
+   const state = getState() as IAppState;
+   if (!state.session.currentSession?.token){
+      return rejectWithValue("No user session");
+   }
 
-export const fetchTransactions = createAsyncThunk('transactions/fetchTransactions', async ({ sessionToken, dateRange }: IFetchTransactionsRequest) => {
+   const httpHelper = new HttpHelper(state.session.currentSession.token);
+   const api = new TransactionApi(httpHelper);
+
    const dateRangeDto: IDateRangeDto = {
       start: new Date(dateRange.start),
       end: new Date(dateRange.end)
    }
-
-   const httpHelper = new HttpHelper(sessionToken);
-   const api = new TransactionApi(httpHelper);
 
    try {
       return await firstValueFrom(api.list(dateRangeDto).pipe(first(), map((listDto: ITransactionListDto) => listDto.transactions)));
@@ -56,8 +57,13 @@ export interface IDeleteTransactionRequest {
    transactionId: number;
 }
 
-export const deleteTransaction = createAsyncThunk('transactions/deleteTransaction', async ({ sessionToken, transactionId }: IDeleteTransactionRequest) => {
-   const httpHelper = new HttpHelper(sessionToken);
+export const deleteTransaction = createAsyncThunk('transactions/deleteTransaction', async ({ transactionId }: { transactionId: number }, { getState, rejectWithValue }) => {
+   const state = getState() as IAppState;
+   if (!state.session.currentSession?.token){
+      return rejectWithValue("No user session");
+   }
+
+   const httpHelper = new HttpHelper(state.session.currentSession.token);
    const api = new TransactionApi(httpHelper);
 
    try {
@@ -67,13 +73,13 @@ export const deleteTransaction = createAsyncThunk('transactions/deleteTransactio
    }
 });
 
-export interface IDeleteRecurringTransactionRequest {
-   sessionToken: string;
-   recurringTransactionId: number;
-}
+export const deleteRecurringTransaction = createAsyncThunk('transactions/deleteRecurringTransaction', async ({ recurringTransactionId }: { recurringTransactionId: number }, { getState, rejectWithValue }) => {
+   const state = getState() as IAppState;
+   if (!state.session.currentSession?.token){
+      return rejectWithValue("No user session");
+   }
 
-export const deleteRecurringTransaction = createAsyncThunk('transactions/deleteRecurringTransaction', async ({ sessionToken, recurringTransactionId }: IDeleteRecurringTransactionRequest) => {
-   const httpHelper = new HttpHelper(sessionToken);
+   const httpHelper = new HttpHelper(state.session.currentSession.token);
    const api = new TransactionApi(httpHelper);
 
    try {

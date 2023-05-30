@@ -6,10 +6,9 @@ import InlineInput from "@/components/inline-input";
 import BasicTransactionButtons from "@/components/basic-transaction-buttons";
 import { FormControlState } from "@/interfaces/form-conrtol-props";
 import { requiredValidator } from "@/functions/validators";
-import { IFetchTransactionsRequest, deleteRecurringTransaction, deleteTransaction, fetchTransactions, refreshTransactions, selectTransactionState, setDataRange } from "@/state/transactions-slice";
+import { deleteRecurringTransaction, deleteTransaction, fetchTransactions, refreshTransactions, selectTransactionState, setDataRange } from "@/state/transactions-slice";
 import { AsyncStatus, ITransactionState } from "@/state/types";
 import RecurringTransactionButtons from "@/components/recurring-transaction-buttons";
-import { useUserSession } from "@/hooks/user-session";
 import { selectCurrentSessionToken } from "@/state/session-slice";
 
 export default function Transactions() {
@@ -25,17 +24,12 @@ export default function Transactions() {
 
    const loading = tranactionState.transactions.status === AsyncStatus.loading;
 
-   useUserSession((sessionToken: string) => {
+   useEffect(() => {
       if (loading || (!loading && !tranactionState.searchParameters.refresh)) {
          return;
       }
 
-      const request: IFetchTransactionsRequest = {
-         sessionToken,
-         dateRange: tranactionState.searchParameters.dateRange
-      }
-
-      dispatch(fetchTransactions(request));
+      dispatch(fetchTransactions({dateRange: tranactionState.searchParameters.dateRange}));
    }, [tranactionState]);
 
    const updateStart: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -80,7 +74,7 @@ export default function Transactions() {
          return;
       }
 
-      dispatch(deleteTransaction({ transactionId, sessionToken }));
+      dispatch(deleteTransaction({ transactionId }));
    }
 
    const onDeleteRecurringTransactionClicked= (recurringTransactionId: number | null) => {
@@ -88,7 +82,7 @@ export default function Transactions() {
          return;
       }
 
-      dispatch(deleteRecurringTransaction({ recurringTransactionId, sessionToken }));
+      dispatch(deleteRecurringTransaction({ recurringTransactionId }));
    }
 
    const rows = [];

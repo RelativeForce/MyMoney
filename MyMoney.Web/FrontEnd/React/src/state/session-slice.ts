@@ -19,8 +19,13 @@ export const initialSessionState: ISessionState = {
    currentUser: initialUserState
 };
 
-export const fetchUser = createAsyncThunk('session/fetchUser', async (sessionToken: string) => {
-   const httpHelper = new HttpHelper(sessionToken);
+export const fetchUser = createAsyncThunk('session/fetchUser', async (_, { getState, rejectWithValue }) => {
+   const state = getState() as IAppState;
+   if (!state.session.currentSession?.token){
+      return rejectWithValue("No user session");
+   }
+
+   const httpHelper = new HttpHelper(state.session.currentSession.token);
    const api = new UserApi(httpHelper);
 
    try {
@@ -57,7 +62,7 @@ export const sessionSlice = createSlice({
          },
          prepare: (token: string, sessionEnd: string) => {
             return { payload: { token, sessionEnd } };
-         }
+         },
       },
       clearSession: (state: ISessionState) => {
 

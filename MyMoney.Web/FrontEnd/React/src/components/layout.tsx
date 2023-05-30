@@ -4,23 +4,26 @@ import { IUserDto } from 'mymoney-common/lib/api/dtos';
 import { useSelector } from 'react-redux';
 import Footer from './footer';
 import Link from 'next/link';
-import { selectCurrentUser, clearSession, fetchUser, selectCurrentUserState } from '@/state/session-slice';
+import { selectCurrentUser, clearSession, fetchUser, selectCurrentUserState, selectCurrentSessionToken } from '@/state/session-slice';
 import { useDispatch } from 'react-redux';
 import { AsyncStatus, IAsyncState } from '@/state/types';
-import { redirectUnauthorisedUserToLogin, useUserSession } from '@/hooks/user-session';
+import { redirectUnauthorisedUserToLogin } from '@/hooks/user-session';
+import { useEffect } from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   redirectUnauthorisedUserToLogin();
 
   const dispatch = useDispatch<any>();
   const userState: IAsyncState<IUserDto | null> = useSelector(selectCurrentUserState);
-  useUserSession((sessionToken) => {
-    if (userState.status !== AsyncStatus.empty) {
+  const token: string | null = useSelector(selectCurrentSessionToken);
+
+  useEffect(() => {
+    if (token == null || userState.status !== AsyncStatus.empty) {
       return;
     }
 
-    dispatch(fetchUser(sessionToken));
-  }, [dispatch]);
+    dispatch(fetchUser());
+  }, [token, userState]);
 
   const user: IUserDto | null = useSelector(selectCurrentUser);
 

@@ -1,26 +1,10 @@
-import { DependencyList, useEffect } from "react"
-import { selectCurrentSessionToken, selectCurrentSession } from "@/state/session-slice";
+import { useEffect } from "react"
+import { selectCurrentSession } from "@/state/session-slice";
 import { useDispatch, useSelector } from 'react-redux';
 import { ISessionModel } from "mymoney-common/lib/interfaces";
 import { setSession, clearSession } from "@/state/session-slice";
 import { SESSION_LOCAL_STORAGE_KEY } from 'mymoney-common/lib/constants';
 import { useRouter } from "next/router";
-
-export function useUserSession(operation: (sessionToken: string) => (void | (() => void)), deps?: DependencyList) {
-    const sessionToken: string | null = useSelector(selectCurrentSessionToken);
-
-    useEffect(
-        () => {
-            if (!sessionToken) {
-                return; // Do nothing when no user is logged in
-            }
-
-            return operation(sessionToken)
-        },
-        [sessionToken, ...(deps ?? [])]
-    );
-}
-
 
 export function redirectUnauthorisedUserToLogin() {
     const dispatch = useDispatch<any>();
