@@ -9,7 +9,6 @@ import { requiredValidator } from "@/functions/validators";
 import { deleteRecurringTransaction, deleteTransaction, fetchTransactions, refreshTransactions, selectTransactionState, setDataRange } from "@/state/transactions-slice";
 import { AsyncStatus, ITransactionState } from "@/state/types";
 import RecurringTransactionButtons from "@/components/recurring-transaction-buttons";
-import { selectCurrentSessionToken } from "@/state/session-slice";
 
 export default function Transactions() {
    const tranactionState: ITransactionState = useSelector(selectTransactionState);
@@ -68,17 +67,12 @@ export default function Transactions() {
       dispatch(refreshTransactions());
    }
 
-   const sessionToken: string | null = useSelector(selectCurrentSessionToken);
    const onDeleteTransactionClicked = (transactionId: number) => {
-      if (!sessionToken) {
-         return;
-      }
-
       dispatch(deleteTransaction({ transactionId }));
    }
 
    const onDeleteRecurringTransactionClicked= (recurringTransactionId: number | null) => {
-      if (!sessionToken || !recurringTransactionId) {
+      if (!recurringTransactionId) {
          return;
       }
 
