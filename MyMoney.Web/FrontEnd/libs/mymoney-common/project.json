@@ -1,0 +1,26 @@
+{
+  "name": "common",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mymoney-common/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/mymoney-common",
+        "main": "libs/mymoney-common/src/index.ts",
+        "tsConfig": "libs/mymoney-common/tsconfig.lib.json",
+        "assets": ["libs/mymoney-common/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mymoney-common/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
