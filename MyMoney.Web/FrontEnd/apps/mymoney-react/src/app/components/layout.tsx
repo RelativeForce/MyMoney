@@ -1,5 +1,3 @@
-'use client';
-
 import { IUserDto } from '@mymoney/common';
 import { useSelector } from 'react-redux';
 import Footer from './footer';
@@ -54,7 +52,7 @@ export default function Layout() {
             <ul className="navbar-nav">
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="userMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false">
+                  aria-expanded="true">
                   {user.fullName}
                 </a>
                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuLink">

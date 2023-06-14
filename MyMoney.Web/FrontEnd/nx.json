@@ -48,7 +48,7 @@
       "e2eTestRunner": "cypress"
     },
     "@nx/angular:library": {
-      "linter": "eslint",
+      "linter": "eslint"
     },
     "@nx/angular:component": {
       "style": "scss"

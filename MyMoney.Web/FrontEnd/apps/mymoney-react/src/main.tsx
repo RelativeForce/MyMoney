@@ -2,7 +2,6 @@ import { StrictMode, useEffect } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './app/globals.scss';
-import 'bootstrap/dist/css/bootstrap.css';
 import { store } from './app/state/store';
 import Layout from './app/components/layout';
 import { Provider } from 'react-redux';
@@ -32,10 +31,6 @@ const root = ReactDOM.createRoot(
 );
 
 export default function App() {
-  useEffect(() => {
-    require('bootstrap/dist/js/bootstrap.bundle.min.js');
-  }, []);
-
   return (
     <Provider store={store}>
       <BrowserRouter>

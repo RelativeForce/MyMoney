@@ -24,7 +24,7 @@
         ],
         "scripts": [
           "node_modules/jquery/dist/jquery.js",
-          "node_modules/bootstrap/dist/js/bootstrap.js"
+          "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
         ],
         "isolatedConfig": true,
         "webpackConfig": "apps/mymoney-react/webpack.config.js"
