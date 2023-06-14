@@ -21,7 +21,7 @@ export default function Layout() {
     }
 
     dispatch(fetchUser());
-  }, [token, userState]);
+  }, [token, userState, dispatch]);
 
   const user: IUserDto | null = useSelector(selectCurrentUser);
 
