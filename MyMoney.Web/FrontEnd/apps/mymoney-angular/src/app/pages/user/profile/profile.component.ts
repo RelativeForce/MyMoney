@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CurrentUserService } from '../../../shared/services';
-import { toDateString, toInputDateString } from '@mymoney/common';
+import { toDateString, toInputDateString } from '@mymoney/common/functions';
 import { filter, map } from 'rxjs/operators';
 import { IUser } from '../../../shared/state/types';
 import { IBasicResultDto, IUserDto } from '@mymoney/common';

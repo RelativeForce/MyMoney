@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mymoney/common": ["libs/mymoney-common/src"],
+      "@mymoney/common": ["libs/mymoney-common/src/index.ts"],
+      "@mymoney/common/functions": ["libs/mymoney-common/src/functions.ts"],
     },
     "forceConsistentCasingInFileNames": true,
     "strict": true,

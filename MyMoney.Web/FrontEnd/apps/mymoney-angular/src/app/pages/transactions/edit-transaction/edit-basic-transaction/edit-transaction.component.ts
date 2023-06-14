@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../../shared/services';
 import { ITransactionModel } from '../../../../shared/state/types';
 import { Frequency } from '@mymoney/common';
-import { toFrequencyString } from '@mymoney/common';
+import { toFrequencyString } from '@mymoney/common/functions';
 import { minAmountValidator } from '../../../../shared/common-validators';
 
 @Component({

@@ -5,7 +5,7 @@ import { TransactionService } from '../../../../shared/services';
 import { IRecurringTransactionDto, Frequency } from '@mymoney/common';
 import { frequencyOptions } from '@mymoney/common';
 import { frequencyValidator, minAmountValidator } from '../../../../shared/common-validators';
-import { toDateString } from '@mymoney/common';
+import { toDateString } from '@mymoney/common/functions';
 
 @Component({
    selector: 'mymoney-add-recurring-transaction',

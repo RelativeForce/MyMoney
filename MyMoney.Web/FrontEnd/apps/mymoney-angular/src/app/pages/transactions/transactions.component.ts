@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { IAppState } from '../../shared/state/app-state';
 import { selectTransactions, selectTransactionsDateRange } from '../../shared/state/selectors/transaction.selector';
 import { IDateRangeModel } from '../../shared/state/types';
-import { toDateString } from '@mymoney/common';
+import { toDateString } from '@mymoney/common/functions';
 
 @Component({
    templateUrl: './transactions.component.html',

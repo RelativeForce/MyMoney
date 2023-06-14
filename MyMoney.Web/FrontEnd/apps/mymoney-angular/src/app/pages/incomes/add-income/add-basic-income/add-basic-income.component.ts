@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { IIncomeModel } from '../../../../shared/state/types';
 import { IncomeService } from '../../../../shared/services';
 import { minAmountValidator } from '../../../../shared/common-validators';
-import { toDateString } from '@mymoney/common';
+import { toDateString } from '@mymoney/common/functions';
 
 @Component({
    selector: 'mymoney-add-basic-income',

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ITransactionModel } from '../../../../shared/state/types';
 import { TransactionService } from '../../../../shared/services';
 import { minAmountValidator } from '../../../../shared/common-validators';
-import { toDateString } from '@mymoney/common';
+import { toDateString } from '@mymoney/common/functions';
 
 @Component({
    selector: 'mymoney-add-basic-transaction',

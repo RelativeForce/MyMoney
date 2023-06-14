@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IncomeService } from '../../../../shared/services';
 import { BudgetViewModel } from '@mymoney/common';
 import { IIncomeModel } from '../../../../shared/state/types';
-import { toFrequencyString, toInputDateString } from '@mymoney/common';
+import { toFrequencyString, toInputDateString } from '@mymoney/common/functions';
 import { Frequency } from '@mymoney/common';
 import { minAmountValidator } from '../../../../shared/common-validators';
 

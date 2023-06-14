@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IncomeService } from '../../../../shared/services';
 import { IRecurringIncomeDto, Frequency, IIncomeDto } from '@mymoney/common';
-import { toInputDateString } from '@mymoney/common';
+import { toInputDateString } from '@mymoney/common/functions';
 import { frequencyOptions } from '@mymoney/common';
 import { frequencyValidator, minAmountValidator } from '../../../../shared/common-validators';
 
