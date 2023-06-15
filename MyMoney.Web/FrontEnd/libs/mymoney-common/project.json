@@ -1,5 +1,5 @@
 {
-  "name": "common",
+  "name": "mymoney-common",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/mymoney-common/src",
   "projectType": "library",
