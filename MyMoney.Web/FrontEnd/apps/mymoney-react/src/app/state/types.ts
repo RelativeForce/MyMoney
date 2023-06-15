@@ -1,5 +1,5 @@
 import { ITransactionDto, IUserDto } from '@mymoney/common/api';
-import { ISessionModel } from '@mymoney/common';
+import { ISessionModel } from '@mymoney/common/interfaces';
 
 export interface ISessionState {
     currentSession: ISessionModel | null;

@@ -1,4 +1,4 @@
-export { ISessionModel } from '@mymoney/common';
+export { ISessionModel } from '@mymoney/common/interfaces';
 export * from './transaction-model.interface';
 export * from './date-range-model.interface';
 export * from './transactions-search-parameters.interface';

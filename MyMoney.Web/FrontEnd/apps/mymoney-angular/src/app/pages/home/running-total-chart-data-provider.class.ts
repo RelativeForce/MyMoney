@@ -1,6 +1,6 @@
 import { IChartDataProvider } from '../../shared/components/chart';
 import { Router } from '@angular/router';
-import { ISeriesItem, ISeries } from '@mymoney/common';
+import { ISeriesItem, ISeries } from '@mymoney/common/interfaces';
 import { HomeService } from '../../shared/services';
 import { IDateRangeModel } from '../../shared/state/types';
 import { BehaviorSubject, Observable } from 'rxjs';
