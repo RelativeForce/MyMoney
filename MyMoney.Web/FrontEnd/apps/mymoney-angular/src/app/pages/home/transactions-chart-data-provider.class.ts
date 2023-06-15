@@ -1,11 +1,11 @@
 import { IChartDataProvider } from '../../shared/components/chart';
 import { Router } from '@angular/router';
-import { BudgetSeries } from '@mymoney/common/classes';
-import { ISeriesItem, ISeries } from '@mymoney/common/interfaces';
+import { BudgetSeries } from '@mymoney-common/classes';
+import { ISeriesItem, ISeries } from '@mymoney-common/interfaces';
 import { BudgetService, TransactionService } from '../../shared/services';
 import { IBudgetModel, IDateRangeModel, ITransactionModel } from '../../shared/state/types';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { randomColor } from '@mymoney/common/functions';
+import { randomColor } from '@mymoney-common/functions';
 
 export class TransactionsChartDataProvider implements IChartDataProvider {
    public chartTitle: string;

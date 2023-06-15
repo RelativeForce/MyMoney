@@ -1,3 +1,3 @@
-import { ITransactionDto } from '@mymoney/common/api';
+import { ITransactionDto } from '@mymoney-common/api';
 
 export type ITransactionModel = ITransactionDto;

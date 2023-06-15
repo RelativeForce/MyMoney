@@ -1,3 +1,3 @@
-import { IDateRangeDto } from '@mymoney/common/api';
+import { IDateRangeDto } from '@mymoney-common/api';
 
 export type IDateRangeModel = IDateRangeDto;

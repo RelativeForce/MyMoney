@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IncomeService } from '../../../../shared/services';
-import { BudgetViewModel } from '@mymoney/common/classes';
+import { BudgetViewModel } from '@mymoney-common/classes';
 import { IIncomeModel } from '../../../../shared/state/types';
-import { toFrequencyString, toInputDateString } from '@mymoney/common/functions';
-import { Frequency } from '@mymoney/common/api';
+import { toFrequencyString, toInputDateString } from '@mymoney-common/functions';
+import { Frequency } from '@mymoney-common/api';
 import { minAmountValidator } from '../../../../shared/common-validators';
 
 @Component({

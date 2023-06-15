@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { TransactionApi, IDateRangeDto, ITransactionDto, ITransactionListDto } from '@mymoney/common/api';
+import { TransactionApi, IDateRangeDto, ITransactionDto, ITransactionListDto } from '@mymoney-common/api';
 import { IAppState, AsyncStatus, ITransactionState, ITransactionsSearch, IAsyncState, IDateRangeModel } from './types';
 import { first, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { HttpHelper } from '../classess/http-helper';
-import { toDateString } from '@mymoney/common/functions';
+import { toDateString } from '@mymoney-common/functions';
 
 function defaultDateRange(): IDateRangeModel {
    const end: Date = new Date();

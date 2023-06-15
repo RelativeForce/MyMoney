@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BudgetViewModel } from '@mymoney/common/classes';
+import { BudgetViewModel } from '@mymoney-common/classes';
 import { BudgetService } from '../../shared/services';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../shared/state/app-state';

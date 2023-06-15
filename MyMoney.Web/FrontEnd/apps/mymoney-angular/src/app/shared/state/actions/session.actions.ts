@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { IUserDto } from '@mymoney/common/api';
+import { IUserDto } from '@mymoney-common/api';
 
 // eslint-disable-next-line no-shadow
 export enum SessionActionTypes {

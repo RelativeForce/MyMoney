@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { ILoginResultDto } from '@mymoney/common/api';
+import { ILoginResultDto } from '@mymoney-common/api';
 import { AuthenticationService } from '../../../shared/services';
 
 @Component({

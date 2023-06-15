@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney/common/constants';
-import { IBasicResultDto, ILoginResultDto, IRegisterDto } from '@mymoney/common/api';
+import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common/constants';
+import { IBasicResultDto, ILoginResultDto, IRegisterDto } from '@mymoney-common/api';
 import { AuthenticationApi } from '../api';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';

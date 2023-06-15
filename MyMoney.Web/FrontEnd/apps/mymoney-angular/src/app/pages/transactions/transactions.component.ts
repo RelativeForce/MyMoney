@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TransactionService } from '../../shared/services';
-import { TransactionViewModel } from '@mymoney/common/classes';
+import { TransactionViewModel } from '@mymoney-common/classes';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../shared/state/app-state';
 import { selectTransactions, selectTransactionsDateRange } from '../../shared/state/selectors/transaction.selector';
 import { IDateRangeModel } from '../../shared/state/types';
-import { toDateString } from '@mymoney/common/functions';
+import { toDateString } from '@mymoney-common/functions';
 
 @Component({
    templateUrl: './transactions.component.html',

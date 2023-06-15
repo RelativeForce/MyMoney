@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IncomeService } from '../../shared/services';
-import { IncomeViewModel } from '@mymoney/common/classes';
+import { IncomeViewModel } from '@mymoney-common/classes';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../shared/state/app-state';
 import { selectIncomes, selectIncomesSearchParameters } from '../../shared/state/selectors/income.selector';
 import { IDateRangeModel } from '../../shared/state/types';
-import { toDateString } from '@mymoney/common/functions';
+import { toDateString } from '@mymoney-common/functions';
 
 @Component({
    selector: 'mymoney-incomes',

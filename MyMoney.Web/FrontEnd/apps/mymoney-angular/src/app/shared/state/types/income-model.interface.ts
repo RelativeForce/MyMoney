@@ -1,3 +1,3 @@
-import { IIncomeDto } from '@mymoney/common/api';
+import { IIncomeDto } from '@mymoney-common/api';
 
 export type IIncomeModel = IIncomeDto;

@@ -1,4 +1,4 @@
-import { toDateString } from "@mymoney/common/functions";
+import { toDateString } from "@mymoney-common/functions";
 
 export abstract class BaseHeading<T> {
    constructor(public property: T) { }

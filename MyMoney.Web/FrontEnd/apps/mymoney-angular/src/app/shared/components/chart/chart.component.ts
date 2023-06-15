@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ISeriesItem } from '@mymoney/common/interfaces';
+import { ISeriesItem } from '@mymoney-common/interfaces';
 import { IChartDataProvider } from './chart-data-provider.interface';
 import { LegendPosition } from '@swimlane/ngx-charts';
 

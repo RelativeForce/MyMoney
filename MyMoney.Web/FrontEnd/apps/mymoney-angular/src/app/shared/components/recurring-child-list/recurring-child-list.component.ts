@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IRecurringEntityChildDto } from '@mymoney/common/api';
-import { toInputDateString } from '@mymoney/common/functions';
+import { IRecurringEntityChildDto } from '@mymoney-common/api';
+import { toInputDateString } from '@mymoney-common/functions';
 
 @Component({
    selector: 'mymoney-recurring-child-list',

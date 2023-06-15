@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Row } from './row.class';
-import { groupBy } from '@mymoney/common/functions';
+import { groupBy } from '@mymoney-common/functions';
 import { IImportDataProvider } from './import-data-provider.interface';
 import { BaseHeading } from './base-heading.class';
 

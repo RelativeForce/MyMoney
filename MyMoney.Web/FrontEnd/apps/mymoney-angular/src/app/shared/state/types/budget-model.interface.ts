@@ -1,3 +1,3 @@
-import { IBudgetDto } from '@mymoney/common/api';
+import { IBudgetDto } from '@mymoney-common/api';
 
 export type IBudgetModel = IBudgetDto;

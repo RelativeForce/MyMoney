@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IncomeViewModel } from '@mymoney/common/classes';
+import { IncomeViewModel } from '@mymoney-common/classes';
 
 @Component({
    templateUrl: './recurring-income-buttons.component.html',

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../../shared/services';
-import { IRecurringTransactionDto, Frequency, ITransactionDto } from '@mymoney/common/api';
-import { toInputDateString } from '@mymoney/common/functions';
-import { frequencyOptions } from '@mymoney/common/constants';
+import { IRecurringTransactionDto, Frequency, ITransactionDto } from '@mymoney-common/api';
+import { toInputDateString } from '@mymoney-common/functions';
+import { frequencyOptions } from '@mymoney-common/constants';
 import { frequencyValidator, minAmountValidator } from '../../../../shared/common-validators';
 
 @Component({

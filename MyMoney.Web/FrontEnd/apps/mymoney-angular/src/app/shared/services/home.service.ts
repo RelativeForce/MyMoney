@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IRunningTotalListDto } from '@mymoney/common/api';
+import { IRunningTotalListDto } from '@mymoney-common/api';
 import { HomeApi } from '../api';
 import { IDateRangeModel } from '../state/types';
 

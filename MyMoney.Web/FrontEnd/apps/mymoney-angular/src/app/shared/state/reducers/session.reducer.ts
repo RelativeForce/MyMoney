@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import { IUserDto } from '@mymoney/common/api';
-import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney/common/constants';
+import { IUserDto } from '@mymoney-common/api';
+import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common/constants';
 import { SessionActionTypes, StartSessionAction, ClearSessionAction, SetUserAction } from '../actions';
 import { ISessionModel, IUser } from '../types';
 

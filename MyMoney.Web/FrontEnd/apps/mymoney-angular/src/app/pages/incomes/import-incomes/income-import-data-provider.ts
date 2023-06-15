@@ -1,4 +1,4 @@
-import { IIncomeDto } from '@mymoney/common/api';
+import { IIncomeDto } from '@mymoney-common/api';
 import { IncomeService } from '../../../shared/services';
 import { IncomeProperty } from './income-property.enum';
 import { BaseHeading, Row, IImportDataProvider } from '../../../shared/components/import-file';

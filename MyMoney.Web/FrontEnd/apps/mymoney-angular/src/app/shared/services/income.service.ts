@@ -8,7 +8,7 @@ import {
    IUpdateResultDto,
    IRecurringIncomeDto,
    IIncomeDto
-} from '@mymoney/common/api';
+} from '@mymoney-common/api';
 import { IncomeApi } from '../api';
 import {
    DeleteIncomeAction,

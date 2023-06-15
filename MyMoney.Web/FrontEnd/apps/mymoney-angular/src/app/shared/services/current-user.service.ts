@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { IBasicResultDto, IUserDto } from '@mymoney/common/api';
+import { IBasicResultDto, IUserDto } from '@mymoney-common/api';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';
 import { ClearSessionAction, SetUserAction } from '../state/actions';

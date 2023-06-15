@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IncomeService } from '../../../../shared/services';
-import { IRecurringIncomeDto, Frequency } from '@mymoney/common/api';
-import { frequencyOptions } from '@mymoney/common/constants';
+import { IRecurringIncomeDto, Frequency } from '@mymoney-common/api';
+import { frequencyOptions } from '@mymoney-common/constants';
 import { frequencyValidator, minAmountValidator } from '../../../../shared/common-validators';
-import { toDateString } from '@mymoney/common/functions';
+import { toDateString } from '@mymoney-common/functions';
 
 @Component({
    selector: 'mymoney-add-recurring-income',
