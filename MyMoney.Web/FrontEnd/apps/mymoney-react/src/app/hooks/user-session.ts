@@ -3,7 +3,7 @@ import { selectCurrentSession } from "../state/session-slice";
 import { useDispatch, useSelector } from 'react-redux';
 import { ISessionModel } from "@mymoney-common/interfaces";
 import { setSession, clearSession } from "../state/session-slice";
-import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common';
+import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common/constants';
 import { useNavigate } from "react-router-dom";
 
 export function useRedirectUnauthorisedUserToLogin() {

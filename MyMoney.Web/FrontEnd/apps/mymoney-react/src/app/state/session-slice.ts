@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { AuthenticationApi, UserApi, ILoginDto, ILoginResultDto, IUserDto } from '@mymoney-common/api';
 import { ISessionModel } from '@mymoney-common/interfaces';
-import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common';
+import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common/constants';
 import { ISessionState, IAppState, AsyncStatus, IAsyncState } from './types';
 import { first } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
