@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { ILoginResultDto } from '@mymoney/common';
+import { ILoginResultDto } from '@mymoney/common/api/dtos';
 
 import { AuthenticationService } from '../../../shared/services';
 

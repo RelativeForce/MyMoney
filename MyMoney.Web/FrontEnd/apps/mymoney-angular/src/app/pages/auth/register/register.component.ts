@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../../../shared/services';
-import { ILoginResultDto, IRegisterDto  } from '@mymoney/common';
+import { ILoginResultDto, IRegisterDto  } from '@mymoney/common/api/dtos';
 import { toDateString  } from '@mymoney/common/functions';
 
 @Component({

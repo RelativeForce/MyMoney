@@ -4,7 +4,7 @@ import { CurrentUserService } from '../../../shared/services';
 import { toDateString, toInputDateString } from '@mymoney/common/functions';
 import { filter, map } from 'rxjs/operators';
 import { IUser } from '../../../shared/state/types';
-import { IBasicResultDto, IUserDto } from '@mymoney/common';
+import { IBasicResultDto, IUserDto } from '@mymoney/common/api/dtos';
 import { IAppState } from '../../../shared/state/app-state';
 import { Store } from '@ngrx/store';
 import { SetUserAction } from '../../../shared/state/actions';

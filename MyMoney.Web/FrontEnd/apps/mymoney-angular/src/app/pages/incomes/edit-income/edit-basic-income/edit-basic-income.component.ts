@@ -5,7 +5,7 @@ import { IncomeService } from '../../../../shared/services';
 import { BudgetViewModel } from '@mymoney/common';
 import { IIncomeModel } from '../../../../shared/state/types';
 import { toFrequencyString, toInputDateString } from '@mymoney/common/functions';
-import { Frequency } from '@mymoney/common';
+import { Frequency } from '@mymoney/common/api/dtos';
 import { minAmountValidator } from '../../../../shared/common-validators';
 
 @Component({

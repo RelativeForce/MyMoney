@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ChangeEventHandler, useState } from "react"
 import { useDispatch } from 'react-redux';
-import { ILoginDto } from '@mymoney/common';
+import { ILoginDto } from '@mymoney/common/api/dtos';
 import { login } from "../../state/session-slice";
 import Input from "../../components/input";
 import { FormControlState } from "../../interfaces/form-conrtol-props";

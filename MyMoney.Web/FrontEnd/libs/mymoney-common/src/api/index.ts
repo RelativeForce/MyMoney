@@ -5,4 +5,3 @@ export * from './authentication.api';
 export * from './home.api';
 export * from './user.api';
 export * from './http-helper.class';
-export * from './dtos';

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../../../shared/services';
-import { IBasicResultDto } from '@mymoney/common';
+import { IBasicResultDto } from '@mymoney/common/api/dtos';
 
 @Component({
    templateUrl: 'reset-password.component.html'

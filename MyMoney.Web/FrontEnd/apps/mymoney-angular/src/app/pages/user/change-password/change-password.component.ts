@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { CurrentUserService } from '../../../shared/services';
-import { IBasicResultDto } from '@mymoney/common';
+import { IBasicResultDto } from '@mymoney/common/api/dtos';
 
 @Component({
    templateUrl: 'change-password.component.html'

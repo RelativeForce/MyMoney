@@ -1,4 +1,4 @@
-import { ITransactionDto } from '@mymoney/common';
+import { ITransactionDto } from '@mymoney/common/api/dtos';
 import { TransactionService } from '../../../shared/services';
 import { TransactionProperty } from './transaction-property.enum';
 import { BaseHeading, Row, IImportDataProvider } from '../../../shared/components/import-file';

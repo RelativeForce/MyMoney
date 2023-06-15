@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { ILoginDto, ILoginResultDto, IUserDto } from '@mymoney/common';
+import { ILoginDto, ILoginResultDto, IUserDto } from '@mymoney/common/api/dtos';
 import { ISessionModel } from '@mymoney/common';
 import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney/common';
 import { ISessionState, IAppState, AsyncStatus, IAsyncState } from './types';
