@@ -1,0 +1,87 @@
+{
+  "name": "mymoney-react",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/mymoney-react/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/mymoney-react",
+        "index": "apps/mymoney-react/src/index.html",
+        "baseHref": "/",
+        "main": "apps/mymoney-react/src/main.tsx",
+        "tsConfig": "apps/mymoney-react/tsconfig.app.json",
+        "assets": [
+          "apps/mymoney-react/src/assets"
+        ],
+        "styles": [
+          "apps/mymoney-react/src/app/globals.scss",
+          "node_modules/bootstrap/dist/css/bootstrap.css"
+        ],
+        "scripts": [
+          "node_modules/jquery/dist/jquery.js",
+          "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+        ],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/mymoney-react/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/mymoney-react/src/environments/environment.ts",
+              "with": "apps/mymoney-react/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "mymoney-react:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "mymoney-react:build:development"
+        },
+        "production": {
+          "buildTarget": "mymoney-react:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/mymoney-react/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "mymoney-react:build"
+      }
+    }
+  },
+  "tags": []
+}
