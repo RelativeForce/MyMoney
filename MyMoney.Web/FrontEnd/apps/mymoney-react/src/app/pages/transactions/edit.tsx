@@ -1,7 +1,3 @@
 export default function EditTransaction() {
-  return (
-    <>
-      Edit Transaction
-    </>
-  );
+   return <>Edit Transaction</>;
 }

@@ -19,7 +19,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
 
    constructor(
       private readonly homeService: HomeService,
-      private readonly router: Router,
+      private readonly router: Router
    ) {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
       this.seriesData = this.seriesDataSubject.asObservable();
@@ -27,7 +27,7 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       this.chartTitle = 'Total savings';
       this.yAxisLabel = 'Balance (£)';
       this.colorScheme = {
-         domain: ['#7aa3e5']
+         domain: ['#7aa3e5'],
       };
       this.year = new Date().getFullYear();
    }
@@ -75,7 +75,9 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       this.subChartTitle = `${this.year}`;
       this.homeService
          .getRunningTotal(0, this.dateRange)
-         .subscribe((runningTotalList) => this.updateChart(runningTotalList.runningTotals));
+         .subscribe((runningTotalList) =>
+            this.updateChart(runningTotalList.runningTotals)
+         );
    }
 
    private updateChart(runningTotals: IRunningTotalDto[]): void {

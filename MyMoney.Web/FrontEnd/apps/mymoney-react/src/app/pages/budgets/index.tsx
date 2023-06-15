@@ -1,7 +1,3 @@
 export default function Budgets() {
-  return (
-    <>
-      Budgets
-    </>
-  );
+   return <>Budgets</>;
 }

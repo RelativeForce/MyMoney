@@ -1,7 +1,3 @@
 export default function AddBudget() {
-  return (
-    <>
-      Add Budget
-    </>
-  );
+   return <>Add Budget</>;
 }

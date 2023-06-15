@@ -6,14 +6,13 @@ import { ILoginResultDto } from '@mymoney-common/api';
 import { AuthenticationService } from '../../../shared/services';
 
 @Component({
-   templateUrl: './login.component.html'
+   templateUrl: './login.component.html',
 })
 export class LoginComponent {
-
    public loginForm: FormGroup;
    public loginFormControls = {
       email: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required])
+      password: new FormControl('', [Validators.required]),
    };
    public loading = false;
    public submitted = false;
@@ -40,7 +39,8 @@ export class LoginComponent {
       const email = this.loginFormControls.email.value ?? '';
       const password = this.loginFormControls.password.value ?? '';
 
-      this.authenticationService.login(email, password)
+      this.authenticationService
+         .login(email, password)
          .pipe(first())
          .subscribe(
             (result: ILoginResultDto) => {
@@ -51,10 +51,11 @@ export class LoginComponent {
                   this.error = result.error;
                }
             },
-            error => {
+            (error) => {
                // Show error
                this.loading = false;
                this.error = 'Unknown error';
-            });
+            }
+         );
    }
 }

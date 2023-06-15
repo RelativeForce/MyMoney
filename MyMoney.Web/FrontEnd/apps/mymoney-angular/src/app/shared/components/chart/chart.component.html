@@ -1,19 +1,58 @@
 <div class="container inline">
-   <button class="btn btn-light btn-sm material-icons" type="button" (click)="onPrevious()" data-toggle="tooltip" data-placement="bottom"
-      title="Previous">navigate_before</button>
+   <button
+      class="btn btn-light btn-sm material-icons"
+      type="button"
+      (click)="onPrevious()"
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title="Previous"
+   >
+      navigate_before
+   </button>
    <span class="ml-auto">
-      <div *ngIf="dataProvider.subChartTitle">{{ dataProvider.chartTitle }} - {{ dataProvider.subChartTitle }}</div>
-      <div *ngIf="!dataProvider.subChartTitle">{{ dataProvider.chartTitle }}</div>
+      <div *ngIf="dataProvider.subChartTitle">
+         {{ dataProvider.chartTitle }} - {{ dataProvider.subChartTitle }}
+      </div>
+      <div *ngIf="!dataProvider.subChartTitle">
+         {{ dataProvider.chartTitle }}
+      </div>
    </span>
-   <button class="btn btn-light btn-sm ml-auto material-icons" type="button" (click)="onNext()" data-toggle="tooltip"
-      data-placement="bottom" title="Next">navigate_next</button>
+   <button
+      class="btn btn-light btn-sm ml-auto material-icons"
+      type="button"
+      (click)="onNext()"
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title="Next"
+   >
+      navigate_next
+   </button>
 </div>
-<div style="width: 100%; min-height: 500px; max-height: 500px; margin-bottom: 60px;">
-   <ngx-charts-line-chart [customColors]="dataProvider.colorScheme" [legend]="showLegend" [showXAxisLabel]="true" [showYAxisLabel]="true"
-      [xAxis]="true" [yAxis]="true" [yAxisLabel]="dataProvider.yAxisLabel" [results]="dataProvider.seriesData | async" [legendTitle]="''"
-      (select)="onSelect($event)" [xAxisTickFormatting]="getXAxisTickLabel" [legendPosition]="LegendPosition.Below">
+<div
+   style="
+      width: 100%;
+      min-height: 500px;
+      max-height: 500px;
+      margin-bottom: 60px;
+   "
+>
+   <ngx-charts-line-chart
+      [customColors]="dataProvider.colorScheme"
+      [legend]="showLegend"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      [xAxis]="true"
+      [yAxis]="true"
+      [yAxisLabel]="dataProvider.yAxisLabel"
+      [results]="dataProvider.seriesData | async"
+      [legendTitle]="''"
+      (select)="onSelect($event)"
+      [xAxisTickFormatting]="getXAxisTickLabel"
+      [legendPosition]="LegendPosition.Below"
+   >
       <ng-template #tooltipTemplate let-model="model">
-         {{ (model.id === -1 ? model.series : model.date) }} • {{ model.text }} • £{{ model.amount }}
+         {{ model.id === -1 ? model.series : model.date }} • {{ model.text }} •
+         £{{ model.amount }}
       </ng-template>
    </ngx-charts-line-chart>
 </div>

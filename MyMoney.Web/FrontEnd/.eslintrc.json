@@ -1,41 +1,41 @@
 {
-  "root": true,
-  "ignorePatterns": ["**/*"],
-  "plugins": ["@nx", "@typescript-eslint"],
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "@nx/enforce-module-boundaries": [
-          "error",
-          {
-            "enforceBuildableLibDependency": true,
-            "allow": [],
-            "depConstraints": [
-              {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
-              }
+   "root": true,
+   "ignorePatterns": ["**/*"],
+   "plugins": ["@nx", "@typescript-eslint"],
+   "overrides": [
+      {
+         "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+         "rules": {
+            "@nx/enforce-module-boundaries": [
+               "error",
+               {
+                  "enforceBuildableLibDependency": true,
+                  "allow": [],
+                  "depConstraints": [
+                     {
+                        "sourceTag": "*",
+                        "onlyDependOnLibsWithTags": ["*"]
+                     }
+                  ]
+               }
             ]
-          }
-        ]
+         }
+      },
+      {
+         "files": ["*.ts", "*.tsx"],
+         "extends": ["plugin:@nx/typescript"],
+         "rules": {}
+      },
+      {
+         "files": ["*.js", "*.jsx"],
+         "extends": ["plugin:@nx/javascript"],
+         "rules": {}
       }
-    },
-    {
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript"],
-      "rules": {}
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/javascript"],
-      "rules": {}
-    }
-  ],
-  "parser": "@typescript-eslint/parser",
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
-  ]
+   ],
+   "parser": "@typescript-eslint/parser",
+   "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+   ]
 }

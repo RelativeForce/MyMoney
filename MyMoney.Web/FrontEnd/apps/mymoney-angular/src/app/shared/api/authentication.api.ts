@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpHelper } from './http-helper.class';
-import { AuthenticationApi as CommonAuthenticationApi }  from '@mymoney-common/api';
+import { AuthenticationApi as CommonAuthenticationApi } from '@mymoney-common/api';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationApi extends CommonAuthenticationApi {

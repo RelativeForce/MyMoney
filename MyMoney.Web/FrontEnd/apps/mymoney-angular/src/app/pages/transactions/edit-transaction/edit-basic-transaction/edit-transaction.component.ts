@@ -9,7 +9,7 @@ import { minAmountValidator } from '../../../../shared/common-validators';
 
 @Component({
    templateUrl: './edit-basic-transaction.component.html',
-   styleUrls: ['./edit-basic-transaction.component.scss']
+   styleUrls: ['./edit-basic-transaction.component.scss'],
 })
 export class EditBasicTransactionComponent implements OnInit {
    public editTransactionForm: FormGroup;
@@ -32,16 +32,19 @@ export class EditBasicTransactionComponent implements OnInit {
    constructor(
       private readonly transactionService: TransactionService,
       private readonly router: Router,
-      private readonly activatedRoute: ActivatedRoute) {
+      private readonly activatedRoute: ActivatedRoute
+   ) {
       this.id = 0;
 
-      this.editTransactionForm = new FormGroup(this.editTransactionFormControls);
+      this.editTransactionForm = new FormGroup(
+         this.editTransactionFormControls
+      );
 
       this.disableForm();
    }
 
    public ngOnInit(): void {
-      this.activatedRoute.params.subscribe(params => {
+      this.activatedRoute.params.subscribe((params) => {
          const idStr = params['id'];
 
          if (!idStr) {
@@ -50,30 +53,42 @@ export class EditBasicTransactionComponent implements OnInit {
 
          this.id = Number.parseInt(idStr, 10);
 
-         this.transactionService
-            .findTransaction(this.id)
-            .subscribe((response: ITransactionModel) => {
+         this.transactionService.findTransaction(this.id).subscribe(
+            (response: ITransactionModel) => {
+               response.budgetIds.forEach((bid) =>
+                  this.selectedBudgets.add(bid)
+               );
+               response.incomeIds.forEach((iid) =>
+                  this.selectedIncomes.add(iid)
+               );
 
-               response.budgetIds.forEach(bid => this.selectedBudgets.add(bid));
-               response.incomeIds.forEach(iid => this.selectedIncomes.add(iid));
-
-               this.editTransactionFormControls.date.patchValue(this.toInputDateString(response.date));
-               this.editTransactionFormControls.description.patchValue(response.description);
-               this.editTransactionFormControls.amount.patchValue(response.amount);
-               this.editTransactionFormControls.notes.patchValue(response.notes);
+               this.editTransactionFormControls.date.patchValue(
+                  this.toInputDateString(response.date)
+               );
+               this.editTransactionFormControls.description.patchValue(
+                  response.description
+               );
+               this.editTransactionFormControls.amount.patchValue(
+                  response.amount
+               );
+               this.editTransactionFormControls.notes.patchValue(
+                  response.notes
+               );
                this.parentId = response.parentId;
                this.parentFrequency = response.parentFrequency;
 
                this.enableForm(response.parentId !== null);
                this.loadingTransaction = false;
             },
-               () => this.router.navigate(['/transactions'])
-            );
+            () => this.router.navigate(['/transactions'])
+         );
       });
    }
 
    public get selectedDate(): Date | null {
-      return this.loadingTransaction ? null : new Date(this.editTransactionFormControls.date.value ?? '');
+      return this.loadingTransaction
+         ? null
+         : new Date(this.editTransactionFormControls.date.value ?? '');
    }
 
    public toInputDateString(text: string): string {
@@ -108,16 +123,18 @@ export class EditBasicTransactionComponent implements OnInit {
 
       this.transactionService
          .editTransaction(this.asTransactionModel)
-         .subscribe(success => {
-            this.loading = false;
-            if (success) {
-               this.router.navigate(['/transactions']);
-            }
-         },
+         .subscribe(
+            (success) => {
+               this.loading = false;
+               if (success) {
+                  this.router.navigate(['/transactions']);
+               }
+            },
             () => {
                // Show error
                this.loading = false;
-            });
+            }
+         );
    }
 
    private disableForm() {
@@ -128,7 +145,6 @@ export class EditBasicTransactionComponent implements OnInit {
    }
 
    private enableForm(isChild: boolean) {
-
       if (!isChild) {
          this.editTransactionFormControls.date.enable();
          this.editTransactionFormControls.description.enable();
@@ -139,12 +155,12 @@ export class EditBasicTransactionComponent implements OnInit {
    }
 
    private get asTransactionModel(): ITransactionModel {
-
       const date = new Date(this.editTransactionFormControls.date.value ?? '');
 
       const dateString: string = date.toLocaleDateString();
 
-      const description = this.editTransactionFormControls.description.value ?? '';
+      const description =
+         this.editTransactionFormControls.description.value ?? '';
       const amount = this.editTransactionFormControls.amount.value ?? 0;
       const notes = this.editTransactionFormControls.notes.value ?? '';
 

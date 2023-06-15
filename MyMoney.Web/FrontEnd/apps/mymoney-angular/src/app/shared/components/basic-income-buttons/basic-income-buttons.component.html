@@ -1,6 +1,19 @@
 <div class="btn-group">
-   <a class="btn btn-primary material-icons" routerLink="./edit/{{income.id}}" data-toggle="tooltip" data-placement="bottom"
-      title=" Edit income {{income.id}}">edit</a>
-   <button class="btn btn-danger material-icons" (click)="onDeleteIncomeClicked()" data-toggle="tooltip" data-placement="bottom"
-      title="Delete income {{income.id}}">delete</button>
+   <a
+      class="btn btn-primary material-icons"
+      routerLink="./edit/{{ income.id }}"
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title=" Edit income {{ income.id }}"
+      >edit</a
+   >
+   <button
+      class="btn btn-danger material-icons"
+      (click)="onDeleteIncomeClicked()"
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title="Delete income {{ income.id }}"
+   >
+      delete
+   </button>
 </div>

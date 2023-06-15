@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 import { TransactionService } from '../../../../shared/services';
 import { IRecurringTransactionDto, Frequency } from '@mymoney-common/api';
 import { frequencyOptions } from '@mymoney-common/constants';
-import { frequencyValidator, minAmountValidator } from '../../../../shared/common-validators';
+import {
+   frequencyValidator,
+   minAmountValidator,
+} from '../../../../shared/common-validators';
 import { toDateString } from '@mymoney-common/functions';
 
 @Component({
@@ -12,23 +15,26 @@ import { toDateString } from '@mymoney-common/functions';
    templateUrl: './add-recurring-transaction.component.html',
 })
 export class AddRecurringTransactionComponent implements OnInit {
-
    public addTransactionForm: FormGroup;
    public addTransactionFormControls = {
       start: new FormControl(toDateString(new Date()), [Validators.required]),
       end: new FormControl(toDateString(new Date()), [Validators.required]),
       description: new FormControl('', [Validators.required]),
       amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
-      recurrence: new FormControl(Frequency.month, [Validators.required, frequencyValidator]),
-      notes: new FormControl('')
+      recurrence: new FormControl(Frequency.month, [
+         Validators.required,
+         frequencyValidator,
+      ]),
+      notes: new FormControl(''),
    };
    public loading = false;
    public submitted = false;
-   public recurrenceOptions: { key: Frequency; value: string }[] = frequencyOptions;
+   public recurrenceOptions: { key: Frequency; value: string }[] =
+      frequencyOptions;
 
    constructor(
       private readonly router: Router,
-      private readonly transactionService: TransactionService,
+      private readonly transactionService: TransactionService
    ) {
       this.addTransactionForm = new FormGroup(this.addTransactionFormControls);
    }
@@ -50,12 +56,18 @@ export class AddRecurringTransactionComponent implements OnInit {
 
       this.loading = true;
 
-      const start: string = new Date(this.addTransactionFormControls.start.value ?? '').toLocaleDateString();
-      const end: string = new Date(this.addTransactionFormControls.end.value ?? '').toLocaleDateString();
-      const description = this.addTransactionFormControls.description.value ?? '';
+      const start: string = new Date(
+         this.addTransactionFormControls.start.value ?? ''
+      ).toLocaleDateString();
+      const end: string = new Date(
+         this.addTransactionFormControls.end.value ?? ''
+      ).toLocaleDateString();
+      const description =
+         this.addTransactionFormControls.description.value ?? '';
       const amount = this.addTransactionFormControls.amount.value ?? 0;
       const notes = this.addTransactionFormControls.notes.value ?? '';
-      const recurrence = this.addTransactionFormControls.recurrence.value ?? Frequency.day;
+      const recurrence =
+         this.addTransactionFormControls.recurrence.value ?? Frequency.day;
 
       const transaction: IRecurringTransactionDto = {
          start,
@@ -65,18 +77,20 @@ export class AddRecurringTransactionComponent implements OnInit {
          id: 0,
          recurrence,
          notes,
-         children: []
+         children: [],
       };
 
-      this.transactionService.addRecurringTransaction(transaction).subscribe(success => {
-         if (success) {
-            this.router.navigate(['/transactions']);
-         }
-         this.loading = false;
-      },
+      this.transactionService.addRecurringTransaction(transaction).subscribe(
+         (success) => {
+            if (success) {
+               this.router.navigate(['/transactions']);
+            }
+            this.loading = false;
+         },
          () => {
             // Show error
             this.loading = false;
-         });
+         }
+      );
    }
 }

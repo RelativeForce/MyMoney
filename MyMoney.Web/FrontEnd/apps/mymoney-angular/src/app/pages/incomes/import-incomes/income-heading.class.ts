@@ -6,16 +6,27 @@ export class IncomeHeading extends BaseHeading<IncomeProperty> {
       super(property);
    }
 
-   public static transactionPropertyToType(property: IncomeProperty): 'text' | 'date' | 'number' {
+   public static transactionPropertyToType(
+      property: IncomeProperty
+   ): 'text' | 'date' | 'number' {
       switch (property) {
-         case IncomeProperty.amount: return 'number';
-         case IncomeProperty.date: return 'date';
-         default: return 'text';
+         case IncomeProperty.amount:
+            return 'number';
+         case IncomeProperty.date:
+            return 'date';
+         default:
+            return 'text';
       }
    }
 
-   public static formatWithTransactionProperty(type: IncomeProperty, input: string): any | null {
-      return BaseHeading.formatWithType(IncomeHeading.transactionPropertyToType(type), input);
+   public static formatWithTransactionProperty(
+      type: IncomeProperty,
+      input: string
+   ): any | null {
+      return BaseHeading.formatWithType(
+         IncomeHeading.transactionPropertyToType(type),
+         input
+      );
    }
 
    public get isIgnored() {
@@ -52,7 +63,8 @@ export class IncomeHeading extends BaseHeading<IncomeProperty> {
             }
 
             return null;
-         default: return null;
+         default:
+            return null;
       }
    }
 }

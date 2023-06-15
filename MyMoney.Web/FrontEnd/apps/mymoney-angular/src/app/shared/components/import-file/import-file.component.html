@@ -1,6 +1,13 @@
 <div class="form-group">
    <div class="custom-file">
-      <input type="file" class="custom-file-input" id="customFile" accept='.txt,.csv' multiple (change)='openFile($event)'>
+      <input
+         type="file"
+         class="custom-file-input"
+         id="customFile"
+         accept=".txt,.csv"
+         multiple
+         (change)="openFile($event)"
+      />
       <label class="custom-file-label" for="customFile">Choose file</label>
    </div>
 </div>
@@ -10,8 +17,17 @@
       <tr>
          <th scope="col" *ngFor="let heading of headings; let i = index">
             <div class="form-group">
-               <select class="form-control" style="min-width: 130px;" (change)="onColumnChange($event, i)">
-                  <option *ngFor="let field of dataProvider.fields" value="{{field}}">{{ field }}</option>
+               <select
+                  class="form-control"
+                  style="min-width: 130px"
+                  (change)="onColumnChange($event, i)"
+               >
+                  <option
+                     *ngFor="let field of dataProvider.fields"
+                     value="{{ field }}"
+                  >
+                     {{ field }}
+                  </option>
                </select>
             </div>
          </th>
@@ -19,21 +35,60 @@
    </thead>
    <tbody>
       <ng-container *ngFor="let row of rows">
-         <tr [ngClass]="{'alert alert-warning': row.error !== null}" data-toggle="tooltip" data-placement="top" title="{{row.error}}">
+         <tr
+            [ngClass]="{ 'alert alert-warning': row.error !== null }"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="{{ row.error }}"
+         >
             <td *ngFor="let element of row.data; let elementIndex = index">
-               <input type='{{headings[elementIndex].inputType}}' class="form-control" [value]="headings[elementIndex].format(element)"
-                  (change)='changeElementValue($event, row.id, elementIndex)' [readonly]="headings[elementIndex].isIgnored"
-                  [disabled]="isLoading || isDone" [ngClass]="{ 'is-invalid': headings[elementIndex].validate(element) !== null }" />
-               <div *ngIf="headings[elementIndex].validate(element) as validationError" class="invalid-feedback">
-                  <div *ngIf="dataProvider.columnErrorMessage(headings) === null">{{ validationError }}</div>
+               <input
+                  type="{{ headings[elementIndex].inputType }}"
+                  class="form-control"
+                  [value]="headings[elementIndex].format(element)"
+                  (change)="changeElementValue($event, row.id, elementIndex)"
+                  [readonly]="headings[elementIndex].isIgnored"
+                  [disabled]="isLoading || isDone"
+                  [ngClass]="{
+                     'is-invalid':
+                        headings[elementIndex].validate(element) !== null
+                  }"
+               />
+               <div
+                  *ngIf="
+                     headings[elementIndex].validate(element) as validationError
+                  "
+                  class="invalid-feedback"
+               >
+                  <div
+                     *ngIf="dataProvider.columnErrorMessage(headings) === null"
+                  >
+                     {{ validationError }}
+                  </div>
                </div>
             </td>
             <td>
                <div class="btn-group">
-                  <button class="btn btn-danger material-icons" (click)="deleteRow(row.id)" *ngIf="!isLoading && !isDone"
-                     data-toggle="tooltip" data-placement="bottom" title="Delete row">delete</button>
-                  <button class="btn btn-success material-icons" (click)="alert('Import successful')" *ngIf="row.success === true"
-                     data-toggle="tooltip" data-placement="bottom" title="Import successful">done</button>
+                  <button
+                     class="btn btn-danger material-icons"
+                     (click)="deleteRow(row.id)"
+                     *ngIf="!isLoading && !isDone"
+                     data-toggle="tooltip"
+                     data-placement="bottom"
+                     title="Delete row"
+                  >
+                     delete
+                  </button>
+                  <button
+                     class="btn btn-success material-icons"
+                     (click)="alert('Import successful')"
+                     *ngIf="row.success === true"
+                     data-toggle="tooltip"
+                     data-placement="bottom"
+                     title="Import successful"
+                  >
+                     done
+                  </button>
                </div>
             </td>
          </tr>
@@ -42,9 +97,17 @@
 </table>
 
 <div class="form-group">
-   <button [disabled]="isLoading || isDone" class="btn btn-success" (click)="onSubmit()" [hidden]="this.rows.length === 0">
-      <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+   <button
+      [disabled]="isLoading || isDone"
+      class="btn btn-success"
+      (click)="onSubmit()"
+      [hidden]="this.rows.length === 0"
+   >
+      <span
+         *ngIf="isLoading"
+         class="spinner-border spinner-border-sm mr-1"
+      ></span>
       Import
    </button>
-   <a routerLink="{{dataProvider.homeLink}}" class="btn btn-link">Cancel</a>
+   <a routerLink="{{ dataProvider.homeLink }}" class="btn btn-link">Cancel</a>
 </div>

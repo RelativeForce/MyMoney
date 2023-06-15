@@ -6,14 +6,12 @@ import {
    IDeleteResultDto,
    IBudgetDto,
    IIdDto,
-   IUpdateResultDto
+   IUpdateResultDto,
 } from './dtos';
 import { HttpHelper } from './http-helper.class';
 
-
 export class BudgetApi {
-
-   constructor(private readonly api: HttpHelper) { }
+   constructor(private readonly api: HttpHelper) {}
 
    public list(request: IBudgetSearchDto): Observable<IBudgetListDto> {
       return this.api

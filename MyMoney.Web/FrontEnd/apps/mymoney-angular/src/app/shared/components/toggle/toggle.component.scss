@@ -1,13 +1,13 @@
- .toggle-on {
+.toggle-on {
    color: #1b6ec2;
- }
+}
 
- .toggle {
+.toggle {
    cursor: pointer;
    font-size: 50px;
- }
+}
 
- .toggle-container {
+.toggle-container {
    line-height: 50px;
    height: 50px;
    display: flex;
@@ -17,4 +17,4 @@
    -moz-user-select: none; /* Old versions of Firefox */
    -ms-user-select: none; /* Internet Explorer/Edge */
    user-select: none;
- }
+}

@@ -6,11 +6,14 @@ import {
    DeleteIncomeAction,
    UpdateIncomesSearchAction,
    DeleteRecurringIncomeAction,
-   RealiseIncomeAction
+   RealiseIncomeAction,
 } from '../actions';
 import { IDateRangeModel, IIncomeModel, IIncomesSearch } from '../types';
 
-function setIncomes(state: IIncomeState, action: SetIncomesAction): IIncomeState {
+function setIncomes(
+   state: IIncomeState,
+   action: SetIncomesAction
+): IIncomeState {
    const incomes: IIncomeModel[] = action.incomes;
 
    return {
@@ -18,8 +21,8 @@ function setIncomes(state: IIncomeState, action: SetIncomesAction): IIncomeState
       incomes: incomes,
       searchParameters: {
          ...state.searchParameters,
-         refresh: false
-      }
+         refresh: false,
+      },
    };
 }
 
@@ -28,66 +31,81 @@ function refreshIncomes(state: IIncomeState): IIncomeState {
       ...state,
       searchParameters: {
          ...state.searchParameters,
-         refresh: true
-      }
+         refresh: true,
+      },
    };
 }
 
-function updateIncome(state: IIncomeState, action: UpdateIncomeAction): IIncomeState {
+function updateIncome(
+   state: IIncomeState,
+   action: UpdateIncomeAction
+): IIncomeState {
    const income: IIncomeModel = action.income;
 
-   const index = state.incomes.findIndex(t => t.id === income.id);
+   const index = state.incomes.findIndex((t) => t.id === income.id);
 
-   const incomes = state.incomes.map(t => t);
+   const incomes = state.incomes.map((t) => t);
 
    incomes[index] = income;
 
    return {
       ...state,
-      incomes: incomes
+      incomes: incomes,
    };
 }
 
-function realiseIncome(state: IIncomeState, action: RealiseIncomeAction): IIncomeState {
+function realiseIncome(
+   state: IIncomeState,
+   action: RealiseIncomeAction
+): IIncomeState {
    const virtualId: number = action.virtualId;
    const realId: number = action.realId;
 
-   const incomes = state.incomes.map(t => ({
+   const incomes = state.incomes.map((t) => ({
       ...t,
-      id: t.id === virtualId ? realId : t.id
+      id: t.id === virtualId ? realId : t.id,
    }));
 
    return {
       ...state,
-      incomes
+      incomes,
    };
 }
 
-function deleteIncome(state: IIncomeState, action: DeleteIncomeAction): IIncomeState {
+function deleteIncome(
+   state: IIncomeState,
+   action: DeleteIncomeAction
+): IIncomeState {
    const incomeId: number = action.incomeId;
 
-   const index = state.incomes.findIndex(t => t.id === incomeId);
+   const index = state.incomes.findIndex((t) => t.id === incomeId);
 
-   const incomes = state.incomes.map(t => t);
+   const incomes = state.incomes.map((t) => t);
 
    incomes.splice(index, 1);
 
    return {
       ...state,
-      incomes: incomes
+      incomes: incomes,
    };
 }
 
-function deleteRecurringIncome(state: IIncomeState, action: DeleteRecurringIncomeAction): IIncomeState {
+function deleteRecurringIncome(
+   state: IIncomeState,
+   action: DeleteRecurringIncomeAction
+): IIncomeState {
    const incomeId: number = action.incomeId;
 
    return {
       ...state,
-      incomes: state.incomes.filter(t => t.parentId !== incomeId)
+      incomes: state.incomes.filter((t) => t.parentId !== incomeId),
    };
 }
 
-function updateSelectedSearchDate(state: IIncomeState, action: UpdateIncomesSearchAction): IIncomeState {
+function updateSelectedSearchDate(
+   state: IIncomeState,
+   action: UpdateIncomesSearchAction
+): IIncomeState {
    const dateRange: IDateRangeModel = action.dateRange;
 
    return {
@@ -95,8 +113,8 @@ function updateSelectedSearchDate(state: IIncomeState, action: UpdateIncomesSear
       searchParameters: {
          ...state.searchParameters,
          dateRange,
-         refresh: true
-      }
+         refresh: true,
+      },
    };
 }
 
@@ -119,10 +137,13 @@ export const initialIncomeState: IIncomeState = {
    searchParameters: {
       dateRange: defaultDateRange(),
       refresh: true,
-   }
+   },
 };
 
-export function incomeReducer(state: IIncomeState = initialIncomeState, action: Action): IIncomeState {
+export function incomeReducer(
+   state: IIncomeState = initialIncomeState,
+   action: Action
+): IIncomeState {
    switch (action.type) {
       case IncomeActionTypes.setIncomes:
          return setIncomes(state, action as SetIncomesAction);
@@ -133,9 +154,15 @@ export function incomeReducer(state: IIncomeState = initialIncomeState, action: 
       case IncomeActionTypes.realiseIncome:
          return realiseIncome(state, action as RealiseIncomeAction);
       case IncomeActionTypes.updateSearchDate:
-         return updateSelectedSearchDate(state, action as UpdateIncomesSearchAction);
+         return updateSelectedSearchDate(
+            state,
+            action as UpdateIncomesSearchAction
+         );
       case IncomeActionTypes.deleteRecurringIncome:
-         return deleteRecurringIncome(state, action as DeleteRecurringIncomeAction);
+         return deleteRecurringIncome(
+            state,
+            action as DeleteRecurringIncomeAction
+         );
       case IncomeActionTypes.refreshIncomes:
          return refreshIncomes(state);
       default:

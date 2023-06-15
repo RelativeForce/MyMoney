@@ -5,31 +5,73 @@
          <div class="input-group-prepend">
             <span class="input-group-text">Year</span>
          </div>
-         <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && monthIdFormControls.year.errors }"
-            (change)="updateBudgets()" />
-         <div *ngIf="submitted && monthIdFormControls.year.errors" class="invalid-feedback">
-            <div *ngIf="monthIdFormControls.year.errors['required']">Year is required</div>
-            <div *ngIf="monthIdFormControls.year.errors['min']">Year cannot be less than 1980</div>
+         <input
+            type="number"
+            formControlName="year"
+            class="form-control"
+            [ngClass]="{
+               'is-invalid': submitted && monthIdFormControls.year.errors
+            }"
+            (change)="updateBudgets()"
+         />
+         <div
+            *ngIf="submitted && monthIdFormControls.year.errors"
+            class="invalid-feedback"
+         >
+            <div *ngIf="monthIdFormControls.year.errors['required']">
+               Year is required
+            </div>
+            <div *ngIf="monthIdFormControls.year.errors['min']">
+               Year cannot be less than 1980
+            </div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2">
          <div class="input-group-prepend">
             <span class="input-group-text">Month</span>
          </div>
-         <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && monthIdFormControls.month.errors }"
-            (change)="updateBudgets()" />
-         <div *ngIf="submitted && monthIdFormControls.month.errors" class="invalid-feedback">
-            <div *ngIf="monthIdFormControls.month.errors['required']">Month is required</div>
-            <div *ngIf="monthIdFormControls.month.errors['invalidMonth']">Month must be 1 - 12</div>
+         <input
+            type="number"
+            formControlName="month"
+            class="form-control"
+            [ngClass]="{
+               'is-invalid': submitted && monthIdFormControls.month.errors
+            }"
+            (change)="updateBudgets()"
+         />
+         <div
+            *ngIf="submitted && monthIdFormControls.month.errors"
+            class="invalid-feedback"
+         >
+            <div *ngIf="monthIdFormControls.month.errors['required']">
+               Month is required
+            </div>
+            <div *ngIf="monthIdFormControls.month.errors['invalidMonth']">
+               Month must be 1 - 12
+            </div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">
-         <button [disabled]="loading" class="btn btn-primary material-icons" data-toggle="tooltip" data-placement="bottom"
-            title="Refresh budgets">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+         <button
+            [disabled]="loading"
+            class="btn btn-primary material-icons"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            title="Refresh budgets"
+         >
+            <span
+               *ngIf="loading"
+               class="spinner-border spinner-border-sm"
+            ></span>
             <div *ngIf="!loading" class="spin">refresh</div>
          </button>
-         <a class="btn btn-success material-icons" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new budget">
+         <a
+            class="btn btn-success material-icons"
+            routerLink="./add"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            title="Add new budget"
+         >
             add
          </a>
       </div>
@@ -48,12 +90,17 @@
       </thead>
       <tbody>
          <tr *ngFor="let budget of budgets; let i = index">
-            <td>{{budget.name}}</td>
-            <td>{{budget.amount}}</td>
-            <td [ngClass]="{ 'text-danger': budget.showWarning }">{{budget.remaining}}</td>
-            <td>{{budget.notes}}</td>
+            <td>{{ budget.name }}</td>
+            <td>{{ budget.amount }}</td>
+            <td [ngClass]="{ 'text-danger': budget.showWarning }">
+               {{ budget.remaining }}
+            </td>
+            <td>{{ budget.notes }}</td>
             <td class="pull-right">
-               <mymoney-budget-buttons [budget]="budget" (deleteBudget)="deleteBudget(budget.id)"></mymoney-budget-buttons>
+               <mymoney-budget-buttons
+                  [budget]="budget"
+                  (deleteBudget)="deleteBudget(budget.id)"
+               ></mymoney-budget-buttons>
             </td>
          </tr>
       </tbody>

@@ -4,24 +4,30 @@ import { IncomeService } from '../../shared/services';
 import { IncomeViewModel } from '@mymoney-common/classes';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../shared/state/app-state';
-import { selectIncomes, selectIncomesSearchParameters } from '../../shared/state/selectors/income.selector';
+import {
+   selectIncomes,
+   selectIncomesSearchParameters,
+} from '../../shared/state/selectors/income.selector';
 import { IDateRangeModel } from '../../shared/state/types';
 import { toDateString } from '@mymoney-common/functions';
 
 @Component({
    selector: 'mymoney-incomes',
    templateUrl: './incomes.component.html',
-   styleUrls: ['./incomes.component.scss']
+   styleUrls: ['./incomes.component.scss'],
 })
 export class IncomesComponent implements OnInit {
-
    public incomes: IncomeViewModel[] = [];
    public dateRange: IDateRangeModel = { start: new Date(), end: new Date() };
    public dateForm: FormGroup;
    public dateRangeFormControls = {
-      start: new FormControl(toDateString(this.dateRange.start), [Validators.required]),
-      end: new FormControl(toDateString(this.dateRange.end), [Validators.required])
-   }
+      start: new FormControl(toDateString(this.dateRange.start), [
+         Validators.required,
+      ]),
+      end: new FormControl(toDateString(this.dateRange.end), [
+         Validators.required,
+      ]),
+   };
    public loading = false;
    public submitted = false;
 
@@ -33,20 +39,22 @@ export class IncomesComponent implements OnInit {
    }
 
    public ngOnInit(): void {
-      this.store
-         .select(selectIncomes)
-         .subscribe((incomes) => {
-            this.incomes = incomes.map(t => new IncomeViewModel(t));
-            this.loading = false;
-         });
+      this.store.select(selectIncomes).subscribe((incomes) => {
+         this.incomes = incomes.map((t) => new IncomeViewModel(t));
+         this.loading = false;
+      });
 
       this.store
          .select(selectIncomesSearchParameters)
          .subscribe((searchParameters) => {
             this.dateRange = searchParameters.dateRange;
 
-            this.dateRangeFormControls.start.setValue(toDateString(searchParameters.dateRange.start));
-            this.dateRangeFormControls.end.setValue(toDateString(searchParameters.dateRange.end));
+            this.dateRangeFormControls.start.setValue(
+               toDateString(searchParameters.dateRange.start)
+            );
+            this.dateRangeFormControls.end.setValue(
+               toDateString(searchParameters.dateRange.end)
+            );
          });
 
       this.incomeService.refreshIncomes();
@@ -69,10 +77,10 @@ export class IncomesComponent implements OnInit {
 
       this.loading = true;
 
-      this.dateRange = { 
+      this.dateRange = {
          start: new Date(this.dateRangeFormControls.start.value ?? ''),
          end: new Date(this.dateRangeFormControls.end.value ?? ''),
-       };
+      };
 
       this.incomeService.updateDate(this.dateRange);
    }
@@ -94,7 +102,6 @@ export class IncomesComponent implements OnInit {
    }
 
    private formatDate(date: Date): string {
-
       const parsedDate = new Date(date);
 
       const month = parsedDate.getMonth() + 1;

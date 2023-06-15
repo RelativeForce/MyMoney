@@ -1,7 +1,3 @@
 export default function ImportIncomes() {
-  return (
-    <>
-      Import Incomes
-    </>
-  );
+   return <>Import Incomes</>;
 }

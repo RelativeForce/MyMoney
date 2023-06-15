@@ -4,7 +4,7 @@ import { TransactionImportDataProvider } from './transaction-import-data-provide
 
 @Component({
    selector: 'mymoney-import-transactions',
-   templateUrl: './import-transactions.component.html'
+   templateUrl: './import-transactions.component.html',
 })
 export class ImportTransactionsComponent {
    public dataProvider: TransactionImportDataProvider;

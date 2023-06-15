@@ -18,11 +18,14 @@ export class IncomeSelectorComponent implements OnChanges {
 
    public realisingChild: number | null = null;
 
-   constructor(private readonly incomeService: IncomeService) { }
+   constructor(private readonly incomeService: IncomeService) {}
 
-  public onIncomeCheckboxChange(newValue: boolean, income: IncomeViewModel): void {
-    if (income.id < 0 && income.parentId && this.incomes) {
-      const incomes = this.incomes;
+   public onIncomeCheckboxChange(
+      newValue: boolean,
+      income: IncomeViewModel
+   ): void {
+      if (income.id < 0 && income.parentId && this.incomes) {
+         const incomes = this.incomes;
          this.realisingChild = income.id;
 
          this.incomeService
@@ -31,7 +34,7 @@ export class IncomeSelectorComponent implements OnChanges {
                this.realisingChild = null;
 
                // Updated model
-               const model = incomes.find(i => i.id === income.id);
+               const model = incomes.find((i) => i.id === income.id);
                model!.id = realChild.id;
                income.id = realChild.id;
 
@@ -60,7 +63,6 @@ export class IncomeSelectorComponent implements OnChanges {
          const isFirstChange = oldDate === undefined || oldDate === null;
 
          if (valueHasChanged || isFirstChange) {
-
             if (!isFirstChange) {
                this.selectedIncomes.clear();
             }
@@ -72,8 +74,10 @@ export class IncomeSelectorComponent implements OnChanges {
 
    public updateIncomes(date: Date): void {
       this.incomes = null;
-      this.incomeService.getIncomesByDate(date).subscribe(response => {
-         this.incomes = response.incomes.map((t: IIncomeDto) => new IncomeViewModel(t));
+      this.incomeService.getIncomesByDate(date).subscribe((response) => {
+         this.incomes = response.incomes.map(
+            (t: IIncomeDto) => new IncomeViewModel(t)
+         );
       });
    }
 }

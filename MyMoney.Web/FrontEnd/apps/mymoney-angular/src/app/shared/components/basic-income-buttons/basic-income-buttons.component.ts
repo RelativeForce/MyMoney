@@ -3,10 +3,9 @@ import { IncomeViewModel } from '@mymoney-common/classes';
 
 @Component({
    templateUrl: './basic-income-buttons.component.html',
-   selector: 'mymoney-basic-income-buttons'
+   selector: 'mymoney-basic-income-buttons',
 })
 export class BasicIncomeButtonsComponent {
-
    @Input()
    public income!: IncomeViewModel;
 

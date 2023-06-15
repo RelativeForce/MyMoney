@@ -5,7 +5,7 @@ import { LegendPosition } from '@swimlane/ngx-charts';
 
 @Component({
    templateUrl: './chart.component.html',
-   selector: 'mymoney-chart'
+   selector: 'mymoney-chart',
 })
 export class ChartComponent {
    @Input()

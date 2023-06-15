@@ -15,7 +15,7 @@ export class BudgetSelectorComponent implements OnChanges {
 
    public budgets: BudgetViewModel[] | null = null;
 
-   constructor(private readonly budgetService: BudgetService) { }
+   constructor(private readonly budgetService: BudgetService) {}
 
    public ngOnChanges(changes: SimpleChanges): void {
       if (changes['date']) {
@@ -30,7 +30,6 @@ export class BudgetSelectorComponent implements OnChanges {
          const isFirstChange = oldDate === undefined || oldDate === null;
 
          if (valueHasChanged || isFirstChange) {
-
             if (!isFirstChange) {
                this.selectedBudgets.clear();
             }
@@ -53,13 +52,17 @@ export class BudgetSelectorComponent implements OnChanges {
          return '...';
       }
 
-      return `${this.date.toLocaleString('default', { month: 'long' })} ${this.date.getFullYear()}`;
+      return `${this.date.toLocaleString('default', {
+         month: 'long',
+      })} ${this.date.getFullYear()}`;
    }
 
    public updateBudgets(date: Date): void {
       this.budgets = null;
-      this.budgetService.getBudgetsForMonth(date.getMonth() + 1, date.getFullYear()).subscribe(response => {
-         this.budgets = response.budgets.map(t => new BudgetViewModel(t));
-      });
+      this.budgetService
+         .getBudgetsForMonth(date.getMonth() + 1, date.getFullYear())
+         .subscribe((response) => {
+            this.budgets = response.budgets.map((t) => new BudgetViewModel(t));
+         });
    }
 }

@@ -1,7 +1,3 @@
 export default function EditRecurringIncome() {
-  return (
-    <>
-      Edit Recurring Income
-    </>
-  );
+   return <>Edit Recurring Income</>;
 }

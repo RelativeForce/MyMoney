@@ -25,7 +25,11 @@ export class BudgetSeriesDataPoint implements ISeriesDataPoint {
          if (transaction.parentId === null || transaction.id > 0) {
             this.link = ['/transactions', 'edit', transaction.id];
          } else {
-            this.link = ['/transactions', 'edit-recurring', transaction.parentId];
+            this.link = [
+               '/transactions',
+               'edit-recurring',
+               transaction.parentId,
+            ];
          }
       } else {
          this.name = DEFAULT_TEXT;

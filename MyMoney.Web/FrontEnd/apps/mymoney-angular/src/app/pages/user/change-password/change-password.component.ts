@@ -6,21 +6,25 @@ import { CurrentUserService } from '../../../shared/services';
 import { IBasicResultDto } from '@mymoney-common/api';
 
 @Component({
-   templateUrl: 'change-password.component.html'
+   templateUrl: 'change-password.component.html',
 })
 export class ChangePasswordComponent implements OnInit {
    public changePasswordForm: FormGroup;
    public changePasswordFormControls = {
-      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]),
-      confirmPassword: new FormControl('')
-   }
+      password: new FormControl('', [
+         Validators.required,
+         Validators.minLength(8),
+         Validators.maxLength(15),
+      ]),
+      confirmPassword: new FormControl(''),
+   };
    public loading = false;
    public submitted = false;
    public error: string | null = null;
 
    constructor(
       private readonly router: Router,
-      private readonly currentUserService: CurrentUserService,
+      private readonly currentUserService: CurrentUserService
    ) {
       this.changePasswordForm = new FormGroup(this.changePasswordFormControls);
    }
@@ -41,9 +45,11 @@ export class ChangePasswordComponent implements OnInit {
       this.loading = true;
       this.error = null;
 
-      const password: string = this.changePasswordFormControls.password.value ?? '';
+      const password: string =
+         this.changePasswordFormControls.password.value ?? '';
 
-      this.currentUserService.updatePassword(password)
+      this.currentUserService
+         .updatePassword(password)
          .pipe(first())
          .subscribe(
             (result: IBasicResultDto) => {
@@ -58,14 +64,19 @@ export class ChangePasswordComponent implements OnInit {
             () => {
                this.error = 'Unknown error';
                this.loading = false;
-            });
+            }
+         );
    }
 
    private checkPasswords() {
-      const isInvalid = this.changePasswordFormControls.password.value !== this.changePasswordFormControls.confirmPassword.value;
+      const isInvalid =
+         this.changePasswordFormControls.password.value !==
+         this.changePasswordFormControls.confirmPassword.value;
 
       if (isInvalid) {
-         this.changePasswordFormControls.confirmPassword.setErrors({ notSame: true });
+         this.changePasswordFormControls.confirmPassword.setErrors({
+            notSame: true,
+         });
       } else {
          this.changePasswordFormControls.confirmPassword.setErrors(null);
       }
