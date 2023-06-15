@@ -7,7 +7,7 @@ import {
    IBudgetState,
    budgetReducer,
    incomeReducer,
-   IIncomeState
+   IIncomeState,
 } from './reducers/';
 
 export interface IAppState {
@@ -21,5 +21,5 @@ export const appReducer: ActionReducerMap<IAppState | any> = {
    session: sessionReducer,
    transactions: transactionReducer,
    budgets: budgetReducer,
-   incomes: incomeReducer
+   incomes: incomeReducer,
 };

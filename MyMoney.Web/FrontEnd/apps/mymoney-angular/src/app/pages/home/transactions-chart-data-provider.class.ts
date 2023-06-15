@@ -3,7 +3,11 @@ import { Router } from '@angular/router';
 import { BudgetSeries } from '@mymoney-common/classes';
 import { ISeriesItem, ISeries } from '@mymoney-common/interfaces';
 import { BudgetService, TransactionService } from '../../shared/services';
-import { IBudgetModel, IDateRangeModel, ITransactionModel } from '../../shared/state/types';
+import {
+   IBudgetModel,
+   IDateRangeModel,
+   ITransactionModel,
+} from '../../shared/state/types';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { randomColor } from '@mymoney-common/functions';
 
@@ -20,7 +24,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
    constructor(
       private readonly transactionService: TransactionService,
       private readonly budgetService: BudgetService,
-      private readonly router: Router,
+      private readonly router: Router
    ) {
       this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
       this.seriesData = this.seriesDataSubject.asObservable();
@@ -62,7 +66,6 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
    }
 
    private get dateRange(): IDateRangeModel {
-
       const end: Date = new Date();
       end.setDate(1);
       end.setFullYear(this.month.getFullYear());
@@ -80,17 +83,26 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
    }
 
    private loadChartData(): void {
-      this.subChartTitle = `${this.month.toLocaleString('default', { month: 'long' })} ${this.month.getFullYear()}`;
+      this.subChartTitle = `${this.month.toLocaleString('default', {
+         month: 'long',
+      })} ${this.month.getFullYear()}`;
 
       const monthYear = this.monthYear;
       combineLatest([
          this.budgetService.getBudgetsForMonth(monthYear.month, monthYear.year),
-         this.transactionService.getTransactionsInRange(this.dateRange)
-      ]).subscribe(([budgetList, transactionList]) => this.updateChart(budgetList.budgets, transactionList.transactions.reverse()));
+         this.transactionService.getTransactionsInRange(this.dateRange),
+      ]).subscribe(([budgetList, transactionList]) =>
+         this.updateChart(
+            budgetList.budgets,
+            transactionList.transactions.reverse()
+         )
+      );
    }
 
-   private updateChart(budgets: IBudgetModel[], transactions: ITransactionModel[]): void {
-
+   private updateChart(
+      budgets: IBudgetModel[],
+      transactions: ITransactionModel[]
+   ): void {
       const seriesData = [];
 
       for (const budget of budgets) {
@@ -109,8 +121,14 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
    }
 
    private updateColourScheme(budgetCount: number) {
-
-      const colors = ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5'];
+      const colors = [
+         '#5AA454',
+         '#783320',
+         '#DB2E2E',
+         '#7aa3e5',
+         '#a8385d',
+         '#aae3f5',
+      ];
 
       if (budgetCount > colors.length) {
          const colorsToAdd = budgetCount - colors.length;

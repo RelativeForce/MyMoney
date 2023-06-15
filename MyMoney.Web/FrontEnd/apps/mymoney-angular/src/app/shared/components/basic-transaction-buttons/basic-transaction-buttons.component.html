@@ -1,6 +1,19 @@
 <div class="btn-group">
-   <a class="btn btn-primary material-icons" routerLink="./edit/{{transaction.id}}" data-toggle="tooltip" data-placement="bottom"
-      title=" Edit transaction {{transaction.id}}">edit</a>
-   <button class="btn btn-danger material-icons" (click)="onDeleteTransactionClicked()" data-toggle="tooltip" data-placement="bottom"
-      title="Delete transaction {{transaction.id}}">delete</button>
+   <a
+      class="btn btn-primary material-icons"
+      routerLink="./edit/{{ transaction.id }}"
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title=" Edit transaction {{ transaction.id }}"
+      >edit</a
+   >
+   <button
+      class="btn btn-danger material-icons"
+      (click)="onDeleteTransactionClicked()"
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title="Delete transaction {{ transaction.id }}"
+   >
+      delete
+   </button>
 </div>

@@ -1,51 +1,117 @@
-<h2>Edit budget {{id}}</h2>
+<h2>Edit budget {{ id }}</h2>
 <form [formGroup]="editBudgetForm" (ngSubmit)="onSubmit()">
    <div class="form-inline">
       <div class="input-group mb-3 pr-2">
          <div class="input-group-prepend">
             <span class="input-group-text">Year</span>
          </div>
-         <input type="number" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && editBudgetFormControls.year.errors }" />
-         <div *ngIf="submitted && editBudgetFormControls.year.errors" class="invalid-feedback">
-            <div *ngIf="editBudgetFormControls.year.errors['required']">Year is required</div>
-            <div *ngIf="editBudgetFormControls.year.errors['min']">Year cannot be less than 1980</div>
+         <input
+            type="number"
+            formControlName="year"
+            class="form-control"
+            [ngClass]="{
+               'is-invalid': submitted && editBudgetFormControls.year.errors
+            }"
+         />
+         <div
+            *ngIf="submitted && editBudgetFormControls.year.errors"
+            class="invalid-feedback"
+         >
+            <div *ngIf="editBudgetFormControls.year.errors['required']">
+               Year is required
+            </div>
+            <div *ngIf="editBudgetFormControls.year.errors['min']">
+               Year cannot be less than 1980
+            </div>
          </div>
       </div>
       <div class="input-group mb-3">
          <div class="input-group-prepend">
             <span class="input-group-text">Month</span>
          </div>
-         <input type="number" formControlName="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && editBudgetFormControls.month.errors }" />
-         <div *ngIf="submitted && editBudgetFormControls.month.errors" class="invalid-feedback">
-            <div *ngIf="editBudgetFormControls.month.errors['required']">Month is required</div>
-            <div *ngIf="editBudgetFormControls.month.errors['invalidMonth']">Month must be 1 - 12</div>
+         <input
+            type="number"
+            formControlName="month"
+            class="form-control"
+            [ngClass]="{
+               'is-invalid': submitted && editBudgetFormControls.month.errors
+            }"
+         />
+         <div
+            *ngIf="submitted && editBudgetFormControls.month.errors"
+            class="invalid-feedback"
+         >
+            <div *ngIf="editBudgetFormControls.month.errors['required']">
+               Month is required
+            </div>
+            <div *ngIf="editBudgetFormControls.month.errors['invalidMonth']">
+               Month must be 1 - 12
+            </div>
          </div>
       </div>
    </div>
    <div class="form-group">
       <label for="name">Name</label>
-      <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && editBudgetFormControls.name.errors }" />
-      <div *ngIf="submitted && editBudgetFormControls.name.errors" class="invalid-feedback">
-         <div *ngIf="editBudgetFormControls.name.errors['required']">Name is required</div>
+      <input
+         type="text"
+         formControlName="name"
+         class="form-control"
+         [ngClass]="{
+            'is-invalid': submitted && editBudgetFormControls.name.errors
+         }"
+      />
+      <div
+         *ngIf="submitted && editBudgetFormControls.name.errors"
+         class="invalid-feedback"
+      >
+         <div *ngIf="editBudgetFormControls.name.errors['required']">
+            Name is required
+         </div>
       </div>
    </div>
    <div class="form-group">
       <label for="amount">Amount</label>
-      <input type="number" formControlName="amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && editBudgetFormControls.amount.errors }" />
-      <div *ngIf="submitted && editBudgetFormControls.amount.errors" class="invalid-feedback">
-         <div *ngIf="editBudgetFormControls.amount.errors['required']">Amount is required</div>
-         <div *ngIf="editBudgetFormControls.amount.errors['min']">Amount cannot be less than 0.01</div>
+      <input
+         type="number"
+         formControlName="amount"
+         class="form-control"
+         [ngClass]="{
+            'is-invalid': submitted && editBudgetFormControls.amount.errors
+         }"
+      />
+      <div
+         *ngIf="submitted && editBudgetFormControls.amount.errors"
+         class="invalid-feedback"
+      >
+         <div *ngIf="editBudgetFormControls.amount.errors['required']">
+            Amount is required
+         </div>
+         <div *ngIf="editBudgetFormControls.amount.errors['min']">
+            Amount cannot be less than 0.01
+         </div>
       </div>
    </div>
    <div class="form-group">
       <label for="notes">Notes</label>
-      <textarea formControlName="notes" class="form-control" [ngClass]="{ 'is-invalid': submitted && editBudgetFormControls.notes.errors }" rows="3"></textarea>
-      <div *ngIf="submitted && editBudgetFormControls.notes.errors" class="invalid-feedback">
-      </div>
+      <textarea
+         formControlName="notes"
+         class="form-control"
+         [ngClass]="{
+            'is-invalid': submitted && editBudgetFormControls.notes.errors
+         }"
+         rows="3"
+      ></textarea>
+      <div
+         *ngIf="submitted && editBudgetFormControls.notes.errors"
+         class="invalid-feedback"
+      ></div>
    </div>
    <div class="form-group">
       <button [disabled]="loading" class="btn btn-primary">
-         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+         <span
+            *ngIf="loading"
+            class="spinner-border spinner-border-sm mr-1"
+         ></span>
          Save changes
       </button>
       <a routerLink="/budgets" class="btn btn-link">Cancel</a>

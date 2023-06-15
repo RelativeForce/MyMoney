@@ -4,8 +4,7 @@ import { IBasicResultDto, IPasswordDto, IUserDto } from './dtos/dtos.interface';
 import { HttpHelper } from './http-helper.class';
 
 export class UserApi {
-
-   constructor(private readonly api: HttpHelper) { }
+   constructor(private readonly api: HttpHelper) {}
 
    public currentUserDetails(): Observable<IUserDto> {
       return this.api
@@ -13,7 +12,9 @@ export class UserApi {
          .pipe(first());
    }
 
-   public updateCurrentUserDetails(user: IUserDto): Observable<IBasicResultDto> {
+   public updateCurrentUserDetails(
+      user: IUserDto
+   ): Observable<IBasicResultDto> {
       return this.api
          .post<IUserDto, IBasicResultDto>('/User/UpdateSignedInUser', user)
          .pipe(first());

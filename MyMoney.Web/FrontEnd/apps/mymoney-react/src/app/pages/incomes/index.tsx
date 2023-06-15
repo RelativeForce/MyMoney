@@ -1,7 +1,3 @@
 export default function Incomes() {
-  return (
-    <>
-      Incomes
-    </>
-  );
+   return <>Incomes</>;
 }

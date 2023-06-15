@@ -5,7 +5,10 @@ import { IBasicResultDto, IUserDto } from '@mymoney-common/api';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';
 import { ClearSessionAction, SetUserAction } from '../state/actions';
-import { selectCurrentUser, selectSessionState } from '../state/selectors/session.selector';
+import {
+   selectCurrentUser,
+   selectSessionState,
+} from '../state/selectors/session.selector';
 import { IUser } from '../state/types';
 import { Router } from '@angular/router';
 import { UserApi } from '../api';
@@ -13,12 +16,26 @@ import { ISessionState } from '../state/reducers';
 
 @Injectable({ providedIn: 'root' })
 export class CurrentUserService {
-   constructor(private readonly userApi: UserApi, private readonly store: Store<IAppState>, private readonly router: Router) {
-      this.store.select(selectSessionState)
-         .pipe(filter((state: ISessionState) => state.currentUser === null && state.currentSession !== null))
-         .subscribe(() => this.userApi
-            .currentUserDetails()
-            .subscribe((user: IUserDto) => this.store.dispatch(new SetUserAction(user))));
+   constructor(
+      private readonly userApi: UserApi,
+      private readonly store: Store<IAppState>,
+      private readonly router: Router
+   ) {
+      this.store
+         .select(selectSessionState)
+         .pipe(
+            filter(
+               (state: ISessionState) =>
+                  state.currentUser === null && state.currentSession !== null
+            )
+         )
+         .subscribe(() =>
+            this.userApi
+               .currentUserDetails()
+               .subscribe((user: IUserDto) =>
+                  this.store.dispatch(new SetUserAction(user))
+               )
+         );
    }
 
    public currentUser(): Observable<IUser | null> {

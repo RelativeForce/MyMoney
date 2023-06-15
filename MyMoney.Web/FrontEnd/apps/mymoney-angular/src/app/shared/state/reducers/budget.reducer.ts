@@ -4,11 +4,14 @@ import {
    UpdateBudgetAction,
    BudgetActionTypes,
    DeleteBudgetAction,
-   UpdateSearchMonthIdAction
+   UpdateSearchMonthIdAction,
 } from '../actions';
 import { IBudgetModel, IBudgetsSearch } from '../types';
 
-function setBudgets(state: IBudgetState, action: SetBudgetsAction): IBudgetState {
+function setBudgets(
+   state: IBudgetState,
+   action: SetBudgetsAction
+): IBudgetState {
    const budgets: IBudgetModel[] = action.budgets;
 
    return {
@@ -16,8 +19,8 @@ function setBudgets(state: IBudgetState, action: SetBudgetsAction): IBudgetState
       budgets: budgets,
       searchParameters: {
          ...state.searchParameters,
-         refresh: false
-      }
+         refresh: false,
+      },
    };
 }
 
@@ -26,42 +29,51 @@ function refreshBudgets(state: IBudgetState): IBudgetState {
       ...state,
       searchParameters: {
          ...state.searchParameters,
-         refresh: true
-      }
+         refresh: true,
+      },
    };
 }
 
-function updateBudget(state: IBudgetState, action: UpdateBudgetAction): IBudgetState {
+function updateBudget(
+   state: IBudgetState,
+   action: UpdateBudgetAction
+): IBudgetState {
    const budget: IBudgetModel = action.budget;
 
-   const index = state.budgets.findIndex(t => t.id === budget.id);
+   const index = state.budgets.findIndex((t) => t.id === budget.id);
 
-   const budgets = state.budgets.map(t => t);
+   const budgets = state.budgets.map((t) => t);
 
    budgets[index] = budget;
 
    return {
       ...state,
-      budgets
+      budgets,
    };
 }
 
-function deleteBudget(state: IBudgetState, action: DeleteBudgetAction): IBudgetState {
+function deleteBudget(
+   state: IBudgetState,
+   action: DeleteBudgetAction
+): IBudgetState {
    const budgetId: number = action.budgetId;
 
-   const index = state.budgets.findIndex(t => t.id === budgetId);
+   const index = state.budgets.findIndex((t) => t.id === budgetId);
 
-   const budgets = state.budgets.map(t => t);
+   const budgets = state.budgets.map((t) => t);
 
    budgets.splice(index, 1);
 
    return {
       ...state,
-      budgets: budgets
+      budgets: budgets,
    };
 }
 
-function updateSelectedMonth(state: IBudgetState, action: UpdateSearchMonthIdAction): IBudgetState {
+function updateSelectedMonth(
+   state: IBudgetState,
+   action: UpdateSearchMonthIdAction
+): IBudgetState {
    const month: number = action.month;
    const year: number = action.year;
 
@@ -71,8 +83,8 @@ function updateSelectedMonth(state: IBudgetState, action: UpdateSearchMonthIdAct
          ...state.searchParameters,
          month,
          year,
-         refresh: true
-      }
+         refresh: true,
+      },
    };
 }
 
@@ -87,10 +99,13 @@ export const initialBudgetState: IBudgetState = {
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
       refresh: true,
-   }
+   },
 };
 
-export function budgetReducer(state: IBudgetState = initialBudgetState, action: Action): IBudgetState {
+export function budgetReducer(
+   state: IBudgetState = initialBudgetState,
+   action: Action
+): IBudgetState {
    switch (action.type) {
       case BudgetActionTypes.setBudgets:
          return setBudgets(state, action as SetBudgetsAction);

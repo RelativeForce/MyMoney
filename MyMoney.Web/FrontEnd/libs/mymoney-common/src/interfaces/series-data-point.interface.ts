@@ -1,5 +1,4 @@
 export interface ISeriesDataPoint {
-
    /**
     * The name id used by the chart to group data points.
     */

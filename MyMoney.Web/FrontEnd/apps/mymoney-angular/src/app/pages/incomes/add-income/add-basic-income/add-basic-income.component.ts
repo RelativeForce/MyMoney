@@ -8,10 +8,9 @@ import { toDateString } from '@mymoney-common/functions';
 
 @Component({
    selector: 'mymoney-add-basic-income',
-   templateUrl: './add-basic-income.component.html'
+   templateUrl: './add-basic-income.component.html',
 })
 export class AddBasicIncomeComponent {
-
    public addIncomeForm: FormGroup;
    public addIncomeFormControls = {
       date: new FormControl(toDateString(new Date()), [Validators.required]),
@@ -24,7 +23,7 @@ export class AddBasicIncomeComponent {
 
    constructor(
       private readonly router: Router,
-      private readonly incomeService: IncomeService,
+      private readonly incomeService: IncomeService
    ) {
       this.addIncomeForm = new FormGroup(this.addIncomeFormControls);
    }
@@ -52,18 +51,20 @@ export class AddBasicIncomeComponent {
          remaining: amount,
          id: 0,
          parentFrequency: null,
-         parentId: null
+         parentId: null,
       };
 
-      this.incomeService.addIncome(income).subscribe(success => {
-         if (success) {
-            this.router.navigate(['/incomes']);
-         }
-         this.loading = false;
-      },
+      this.incomeService.addIncome(income).subscribe(
+         (success) => {
+            if (success) {
+               this.router.navigate(['/incomes']);
+            }
+            this.loading = false;
+         },
          () => {
             // Show error
             this.loading = false;
-         });
+         }
+      );
    }
 }

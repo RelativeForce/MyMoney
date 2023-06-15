@@ -134,7 +134,7 @@ export enum Frequency {
    month = 2,
    year = 3,
    fortnight = 4,
-   fourWeek = 5
+   fourWeek = 5,
 }
 
 export interface IRecurringTransactionDto {

@@ -15,6 +15,9 @@ export class RunningTotalSeries implements ISeries {
    }
 
    public addEntry(entry: IRunningTotalDto) {
-      this.series[this.series.length] = new RunningTotalSeriesDataPoint(entry, this.initialTotal);
+      this.series[this.series.length] = new RunningTotalSeriesDataPoint(
+         entry,
+         this.initialTotal
+      );
    }
 }

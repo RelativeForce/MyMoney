@@ -6,11 +6,18 @@ import {
    DeleteTransactionAction,
    UpdateDataRangeAction,
    DeleteRecurringTransactionAction,
-   RealiseTransactionAction
+   RealiseTransactionAction,
 } from '../actions';
-import { ITransactionModel, IDateRangeModel, ITransactionsSearch } from '../types';
+import {
+   ITransactionModel,
+   IDateRangeModel,
+   ITransactionsSearch,
+} from '../types';
 
-function setTransactions(state: ITransactionState, action: SetTransactionsAction): ITransactionState {
+function setTransactions(
+   state: ITransactionState,
+   action: SetTransactionsAction
+): ITransactionState {
    const transactions: ITransactionModel[] = action.transactions;
 
    return {
@@ -18,8 +25,8 @@ function setTransactions(state: ITransactionState, action: SetTransactionsAction
       transactions,
       searchParameters: {
          ...state.searchParameters,
-         refresh: false
-      }
+         refresh: false,
+      },
    };
 }
 
@@ -28,60 +35,77 @@ function refreshTransactions(state: ITransactionState): ITransactionState {
       ...state,
       searchParameters: {
          ...state.searchParameters,
-         refresh: true
-      }
+         refresh: true,
+      },
    };
 }
 
-function updateTransaction(state: ITransactionState, action: UpdateTransactionAction): ITransactionState {
+function updateTransaction(
+   state: ITransactionState,
+   action: UpdateTransactionAction
+): ITransactionState {
    const transaction: ITransactionModel = action.transaction;
 
-   const index = state.transactions.findIndex(t => t.id === transaction.id);
+   const index = state.transactions.findIndex((t) => t.id === transaction.id);
 
-   const transactions = state.transactions.map(t => t);
+   const transactions = state.transactions.map((t) => t);
 
    transactions[index] = transaction;
 
    return {
       ...state,
-      transactions
+      transactions,
    };
 }
 
-function realiseTransaction(state: ITransactionState, action: RealiseTransactionAction): ITransactionState {
+function realiseTransaction(
+   state: ITransactionState,
+   action: RealiseTransactionAction
+): ITransactionState {
    const virtualId: number = action.virtualId;
    const realId: number = action.realId;
 
-   const transactions = state.transactions.map(t => ({
+   const transactions = state.transactions.map((t) => ({
       ...t,
-      id: t.id === virtualId ? realId : t.id
+      id: t.id === virtualId ? realId : t.id,
    }));
 
    return {
       ...state,
-      transactions
+      transactions,
    };
 }
 
-function deleteTransaction(state: ITransactionState, action: DeleteTransactionAction): ITransactionState {
+function deleteTransaction(
+   state: ITransactionState,
+   action: DeleteTransactionAction
+): ITransactionState {
    const transactionId: number = action.transactionId;
 
    return {
       ...state,
-      transactions: state.transactions.filter(t => t.id !== transactionId)
+      transactions: state.transactions.filter((t) => t.id !== transactionId),
    };
 }
 
-function deleteRecurringTransaction(state: ITransactionState, action: DeleteRecurringTransactionAction): ITransactionState {
+function deleteRecurringTransaction(
+   state: ITransactionState,
+   action: DeleteRecurringTransactionAction
+): ITransactionState {
    const transactionId: number = action.transactionId;
 
    return {
       ...state,
-      transactions: state.transactions.filter(t => t.parentId !== transactionId)
+      transactions: state.transactions.filter(
+         (t) => t.parentId !== transactionId
+      ),
    };
 }
 
-function updateDataRange(state: ITransactionState, action: UpdateDataRangeAction): ITransactionState {
+function updateDataRange(
+   state: ITransactionState,
+   action: UpdateDataRangeAction
+): ITransactionState {
    const dateRange: IDateRangeModel = action.dateRange;
 
    return {
@@ -89,8 +113,8 @@ function updateDataRange(state: ITransactionState, action: UpdateDataRangeAction
       searchParameters: {
          ...state.searchParameters,
          dateRange,
-         refresh: true
-      }
+         refresh: true,
+      },
    };
 }
 
@@ -113,10 +137,13 @@ export const initialTransactionState: ITransactionState = {
    searchParameters: {
       dateRange: defaultDateRange(),
       refresh: true,
-   }
+   },
 };
 
-export function transactionReducer(state: ITransactionState = initialTransactionState, action: Action): ITransactionState {
+export function transactionReducer(
+   state: ITransactionState = initialTransactionState,
+   action: Action
+): ITransactionState {
    switch (action.type) {
       case TransactionActionTypes.setTransactions:
          return setTransactions(state, action as SetTransactionsAction);
@@ -127,7 +154,10 @@ export function transactionReducer(state: ITransactionState = initialTransaction
       case TransactionActionTypes.deleteTransaction:
          return deleteTransaction(state, action as DeleteTransactionAction);
       case TransactionActionTypes.deleteRecurringTransaction:
-         return deleteRecurringTransaction(state, action as DeleteRecurringTransactionAction);
+         return deleteRecurringTransaction(
+            state,
+            action as DeleteRecurringTransactionAction
+         );
       case TransactionActionTypes.updateDataRange:
          return updateDataRange(state, action as UpdateDataRangeAction);
       case TransactionActionTypes.refreshTransactions:

@@ -10,22 +10,24 @@ import { Store } from '@ngrx/store';
 import { SetUserAction } from '../../../shared/state/actions';
 
 @Component({
-   templateUrl: 'profile.component.html'
+   templateUrl: 'profile.component.html',
 })
 export class ProfileComponent implements OnInit {
    public profileForm: FormGroup;
    public profileFormControls = {
       email: new FormControl('', [Validators.required]),
       fullName: new FormControl('', [Validators.required]),
-      dateOfBirth: new FormControl(toDateString(new Date()), [Validators.required]),
-   }
+      dateOfBirth: new FormControl(toDateString(new Date()), [
+         Validators.required,
+      ]),
+   };
    public loading = false;
    public submitted = false;
    public error: string | null = null;
 
    constructor(
       private readonly currentUserService: CurrentUserService,
-      private readonly store: Store<IAppState>,
+      private readonly store: Store<IAppState>
    ) {
       this.profileForm = new FormGroup(this.profileFormControls);
    }
@@ -33,13 +35,16 @@ export class ProfileComponent implements OnInit {
    public ngOnInit(): void {
       this.disableForm();
 
-      this.currentUserService.currentUser()
+      this.currentUserService
+         .currentUser()
          .pipe(
             filter((currentUser: IUser | null) => currentUser !== null),
-            map((currentUser: IUser | null) => currentUser!),
+            map((currentUser: IUser | null) => currentUser!)
          )
          .subscribe((currentUser: IUser) => {
-            this.profileFormControls.dateOfBirth.patchValue(toInputDateString(currentUser.dateOfBirth));
+            this.profileFormControls.dateOfBirth.patchValue(
+               toInputDateString(currentUser.dateOfBirth)
+            );
             this.profileFormControls.fullName.patchValue(currentUser.fullName);
             this.profileFormControls.email.patchValue(currentUser.email);
 
@@ -59,34 +64,35 @@ export class ProfileComponent implements OnInit {
 
       const email: string = this.profileFormControls.email.value ?? '';
       const fullName: string = this.profileFormControls.fullName.value ?? '';
-      const dateOfBirth: string = this.profileFormControls.dateOfBirth.value ?? '';
+      const dateOfBirth: string =
+         this.profileFormControls.dateOfBirth.value ?? '';
 
       const newData: IUserDto = {
          email,
          fullName,
-         dateOfBirth
+         dateOfBirth,
       };
 
-      this.currentUserService.updateCurrentUser(newData)
-         .subscribe(
-            (result: IBasicResultDto) => {
+      this.currentUserService.updateCurrentUser(newData).subscribe(
+         (result: IBasicResultDto) => {
+            this.loading = false;
 
-               this.loading = false;
+            if (result.success) {
+               // Fix date to match what is expected from the server
+               newData.dateOfBirth = new Date(dateOfBirth).toLocaleDateString(
+                  'en-GB'
+               );
 
-               if (result.success) {
-
-                  // Fix date to match what is expected from the server
-                  newData.dateOfBirth = new Date(dateOfBirth).toLocaleDateString('en-GB');
-
-                  this.store.dispatch(new SetUserAction(newData));
-               } else {
-                  this.error = result.error;
-               }
-            },
-            error => {
-               this.error = 'Unknown error';
-               this.loading = false;
-            });
+               this.store.dispatch(new SetUserAction(newData));
+            } else {
+               this.error = result.error;
+            }
+         },
+         (error) => {
+            this.error = 'Unknown error';
+            this.loading = false;
+         }
+      );
    }
 
    private disableForm() {

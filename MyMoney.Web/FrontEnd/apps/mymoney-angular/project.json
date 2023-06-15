@@ -1,98 +1,96 @@
 {
-  "name": "mymoney-angular",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "projectType": "application",
-  "prefix": "mymoney",
-  "sourceRoot": "apps/mymoney-angular/src",
-  "tags": [],
-  "targets": {
-    "build": {
-      "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/apps/mymoney-angular",
-        "index": "apps/mymoney-angular/src/index.html",
-        "main": "apps/mymoney-angular/src/main.ts",
-        "polyfills": ["zone.js"],
-        "tsConfig": "apps/mymoney-angular/tsconfig.app.json",
-        "assets": [
-          "apps/mymoney-angular/src/assets"
-        ],
-        "styles": [
-          "node_modules/bootstrap/dist/css/bootstrap.css",
-          "apps/mymoney-angular/src/styles.scss"
-        ],
-        "scripts": [
-          "node_modules/jquery/dist/jquery.js",
-          "node_modules/bootstrap/dist/js/bootstrap.js"
-        ]
-      },
-      "configurations": {
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/mymoney-angular/src/environments/environment.ts",
-              "with": "apps/mymoney-angular/src/environments/environment.prod.ts"
-            }
-          ],
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+   "name": "mymoney-angular",
+   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+   "projectType": "application",
+   "prefix": "mymoney",
+   "sourceRoot": "apps/mymoney-angular/src",
+   "tags": [],
+   "targets": {
+      "build": {
+         "executor": "@angular-devkit/build-angular:browser",
+         "outputs": ["{options.outputPath}"],
+         "options": {
+            "outputPath": "dist/apps/mymoney-angular",
+            "index": "apps/mymoney-angular/src/index.html",
+            "main": "apps/mymoney-angular/src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "apps/mymoney-angular/tsconfig.app.json",
+            "assets": ["apps/mymoney-angular/src/assets"],
+            "styles": [
+               "node_modules/bootstrap/dist/css/bootstrap.css",
+               "apps/mymoney-angular/src/styles.scss"
+            ],
+            "scripts": [
+               "node_modules/jquery/dist/jquery.js",
+               "node_modules/bootstrap/dist/js/bootstrap.js"
+            ]
+         },
+         "configurations": {
+            "production": {
+               "fileReplacements": [
+                  {
+                     "replace": "apps/mymoney-angular/src/environments/environment.ts",
+                     "with": "apps/mymoney-angular/src/environments/environment.prod.ts"
+                  }
+               ],
+               "budgets": [
+                  {
+                     "type": "initial",
+                     "maximumWarning": "500kb",
+                     "maximumError": "1mb"
+                  },
+                  {
+                     "type": "anyComponentStyle",
+                     "maximumWarning": "2kb",
+                     "maximumError": "4kb"
+                  }
+               ],
+               "outputHashing": "all"
             },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
+            "development": {
+               "buildOptimizer": false,
+               "optimization": false,
+               "vendorChunk": true,
+               "extractLicenses": false,
+               "sourceMap": true,
+               "namedChunks": true
             }
-          ],
-          "outputHashing": "all"
-        },
-        "development": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true
-        }
+         },
+         "defaultConfiguration": "production"
       },
-      "defaultConfiguration": "production"
-    },
-    "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
-      "configurations": {
-        "production": {
-          "browserTarget": "mymoney-angular:build:production"
-        },
-        "development": {
-          "browserTarget": "mymoney-angular:build:development"
-        }
+      "serve": {
+         "executor": "@angular-devkit/build-angular:dev-server",
+         "configurations": {
+            "production": {
+               "browserTarget": "mymoney-angular:build:production"
+            },
+            "development": {
+               "browserTarget": "mymoney-angular:build:development"
+            }
+         },
+         "defaultConfiguration": "development"
       },
-      "defaultConfiguration": "development"
-    },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
-      "options": {
-        "browserTarget": "mymoney-angular:build"
+      "extract-i18n": {
+         "executor": "@angular-devkit/build-angular:extract-i18n",
+         "options": {
+            "browserTarget": "mymoney-angular:build"
+         }
+      },
+      "lint": {
+         "executor": "@nx/linter:eslint",
+         "outputs": ["{options.outputFile}"],
+         "options": {
+            "lintFilePatterns": [
+               "apps/mymoney-angular/**/*.ts",
+               "apps/mymoney-angular/**/*.html"
+            ]
+         }
+      },
+      "serve-static": {
+         "executor": "@nx/web:file-server",
+         "options": {
+            "buildTarget": "mymoney-angular:build"
+         }
       }
-    },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "apps/mymoney-angular/**/*.ts",
-          "apps/mymoney-angular/**/*.html"
-        ]
-      }
-    },
-    "serve-static": {
-      "executor": "@nx/web:file-server",
-      "options": {
-        "buildTarget": "mymoney-angular:build"
-      }
-    }
-  }
+   }
 }

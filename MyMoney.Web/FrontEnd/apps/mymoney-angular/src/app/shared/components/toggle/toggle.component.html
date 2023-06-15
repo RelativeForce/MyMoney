@@ -1,8 +1,16 @@
 <div class="toggle-container">
-   <span *ngIf="value" (click)="onChecked(!value)" class="material-icons toggle toggle-on">
+   <span
+      *ngIf="value"
+      (click)="onChecked(!value)"
+      class="material-icons toggle toggle-on"
+   >
       toggle_on
    </span>
-   <span *ngIf="!value" (click)="onChecked(!value)" class="material-icons toggle">
+   <span
+      *ngIf="!value"
+      (click)="onChecked(!value)"
+      class="material-icons toggle"
+   >
       toggle_off
    </span>
    <span>{{ text }}</span>

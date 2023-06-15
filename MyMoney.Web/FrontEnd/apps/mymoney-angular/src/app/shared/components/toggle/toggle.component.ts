@@ -3,10 +3,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
    templateUrl: './toggle.component.html',
    styleUrls: ['./toggle.component.scss'],
-   selector: 'mymoney-toggle'
+   selector: 'mymoney-toggle',
 })
 export class ToggleComponent {
-
    @Input()
    public value: boolean;
 

@@ -1,66 +1,66 @@
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+   color: #fff;
+   background-color: #1b6ec2;
+   border-color: #1861ac;
 }
 
 .btn.material-icons {
-  padding: 5px;
+   padding: 5px;
 }
 
 .icon-dropdown-item {
-  display: flex;
-  flex-direction: row;
-  justify-self: start;
+   display: flex;
+   flex-direction: row;
+   justify-self: start;
 }
 
 .icon-dropdown-item > span {
-  padding-right: 8px;
+   padding-right: 8px;
 }
 
 .material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px; /* Preferred icon size */
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
-  /* Support for Firefox. */
-  -moz-osx-font-smoothing: grayscale;
-  /* Support for IE. */
-  font-feature-settings: 'liga';
+   font-family: 'Material Icons';
+   font-weight: normal;
+   font-style: normal;
+   font-size: 24px; /* Preferred icon size */
+   display: inline-block;
+   line-height: 1;
+   text-transform: none;
+   letter-spacing: normal;
+   word-wrap: normal;
+   white-space: nowrap;
+   direction: ltr;
+   /* Support for all WebKit browsers. */
+   -webkit-font-smoothing: antialiased;
+   /* Support for Safari and Chrome. */
+   text-rendering: optimizeLegibility;
+   /* Support for Firefox. */
+   -moz-osx-font-smoothing: grayscale;
+   /* Support for IE. */
+   font-feature-settings: 'liga';
 }
 
 .sticky-bottom {
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  bottom: 0;
+   position: -webkit-sticky; /* Safari */
+   position: sticky;
+   bottom: 0;
 }
 
 .sticky-top {
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 0;
+   position: -webkit-sticky; /* Safari */
+   position: sticky;
+   top: 0;
 }
 
 .center-text {
-  text-align: center;
+   text-align: center;
 }
 
 .spinner-border {
-  margin: 4px;
+   margin: 4px;
 }
 
 .inline {
-  display: flex;
-  flex-wrap: wrap;
+   display: flex;
+   flex-wrap: wrap;
 }

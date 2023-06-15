@@ -1,13 +1,19 @@
-import { toDateString } from "@mymoney-common/functions";
+import { toDateString } from '@mymoney-common/functions';
 
 export abstract class BaseHeading<T> {
-   constructor(public property: T) { }
+   constructor(public property: T) {}
 
-   public static formatWithType(type: 'text' | 'date' | 'number', input: string): any | null {
+   public static formatWithType(
+      type: 'text' | 'date' | 'number',
+      input: string
+   ): any | null {
       switch (type) {
-         case 'number': return BaseHeading.formatAmount(input);
-         case 'date': return BaseHeading.formatDate(input);
-         default: return input;
+         case 'number':
+            return BaseHeading.formatAmount(input);
+         case 'date':
+            return BaseHeading.formatDate(input);
+         default:
+            return input;
       }
    }
 
@@ -17,7 +23,9 @@ export abstract class BaseHeading<T> {
          return null;
       }
 
-      const result = /-?[0-9]+(\.[0-9]+)?/g.exec(input) as RegExpExecArray | null;
+      const result = /-?[0-9]+(\.[0-9]+)?/g.exec(
+         input
+      ) as RegExpExecArray | null;
       if (result === null) {
          return null;
       }
@@ -38,7 +46,10 @@ export abstract class BaseHeading<T> {
    }
 
    public format(input: string): any | null {
-      return BaseHeading.formatWithType(this.propertyToType(this.property), input);
+      return BaseHeading.formatWithType(
+         this.propertyToType(this.property),
+         input
+      );
    }
 
    public abstract get isIgnored(): boolean;

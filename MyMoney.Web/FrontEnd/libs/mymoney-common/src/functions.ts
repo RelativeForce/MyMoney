@@ -24,21 +24,30 @@ export function toInputDateString(text: string): string {
 }
 
 export function randomColor(): string {
-   return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+   return (
+      '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)
+   );
 }
 
-export function toDateString(date: Date) : string {
+export function toDateString(date: Date): string {
    return date.toISOString().split('T')[0];
 }
 
 export function toFrequencyString(frequency: Frequency | null): string {
    switch (frequency) {
-      case Frequency.day: return 'Daily';
-      case Frequency.week: return 'Weekly';
-      case Frequency.fortnight: return 'Fortnightly';
-      case Frequency.fourWeek: return 'Four weekly';
-      case Frequency.month: return 'Monthly';
-      case Frequency.year: return 'Annually';
-      default: return 'Daily';
+      case Frequency.day:
+         return 'Daily';
+      case Frequency.week:
+         return 'Weekly';
+      case Frequency.fortnight:
+         return 'Fortnightly';
+      case Frequency.fourWeek:
+         return 'Four weekly';
+      case Frequency.month:
+         return 'Monthly';
+      case Frequency.year:
+         return 'Annually';
+      default:
+         return 'Daily';
    }
 }

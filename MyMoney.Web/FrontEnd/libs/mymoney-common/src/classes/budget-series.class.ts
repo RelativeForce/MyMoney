@@ -20,6 +20,9 @@ export class BudgetSeries implements ISeries {
       if (transaction.budgetIds.includes(this.id)) {
          this.remaining -= transaction.amount;
       }
-      this.series[this.series.length] = new BudgetSeriesDataPoint(transaction, this.remaining);
+      this.series[this.series.length] = new BudgetSeriesDataPoint(
+         transaction,
+         this.remaining
+      );
    }
 }

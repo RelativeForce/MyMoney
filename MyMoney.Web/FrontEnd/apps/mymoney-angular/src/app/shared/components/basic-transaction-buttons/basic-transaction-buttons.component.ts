@@ -3,10 +3,9 @@ import { TransactionViewModel } from '@mymoney-common/classes';
 
 @Component({
    templateUrl: './basic-transaction-buttons.component.html',
-   selector: 'mymoney-basic-transaction-buttons'
+   selector: 'mymoney-basic-transaction-buttons',
 })
 export class BasicTransactionButtonsComponent {
-
    @Input()
    public transaction!: TransactionViewModel;
 

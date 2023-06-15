@@ -4,16 +4,18 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IncomeService } from '../../../../shared/services';
 import { BudgetViewModel } from '@mymoney-common/classes';
 import { IIncomeModel } from '../../../../shared/state/types';
-import { toFrequencyString, toInputDateString } from '@mymoney-common/functions';
+import {
+   toFrequencyString,
+   toInputDateString,
+} from '@mymoney-common/functions';
 import { Frequency } from '@mymoney-common/api';
 import { minAmountValidator } from '../../../../shared/common-validators';
 
 @Component({
    templateUrl: './edit-basic-income.component.html',
-   styleUrls: ['./edit-basic-income.component.scss']
+   styleUrls: ['./edit-basic-income.component.scss'],
 })
 export class EditBasicIncomeComponent implements OnInit {
-
    public editIncomeForm: FormGroup;
    public editIncomeFormControls = {
       date: new FormControl('', [Validators.required]),
@@ -39,8 +41,7 @@ export class EditBasicIncomeComponent implements OnInit {
    }
 
    public ngOnInit(): void {
-
-      this.activatedRoute.params.subscribe(params => {
+      this.activatedRoute.params.subscribe((params) => {
          const idStr = params['id'];
 
          if (!idStr) {
@@ -51,11 +52,11 @@ export class EditBasicIncomeComponent implements OnInit {
 
          this.disableForm();
 
-         this.incomeService
-            .findIncome(this.id)
-            .subscribe((response: IIncomeModel) => {
-
-               this.editIncomeFormControls.date.patchValue(toInputDateString(response.date));
+         this.incomeService.findIncome(this.id).subscribe(
+            (response: IIncomeModel) => {
+               this.editIncomeFormControls.date.patchValue(
+                  toInputDateString(response.date)
+               );
                this.editIncomeFormControls.name.patchValue(response.name);
                this.editIncomeFormControls.amount.patchValue(response.amount);
                this.editIncomeFormControls.notes.patchValue(response.notes);
@@ -65,9 +66,10 @@ export class EditBasicIncomeComponent implements OnInit {
                this.loadingIncome = false;
                this.enableForm(response.parentId !== null);
             },
-               () => {
-                  this.router.navigate(['/incomes']);
-               });
+            () => {
+               this.router.navigate(['/incomes']);
+            }
+         );
       });
    }
 
@@ -89,18 +91,18 @@ export class EditBasicIncomeComponent implements OnInit {
 
       this.loading = true;
 
-      this.incomeService
-         .editIncome(this.asIncomeModel)
-         .subscribe(success => {
+      this.incomeService.editIncome(this.asIncomeModel).subscribe(
+         (success) => {
             this.loading = false;
             if (success) {
                this.router.navigate(['/incomes']);
             }
          },
-            () => {
-               // Show error
-               this.loading = false;
-            });
+         () => {
+            // Show error
+            this.loading = false;
+         }
+      );
    }
 
    private disableForm() {
@@ -121,7 +123,6 @@ export class EditBasicIncomeComponent implements OnInit {
    }
 
    private get asIncomeModel(): IIncomeModel {
-
       const date = new Date(this.editIncomeFormControls.date.value ?? '');
 
       const dateString: string = date.toLocaleDateString();

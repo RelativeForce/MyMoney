@@ -9,13 +9,12 @@ import {
    IDateRangeDto,
    IIncomeSearchDto,
    IRecurringEntityChildDto,
-   IRecurringIncomeDto
+   IRecurringIncomeDto,
 } from './dtos';
 import { HttpHelper } from './http-helper.class';
 
 export class IncomeApi {
-
-   constructor(private readonly api: HttpHelper) { }
+   constructor(private readonly api: HttpHelper) {}
 
    public list(request: IDateRangeDto): Observable<IIncomeListDto> {
       return this.api
@@ -59,9 +58,14 @@ export class IncomeApi {
          .pipe(first());
    }
 
-   public addRecurring(income: IRecurringIncomeDto): Observable<IRecurringIncomeDto> {
+   public addRecurring(
+      income: IRecurringIncomeDto
+   ): Observable<IRecurringIncomeDto> {
       return this.api
-         .post<IRecurringIncomeDto, IRecurringIncomeDto>('/Income/AddRecurring', income)
+         .post<IRecurringIncomeDto, IRecurringIncomeDto>(
+            '/Income/AddRecurring',
+            income
+         )
          .pipe(first());
    }
 
@@ -71,9 +75,14 @@ export class IncomeApi {
          .pipe(first());
    }
 
-   public updateRecurring(income: IRecurringIncomeDto): Observable<IUpdateResultDto> {
+   public updateRecurring(
+      income: IRecurringIncomeDto
+   ): Observable<IUpdateResultDto> {
       return this.api
-         .post<IRecurringIncomeDto, IUpdateResultDto>('/Income/UpdateRecurring', income)
+         .post<IRecurringIncomeDto, IUpdateResultDto>(
+            '/Income/UpdateRecurring',
+            income
+         )
          .pipe(first());
    }
 

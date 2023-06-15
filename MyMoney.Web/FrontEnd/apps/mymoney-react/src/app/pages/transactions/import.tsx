@@ -1,7 +1,3 @@
 export default function ImportTransactions() {
-  return (
-    <>
-      Import Transactions
-    </>
-  );
+   return <>Import Transactions</>;
 }

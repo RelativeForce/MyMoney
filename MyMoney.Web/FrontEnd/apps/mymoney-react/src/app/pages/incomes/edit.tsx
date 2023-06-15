@@ -1,7 +1,3 @@
 export default function EditIncome() {
-  return (
-    <>
-      Edit Income
-    </>
-  );
+   return <>Edit Income</>;
 }

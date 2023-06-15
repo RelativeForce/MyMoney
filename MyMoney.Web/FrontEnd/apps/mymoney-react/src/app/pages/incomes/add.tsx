@@ -1,7 +1,3 @@
 export default function AddIncome() {
-  return (
-    <>
-      Add Income
-    </>
-  );
+   return <>Add Income</>;
 }

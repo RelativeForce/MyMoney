@@ -15,37 +15,40 @@ export enum TransactionActionTypes {
 export class SetTransactionsAction implements Action {
    public type: string = TransactionActionTypes.setTransactions;
 
-   constructor(public readonly transactions: ITransactionModel[]) { }
+   constructor(public readonly transactions: ITransactionModel[]) {}
 }
 
 export class UpdateTransactionAction implements Action {
    public type: string = TransactionActionTypes.updateTransaction;
 
-   constructor(public readonly transaction: ITransactionModel) { }
+   constructor(public readonly transaction: ITransactionModel) {}
 }
 
 export class DeleteTransactionAction implements Action {
    public type: string = TransactionActionTypes.deleteTransaction;
 
-   constructor(public readonly transactionId: number) { }
+   constructor(public readonly transactionId: number) {}
 }
 
 export class DeleteRecurringTransactionAction implements Action {
    public type: string = TransactionActionTypes.deleteRecurringTransaction;
 
-   constructor(public readonly transactionId: number) { }
+   constructor(public readonly transactionId: number) {}
 }
 
 export class RealiseTransactionAction implements Action {
    public type: string = TransactionActionTypes.realiseTransaction;
 
-   constructor(public readonly virtualId: number, public readonly realId: number) { }
+   constructor(
+      public readonly virtualId: number,
+      public readonly realId: number
+   ) {}
 }
 
 export class UpdateDataRangeAction implements Action {
    public type: string = TransactionActionTypes.updateDataRange;
 
-   constructor(public readonly dateRange: IDateRangeModel) { }
+   constructor(public readonly dateRange: IDateRangeModel) {}
 }
 
 export class RefreshTransactionsAction implements Action {

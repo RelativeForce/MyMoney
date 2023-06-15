@@ -1,26 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRouteSnapshot, Router, RoutesRecognized } from '@angular/router';
+import {
+   ActivatedRouteSnapshot,
+   Router,
+   RoutesRecognized,
+} from '@angular/router';
 import { CurrentUserService } from './shared/services';
 import { IUser } from './shared/state/types';
 
 @Component({
-  selector: 'mymoney-root',
-  templateUrl: 'app.component.html',
+   selector: 'mymoney-root',
+   templateUrl: 'app.component.html',
 })
 export class AppComponent implements OnInit {
-
    public user: IUser | null;
 
    constructor(
       private readonly currentUserService: CurrentUserService,
       private readonly titleService: Title,
-      private readonly router: Router) {
+      private readonly router: Router
+   ) {
       this.user = null;
    }
 
    public ngOnInit(): void {
-      this.currentUserService.currentUser().subscribe((user) => this.user = user);
+      this.currentUserService
+         .currentUser()
+         .subscribe((user) => (this.user = user));
 
       this.router.events.subscribe((data) => {
          if (data instanceof RoutesRecognized) {
@@ -39,7 +45,6 @@ export class AppComponent implements OnInit {
    }
 
    private getTitle(route: ActivatedRouteSnapshot): string | null {
-
       const title: string | null = route.title ?? null;
 
       for (const childRoute of route.children) {

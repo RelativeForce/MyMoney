@@ -1,14 +1,20 @@
 import { ITransactionDto } from '@mymoney-common/api';
 import { TransactionService } from '../../../shared/services';
 import { TransactionProperty } from './transaction-property.enum';
-import { BaseHeading, Row, IImportDataProvider } from '../../../shared/components/import-file';
+import {
+   BaseHeading,
+   Row,
+   IImportDataProvider,
+} from '../../../shared/components/import-file';
 import { TransactionHeading } from './transaction-heading.class';
 
-const DUPLICATE_TRANSACTION_ERROR = 'Duplicate transaction: Two transactions with the same description cannot exist on the same day';
+const DUPLICATE_TRANSACTION_ERROR =
+   'Duplicate transaction: Two transactions with the same description cannot exist on the same day';
 const FAILED_IMPORT_ERROR = 'Failed to import transaction';
 
-export class TransactionImportDataProvider implements IImportDataProvider<TransactionProperty> {
-
+export class TransactionImportDataProvider
+   implements IImportDataProvider<TransactionProperty>
+{
    public fields: TransactionProperty[];
    public homeLink: string;
 
@@ -26,42 +32,84 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
    }
 
    public markAsDuplicate(rows: Row[]): void {
-      rows.forEach(row => row.error = DUPLICATE_TRANSACTION_ERROR);
+      rows.forEach((row) => (row.error = DUPLICATE_TRANSACTION_ERROR));
    }
 
    public markAsUnique(rows: Row[]): void {
-      rows.filter(row => row.error === DUPLICATE_TRANSACTION_ERROR).forEach(row => row.error = null);
+      rows
+         .filter((row) => row.error === DUPLICATE_TRANSACTION_ERROR)
+         .forEach((row) => (row.error = null));
    }
 
    public newHeading(): BaseHeading<TransactionProperty> {
       return new TransactionHeading(TransactionProperty.description);
    }
 
-   public setupKeyExtractor(headings: BaseHeading<TransactionProperty>[]): ((row: Row) => string) {
-      const dateIndex = headings.findIndex(h => h.property === TransactionProperty.date);
-      const descriptionIndex = headings.findIndex(h => h.property === TransactionProperty.description);
+   public setupKeyExtractor(
+      headings: BaseHeading<TransactionProperty>[]
+   ): (row: Row) => string {
+      const dateIndex = headings.findIndex(
+         (h) => h.property === TransactionProperty.date
+      );
+      const descriptionIndex = headings.findIndex(
+         (h) => h.property === TransactionProperty.description
+      );
 
       return (row: Row): string => {
-         const date = TransactionHeading.formatWithTransactionProperty(TransactionProperty.date, row.data[dateIndex]);
-         const description = TransactionHeading.formatWithTransactionProperty(TransactionProperty.description, row.data[descriptionIndex]);
+         const date = TransactionHeading.formatWithTransactionProperty(
+            TransactionProperty.date,
+            row.data[dateIndex]
+         );
+         const description = TransactionHeading.formatWithTransactionProperty(
+            TransactionProperty.description,
+            row.data[descriptionIndex]
+         );
 
          return `${date}${description}`;
       };
    }
 
-   public submit(rows: Row[], headings: BaseHeading<TransactionProperty>[], onComplete: () => void): void {
-      const dateIndex = headings.findIndex(h => h.property === TransactionProperty.date);
-      const descriptionIndex = headings.findIndex(h => h.property === TransactionProperty.description);
-      const amountIndex = headings.findIndex(h => h.property === TransactionProperty.amount);
-      const notesIndex = headings.findIndex(h => h.property === TransactionProperty.notes);
+   public submit(
+      rows: Row[],
+      headings: BaseHeading<TransactionProperty>[],
+      onComplete: () => void
+   ): void {
+      const dateIndex = headings.findIndex(
+         (h) => h.property === TransactionProperty.date
+      );
+      const descriptionIndex = headings.findIndex(
+         (h) => h.property === TransactionProperty.description
+      );
+      const amountIndex = headings.findIndex(
+         (h) => h.property === TransactionProperty.amount
+      );
+      const notesIndex = headings.findIndex(
+         (h) => h.property === TransactionProperty.notes
+      );
 
-      function toTransaction(row: Row): { transaction: ITransactionDto; row: Row } | null {
-
-         const date: string | null = TransactionHeading.formatWithTransactionProperty(TransactionProperty.date, row.data[dateIndex]);
-         const amount: number | null = TransactionHeading.formatWithTransactionProperty(TransactionProperty.amount, row.data[amountIndex]);
-         const description: string | null = TransactionHeading.formatWithTransactionProperty(
-            TransactionProperty.description, row.data[descriptionIndex]);
-         const notes: string | null = TransactionHeading.formatWithTransactionProperty(TransactionProperty.notes, row.data[notesIndex]);
+      function toTransaction(
+         row: Row
+      ): { transaction: ITransactionDto; row: Row } | null {
+         const date: string | null =
+            TransactionHeading.formatWithTransactionProperty(
+               TransactionProperty.date,
+               row.data[dateIndex]
+            );
+         const amount: number | null =
+            TransactionHeading.formatWithTransactionProperty(
+               TransactionProperty.amount,
+               row.data[amountIndex]
+            );
+         const description: string | null =
+            TransactionHeading.formatWithTransactionProperty(
+               TransactionProperty.description,
+               row.data[descriptionIndex]
+            );
+         const notes: string | null =
+            TransactionHeading.formatWithTransactionProperty(
+               TransactionProperty.notes,
+               row.data[notesIndex]
+            );
 
          if (date === null || amount === null || description === null) {
             return null;
@@ -79,34 +127,51 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
                parentId: null,
                parentFrequency: null,
             },
-            row: row
+            row: row,
          };
       }
 
-      const transactionRows = rows.map(toTransaction).filter(t => t !== null).map(t => t!);
+      const transactionRows = rows
+         .map(toTransaction)
+         .filter((t) => t !== null)
+         .map((t) => t!);
 
       for (const transactionRow of transactionRows) {
-         this.transactionService.addTransaction(transactionRow.transaction).subscribe((success: boolean) => {
-            this.setCreated(transactionRow.row, success);
-            if (this.isComplete(transactionRows)) {
-               onComplete();
-            }
-         }, () => {
-            // Error
-            this.setCreated(transactionRow.row, false);
-            if (this.isComplete(transactionRows)) {
-               onComplete();
-            }
-         });
+         this.transactionService
+            .addTransaction(transactionRow.transaction)
+            .subscribe(
+               (success: boolean) => {
+                  this.setCreated(transactionRow.row, success);
+                  if (this.isComplete(transactionRows)) {
+                     onComplete();
+                  }
+               },
+               () => {
+                  // Error
+                  this.setCreated(transactionRow.row, false);
+                  if (this.isComplete(transactionRows)) {
+                     onComplete();
+                  }
+               }
+            );
       }
    }
 
-   public columnErrorMessage(headings: BaseHeading<TransactionProperty>[]): string | null {
-
-      const amountFieldCount = headings.filter(h => h.property === TransactionProperty.amount).length;
-      const dateFieldCount = headings.filter(h => h.property === TransactionProperty.date).length;
-      const descriptionFieldCount = headings.filter(h => h.property === TransactionProperty.description).length;
-      const notesFieldCount = headings.filter(h => h.property === TransactionProperty.notes).length;
+   public columnErrorMessage(
+      headings: BaseHeading<TransactionProperty>[]
+   ): string | null {
+      const amountFieldCount = headings.filter(
+         (h) => h.property === TransactionProperty.amount
+      ).length;
+      const dateFieldCount = headings.filter(
+         (h) => h.property === TransactionProperty.date
+      ).length;
+      const descriptionFieldCount = headings.filter(
+         (h) => h.property === TransactionProperty.description
+      ).length;
+      const notesFieldCount = headings.filter(
+         (h) => h.property === TransactionProperty.notes
+      ).length;
 
       if (amountFieldCount === 0) {
          return this.missingFieldErrorMessage(TransactionProperty.amount);
@@ -139,17 +204,21 @@ export class TransactionImportDataProvider implements IImportDataProvider<Transa
       return null;
    }
 
-   private isComplete(transactionRows: { transaction: ITransactionDto; row: Row }[]): boolean {
-      const remainingCount = transactionRows.filter(tr => tr.row.success === null).length;
+   private isComplete(
+      transactionRows: { transaction: ITransactionDto; row: Row }[]
+   ): boolean {
+      const remainingCount = transactionRows.filter(
+         (tr) => tr.row.success === null
+      ).length;
       return remainingCount === 0;
    }
 
    private missingFieldErrorMessage(field: TransactionProperty): string {
-      return (`Error:\n'${field}' field is missing, set 1 column as '${field}'`);
+      return `Error:\n'${field}' field is missing, set 1 column as '${field}'`;
    }
 
    private multipleFieldErrorMessage(field: TransactionProperty): string {
-      return (`Error:\nError: Multiple '${field}' fields present, please pick one`);
+      return `Error:\nError: Multiple '${field}' fields present, please pick one`;
    }
 
    private setCreated(row: Row, success: boolean): void {

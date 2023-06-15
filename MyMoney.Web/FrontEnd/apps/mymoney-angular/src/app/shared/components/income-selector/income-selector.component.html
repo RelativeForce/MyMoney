@@ -3,7 +3,11 @@
    <span class="spinner-border spinner-border-sm mr-1"></span>
    Loading...
 </div>
-<div *ngIf="incomes !== null && incomes.length === 0" class="alert alert-warning" role="alert">
+<div
+   *ngIf="incomes !== null && incomes.length === 0"
+   class="alert alert-warning"
+   role="alert"
+>
    No incomes as of the date selected
 </div>
 <table *ngIf="incomes !== null && incomes.length !== 0" class="table">
@@ -18,14 +22,23 @@
    <tbody>
       <tr *ngFor="let income of incomes; let i = index">
          <td>
-            <span *ngIf="realisingChild === income.id" class="spinner-border spinner-border-sm"></span>
-            <mymoney-check-box *ngIf="realisingChild !== income.id" [isChecked]="selectedIncomes.has(income.id)"
-               (change)="onIncomeCheckboxChange($event, income)" [disabled]="realisingChild !== null">
+            <span
+               *ngIf="realisingChild === income.id"
+               class="spinner-border spinner-border-sm"
+            ></span>
+            <mymoney-check-box
+               *ngIf="realisingChild !== income.id"
+               [isChecked]="selectedIncomes.has(income.id)"
+               (change)="onIncomeCheckboxChange($event, income)"
+               [disabled]="realisingChild !== null"
+            >
             </mymoney-check-box>
          </td>
-         <td>{{income.date}}</td>
-         <td>{{income.name}}</td>
-         <td [ngClass]="{ 'text-danger': income.showWarning }">{{income.remaining}}</td>
+         <td>{{ income.date }}</td>
+         <td>{{ income.name }}</td>
+         <td [ngClass]="{ 'text-danger': income.showWarning }">
+            {{ income.remaining }}
+         </td>
       </tr>
    </tbody>
 </table>

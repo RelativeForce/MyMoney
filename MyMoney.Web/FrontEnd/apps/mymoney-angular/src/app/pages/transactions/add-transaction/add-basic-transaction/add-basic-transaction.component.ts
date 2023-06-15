@@ -16,7 +16,7 @@ export class AddBasicTransactionComponent {
       date: new FormControl(toDateString(new Date()), [Validators.required]),
       description: new FormControl('', [Validators.required]),
       amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
-      notes: new FormControl('')
+      notes: new FormControl(''),
    };
    public loading = false;
    public submitted = false;
@@ -26,7 +26,7 @@ export class AddBasicTransactionComponent {
 
    constructor(
       private readonly router: Router,
-      private readonly transactionService: TransactionService,
+      private readonly transactionService: TransactionService
    ) {
       this.addTransactionForm = new FormGroup(this.addTransactionFormControls);
    }
@@ -45,8 +45,9 @@ export class AddBasicTransactionComponent {
 
       this.loading = true;
 
-      const date = this.addTransactionFormControls.date.value  ?? '';
-      const description = this.addTransactionFormControls.description.value ?? '';
+      const date = this.addTransactionFormControls.date.value ?? '';
+      const description =
+         this.addTransactionFormControls.description.value ?? '';
       const amount = this.addTransactionFormControls.amount.value ?? 0;
       const notes = this.addTransactionFormControls.notes.value ?? '';
 
@@ -59,18 +60,20 @@ export class AddBasicTransactionComponent {
          parentFrequency: null,
          budgetIds: Array.from(this.selectedBudgets),
          incomeIds: Array.from(this.selectedIncomes),
-         notes
+         notes,
       };
 
-      this.transactionService.addTransaction(transaction).subscribe(success => {
-         if (success) {
-            this.router.navigate(['/transactions']);
-         }
-         this.loading = false;
-      },
+      this.transactionService.addTransaction(transaction).subscribe(
+         (success) => {
+            if (success) {
+               this.router.navigate(['/transactions']);
+            }
+            this.loading = false;
+         },
          () => {
             // Show error
             this.loading = false;
-         });
+         }
+      );
    }
 }

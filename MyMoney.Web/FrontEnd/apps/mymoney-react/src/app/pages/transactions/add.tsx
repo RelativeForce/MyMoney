@@ -1,7 +1,3 @@
 export default function AddTransaction() {
-  return (
-    <>
-      Add Transaction
-    </>
-  );
+   return <>Add Transaction</>;
 }

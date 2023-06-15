@@ -1,5 +1,4 @@
 export class Row {
-
    public success: boolean | null;
    public error: string | null;
 

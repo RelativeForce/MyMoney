@@ -1,6 +1,14 @@
 <div class="header">
    <h2>Add transaction</h2>
-   <mymoney-toggle [value]="isRecurring" [text]="'Toggle Recurring'" (checked)="onRecurringChanged($event)"></mymoney-toggle>
+   <mymoney-toggle
+      [value]="isRecurring"
+      [text]="'Toggle Recurring'"
+      (checked)="onRecurringChanged($event)"
+   ></mymoney-toggle>
 </div>
-<mymoney-add-basic-transaction *ngIf="!isRecurring"></mymoney-add-basic-transaction>
-<mymoney-add-recurring-transaction *ngIf="isRecurring"></mymoney-add-recurring-transaction>
+<mymoney-add-basic-transaction
+   *ngIf="!isRecurring"
+></mymoney-add-basic-transaction>
+<mymoney-add-recurring-transaction
+   *ngIf="isRecurring"
+></mymoney-add-recurring-transaction>

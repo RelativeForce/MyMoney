@@ -1,22 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { minAmountValidator, monthValidator } from '../../../shared/common-validators';
+import {
+   minAmountValidator,
+   monthValidator,
+} from '../../../shared/common-validators';
 import { BudgetService } from '../../../shared/services';
 import { IBudgetModel } from '../../../shared/state/types';
 
 @Component({
-   templateUrl: './edit-budget.component.html'
+   templateUrl: './edit-budget.component.html',
 })
 export class EditBudgetComponent implements OnInit {
-
    public editBudgetForm: FormGroup;
    public editBudgetFormControls = {
       year: new FormControl(1980, [Validators.required, Validators.min(1980)]),
       month: new FormControl(1, [Validators.required, monthValidator]),
       amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
       name: new FormControl('', [Validators.required]),
-      notes: new FormControl('', [])
+      notes: new FormControl('', []),
    };
    public loading = false;
    public submitted = false;
@@ -25,14 +27,13 @@ export class EditBudgetComponent implements OnInit {
    constructor(
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute,
-      private readonly budgetService: BudgetService,
+      private readonly budgetService: BudgetService
    ) {
       this.editBudgetForm = new FormGroup(this.editBudgetFormControls);
    }
 
    public ngOnInit(): void {
-
-      this.activatedRoute.params.subscribe(params => {
+      this.activatedRoute.params.subscribe((params) => {
          const idStr = params['id'];
 
          if (!idStr) {
@@ -43,17 +44,19 @@ export class EditBudgetComponent implements OnInit {
 
          this.disableForm();
 
-         this.budgetService.findBudget(this.id).subscribe(response => {
-            this.editBudgetFormControls.year.patchValue(response.year);
-            this.editBudgetFormControls.month.patchValue(response.month);
-            this.editBudgetFormControls.amount.patchValue(response.amount);
-            this.editBudgetFormControls.name.patchValue(response.name);
-            this.editBudgetFormControls.notes.patchValue(response.notes);
-            this.enableForm();
-         },
-            error => {
+         this.budgetService.findBudget(this.id).subscribe(
+            (response) => {
+               this.editBudgetFormControls.year.patchValue(response.year);
+               this.editBudgetFormControls.month.patchValue(response.month);
+               this.editBudgetFormControls.amount.patchValue(response.amount);
+               this.editBudgetFormControls.name.patchValue(response.name);
+               this.editBudgetFormControls.notes.patchValue(response.notes);
+               this.enableForm();
+            },
+            (error) => {
                this.router.navigate(['/budgets']);
-            });
+            }
+         );
       });
    }
 
@@ -74,19 +77,20 @@ export class EditBudgetComponent implements OnInit {
          amount: this.editBudgetFormControls.amount.value ?? 0,
          remaining: this.editBudgetFormControls.amount.value ?? 0,
          notes: this.editBudgetFormControls.notes.value ?? '',
-         id: this.id
+         id: this.id,
       };
 
-      this.budgetService.editBudget(budget).subscribe(success => {
-         if (success) {
-            this.router.navigate(['/budgets']);
-         }
-      },
-         error => {
+      this.budgetService.editBudget(budget).subscribe(
+         (success) => {
+            if (success) {
+               this.router.navigate(['/budgets']);
+            }
+         },
+         (error) => {
             // Show error
             this.loading = false;
-         });
-
+         }
+      );
    }
 
    private disableForm() {

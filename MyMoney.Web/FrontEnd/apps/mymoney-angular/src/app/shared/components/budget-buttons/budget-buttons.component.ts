@@ -3,10 +3,9 @@ import { BudgetViewModel } from '@mymoney-common/classes';
 
 @Component({
    templateUrl: './budget-buttons.component.html',
-   selector: 'mymoney-budget-buttons'
+   selector: 'mymoney-budget-buttons',
 })
 export class BudgetButtonsComponent {
-
    @Input()
    public budget!: BudgetViewModel;
 

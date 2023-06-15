@@ -1,7 +1,3 @@
 export default function ResetPassword() {
-  return (
-    <>
-      Reset Password
-    </>
-  );
+   return <>Reset Password</>;
 }

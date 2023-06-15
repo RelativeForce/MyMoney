@@ -1,7 +1,10 @@
-<div (click)="onChangeClick(!isChecked)" [ngClass]="{
-   'check-box-enabled': !disabled,
-   'check-box-disabled': disabled
-}">
+<div
+   (click)="onChangeClick(!isChecked)"
+   [ngClass]="{
+      'check-box-enabled': !disabled,
+      'check-box-disabled': disabled
+   }"
+>
    <span *ngIf="isChecked" class="material-icons check-box check-box-checked">
       check_box
    </span>

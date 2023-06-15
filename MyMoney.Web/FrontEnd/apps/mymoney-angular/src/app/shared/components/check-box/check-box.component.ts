@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
    selector: 'mymoney-check-box',
    templateUrl: './check-box.component.html',
-   styleUrls: ['./check-box.component.scss']
+   styleUrls: ['./check-box.component.scss'],
 })
 export class CheckBoxComponent {
    @Input()

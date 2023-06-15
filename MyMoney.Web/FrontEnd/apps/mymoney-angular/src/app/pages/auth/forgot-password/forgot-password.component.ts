@@ -3,13 +3,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../../shared/services';
 
 @Component({
-   templateUrl: './forgot-password.component.html'
+   templateUrl: './forgot-password.component.html',
 })
 export class ForgotPasswordComponent {
-
    public forgotPasswordForm: FormGroup;
    public forgotPasswordFormControls = {
-      email: new FormControl('', [Validators.required])
+      email: new FormControl('', [Validators.required]),
    };
    public loading = false;
    public submitted = false;
@@ -31,16 +30,16 @@ export class ForgotPasswordComponent {
 
       const email = this.forgotPasswordFormControls.email.value ?? '';
 
-      this.authenticationService.forgotPassword(email)
-         .subscribe(
-            () => {
-               this.loading = false;
-               this.setMessage();
-            },
-            () => {
-               this.loading = false;
-               this.setMessage();
-            });
+      this.authenticationService.forgotPassword(email).subscribe(
+         () => {
+            this.loading = false;
+            this.setMessage();
+         },
+         () => {
+            this.loading = false;
+            this.setMessage();
+         }
+      );
    }
 
    private setMessage() {

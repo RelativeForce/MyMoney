@@ -4,5 +4,5 @@ export enum TransactionProperty {
    notes = 'Notes',
    amount = 'Amount',
    date = 'Date',
-   ignore = 'Ignore'
+   ignore = 'Ignore',
 }
