@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { BudgetViewModel } from '@mymoney/common';
+import { BudgetViewModel } from '@mymoney/common/classes';
 import { BudgetService } from '../../../shared/services';
 
 @Component({

@@ -1,6 +1,6 @@
 import { IChartDataProvider } from '../../shared/components/chart';
 import { Router } from '@angular/router';
-import { BudgetSeries } from '@mymoney/common';
+import { BudgetSeries } from '@mymoney/common/classes';
 import { ISeriesItem, ISeries } from '@mymoney/common';
 import { BudgetService, TransactionService } from '../../shared/services';
 import { IBudgetModel, IDateRangeModel, ITransactionModel } from '../../shared/state/types';

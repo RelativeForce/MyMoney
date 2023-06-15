@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { TransactionViewModel } from '@mymoney/common';
+import { TransactionViewModel } from '@mymoney/common/classes';
 
 @Component({
    templateUrl: './basic-transaction-buttons.component.html',

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TransactionService } from '../../shared/services';
-import { TransactionViewModel } from '@mymoney/common';
+import { TransactionViewModel } from '@mymoney/common/classes';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../shared/state/app-state';
 import { selectTransactions, selectTransactionsDateRange } from '../../shared/state/selectors/transaction.selector';

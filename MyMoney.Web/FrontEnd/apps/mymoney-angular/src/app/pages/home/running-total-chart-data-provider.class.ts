@@ -5,7 +5,7 @@ import { HomeService } from '../../shared/services';
 import { IDateRangeModel } from '../../shared/state/types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IRunningTotalDto } from '@mymoney/common/api';
-import { RunningTotalSeries } from '@mymoney/common';
+import { RunningTotalSeries } from '@mymoney/common/classes';
 
 export class RunningTotalChartDataProvider implements IChartDataProvider {
    public chartTitle: string;
