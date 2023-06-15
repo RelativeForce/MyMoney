@@ -1,11 +1,10 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { ILoginDto, ILoginResultDto, IUserDto } from '@mymoney/common/api/dtos';
+import { AuthenticationApi, UserApi, ILoginDto, ILoginResultDto, IUserDto } from '@mymoney/common/api';
 import { ISessionModel } from '@mymoney/common';
 import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney/common';
 import { ISessionState, IAppState, AsyncStatus, IAsyncState } from './types';
 import { first } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { AuthenticationApi, UserApi } from '@mymoney/common';
 import { HttpHelper } from '../classess/http-helper';
 
 export const initialUserState: IAsyncState<IUserDto | null> = {

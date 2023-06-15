@@ -1,4 +1,4 @@
-import { IUserDto } from '@mymoney/common/api/dtos';
+import { IUserDto } from '@mymoney/common/api';
 import { useSelector } from 'react-redux';
 import Footer from './footer';
 import { Outlet, Link } from "react-router-dom";

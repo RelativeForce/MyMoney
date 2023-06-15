@@ -8,7 +8,7 @@ import {
    IUpdateResultDto,
    IRecurringTransactionDto,
    ITransactionDto
-} from '@mymoney/common/api/dtos';
+} from '@mymoney/common/api';
 import { TransactionApi } from '../api';
 import {
    DeleteRecurringTransactionAction,

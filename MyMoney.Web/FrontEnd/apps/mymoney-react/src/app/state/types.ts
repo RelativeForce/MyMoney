@@ -1,4 +1,4 @@
-import { ITransactionDto, IUserDto } from '@mymoney/common/api/dtos';
+import { ITransactionDto, IUserDto } from '@mymoney/common/api';
 import { ISessionModel } from '@mymoney/common';
 
 export interface ISessionState {

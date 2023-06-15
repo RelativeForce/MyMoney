@@ -1,4 +1,4 @@
-import { HttpHelper as CommonHttpHelper } from '@mymoney/common';
+import { HttpHelper as CommonHttpHelper } from '@mymoney/common/api';
 import { Observable, of } from 'rxjs';
 
 export class HttpHelper extends CommonHttpHelper {

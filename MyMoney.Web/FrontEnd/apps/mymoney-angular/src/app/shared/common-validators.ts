@@ -1,4 +1,4 @@
-import { Frequency } from '@mymoney/common/api/dtos';
+import { Frequency } from '@mymoney/common/api';
 import { Validators, ValidatorFn } from '@angular/forms';
 
 export const frequencyValidator: ValidatorFn = (frequencyControl) => {

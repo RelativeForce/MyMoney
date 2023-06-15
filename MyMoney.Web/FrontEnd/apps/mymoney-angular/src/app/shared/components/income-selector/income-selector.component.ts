@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { IncomeViewModel } from '@mymoney/common';
-import { IIncomeDto } from '@mymoney/common/api/dtos';
+import { IIncomeDto } from '@mymoney/common/api';
 import { IncomeService } from '../../services';
 
 @Component({

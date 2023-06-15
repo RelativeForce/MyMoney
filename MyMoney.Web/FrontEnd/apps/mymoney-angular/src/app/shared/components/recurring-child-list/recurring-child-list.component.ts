@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IRecurringEntityChildDto } from '@mymoney/common/api/dtos';
+import { IRecurringEntityChildDto } from '@mymoney/common/api';
 import { toInputDateString } from '@mymoney/common/functions';
 
 @Component({

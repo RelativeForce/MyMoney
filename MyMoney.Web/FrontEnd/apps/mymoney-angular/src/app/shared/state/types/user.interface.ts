@@ -1,3 +1,3 @@
-import { IUserDto } from '@mymoney/common/api/dtos';
+import { IUserDto } from '@mymoney/common/api';
 
 export type IUser = IUserDto;

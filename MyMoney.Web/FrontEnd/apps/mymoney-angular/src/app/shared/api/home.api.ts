@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HomeApi as CommonHomeApi } from '@mymoney/common';
+import { HomeApi as CommonHomeApi } from '@mymoney/common/api';
 import { HttpHelper } from './http-helper.class';
 
 @Injectable({ providedIn: 'root' })

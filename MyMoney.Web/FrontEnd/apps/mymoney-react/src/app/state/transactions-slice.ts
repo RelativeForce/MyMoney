@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { IDateRangeDto, ITransactionDto, ITransactionListDto } from '@mymoney/common/api/dtos';
+import { TransactionApi, IDateRangeDto, ITransactionDto, ITransactionListDto } from '@mymoney/common/api';
 import { IAppState, AsyncStatus, ITransactionState, ITransactionsSearch, IAsyncState, IDateRangeModel } from './types';
 import { first, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { TransactionApi } from '@mymoney/common';
 import { HttpHelper } from '../classess/http-helper';
 import { toDateString } from '@mymoney/common/functions';
 

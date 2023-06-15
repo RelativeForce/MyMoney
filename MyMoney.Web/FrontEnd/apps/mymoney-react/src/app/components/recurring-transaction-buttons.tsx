@@ -1,4 +1,4 @@
-import { ITransactionDto } from "@mymoney/common/api/dtos";
+import { ITransactionDto } from "@mymoney/common/api";
 import { Link } from "react-router-dom";
 
 export default function RecurringTransactionButtons({ transaction, onDeleteClicked }: { transaction: ITransactionDto, onDeleteClicked: () => void }) {

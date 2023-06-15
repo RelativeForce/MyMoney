@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';
-import { HttpHelper as CommonHttpHelper }  from '@mymoney/common'
+import { HttpHelper as CommonHttpHelper }  from '@mymoney/common/api'
 import { ISessionModel } from '../state/types';
 import { Observable, map } from 'rxjs';
 import { selectCurrentSession } from '../state/selectors/session.selector';
