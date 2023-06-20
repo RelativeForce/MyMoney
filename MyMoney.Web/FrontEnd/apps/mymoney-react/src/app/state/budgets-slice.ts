@@ -139,7 +139,7 @@ export const budgetsSlice = createSlice({
                   },
                   searchParameters: {
                      month: arg.search.month,
-                     year: arg.search.month,
+                     year: arg.search.year,
                      refresh: false,
                   },
                };
