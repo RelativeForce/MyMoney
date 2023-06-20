@@ -7,6 +7,7 @@ import { FormControlState } from '../../interfaces/form-conrtol-props';
 import { requiredValidator } from '../../functions/validators';
 import { AsyncStatus, IAsyncState } from '../../state/types';
 import { toInputDateString } from '@mymoney-common/functions';
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
    const userState: IAsyncState<IUserDto | null> = useSelector(
@@ -172,6 +173,9 @@ export default function Profile() {
                   )}
                   Save changes
                </button>
+               <Link className="btn btn-link" to="/">
+                  Cancel
+               </Link>
             </div>
             {error !== null ? (
                <div className="alert alert-danger" role="alert">
