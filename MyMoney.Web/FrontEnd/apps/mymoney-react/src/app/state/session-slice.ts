@@ -61,6 +61,36 @@ export const login = createAsyncThunk(
    }
 );
 
+export const updateUser = createAsyncThunk(
+   'session/updateUser',
+   async (user: IUserDto, { getState, rejectWithValue }) => {
+      const state = getState() as IAppState;
+      if (!state.session.currentSession?.token) {
+         return rejectWithValue('No user session');
+      }
+
+      const httpHelper = new HttpHelper(state.session.currentSession.token);
+      const api = new UserApi(httpHelper);
+
+      try {
+         const result = await firstValueFrom(
+            api.updateCurrentUserDetails(user).pipe(first())
+         );
+
+         if (!result.success) {
+            return rejectWithValue(result.error);
+         }
+
+         return {
+            ...user,
+            dateOfBirth: new Date(user.dateOfBirth).toLocaleDateString('en-GB'),
+         };
+      } catch (error: any) {
+         return rejectWithValue(error.message);
+      }
+   }
+);
+
 export const sessionSlice = createSlice({
    name: 'session',
    initialState: initialSessionState,
@@ -168,7 +198,40 @@ export const sessionSlice = createSlice({
                   currentSession: sesssion,
                };
             }
-         );
+         )
+         .addCase(updateUser.pending, (state: ISessionState) => {
+            return {
+               ...state,
+               currentUser: {
+                  data: state.currentUser.data,
+                  status: AsyncStatus.loading,
+                  error: null,
+               },
+            };
+         })
+         .addCase(
+            updateUser.fulfilled,
+            (state: ISessionState, action: { payload: IUserDto }) => {
+               return {
+                  ...state,
+                  currentUser: {
+                     data: action.payload,
+                     status: AsyncStatus.succeeded,
+                     error: null,
+                  },
+               };
+            }
+         )
+         .addCase(updateUser.rejected, (state: ISessionState, action) => {
+            return {
+               ...state,
+               currentUser: {
+                  data: state.currentUser.data,
+                  status: AsyncStatus.failed,
+                  error: action.error.message ?? null,
+               },
+            };
+         });
    },
 });
 
