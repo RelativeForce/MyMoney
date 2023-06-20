@@ -1,4 +1,4 @@
-import { ITransactionDto, IUserDto } from '@mymoney-common/api';
+import { IBudgetDto, ITransactionDto, IUserDto } from '@mymoney-common/api';
 import { ISessionModel } from '@mymoney-common/interfaces';
 
 export interface ISessionState {
@@ -9,6 +9,7 @@ export interface ISessionState {
 export interface IAppState {
    session: ISessionState;
    transactions: ITransactionState;
+   budgets: IBudgetState;
 }
 
 export interface IAsyncState<T> {
@@ -37,4 +38,15 @@ export interface ITransactionsSearch {
 export interface IDateRangeModel {
    start: string;
    end: string;
+}
+
+export interface IBudgetState {
+   budgets: IAsyncState<IBudgetDto[]>;
+   searchParameters: IBudgetsSearch;
+}
+
+export interface IBudgetsSearch {
+   year: number;
+   month: number;
+   refresh: boolean;
 }

@@ -22,11 +22,11 @@ export default function Transactions() {
       selectTransactionState
    );
    const dispatch = useDispatch<any>();
-   const [startState, setStartState] = useState<FormControlState>({
+   const [startState, setStartState] = useState<FormControlState<string>>({
       value: '',
       errors: null,
    });
-   const [endState, setEndState] = useState<FormControlState>({
+   const [endState, setEndState] = useState<FormControlState<string>>({
       value: '',
       errors: null,
    });
