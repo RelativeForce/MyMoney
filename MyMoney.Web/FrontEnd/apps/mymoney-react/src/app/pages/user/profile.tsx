@@ -17,12 +17,12 @@ export default function Profile() {
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
    const [emailState, setEmailState] = useState<FormControlState<string>>({
-      value: userState.data?.email ?? '',
+      value: '',
       errors: null,
    });
    const [fullNameState, setFullNameState] = useState<FormControlState<string>>(
       {
-         value: userState.data?.email ?? '',
+         value: '',
          errors: null,
       }
    );
