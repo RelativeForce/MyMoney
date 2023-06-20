@@ -11,7 +11,7 @@ export interface FormControlProps {
    type?: string;
 }
 
-export interface FormControlState {
-   value: string;
+export interface FormControlState<T> {
+   value: T;
    errors: { [key: string]: string } | null;
 }

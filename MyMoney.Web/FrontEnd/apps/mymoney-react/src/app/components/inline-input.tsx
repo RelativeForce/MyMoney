@@ -13,6 +13,8 @@ export default function InlineInput(props: FormControlProps) {
       }
    }
 
+   const hasErrors = props.showErrors && Object.keys(props.errors ?? {}).length;
+
    return (
       <>
          <div className="input-group mb-3 pr-2">
@@ -22,9 +24,7 @@ export default function InlineInput(props: FormControlProps) {
             <input
                type={props.type ?? 'text'}
                name={props.name}
-               className={`form-control ${
-                  props.showErrors && props.errors ? 'is-invalid' : ''
-               }`}
+               className={`form-control ${hasErrors ? 'is-invalid' : ''}`}
                defaultValue={props.defaultValue}
                onChange={props.onChange}
                autoComplete={props.autoComplete}

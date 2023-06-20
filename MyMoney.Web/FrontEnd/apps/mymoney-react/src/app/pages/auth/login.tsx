@@ -14,14 +14,16 @@ export default function Login() {
    const [submitted, setSubmitted] = useState<boolean>(false);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
-   const [emailState, setEmailState] = useState<FormControlState>({
+   const [emailState, setEmailState] = useState<FormControlState<string>>({
       value: '',
       errors: null,
    });
-   const [passwordState, setPasswordState] = useState<FormControlState>({
-      value: '',
-      errors: null,
-   });
+   const [passwordState, setPasswordState] = useState<FormControlState<string>>(
+      {
+         value: '',
+         errors: null,
+      }
+   );
    const dispatch = useDispatch<any>();
 
    const updateEmail: ChangeEventHandler<HTMLInputElement> = (event) => {

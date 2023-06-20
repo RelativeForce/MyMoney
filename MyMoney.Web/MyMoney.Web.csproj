@@ -20,15 +20,15 @@
     <Company>MyMoney Ltd</Company>
     <PackageIcon>favicon-32x32.png</PackageIcon>
     <RepositoryType>Personal</RepositoryType>
-    <Copyright>2021</Copyright>
-    <AssemblyVersion>1.2.1.0</AssemblyVersion>
-    <Version>1.2.1</Version>
+    <Copyright>2023</Copyright>
+    <AssemblyVersion>1.3.0.0</AssemblyVersion>
+    <Version>1.3.0</Version>
     <RepositoryUrl>https://github.com/RelativeForce/MyMoney</RepositoryUrl>
     <Product>MyMoney</Product>
-    <PackageTags>v1.2.1</PackageTags>
+    <PackageTags>v1.3.0</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <NeutralLanguage>en-GB</NeutralLanguage>
-    <FileVersion>1.2.1.0</FileVersion>
+    <FileVersion>1.3.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

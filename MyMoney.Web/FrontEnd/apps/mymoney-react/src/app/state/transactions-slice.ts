@@ -72,7 +72,7 @@ export const fetchTransactions = createAsyncThunk(
             )
          );
       } catch (error: any) {
-         return error.message;
+         return rejectWithValue(error.message);
       }
    }
 );
@@ -101,7 +101,7 @@ export const deleteTransaction = createAsyncThunk(
             api.delete({ id: transactionId }).pipe(first())
          );
       } catch (error: any) {
-         return error.message;
+         return rejectWithValue(error.message);
       }
    }
 );
@@ -125,7 +125,7 @@ export const deleteRecurringTransaction = createAsyncThunk(
             api.deleteRecurring({ id: recurringTransactionId }).pipe(first())
          );
       } catch (error: any) {
-         return error.message;
+         return rejectWithValue(error.message);
       }
    }
 );
