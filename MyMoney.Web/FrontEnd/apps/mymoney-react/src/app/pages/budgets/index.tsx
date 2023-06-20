@@ -23,11 +23,11 @@ export default function Budgets() {
    const budgetState: IBudgetState = useSelector(selectBudgetState);
    const dispatch = useDispatch<any>();
    const [yearState, setYearState] = useState<FormControlState<number>>({
-      value: new Date().getFullYear(),
+      value: budgetState.searchParameters.year,
       errors: null,
    });
    const [monthState, setMonthState] = useState<FormControlState<number>>({
-      value: new Date().getMonth() + 1,
+      value: budgetState.searchParameters.month,
       errors: null,
    });
 
@@ -41,8 +41,6 @@ export default function Budgets() {
          value: budgetState.searchParameters.month,
          errors: null,
       });
-
-      dispatch(refreshBudgets());
    }, [dispatch]);
 
    const loading = budgetState.budgets.status === AsyncStatus.loading;
