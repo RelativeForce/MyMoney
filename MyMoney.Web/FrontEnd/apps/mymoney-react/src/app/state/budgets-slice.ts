@@ -57,7 +57,7 @@ export const fetchBudgets = createAsyncThunk(
             )
          );
       } catch (error: any) {
-         return error.message;
+         return rejectWithValue(error.message);
       }
    }
 );
@@ -86,7 +86,7 @@ export const deleteBudget = createAsyncThunk(
             api.delete({ id: budgetId }).pipe(first())
          );
       } catch (error: any) {
-         return error.message;
+         return rejectWithValue(error.message);
       }
    }
 );

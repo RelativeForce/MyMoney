@@ -42,21 +42,21 @@ export const fetchUser = createAsyncThunk(
       try {
          return await firstValueFrom(api.currentUserDetails().pipe(first()));
       } catch (error: any) {
-         return error.message;
+         return rejectWithValue(error.message);
       }
    }
 );
 
 export const login = createAsyncThunk(
    'session/login',
-   async (credentials: ILoginDto) => {
+   async (credentials: ILoginDto, { rejectWithValue }) => {
       const httpHelper = new HttpHelper(null);
       const api = new AuthenticationApi(httpHelper);
 
       try {
          return await firstValueFrom(api.login(credentials).pipe(first()));
       } catch (error: any) {
-         return error.message;
+         return rejectWithValue(error.message);
       }
    }
 );

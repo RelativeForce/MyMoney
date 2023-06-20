@@ -1,10 +1,10 @@
 export function requiredValidator(
-   value: string,
+   value: string | number | undefined,
    message?: string
 ): { [key: string]: string } | null {
    let errors: { [key: string]: string } | null = null;
 
-   if (!value) {
+   if (value === '' || value === undefined) {
       errors = { required: message ?? '' };
    }
 

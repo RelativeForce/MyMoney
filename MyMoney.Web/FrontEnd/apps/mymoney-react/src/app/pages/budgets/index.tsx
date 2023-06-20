@@ -5,7 +5,11 @@ import { useSelector } from 'react-redux';
 import InlineInput from '../../components/inline-input';
 import BasicBudgetButtons from '../../components/basic-budget-buttons';
 import { FormControlState } from '../../interfaces/form-conrtol-props';
-import { maxValidator, minValidator } from '../../functions/validators';
+import {
+   maxValidator,
+   minValidator,
+   requiredValidator,
+} from '../../functions/validators';
 import {
    deleteBudget,
    fetchBudgets,
@@ -104,6 +108,7 @@ export default function Budgets() {
             1980,
             'Year must be greater than or equal to 1'
          ),
+         ...requiredValidator(yearState.value, 'Year is required'),
       };
       setYearState({ value: yearState.value, errors: yearErrors });
 
@@ -118,11 +123,11 @@ export default function Budgets() {
             1,
             'Month must be greater than or equal to 1'
          ),
+         ...requiredValidator(monthState.value, 'Month is required'),
       };
-
       setMonthState({ value: monthState.value, errors: monthErrors });
 
-      if (yearErrors || monthErrors) {
+      if (Object.keys(yearErrors).length || Object.keys(monthErrors).length) {
          return;
       }
 
