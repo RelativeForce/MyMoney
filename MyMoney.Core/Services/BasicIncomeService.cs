@@ -12,14 +12,12 @@ namespace MyMoney.Core.Services
       private readonly IRepository _repository;
       private readonly IEntityFactory _entityFactory;
       private readonly ICurrentUserProvider _currentUserProvider;
-      private readonly IRelationRepository _relationRepository;
 
-      public BasicIncomeService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider, IRelationRepository relationRepository)
+      public BasicIncomeService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider)
       {
          _repository = repository;
          _entityFactory = entityFactory;
          _currentUserProvider = currentUserProvider;
-         _relationRepository = relationRepository;
       }
 
       public IIncome Find(long incomeId)
