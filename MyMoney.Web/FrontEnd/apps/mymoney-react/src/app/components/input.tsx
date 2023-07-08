@@ -14,21 +14,19 @@ export default function Input(props: FormControlProps) {
    }
 
    return (
-      <>
-         <div className="form-group">
-            <label htmlFor={props.name}>{props.labelText}</label>
-            <input
-               type={props.type ?? 'text'}
-               name={props.name}
-               className={`form-control ${
-                  props.showErrors && props.errors ? 'is-invalid' : ''
-               }`}
-               defaultValue={props.defaultValue}
-               onChange={props.onChange}
-               autoComplete={props.autoComplete}
-            />
-            {errors}
-         </div>
-      </>
+      <div className="form-group">
+         <label htmlFor={props.name}>{props.labelText}</label>
+         <input
+            type={props.type ?? 'text'}
+            name={props.name}
+            className={`form-control ${
+               props.showErrors && props.errors ? 'is-invalid' : ''
+            }`}
+            defaultValue={props.defaultValue}
+            onChange={props.onChange}
+            autoComplete={props.autoComplete}
+         />
+         {errors}
+      </div>
    );
 }
