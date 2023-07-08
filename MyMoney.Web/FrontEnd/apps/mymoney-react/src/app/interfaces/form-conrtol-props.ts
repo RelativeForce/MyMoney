@@ -10,8 +10,3 @@ export interface FormControlProps {
    autoComplete?: string;
    type?: string;
 }
-
-export interface FormControlState<T> {
-   value: T;
-   errors: { [key: string]: string } | null;
-}

@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IUserDto } from '@mymoney-common/api';
 import { selectCurrentUserState, updateUser } from '../../state/session-slice';
 import Input from '../../components/input';
-import { FormControlState } from '../../interfaces/form-conrtol-props';
 import { requiredValidator } from '../../functions/validators';
 import { AsyncStatus, IAsyncState } from '../../state/types';
 import { toInputDateString } from '@mymoney-common/functions';
 import { Link } from 'react-router-dom';
+import { useValidatedState } from '../../hooks/validation';
 
 export default function Profile() {
    const userState: IAsyncState<IUserDto | null> = useSelector(
@@ -17,22 +17,16 @@ export default function Profile() {
    const [submitted, setSubmitted] = useState<boolean>(false);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
-   const [emailState, setEmailState] = useState<FormControlState<string>>({
-      value: '',
-      errors: null,
-   });
-   const [fullNameState, setFullNameState] = useState<FormControlState<string>>(
-      {
-         value: '',
-         errors: null,
-      }
+   const [emailState, setEmailState] = useValidatedState<string>('', [
+      requiredValidator('Email is required'),
+   ]);
+   const [fullNameState, setFullNameState] = useValidatedState<string>('', [
+      requiredValidator('Full name is required'),
+   ]);
+   const [dateOfBirthState, setDateOfBirthState] = useValidatedState<string>(
+      '',
+      [requiredValidator('Date of birth is required')]
    );
-   const [dateOfBirthState, setDateOfBirthState] = useState<
-      FormControlState<string>
-   >({
-      value: '',
-      errors: null,
-   });
    const dispatch = useDispatch<any>();
 
    useEffect(() => {
@@ -40,42 +34,21 @@ export default function Profile() {
          return;
       }
 
-      setEmailState({
-         value: userState.data.email,
-         errors: null,
-      });
-      setFullNameState({
-         value: userState.data.fullName,
-         errors: null,
-      });
-      setDateOfBirthState({
-         value: toInputDateString(userState.data.dateOfBirth),
-         errors: null,
-      });
+      setEmailState(userState.data.email);
+      setFullNameState(userState.data.fullName);
+      setDateOfBirthState(toInputDateString(userState.data.dateOfBirth));
    }, [dispatch, userState.status]);
 
    const updateEmail: ChangeEventHandler<HTMLInputElement> = (event) => {
-      const email: string = event.target.value;
-
-      const errors = requiredValidator(email, 'Email is required');
-      setEmailState({ value: email, errors });
+      setEmailState(event.target.value);
    };
 
    const updateFullName: ChangeEventHandler<HTMLInputElement> = (event) => {
-      const fullName: string = event.target.value;
-
-      const errors = requiredValidator(fullName, 'Full name is required');
-      setFullNameState({ value: fullName, errors });
+      setFullNameState(event.target.value);
    };
 
    const updateDateOfBirth: ChangeEventHandler<HTMLInputElement> = (event) => {
-      const dateOfBirth: string = event.target.value;
-
-      const errors = requiredValidator(
-         dateOfBirth,
-         'Date of birth is required'
-      );
-      setDateOfBirthState({ value: dateOfBirth, errors });
+      setDateOfBirthState(event.target.value);
    };
 
    const loginClicked = () => {
@@ -85,26 +58,9 @@ export default function Profile() {
          return;
       }
 
-      const emailErrors = requiredValidator(
-         emailState.value,
-         'Email is required'
-      );
-      setEmailState({ value: emailState.value, errors: emailErrors });
-
-      const fullNameErrors = requiredValidator(
-         fullNameState.value,
-         'Full name is required'
-      );
-      setFullNameState({ value: fullNameState.value, errors: fullNameErrors });
-
-      const dateOfBirthErrors = requiredValidator(
-         dateOfBirthState.value,
-         'Date of birth is required'
-      );
-      setDateOfBirthState({
-         value: dateOfBirthState.value,
-         errors: dateOfBirthErrors,
-      });
+      const emailErrors = setEmailState(emailState.value);
+      const fullNameErrors = setFullNameState(fullNameState.value);
+      const dateOfBirthErrors = setDateOfBirthState(dateOfBirthState.value);
 
       if (emailErrors || fullNameErrors || dateOfBirthErrors) {
          return;
