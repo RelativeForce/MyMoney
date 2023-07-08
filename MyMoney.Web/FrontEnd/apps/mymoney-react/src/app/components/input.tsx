@@ -24,6 +24,7 @@ export default function Input(props: FormControlProps) {
             }`}
             defaultValue={props.defaultValue}
             onChange={props.onChange}
+            onBlurCapture={props.onChange}
             autoComplete={props.autoComplete}
          />
          {errors}

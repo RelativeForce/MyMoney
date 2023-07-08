@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { ChangeEventHandler, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InlineInput from '../../components/inline-input';
 import BasicTransactionButtons from '../../components/basic-transaction-buttons';
-import { FormControlState } from '../../interfaces/form-conrtol-props';
 import { requiredValidator } from '../../functions/validators';
 import {
    deleteRecurringTransaction,
@@ -16,30 +15,23 @@ import {
 } from '../../state/transactions-slice';
 import { AsyncStatus, ITransactionState } from '../../state/types';
 import RecurringTransactionButtons from '../../components/recurring-transaction-buttons';
+import { useValidatedState } from '../../hooks/validation';
 
 export default function Transactions() {
    const tranactionState: ITransactionState = useSelector(
       selectTransactionState
    );
    const dispatch = useDispatch<any>();
-   const [startState, setStartState] = useState<FormControlState<string>>({
-      value: '',
-      errors: null,
-   });
-   const [endState, setEndState] = useState<FormControlState<string>>({
-      value: '',
-      errors: null,
-   });
+   const [startState, setStartState] = useValidatedState<string>('', [
+      requiredValidator('Start is required'),
+   ]);
+   const [endState, setEndState] = useValidatedState<string>('', [
+      requiredValidator('End is required'),
+   ]);
 
    useEffect(() => {
-      setStartState({
-         value: tranactionState.searchParameters.dateRange.start,
-         errors: null,
-      });
-      setEndState({
-         value: tranactionState.searchParameters.dateRange.end,
-         errors: null,
-      });
+      setStartState(tranactionState.searchParameters.dateRange.start);
+      setEndState(tranactionState.searchParameters.dateRange.end);
    }, [dispatch]);
 
    const loading = tranactionState.transactions.status === AsyncStatus.loading;
@@ -58,19 +50,13 @@ export default function Transactions() {
 
    const updateStart: ChangeEventHandler<HTMLInputElement> = (event) => {
       const start: string = event.target.value;
-
-      const errors = requiredValidator(start, 'Start is required');
-      setStartState({ value: start, errors });
-
+      setStartState(start);
       dispatch(setDataRange(start, endState.value));
    };
 
    const updateEnd: ChangeEventHandler<HTMLInputElement> = (event) => {
       const end: string = event.target.value;
-
-      const errors = requiredValidator(end, 'End is required');
-      setEndState({ value: end, errors });
-
+      setEndState(end);
       dispatch(setDataRange(startState.value, end));
    };
 
@@ -79,14 +65,8 @@ export default function Transactions() {
          return;
       }
 
-      const startErrors = requiredValidator(
-         startState.value,
-         'Start is required'
-      );
-      setStartState({ value: startState.value, errors: startErrors });
-
-      const endErrors = requiredValidator(endState.value, 'End is required');
-      setEndState({ value: endState.value, errors: endErrors });
+      const startErrors = setStartState(startState.value);
+      const endErrors = setEndState(endState.value);
 
       if (startErrors || endErrors) {
          return;

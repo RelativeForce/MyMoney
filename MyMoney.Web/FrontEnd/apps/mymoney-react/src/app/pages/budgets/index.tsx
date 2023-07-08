@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InlineInput from '../../components/inline-input';
 import BasicBudgetButtons from '../../components/basic-budget-buttons';
-import { FormControlState } from '../../interfaces/form-conrtol-props';
 import {
    maxValidator,
    minValidator,
@@ -18,29 +17,24 @@ import {
    setSelectedMonth,
 } from '../../state/budgets-slice';
 import { AsyncStatus, IBudgetState } from '../../state/types';
+import { useValidatedState } from '../../hooks/validation';
 
 export default function Budgets() {
    const budgetState: IBudgetState = useSelector(selectBudgetState);
    const dispatch = useDispatch<any>();
-   const [yearState, setYearState] = useState<FormControlState<number>>({
-      value: budgetState.searchParameters.year,
-      errors: null,
-   });
-   const [monthState, setMonthState] = useState<FormControlState<number>>({
-      value: budgetState.searchParameters.month,
-      errors: null,
-   });
+   const [yearState, setYearState] = useValidatedState<number>(2020, [
+      requiredValidator('Start is required'),
+      minValidator(1980, 'Year must be greater than or equal to 1980'),
+   ]);
+   const [monthState, setMonthState] = useValidatedState<number>(1, [
+      requiredValidator('Start is required'),
+      maxValidator(12, 'Month must be less than or equal to 12'),
+      minValidator(1, 'Month must be greater than or equal to 1'),
+   ]);
 
    useEffect(() => {
-      setYearState({
-         value: budgetState.searchParameters.year,
-         errors: null,
-      });
-
-      setMonthState({
-         value: budgetState.searchParameters.month,
-         errors: null,
-      });
+      setYearState(budgetState.searchParameters.year);
+      setMonthState(budgetState.searchParameters.month);
    }, [dispatch]);
 
    const loading = budgetState.budgets.status === AsyncStatus.loading;
@@ -62,12 +56,7 @@ export default function Budgets() {
 
    const updateYear: ChangeEventHandler<HTMLInputElement> = (event) => {
       const year: number = Number.parseInt(event.target.value);
-
-      const errors = {
-         ...minValidator(year, 1980, 'Year must be greater than or equal to 1'),
-      };
-      setYearState({ value: year, errors });
-
+      setYearState(year);
       dispatch(setSelectedMonth(year, monthState.value));
    };
 
@@ -86,12 +75,7 @@ export default function Budgets() {
          event.currentTarget.value = '12';
       }
 
-      const errors = {
-         ...maxValidator(month, 12, 'Month must be less than or equal to 12'),
-         ...minValidator(month, 1, 'Month must be greater than or equal to 1'),
-      };
-      setMonthState({ value: month, errors });
-
+      setMonthState(month);
       dispatch(setSelectedMonth(yearState.value, month));
    };
 
@@ -100,32 +84,10 @@ export default function Budgets() {
          return;
       }
 
-      const yearErrors = {
-         ...minValidator(
-            yearState.value,
-            1980,
-            'Year must be greater than or equal to 1'
-         ),
-         ...requiredValidator(yearState.value, 'Year is required'),
-      };
-      setYearState({ value: yearState.value, errors: yearErrors });
+      const yearErrors = setYearState(yearState.value);
+      const monthErrors = setMonthState(monthState.value);
 
-      const monthErrors = {
-         ...maxValidator(
-            monthState.value,
-            12,
-            'Month must be less than or equal to 12'
-         ),
-         ...minValidator(
-            monthState.value,
-            1,
-            'Month must be greater than or equal to 1'
-         ),
-         ...requiredValidator(monthState.value, 'Month is required'),
-      };
-      setMonthState({ value: monthState.value, errors: monthErrors });
-
-      if (Object.keys(yearErrors).length || Object.keys(monthErrors).length) {
+      if (yearErrors || monthErrors) {
          return;
       }
 

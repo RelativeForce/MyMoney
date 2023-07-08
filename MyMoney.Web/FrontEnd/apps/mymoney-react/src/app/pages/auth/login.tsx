@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux';
 import { ILoginDto } from '@mymoney-common/api';
 import { login } from '../../state/session-slice';
 import Input from '../../components/input';
-import { FormControlState } from '../../interfaces/form-conrtol-props';
 import { requiredValidator } from '../../functions/validators';
 import { useRedirectLoggedInUserToHome } from '../../hooks/user-session';
+import { useValidatedState } from '../../hooks/validation';
 
 export default function Login() {
    useRedirectLoggedInUserToHome();
@@ -14,30 +14,20 @@ export default function Login() {
    const [submitted, setSubmitted] = useState<boolean>(false);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
-   const [emailState, setEmailState] = useState<FormControlState<string>>({
-      value: '',
-      errors: null,
-   });
-   const [passwordState, setPasswordState] = useState<FormControlState<string>>(
-      {
-         value: '',
-         errors: null,
-      }
-   );
+   const [emailState, setEmailState] = useValidatedState<string>('', [
+      requiredValidator('Email is required'),
+   ]);
+   const [passwordState, setPasswordState] = useValidatedState<string>('', [
+      requiredValidator('Password is required'),
+   ]);
    const dispatch = useDispatch<any>();
 
    const updateEmail: ChangeEventHandler<HTMLInputElement> = (event) => {
-      const email: string = event.target.value;
-
-      const errors = requiredValidator(email, 'Email is required');
-      setEmailState({ value: email, errors });
+      setEmailState(event.target.value);
    };
 
    const updatePassword: ChangeEventHandler<HTMLInputElement> = (event) => {
-      const password: string = event.target.value;
-
-      const errors = requiredValidator(password, 'Password is required');
-      setPasswordState({ value: password, errors });
+      setPasswordState(event.target.value);
    };
 
    const loginClicked = () => {
@@ -47,17 +37,8 @@ export default function Login() {
          return;
       }
 
-      const emailErrors = requiredValidator(
-         emailState.value,
-         'Email is required'
-      );
-      setEmailState({ value: emailState.value, errors: emailErrors });
-
-      const passwordErrors = requiredValidator(
-         passwordState.value,
-         'Password is required'
-      );
-      setPasswordState({ value: passwordState.value, errors: passwordErrors });
+      const emailErrors = setEmailState(emailState.value);
+      const passwordErrors = setPasswordState(passwordState.value);
 
       if (emailErrors || passwordErrors) {
          return;
