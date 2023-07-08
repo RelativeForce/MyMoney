@@ -26,7 +26,7 @@ export default function Budgets() {
       requiredValidator('Start is required'),
       minValidator(1980, 'Year must be greater than or equal to 1980'),
    ]);
-   const [monthState, setMonthState] = useValidatedState<number>(2020, [
+   const [monthState, setMonthState] = useValidatedState<number>(1, [
       requiredValidator('Start is required'),
       maxValidator(12, 'Month must be less than or equal to 12'),
       minValidator(1, 'Month must be greater than or equal to 1'),
