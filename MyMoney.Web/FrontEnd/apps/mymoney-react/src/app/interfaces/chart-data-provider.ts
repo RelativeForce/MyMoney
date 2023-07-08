@@ -1,14 +1,13 @@
-import { ISeriesItem, ISeries } from '@mymoney-common/interfaces';
+import { ISeries, ISeriesDataPoint } from "@mymoney-common/interfaces";
+
+export type IColoredSeries = ISeries & { color: string };
 
 export interface IChartDataProvider {
    chartTitle: string;
-   yAxisLabel: string;
-   colorScheme: { domain: string[] };
-   seriesData: ISeries[];
+   data: IColoredSeries[];
    subChartTitle: string;
-   onSelect(data: ISeriesItem): void;
-   init(): void;
-   destroy(): void;
+   yAxisLabel: string;
+   onSelect(data: ISeriesDataPoint): void;
    next(): void;
    previous(): void;
 }

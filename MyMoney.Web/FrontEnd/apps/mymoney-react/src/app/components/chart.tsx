@@ -1,3 +1,4 @@
+import { ISeriesDataPoint } from '@mymoney-common/interfaces';
 import { IChartDataProvider } from '../interfaces/chart-data-provider';
 import {
    LineChart,
@@ -8,59 +9,64 @@ import {
    Tooltip,
    Legend,
    ResponsiveContainer,
+   TooltipProps,
 } from 'recharts';
 
-const data = [
-   {
-      name: 'Page A',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-   },
-   {
-      name: 'Page B',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-   },
-   {
-      name: 'Page C',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-   },
-   {
-      name: 'Page D',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-   },
-   {
-      name: 'Page E',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-   },
-   {
-      name: 'Page F',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-   },
-   {
-      name: 'Page G',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-   },
-];
+const ChartTooltip = ({
+   active,
+   payload,
+}: TooltipProps<(string | number)[], string>) => {
+   if (active && payload && payload.length) {
+      const data = [];
+      const dataPoint = payload[0].payload as ISeriesDataPoint;
 
-export default function Chart({ dataProvider }: { dataProvider: IChartDataProvider}) {
+      for (const dateChartPoint of payload) {
+         data.push(
+            <p
+               style={{ color: dateChartPoint.color }}
+            >{`${dateChartPoint.name} : £${dateChartPoint.value}`}</p>
+         );
+      }
+
+      return (
+         <div>
+            <p>Amount: £{dataPoint.amount}</p>
+            {data}
+         </div>
+      );
+   }
+
+   return null;
+};
+
+export default function Chart({
+   dataProvider,
+}: {
+   dataProvider: IChartDataProvider;
+}) {
    const title = dataProvider.subChartTitle ? (
-      <div>{dataProvider.chartTitle} - {dataProvider.subChartTitle}</div>
+      <div>
+         {dataProvider.chartTitle} - {dataProvider.subChartTitle}
+      </div>
    ) : (
       <div>{dataProvider.chartTitle}</div>
    );
+
+   const lines = [];
+
+   for (const series of dataProvider.data) {
+      lines.push(
+         <Line
+            type="monotone"
+            dataKey="value"
+            data={series.series}
+            name={series.name}
+            key={series.name}
+            stroke={series.color}
+            activeDot={{ r: 8 }}
+         />
+      );
+   }
 
    return (
       <>
@@ -93,12 +99,12 @@ export default function Chart({ dataProvider }: { dataProvider: IChartDataProvid
                minHeight: '500px',
                maxHeight: '500px',
                marginBottom: '60px',
-               height:"500px"
+               height: '500px',
             }}
          >
             <ResponsiveContainer>
                <LineChart
-                  data={data}
+                  data={dataProvider.data}
                   margin={{
                      top: 5,
                      right: 30,
@@ -107,17 +113,15 @@ export default function Chart({ dataProvider }: { dataProvider: IChartDataProvid
                   }}
                >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line
-                     type="monotone"
-                     dataKey="pv"
-                     stroke="#8884d8"
-                     activeDot={{ r: 8 }}
+                  <XAxis
+                     dataKey="date"
+                     type="category"
+                     allowDuplicatedCategory={false}
                   />
-                  <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                  <YAxis />
+                  <Tooltip content={ChartTooltip} />
+                  <Legend />
+                  {lines}
                </LineChart>
             </ResponsiveContainer>
          </div>
