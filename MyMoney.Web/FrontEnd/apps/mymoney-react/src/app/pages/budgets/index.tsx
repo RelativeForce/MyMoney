@@ -29,7 +29,7 @@ export default function Budgets() {
    const [monthState, setMonthState] = useValidatedState<number>(2020, [
       requiredValidator('Start is required'),
       maxValidator(12, 'Month must be less than or equal to 12'),
-      minValidator(1980, 'Year must be greater than or equal to 1'),
+      minValidator(1, 'Month must be greater than or equal to 1'),
    ]);
 
    useEffect(() => {
