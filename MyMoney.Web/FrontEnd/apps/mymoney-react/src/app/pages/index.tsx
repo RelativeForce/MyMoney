@@ -73,30 +73,21 @@ function buildRemainingBudget(
    navigate: (url: string) => void,
    setMonth: (month: number, year: number) => void
 ): IChartDataProvider {
-   const chartTitle = 'Transactions';
-   const yAxisLabel = 'Remaining in budget (£)';
-
    const date = monthAsDate(searchParameters);
-
-   const subChartTitle = `${date.toLocaleString('default', {
-      month: 'long',
-   })} ${date.getFullYear()}`;
+   const monthString = date.toLocaleString('default', { month: 'long' });
+   const subChartTitle = `${monthString} ${date.getFullYear()}`;
 
    return {
-      chartTitle,
-      yAxisLabel,
+      chartTitle: 'Transactions',
+      yAxisLabel : 'Remaining in budget (£)',
       subChartTitle,
       data,
       next: () => {
-         const date = monthAsDate(searchParameters);
-
          date.setMonth(date.getMonth() + 1);
 
          setMonth(date.getMonth(), date.getFullYear());
       },
       previous: () => {
-         const date = monthAsDate(searchParameters);
-
          date.setMonth(date.getMonth() - 1);
 
          setMonth(date.getMonth(), date.getFullYear());
@@ -127,7 +118,7 @@ export default function Home() {
    console.log(series);
 
    const setMonth = (month: number, year: number) =>
-      dispatch(setSelectedMonth(year, month));
+      dispatch(setSelectedMonth(year, month + 1));
 
    const dataProvider = buildRemainingBudget(
       searchParameters,
