@@ -1,470 +1,158 @@
 import { ISeriesDataPoint } from '@mymoney-common/interfaces';
 import Chart from '../components/chart';
-import { IChartDataProvider, IColoredSeries } from '../interfaces/chart-data-provider';
+import {
+   IChartDataProvider,
+   IColoredSeries,
+} from '../interfaces/chart-data-provider';
+import { useNavigate } from 'react-router-dom';
+import { AsyncStatus, IBudgetsSearch } from '../state/types';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+   fetchChartBudgets,
+   fetchChartTransactions,
+   selectChartBudgets,
+   selectChartTransactions,
+   selectRemainingBudgetSearchParameters,
+   setSelectedMonth,
+} from '../state/remaining-budget-chart-slice';
+import { useEffect, useMemo } from 'react';
+import {
+   IBudgetDto,
+   IBudgetSearchDto,
+   ITransactionDto,
+} from '@mymoney-common/api';
+import { BudgetSeries } from '@mymoney-common/classes';
+import { randomColor } from '@mymoney-common/functions';
 
-const data: IColoredSeries[] = [
-   {
-      name: 'Home budget',
-      color: '#5AA454',
-      series: [
-         {
-            id: -1,
-            text: 'Initial budget',
-            value: 50,
-            amount: 50,
-            date: '',
-            name: 'Initial budget',
-            link: null,
-         },
-         {
-            id: 81,
-            text: 'Essentials food',
-            value: 50,
-            amount: 15.22,
-            date: '02/10/2020',
-            name: 'Transaction 81',
-            link: ['/transactions', 'edit', 81],
-         },
-         {
-            id: 83,
-            text: 'Wetherspoons with boo',
-            value: 50,
-            amount: 26.64,
-            date: '03/10/2020',
-            name: 'Transaction 83',
-            link: ['/transactions', 'edit', 83],
-         },
-         {
-            id: 82,
-            text: 'Subway',
-            value: 50,
-            amount: 14.68,
-            date: '03/10/2020',
-            name: 'Transaction 82',
-            link: ['/transactions', 'edit', 82],
-         },
-         {
-            id: 80,
-            text: 'Petrol',
-            value: 50,
-            amount: 24,
-            date: '03/10/2020',
-            name: 'Transaction 80',
-            link: ['/transactions', 'edit', 80],
-         },
-         {
-            id: 79,
-            text: 'Hotel',
-            value: 50,
-            amount: 43,
-            date: '03/10/2020',
-            name: 'Transaction 79',
-            link: ['/transactions', 'edit', 79],
-         },
-         {
-            id: 85,
-            text: 'Pizza',
-            value: 50,
-            amount: 5,
-            date: '04/10/2020',
-            name: 'Transaction 85',
-            link: ['/transactions', 'edit', 85],
-         },
-         {
-            id: 84,
-            text: 'Parking',
-            value: 50,
-            amount: 1.9,
-            date: '04/10/2020',
-            name: 'Transaction 84',
-            link: ['/transactions', 'edit', 84],
-         },
-         {
-            id: 87,
-            text: 'Protein powder',
-            value: 50,
-            amount: 25.19,
-            date: '06/10/2020',
-            name: 'Transaction 87',
-            link: ['/transactions', 'edit', 87],
-         },
-         {
-            id: 86,
-            text: 'Halloween costume',
-            value: 50,
-            amount: 57.85,
-            date: '06/10/2020',
-            name: 'Transaction 86',
-            link: ['/transactions', 'edit', 86],
-         },
-         {
-            id: 88,
-            text: 'Wetherspoons',
-            value: 50,
-            amount: 19.44,
-            date: '09/10/2020',
-            name: 'Transaction 88',
-            link: ['/transactions', 'edit', 88],
-         },
-         {
-            id: 90,
-            text: 'Food for alton towers',
-            value: 50,
-            amount: 6.05,
-            date: '10/10/2020',
-            name: 'Transaction 90',
-            link: ['/transactions', 'edit', 90],
-         },
-         {
-            id: 89,
-            text: 'Mcdonalds breakfast',
-            value: 50,
-            amount: 3.99,
-            date: '10/10/2020',
-            name: 'Transaction 89',
-            link: ['/transactions', 'edit', 89],
-         },
-         {
-            id: 70,
-            text: 'Alton towers',
-            value: 50,
-            amount: 48.5,
-            date: '10/10/2020',
-            name: 'Transaction 70',
-            link: ['/transactions', 'edit', 70],
-         },
-         {
-            id: 92,
-            text: 'Drive to surprise boo',
-            value: 50,
-            amount: 37.16,
-            date: '11/10/2020',
-            name: 'Transaction 92',
-            link: ['/transactions', 'edit', 92],
-         },
-         {
-            id: 91,
-            text: 'Drink for drive',
-            value: 50,
-            amount: 2.59,
-            date: '11/10/2020',
-            name: 'Transaction 91',
-            link: ['/transactions', 'edit', 91],
-         },
-      ],
-   },
-   {
-      name: 'October budget',
-      color: '#783320',
-      series: [
-         {
-            id: -1,
-            text: 'Initial budget',
-            value: 500,
-            amount: 500,
-            date: '',
-            name: 'Initial budget',
-            link: null,
-         },
-         {
-            id: 81,
-            text: 'Essentials food',
-            value: 484.78,
-            amount: 15.22,
-            date: '02/10/2020',
-            name: 'Transaction 81',
-            link: ['/transactions', 'edit', 81],
-         },
-         {
-            id: 83,
-            text: 'Wetherspoons with boo',
-            value: 458.14,
-            amount: 26.64,
-            date: '03/10/2020',
-            name: 'Transaction 83',
-            link: ['/transactions', 'edit', 83],
-         },
-         {
-            id: 82,
-            text: 'Subway',
-            value: 443.46,
-            amount: 14.68,
-            date: '03/10/2020',
-            name: 'Transaction 82',
-            link: ['/transactions', 'edit', 82],
-         },
-         {
-            id: 80,
-            text: 'Petrol',
-            value: 419.46,
-            amount: 24,
-            date: '03/10/2020',
-            name: 'Transaction 80',
-            link: ['/transactions', 'edit', 80],
-         },
-         {
-            id: 79,
-            text: 'Hotel',
-            value: 376.46,
-            amount: 43,
-            date: '03/10/2020',
-            name: 'Transaction 79',
-            link: ['/transactions', 'edit', 79],
-         },
-         {
-            id: 85,
-            text: 'Pizza',
-            value: 371.46,
-            amount: 5,
-            date: '04/10/2020',
-            name: 'Transaction 85',
-            link: ['/transactions', 'edit', 85],
-         },
-         {
-            id: 84,
-            text: 'Parking',
-            value: 369.56,
-            amount: 1.9,
-            date: '04/10/2020',
-            name: 'Transaction 84',
-            link: ['/transactions', 'edit', 84],
-         },
-         {
-            id: 87,
-            text: 'Protein powder',
-            value: 344.37,
-            amount: 25.19,
-            date: '06/10/2020',
-            name: 'Transaction 87',
-            link: ['/transactions', 'edit', 87],
-         },
-         {
-            id: 86,
-            text: 'Halloween costume',
-            value: 286.52,
-            amount: 57.85,
-            date: '06/10/2020',
-            name: 'Transaction 86',
-            link: ['/transactions', 'edit', 86],
-         },
-         {
-            id: 88,
-            text: 'Wetherspoons',
-            value: 267.08,
-            amount: 19.44,
-            date: '09/10/2020',
-            name: 'Transaction 88',
-            link: ['/transactions', 'edit', 88],
-         },
-         {
-            id: 90,
-            text: 'Food for alton towers',
-            value: 261.03,
-            amount: 6.05,
-            date: '10/10/2020',
-            name: 'Transaction 90',
-            link: ['/transactions', 'edit', 90],
-         },
-         {
-            id: 89,
-            text: 'Mcdonalds breakfast',
-            value: 257.03999999999996,
-            amount: 3.99,
-            date: '10/10/2020',
-            name: 'Transaction 89',
-            link: ['/transactions', 'edit', 89],
-         },
-         {
-            id: 70,
-            text: 'Alton towers',
-            value: 208.53999999999996,
-            amount: 48.5,
-            date: '10/10/2020',
-            name: 'Transaction 70',
-            link: ['/transactions', 'edit', 70],
-         },
-         {
-            id: 92,
-            text: 'Drive to surprise boo',
-            value: 171.37999999999997,
-            amount: 37.16,
-            date: '11/10/2020',
-            name: 'Transaction 92',
-            link: ['/transactions', 'edit', 92],
-         },
-         {
-            id: 91,
-            text: 'Drink for drive',
-            value: 168.78999999999996,
-            amount: 2.59,
-            date: '11/10/2020',
-            name: 'Transaction 91',
-            link: ['/transactions', 'edit', 91],
-         },
-      ],
-   },
-   {
-      name: 'Personal budget',
-      color: '#DB2E2E',
-      series: [
-         {
-            id: -1,
-            text: 'Initial budget',
-            value: 150,
-            amount: 150,
-            date: '',
-            name: 'Initial budget',
-            link: null,
-         },
-         {
-            id: 81,
-            text: 'Essentials food',
-            value: 134.78,
-            amount: 15.22,
-            date: '02/10/2020',
-            name: 'Transaction 81',
-            link: ['/transactions', 'edit', 81],
-         },
-         {
-            id: 83,
-            text: 'Wetherspoons with boo',
-            value: 134.78,
-            amount: 26.64,
-            date: '03/10/2020',
-            name: 'Transaction 83',
-            link: ['/transactions', 'edit', 83],
-         },
-         {
-            id: 82,
-            text: 'Subway',
-            value: 134.78,
-            amount: 14.68,
-            date: '03/10/2020',
-            name: 'Transaction 82',
-            link: ['/transactions', 'edit', 82],
-         },
-         {
-            id: 80,
-            text: 'Petrol',
-            value: 134.78,
-            amount: 24,
-            date: '03/10/2020',
-            name: 'Transaction 80',
-            link: ['/transactions', 'edit', 80],
-         },
-         {
-            id: 79,
-            text: 'Hotel',
-            value: 134.78,
-            amount: 43,
-            date: '03/10/2020',
-            name: 'Transaction 79',
-            link: ['/transactions', 'edit', 79],
-         },
-         {
-            id: 85,
-            text: 'Pizza',
-            value: 134.78,
-            amount: 5,
-            date: '04/10/2020',
-            name: 'Transaction 85',
-            link: ['/transactions', 'edit', 85],
-         },
-         {
-            id: 84,
-            text: 'Parking',
-            value: 134.78,
-            amount: 1.9,
-            date: '04/10/2020',
-            name: 'Transaction 84',
-            link: ['/transactions', 'edit', 84],
-         },
-         {
-            id: 87,
-            text: 'Protein powder',
-            value: 109.59,
-            amount: 25.19,
-            date: '06/10/2020',
-            name: 'Transaction 87',
-            link: ['/transactions', 'edit', 87],
-         },
-         {
-            id: 86,
-            text: 'Halloween costume',
-            value: 51.74,
-            amount: 57.85,
-            date: '06/10/2020',
-            name: 'Transaction 86',
-            link: ['/transactions', 'edit', 86],
-         },
-         {
-            id: 88,
-            text: 'Wetherspoons',
-            value: 32.3,
-            amount: 19.44,
-            date: '09/10/2020',
-            name: 'Transaction 88',
-            link: ['/transactions', 'edit', 88],
-         },
-         {
-            id: 90,
-            text: 'Food for alton towers',
-            value: 26.249999999999996,
-            amount: 6.05,
-            date: '10/10/2020',
-            name: 'Transaction 90',
-            link: ['/transactions', 'edit', 90],
-         },
-         {
-            id: 89,
-            text: 'Mcdonalds breakfast',
-            value: 22.259999999999998,
-            amount: 3.99,
-            date: '10/10/2020',
-            name: 'Transaction 89',
-            link: ['/transactions', 'edit', 89],
-         },
-         {
-            id: 70,
-            text: 'Alton towers',
-            value: -26.240000000000002,
-            amount: 48.5,
-            date: '10/10/2020',
-            name: 'Transaction 70',
-            link: ['/transactions', 'edit', 70],
-         },
-         {
-            id: 92,
-            text: 'Drive to surprise boo',
-            value: -26.240000000000002,
-            amount: 37.16,
-            date: '11/10/2020',
-            name: 'Transaction 92',
-            link: ['/transactions', 'edit', 92],
-         },
-         {
-            id: 91,
-            text: 'Drink for drive',
-            value: -28.830000000000002,
-            amount: 2.59,
-            date: '11/10/2020',
-            name: 'Transaction 91',
-            link: ['/transactions', 'edit', 91],
-         },
-      ],
-   },
+const colors = [
+   '#5AA454',
+   '#783320',
+   '#DB2E2E',
+   '#7aa3e5',
+   '#a8385d',
+   '#aae3f5',
 ];
 
-export default function Home() {
-   const provider: IChartDataProvider = {
-      chartTitle: 'Transactions',
-      yAxisLabel: '',
-      data,
-      subChartTitle: 'July 2023',
-      onSelect: (data: ISeriesDataPoint) => {},
-      next: () => {},
-      previous: () => {},
-   };
+function monthAsDate(searchParameters: IBudgetsSearch): Date {
+   const month = new Date();
 
-   return <Chart dataProvider={provider}></Chart>;
+   month.setDate(1);
+   month.setMonth(searchParameters.month - 1);
+   month.setFullYear(searchParameters.year);
+
+   return month;
+}
+
+function getSeries(
+   budgets: IBudgetDto[],
+   transactions: ITransactionDto[]
+): IColoredSeries[] {
+   const data = [];
+
+   let index = 0;
+   for (const budget of budgets) {
+      const bs = new BudgetSeries(budget);
+
+      for (const transaction of transactions) {
+         bs.addEntry(transaction);
+      }
+
+      data[data.length] = {
+         ...bs,
+         color: colors.length > index ? colors[index] : randomColor(),
+      };
+      index++;
+   }
+
+   return data;
+}
+
+function buildRemainingBudget(
+   searchParameters: IBudgetsSearch,
+   data: IColoredSeries[],
+   navigate: (url: string) => void,
+   setMonth: (month: number, year: number) => void
+): IChartDataProvider {
+   const chartTitle = 'Transactions';
+   const yAxisLabel = 'Remaining in budget (£)';
+
+   const date = monthAsDate(searchParameters);
+
+   const subChartTitle = `${date.toLocaleString('default', {
+      month: 'long',
+   })} ${date.getFullYear()}`;
+
+   return {
+      chartTitle,
+      yAxisLabel,
+      subChartTitle,
+      data,
+      next: () => {
+         const date = monthAsDate(searchParameters);
+
+         date.setMonth(date.getMonth() + 1);
+
+         setMonth(date.getMonth(), date.getFullYear());
+      },
+      previous: () => {
+         const date = monthAsDate(searchParameters);
+
+         date.setMonth(date.getMonth() - 1);
+
+         setMonth(date.getMonth(), date.getFullYear());
+      },
+      onSelect: (data: ISeriesDataPoint) => {
+         if (data.link === null) {
+            return;
+         }
+
+         navigate(data.link.join('/'));
+      },
+   };
+}
+
+export default function Home() {
+   const navigate = useNavigate();
+   const dispatch = useDispatch<any>();
+
+   const transactions = useSelector(selectChartTransactions);
+   const budgets = useSelector(selectChartBudgets);
+   const searchParameters = useSelector(selectRemainingBudgetSearchParameters);
+
+   const series = useMemo(
+      () => getSeries(budgets.data, transactions.data),
+      [transactions, budgets]
+   );
+
+   console.log(series);
+
+   const setMonth = (month: number, year: number) =>
+      dispatch(setSelectedMonth(year, month));
+
+   const dataProvider = buildRemainingBudget(
+      searchParameters,
+      series,
+      navigate,
+      setMonth
+   );
+
+   useEffect(() => {
+      const loading =
+         transactions.status === AsyncStatus.loading ||
+         budgets.status === AsyncStatus.loading;
+
+      if (loading || (!loading && !searchParameters.refresh)) {
+         return;
+      }
+
+      const search: IBudgetSearchDto = {
+         year: searchParameters.year,
+         month: searchParameters.month,
+      };
+
+      dispatch(fetchChartBudgets({ search }));
+      dispatch(fetchChartTransactions({ search }));
+   }, [searchParameters, dispatch]);
+
+   return <Chart dataProvider={dataProvider}></Chart>;
 }

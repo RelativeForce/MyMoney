@@ -1,4 +1,3 @@
-import { ISeriesDataPoint } from '@mymoney-common/interfaces';
 import { IChartDataProvider } from '../interfaces/chart-data-provider';
 import {
    LineChart,
@@ -9,35 +8,8 @@ import {
    Tooltip,
    Legend,
    ResponsiveContainer,
-   TooltipProps,
 } from 'recharts';
-
-const ChartTooltip = ({
-   active,
-   payload,
-}: TooltipProps<(string | number)[], string>) => {
-   if (active && payload && payload.length) {
-      const data = [];
-      const dataPoint = payload[0].payload as ISeriesDataPoint;
-
-      for (const dateChartPoint of payload) {
-         data.push(
-            <p
-               style={{ color: dateChartPoint.color }}
-            >{`${dateChartPoint.name} : £${dateChartPoint.value}`}</p>
-         );
-      }
-
-      return (
-         <div>
-            <p>Amount: £{dataPoint.amount}</p>
-            {data}
-         </div>
-      );
-   }
-
-   return null;
-};
+import ChartTooltip from './chart-tooltip';
 
 export default function Chart({
    dataProvider,
@@ -119,7 +91,7 @@ export default function Chart({
                      allowDuplicatedCategory={false}
                   />
                   <YAxis />
-                  <Tooltip content={ChartTooltip} />
+                  <Tooltip content={ChartTooltip(dataProvider.onSelect)} />
                   <Legend />
                   {lines}
                </LineChart>

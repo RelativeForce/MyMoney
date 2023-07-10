@@ -1,15 +1,11 @@
 import { IBudgetDto, ITransactionDto, IUserDto } from '@mymoney-common/api';
 import { ISessionModel } from '@mymoney-common/interfaces';
 
-export interface ISessionState {
-   currentSession: ISessionModel | null;
-   currentUser: IAsyncState<IUserDto | null>;
-}
-
 export interface IAppState {
    session: ISessionState;
    transactions: ITransactionState;
    budgets: IBudgetState;
+   remainingBudgetChart: IRemainingBudgetChartState;
 }
 
 export interface IAsyncState<T> {
@@ -23,6 +19,11 @@ export enum AsyncStatus {
    loading = 'loading',
    succeeded = 'succeeded',
    failed = 'failed',
+}
+
+export interface ISessionState {
+   currentSession: ISessionModel | null;
+   currentUser: IAsyncState<IUserDto | null>;
 }
 
 export interface ITransactionState {
@@ -49,4 +50,10 @@ export interface IBudgetsSearch {
    year: number;
    month: number;
    refresh: boolean;
+}
+
+export interface IRemainingBudgetChartState {
+   searchParameters: IBudgetsSearch;
+   budgets: IAsyncState<IBudgetDto[]>;
+   transactions: IAsyncState<ITransactionDto[]>;
 }
