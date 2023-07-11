@@ -1,33 +1,37 @@
 import { IChartDataProvider } from '../../shared/components/chart';
 import { Router } from '@angular/router';
-import { ISeriesItem, ISeries } from '@mymoney-common/interfaces';
 import { HomeService } from '../../shared/services';
 import { IDateRangeModel } from '../../shared/state/types';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { IRunningTotalDto } from '@mymoney-common/api';
-import { RunningTotalSeries } from '@mymoney-common/classes';
+import {
+   RunningTotalSeries,
+   RunningTotalSeriesDataPoint,
+} from '@mymoney-common/classes';
 
-export class RunningTotalChartDataProvider implements IChartDataProvider {
+const LINE_COLOR = '#7aa3e5';
+
+export class RunningTotalChartDataProvider
+   implements
+      IChartDataProvider<RunningTotalSeries, RunningTotalSeriesDataPoint>
+{
    public chartTitle: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
-   public seriesData: Observable<ISeries[]>;
+   public series: RunningTotalSeries[];
    public subChartTitle: string;
 
-   private seriesDataSubject: BehaviorSubject<ISeries[]>;
    private year: number;
 
    constructor(
       private readonly homeService: HomeService,
       private readonly router: Router
    ) {
-      this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
-      this.seriesData = this.seriesDataSubject.asObservable();
+      this.series = [];
       this.subChartTitle = '';
       this.chartTitle = 'Total savings';
       this.yAxisLabel = 'Balance (£)';
       this.colorScheme = {
-         domain: ['#7aa3e5'],
+         domain: [LINE_COLOR],
       };
       this.year = new Date().getFullYear();
    }
@@ -40,8 +44,30 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
       // Do nothing
    }
 
-   public onSelect(item: ISeriesItem): void {
-      this.router.navigate(item.link ?? ['./']);
+   public onSelect(item: RunningTotalSeriesDataPoint): void {
+      if (item.runningTotal !== null) {
+         if (item.amount > 0) {
+            if (item.runningTotal.parentId === null || item.id > 0) {
+               this.router.navigate(['/incomes', 'edit', item.id]);
+            } else {
+               this.router.navigate([
+                  '/incomes',
+                  'edit-recurring',
+                  item.runningTotal.parentId,
+               ]);
+            }
+         } else if (item.amount < 0) {
+            if (item.runningTotal.parentId === null || item.id > 0) {
+               this.router.navigate(['/transactions', 'edit', item.id]);
+            } else {
+               this.router.navigate([
+                  '/transactions',
+                  'edit-recurring',
+                  item.runningTotal.parentId,
+               ]);
+            }
+         }
+      }
    }
 
    public next(): void {
@@ -81,12 +107,12 @@ export class RunningTotalChartDataProvider implements IChartDataProvider {
    }
 
    private updateChart(runningTotals: IRunningTotalDto[]): void {
-      const series = new RunningTotalSeries(0);
+      const series = new RunningTotalSeries(0, LINE_COLOR);
 
       for (const runningTotal of runningTotals) {
          series.addEntry(runningTotal);
       }
 
-      this.seriesDataSubject.next([series]);
+      this.series = [series];
    }
 }

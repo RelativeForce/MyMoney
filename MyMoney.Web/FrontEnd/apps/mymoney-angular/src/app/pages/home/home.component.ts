@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BudgetService, TransactionService } from '../../shared/services';
 import { HomeService } from '../../shared/services/home.service';
-import { IChartDataProvider } from '../../shared/components/chart';
 import { RunningTotalChartDataProvider } from './running-total-chart-data-provider.class';
 import { TransactionsChartDataProvider } from './transactions-chart-data-provider.class';
 
@@ -10,8 +9,8 @@ import { TransactionsChartDataProvider } from './transactions-chart-data-provide
    templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit, OnDestroy {
-   public transactionsChart: IChartDataProvider;
-   public runningTotalChart: IChartDataProvider;
+   public transactionsChart: TransactionsChartDataProvider;
+   public runningTotalChart: RunningTotalChartDataProvider;
 
    constructor(
       transactionService: TransactionService,
