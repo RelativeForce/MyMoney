@@ -85,14 +85,10 @@ function buildRemainingBudget(
          setMonth(date.getMonth(), date.getFullYear());
       },
       onClickDataPoint: (data: BudgetSeriesDataPoint) => {
-         if (data.id === -1) {
-            return;
-         }
-
          navigate(`/transactions/edit?id=${data.id}`);
       },
       onClickSeries: (data: BudgetSeries) => {
-         // Open budget
+         navigate(`/budgets/edit?id=${data.budget.id}`);
       }
    };
 }

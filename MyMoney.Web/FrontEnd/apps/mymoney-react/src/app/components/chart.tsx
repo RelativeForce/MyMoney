@@ -43,7 +43,7 @@ TDataPoint extends ISeriesDataPoint
                const dataPoint: TDataPoint = dotData.payload;
 
                if (dataPoint.id === -1) {
-                  // TODO: Open budget
+                  dataProvider.onClickSeries(series);
                   return;
                }
 
