@@ -10,6 +10,7 @@ import {
    ResponsiveContainer,
 } from 'recharts';
 import ChartTooltip from './chart-tooltip';
+import { ISeriesDataPoint } from '@mymoney-common/interfaces';
 
 export default function Chart({
    dataProvider,
@@ -35,8 +36,18 @@ export default function Chart({
             name={series.name}
             key={series.name}
             stroke={series.color}
-            activeDot={{ r: 8 }}
-         />
+            activeDot={{ r: 8, className: 'click-cursor', onClick: (_, dotData: any) => { 
+               const dataPoint: ISeriesDataPoint = dotData.payload;
+
+               if (dataPoint.id === -1) {
+                  // TODO: Open budget
+                  return;
+               }
+
+               dataProvider.onClickDataPoint(dataPoint);
+            }}}
+         >
+         </Line>
       );
    }
 
@@ -91,7 +102,7 @@ export default function Chart({
                      allowDuplicatedCategory={false}
                   />
                   <YAxis />
-                  <Tooltip content={ChartTooltip(dataProvider.onSelect)} />
+                  <Tooltip content={ChartTooltip} />
                   <Legend />
                   {lines}
                </LineChart>

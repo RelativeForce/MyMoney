@@ -7,7 +7,8 @@ export interface IChartDataProvider {
    data: IColoredSeries[];
    subChartTitle: string;
    yAxisLabel: string;
-   onSelect(data: ISeriesDataPoint): void;
+   onClickDataPoint(data: ISeriesDataPoint): void;
+   onClickSeries(data: IColoredSeries): void;
    next(): void;
    previous(): void;
 }

@@ -92,13 +92,16 @@ function buildRemainingBudget(
 
          setMonth(date.getMonth(), date.getFullYear());
       },
-      onSelect: (data: ISeriesDataPoint) => {
-         if (data.link === null) {
+      onClickDataPoint: (data: ISeriesDataPoint) => {
+         if (data.id === -1) {
             return;
          }
 
-         navigate(data.link.join('/'));
+         navigate(`/transactions/edit?id=${data.id}`);
       },
+      onClickSeries: (data: IColoredSeries) => {
+         // Open budget
+      }
    };
 }
 
@@ -112,10 +115,8 @@ export default function Home() {
 
    const series = useMemo(
       () => getSeries(budgets.data, transactions.data),
-      [transactions, budgets]
+      [transactions.data, budgets.data]
    );
-
-   console.log(series);
 
    const setMonth = (month: number, year: number) =>
       dispatch(setSelectedMonth(year, month + 1));
@@ -136,14 +137,11 @@ export default function Home() {
          return;
       }
 
-      const search: IBudgetSearchDto = {
-         year: searchParameters.year,
-         month: searchParameters.month,
-      };
+      const search: IBudgetSearchDto = searchParameters;
 
       dispatch(fetchChartBudgets({ search }));
       dispatch(fetchChartTransactions({ search }));
-   }, [searchParameters, dispatch]);
+   }, [searchParameters.refresh, dispatch, transactions.status, budgets.status, searchParameters]);
 
    return <Chart dataProvider={dataProvider}></Chart>;
 }
