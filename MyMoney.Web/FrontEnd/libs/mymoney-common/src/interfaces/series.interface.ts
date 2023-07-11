@@ -1,6 +1,7 @@
 import { ISeriesDataPoint } from './series-data-point.interface';
 
-export interface ISeries {
+export interface ISeries<TDataPoint extends ISeriesDataPoint> {
    name: string;
-   series: ISeriesDataPoint[];
+   color: string;
+   series: TDataPoint[];
 }

@@ -1,24 +1,24 @@
 import { IChartDataProvider } from '../../shared/components/chart';
 import { Router } from '@angular/router';
-import { BudgetSeries } from '@mymoney-common/classes';
-import { ISeriesItem, ISeries } from '@mymoney-common/interfaces';
+import { BudgetSeries, BudgetSeriesDataPoint } from '@mymoney-common/classes';
 import { BudgetService, TransactionService } from '../../shared/services';
 import {
    IBudgetModel,
    IDateRangeModel,
    ITransactionModel,
 } from '../../shared/state/types';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { randomColor } from '@mymoney-common/functions';
 
-export class TransactionsChartDataProvider implements IChartDataProvider {
+export class TransactionsChartDataProvider
+   implements IChartDataProvider<BudgetSeries, BudgetSeriesDataPoint>
+{
    public chartTitle: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
-   public seriesData: Observable<ISeries[]>;
+   public series: BudgetSeries[];
    public subChartTitle: string;
 
-   private seriesDataSubject: BehaviorSubject<ISeries[]>;
    private month: Date;
 
    constructor(
@@ -26,8 +26,7 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
       private readonly budgetService: BudgetService,
       private readonly router: Router
    ) {
-      this.seriesDataSubject = new BehaviorSubject<ISeries[]>([]);
-      this.seriesData = this.seriesDataSubject.asObservable();
+      this.series = [];
       this.subChartTitle = '';
       this.chartTitle = 'Transactions';
       this.yAxisLabel = 'Remaining in budget (£)';
@@ -44,8 +43,20 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
       // Do nothing
    }
 
-   public onSelect(item: ISeriesItem): void {
-      this.router.navigate(item.link ?? ['./']);
+   public onSelect(item: BudgetSeriesDataPoint): void {
+      if (item.transaction === null) {
+         return;
+      }
+
+      if (item.transaction.parentId === null || item.transaction.id > 0) {
+         this.router.navigate(['/transactions', 'edit', item.transaction.id]);
+      } else {
+         this.router.navigate([
+            '/transactions',
+            'edit-recurring',
+            item.transaction.parentId,
+         ]);
+      }
    }
 
    public next(): void {
@@ -104,23 +115,23 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
       transactions: ITransactionModel[]
    ): void {
       const seriesData = [];
+      const colors = this.getColourScheme(budgets.length);
 
-      for (const budget of budgets) {
-         const bs = new BudgetSeries(budget);
+      for (let index = 0; index < budgets.length; index++) {
+         const bs = new BudgetSeries(budgets[index], colors[index]);
 
          for (const transaction of transactions) {
             bs.addEntry(transaction);
          }
 
-         seriesData[seriesData.length] = bs as ISeries;
+         seriesData[seriesData.length] = bs;
       }
 
-      this.updateColourScheme(budgets.length);
-
-      this.seriesDataSubject.next(seriesData);
+      this.series = seriesData;
+      this.colorScheme = { domain: colors };
    }
 
-   private updateColourScheme(budgetCount: number) {
+   private getColourScheme(budgetCount: number): string[] {
       const colors = [
          '#5AA454',
          '#783320',
@@ -138,6 +149,6 @@ export class TransactionsChartDataProvider implements IChartDataProvider {
          }
       }
 
-      this.colorScheme = { domain: colors };
+      return colors;
    }
 }

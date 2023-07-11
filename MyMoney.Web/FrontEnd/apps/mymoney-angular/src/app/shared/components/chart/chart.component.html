@@ -44,7 +44,7 @@
       [xAxis]="true"
       [yAxis]="true"
       [yAxisLabel]="dataProvider.yAxisLabel"
-      [results]="dataProvider.seriesData | async"
+      [results]="dataProvider.series"
       [legendTitle]="''"
       (select)="onSelect($event)"
       [xAxisTickFormatting]="getXAxisTickLabel"
