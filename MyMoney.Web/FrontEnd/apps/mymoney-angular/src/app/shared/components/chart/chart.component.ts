@@ -7,7 +7,10 @@ import { ISeries, ISeriesDataPoint } from '@mymoney-common/interfaces';
    templateUrl: './chart.component.html',
    selector: 'mymoney-chart',
 })
-export class ChartComponent<TSeries extends ISeries<TDataPoint>, TDataPoint extends ISeriesDataPoint> {
+export class ChartComponent<
+   TSeries extends ISeries<TDataPoint>,
+   TDataPoint extends ISeriesDataPoint
+> {
    @Input()
    public dataProvider!: IChartDataProvider<TSeries, TDataPoint>;
 

@@ -11,12 +11,16 @@ export class BudgetSeriesDataPoint implements ISeriesDataPoint {
    public readonly amount: number;
    public readonly date: string;
 
-   constructor(public readonly transaction: ITransactionDto | null, remaining: number) {
+   constructor(
+      public readonly transaction: ITransactionDto | null,
+      remaining: number
+   ) {
       this.id = transaction?.id ?? -1;
       this.text = transaction?.description ?? DEFAULT_TEXT;
       this.value = remaining;
       this.amount = transaction?.amount ?? remaining;
       this.date = transaction?.date ?? '';
-      this.name = transaction !== null ? `Transaction ${transaction.id}` : DEFAULT_TEXT;
+      this.name =
+         transaction !== null ? `Transaction ${transaction.id}` : DEFAULT_TEXT;
    }
 }

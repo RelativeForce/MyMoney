@@ -8,7 +8,10 @@ export class BudgetSeries implements ISeries<BudgetSeriesDataPoint> {
 
    private remaining: number;
 
-   constructor(public readonly budget: IBudgetDto, public readonly color: string) {
+   constructor(
+      public readonly budget: IBudgetDto,
+      public readonly color: string
+   ) {
       this.name = budget.name;
       this.series = [new BudgetSeriesDataPoint(null, budget.amount)];
       this.remaining = budget.amount;

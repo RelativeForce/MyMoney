@@ -7,7 +7,7 @@ import {
    IDateRangeModel,
    ITransactionModel,
 } from '../../shared/state/types';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { randomColor } from '@mymoney-common/functions';
 
 export class TransactionsChartDataProvider
@@ -16,10 +16,9 @@ export class TransactionsChartDataProvider
    public chartTitle: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
-   public seriesData: Observable<BudgetSeries[]>;
+   public series: BudgetSeries[];
    public subChartTitle: string;
 
-   private seriesDataSubject: BehaviorSubject<BudgetSeries[]>;
    private month: Date;
 
    constructor(
@@ -27,8 +26,7 @@ export class TransactionsChartDataProvider
       private readonly budgetService: BudgetService,
       private readonly router: Router
    ) {
-      this.seriesDataSubject = new BehaviorSubject<BudgetSeries[]>([]);
-      this.seriesData = this.seriesDataSubject.asObservable();
+      this.series = [];
       this.subChartTitle = '';
       this.chartTitle = 'Transactions';
       this.yAxisLabel = 'Remaining in budget (£)';
@@ -129,8 +127,8 @@ export class TransactionsChartDataProvider
          seriesData[seriesData.length] = bs;
       }
 
-      this.seriesDataSubject.next(seriesData);
-      this.colorScheme = { domain: colors }
+      this.series = seriesData;
+      this.colorScheme = { domain: colors };
    }
 
    private getColourScheme(budgetCount: number): string[] {

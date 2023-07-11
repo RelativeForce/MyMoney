@@ -11,7 +11,10 @@ export class RunningTotalSeriesDataPoint implements ISeriesDataPoint {
    public readonly amount: number;
    public readonly date: string;
 
-   constructor(public readonly runningTotal: IRunningTotalDto | null, initialTotal: number) {
+   constructor(
+      public readonly runningTotal: IRunningTotalDto | null,
+      initialTotal: number
+   ) {
       this.id = runningTotal?.id ?? 0;
       this.text = runningTotal?.text ?? DEFAULT_TEXT;
       this.value = runningTotal?.value ?? initialTotal;

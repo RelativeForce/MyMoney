@@ -2,28 +2,31 @@ import { IChartDataProvider } from '../../shared/components/chart';
 import { Router } from '@angular/router';
 import { HomeService } from '../../shared/services';
 import { IDateRangeModel } from '../../shared/state/types';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { IRunningTotalDto } from '@mymoney-common/api';
-import { RunningTotalSeries, RunningTotalSeriesDataPoint } from '@mymoney-common/classes';
+import {
+   RunningTotalSeries,
+   RunningTotalSeriesDataPoint,
+} from '@mymoney-common/classes';
 
 const LINE_COLOR = '#7aa3e5';
 
-export class RunningTotalChartDataProvider implements IChartDataProvider<RunningTotalSeries, RunningTotalSeriesDataPoint> {
+export class RunningTotalChartDataProvider
+   implements
+      IChartDataProvider<RunningTotalSeries, RunningTotalSeriesDataPoint>
+{
    public chartTitle: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
-   public seriesData: Observable<RunningTotalSeries[]>;
+   public series: RunningTotalSeries[];
    public subChartTitle: string;
 
-   private seriesDataSubject: BehaviorSubject<RunningTotalSeries[]>;
    private year: number;
 
    constructor(
       private readonly homeService: HomeService,
       private readonly router: Router
    ) {
-      this.seriesDataSubject = new BehaviorSubject<RunningTotalSeries[]>([]);
-      this.seriesData = this.seriesDataSubject.asObservable();
+      this.series = [];
       this.subChartTitle = '';
       this.chartTitle = 'Total savings';
       this.yAxisLabel = 'Balance (£)';
@@ -110,6 +113,6 @@ export class RunningTotalChartDataProvider implements IChartDataProvider<Running
          series.addEntry(runningTotal);
       }
 
-      this.seriesDataSubject.next([series]);
+      this.series = [series];
    }
 }
