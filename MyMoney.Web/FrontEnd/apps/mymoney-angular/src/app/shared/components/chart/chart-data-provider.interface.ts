@@ -1,13 +1,13 @@
+import { ISeries, ISeriesDataPoint } from '@mymoney-common/interfaces';
 import { Observable } from 'rxjs';
-import { ISeriesItem, ISeries } from '@mymoney-common/interfaces';
 
-export interface IChartDataProvider {
+export interface IChartDataProvider<TSeries extends ISeries<TDataPoint>, TDataPoint extends ISeriesDataPoint> {
    chartTitle: string;
    yAxisLabel: string;
    colorScheme: { domain: string[] };
-   seriesData: Observable<ISeries[]>;
+   seriesData: Observable<TSeries[]>;
    subChartTitle: string;
-   onSelect(data: ISeriesItem): void;
+   onSelect(data: TDataPoint): void;
    init(): void;
    destroy(): void;
    next(): void;
