@@ -10,12 +10,15 @@ import {
    ResponsiveContainer,
 } from 'recharts';
 import ChartTooltip from './chart-tooltip';
-import { ISeriesDataPoint } from '@mymoney-common/interfaces';
+import { ISeries, ISeriesDataPoint } from '@mymoney-common/interfaces';
 
-export default function Chart({
+export default function Chart<
+TSeries extends ISeries<TDataPoint>,
+TDataPoint extends ISeriesDataPoint
+>({
    dataProvider,
 }: {
-   dataProvider: IChartDataProvider;
+   dataProvider: IChartDataProvider<TSeries, TDataPoint>;
 }) {
    const title = dataProvider.subChartTitle ? (
       <div>
@@ -37,7 +40,7 @@ export default function Chart({
             key={series.name}
             stroke={series.color}
             activeDot={{ r: 8, className: 'click-cursor', onClick: (_, dotData: any) => { 
-               const dataPoint: ISeriesDataPoint = dotData.payload;
+               const dataPoint: TDataPoint = dotData.payload;
 
                if (dataPoint.id === -1) {
                   // TODO: Open budget
@@ -97,9 +100,10 @@ export default function Chart({
                >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
-                     dataKey="date"
+                     dataKey="id"
                      type="category"
                      allowDuplicatedCategory={false}
+                     hide={true}
                   />
                   <YAxis />
                   <Tooltip content={ChartTooltip} />

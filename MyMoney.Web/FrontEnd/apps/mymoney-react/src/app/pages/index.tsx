@@ -1,9 +1,5 @@
-import { ISeriesDataPoint } from '@mymoney-common/interfaces';
 import Chart from '../components/chart';
-import {
-   IChartDataProvider,
-   IColoredSeries,
-} from '../interfaces/chart-data-provider';
+import { IChartDataProvider } from '../interfaces/chart-data-provider';
 import { useNavigate } from 'react-router-dom';
 import { AsyncStatus, IBudgetsSearch } from '../state/types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +17,7 @@ import {
    IBudgetSearchDto,
    ITransactionDto,
 } from '@mymoney-common/api';
-import { BudgetSeries } from '@mymoney-common/classes';
+import { BudgetSeries, BudgetSeriesDataPoint } from '@mymoney-common/classes';
 import { randomColor } from '@mymoney-common/functions';
 
 const colors = [
@@ -46,22 +42,18 @@ function monthAsDate(searchParameters: IBudgetsSearch): Date {
 function getSeries(
    budgets: IBudgetDto[],
    transactions: ITransactionDto[]
-): IColoredSeries[] {
+): BudgetSeries[] {
    const data = [];
 
-   let index = 0;
-   for (const budget of budgets) {
-      const bs = new BudgetSeries(budget);
+   for (let index = 0; index < budgets.length; index++) {
+      const color = colors.length > index ? colors[index] : randomColor();
+      const bs = new BudgetSeries(budgets[index], color);
 
       for (const transaction of transactions) {
          bs.addEntry(transaction);
       }
 
-      data[data.length] = {
-         ...bs,
-         color: colors.length > index ? colors[index] : randomColor(),
-      };
-      index++;
+      data[data.length] = bs;
    }
 
    return data;
@@ -69,10 +61,10 @@ function getSeries(
 
 function buildRemainingBudget(
    searchParameters: IBudgetsSearch,
-   data: IColoredSeries[],
+   data: BudgetSeries[],
    navigate: (url: string) => void,
    setMonth: (month: number, year: number) => void
-): IChartDataProvider {
+): IChartDataProvider<BudgetSeries, BudgetSeriesDataPoint> {
    const date = monthAsDate(searchParameters);
    const monthString = date.toLocaleString('default', { month: 'long' });
    const subChartTitle = `${monthString} ${date.getFullYear()}`;
@@ -92,14 +84,14 @@ function buildRemainingBudget(
 
          setMonth(date.getMonth(), date.getFullYear());
       },
-      onClickDataPoint: (data: ISeriesDataPoint) => {
+      onClickDataPoint: (data: BudgetSeriesDataPoint) => {
          if (data.id === -1) {
             return;
          }
 
          navigate(`/transactions/edit?id=${data.id}`);
       },
-      onClickSeries: (data: IColoredSeries) => {
+      onClickSeries: (data: BudgetSeries) => {
          // Open budget
       }
    };

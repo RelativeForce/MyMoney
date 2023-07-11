@@ -116,7 +116,7 @@ export const fetchChartTransactions = createAsyncThunk(
          return await firstValueFrom(
             api.list(dateRangeDto).pipe(
                first(),
-               map((listDto: ITransactionListDto) => listDto.transactions)
+               map((listDto: ITransactionListDto) => listDto.transactions.reverse())
             )
          );
       } catch (error: any) {

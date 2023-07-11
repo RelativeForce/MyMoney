@@ -1,14 +1,15 @@
 import { ISeries, ISeriesDataPoint } from "@mymoney-common/interfaces";
 
-export type IColoredSeries = ISeries & { color: string };
-
-export interface IChartDataProvider {
+export interface IChartDataProvider<
+TSeries extends ISeries<TDataPoint>,
+TDataPoint extends ISeriesDataPoint
+> {
    chartTitle: string;
-   data: IColoredSeries[];
+   data: TSeries[];
    subChartTitle: string;
    yAxisLabel: string;
-   onClickDataPoint(data: ISeriesDataPoint): void;
-   onClickSeries(data: IColoredSeries): void;
+   onClickDataPoint(data: TDataPoint): void;
+   onClickSeries(data: TSeries): void;
    next(): void;
    previous(): void;
 }
