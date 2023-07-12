@@ -6,6 +6,7 @@ export interface IAppState {
    transactions: ITransactionState;
    budgets: IBudgetState;
    remainingBudgetChart: IRemainingBudgetChartState;
+   runningTotalChart: IRunningTotalChartState;
 }
 
 export interface IAsyncState<T> {
@@ -65,5 +66,5 @@ export interface IYearSearch {
 
 export interface IRunningTotalChartState {
    searchParameters: IYearSearch;
-   runningTotal: IAsyncState<IRunningTotalDto[]>;
+   runningTotals: IAsyncState<IRunningTotalDto[]>;
 }
