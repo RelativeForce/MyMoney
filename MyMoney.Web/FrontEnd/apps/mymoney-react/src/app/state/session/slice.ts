@@ -2,22 +2,20 @@ import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs
 import { AuthenticationApi, UserApi, ILoginDto, ILoginResultDto, IUserDto } from '@mymoney-common/api';
 import { ISessionModel } from '@mymoney-common/interfaces';
 import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common/constants';
-import { ISessionState, AsyncStatus, IAsyncState } from '../types';
+import { ISessionState, AsyncStatus } from '../types';
 import { first } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { HttpHelper } from '../../classess/http-helper';
 
 const SLICE_NAME = 'session';
 
-export const initialUserState: IAsyncState<IUserDto | null> = {
-   data: null,
-   status: AsyncStatus.empty,
-   error: null,
-};
-
 export const initialSessionState: ISessionState = {
    currentSession: null,
-   currentUser: initialUserState,
+   currentUser: {
+      data: null,
+      status: AsyncStatus.empty,
+      error: null,
+   },
 };
 
 export const fetchUser = createAsyncThunk(`${SLICE_NAME}/fetchUser`, async (_, { getState, rejectWithValue }) => {
@@ -90,11 +88,7 @@ export const sessionSlice = createSlice({
          localStorage.removeItem(SESSION_LOCAL_STORAGE_KEY);
          console.log('Session: Cleared local storage');
 
-         return {
-            ...state,
-            currentSession: null,
-            currentUser: initialUserState,
-         };
+         return initialSessionState;
       },
       setUser: {
          reducer: (state: ISessionState, { payload }: { payload: IUserDto }) => {

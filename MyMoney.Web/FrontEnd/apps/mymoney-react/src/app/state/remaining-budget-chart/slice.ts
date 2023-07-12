@@ -16,21 +16,17 @@ import { HttpHelper } from '../../classess/http-helper';
 
 const SLICE_NAME = 'remainingBudgetChart';
 
-export const initialBudgetListState: IAsyncState<IBudgetDto[]> = {
-   data: [],
-   status: AsyncStatus.empty,
-   error: null,
-};
-
-export const initialTransactionListState: IAsyncState<ITransactionDto[]> = {
-   data: [],
-   status: AsyncStatus.empty,
-   error: null,
-};
-
 export const initialChartState: IRemainingBudgetChartState = {
-   budgets: initialBudgetListState,
-   transactions: initialTransactionListState,
+   budgets: {
+      data: [],
+      status: AsyncStatus.empty,
+      error: null,
+   },
+   transactions: {
+      data: [],
+      status: AsyncStatus.empty,
+      error: null,
+   },
    searchParameters: {
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),

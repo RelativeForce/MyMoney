@@ -1,20 +1,18 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { HomeApi, IDateRangeDto, IRunningTotalDto, IRunningTotalListDto } from '@mymoney-common/api';
-import { AsyncStatus, IAsyncState, IRunningTotalChartState } from '../types';
+import { AsyncStatus, IRunningTotalChartState } from '../types';
 import { first, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { HttpHelper } from '../../classess/http-helper';
 
 const SLICE_NAME = 'runningTotalChart';
 
-export const initialRunningTotalListState: IAsyncState<IRunningTotalDto[]> = {
-   data: [],
-   status: AsyncStatus.empty,
-   error: null,
-};
-
 export const initialChartState: IRunningTotalChartState = {
-   runningTotals: initialRunningTotalListState,
+   runningTotals: {
+      data: [],
+      status: AsyncStatus.empty,
+      error: null,
+   },
    searchParameters: {
       year: new Date().getFullYear(),
       refresh: true,

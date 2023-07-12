@@ -1,20 +1,18 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { BudgetApi, IBudgetDto, IBudgetListDto, IBudgetSearchDto } from '@mymoney-common/api';
-import { AsyncStatus, IBudgetState, IAsyncState } from '../types';
+import { AsyncStatus, IBudgetState } from '../types';
 import { map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { HttpHelper } from '../../classess/http-helper';
 
 const SLICE_NAME = 'budgetsList';
 
-export const initialBudgetListState: IAsyncState<IBudgetDto[]> = {
-   data: [],
-   status: AsyncStatus.empty,
-   error: null,
-};
-
 export const initialBudgetsState: IBudgetState = {
-   budgets: initialBudgetListState,
+   budgets: {
+      data: [],
+      status: AsyncStatus.empty,
+      error: null,
+   },
    searchParameters: {
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { TransactionApi, IDateRangeDto, ITransactionDto, ITransactionListDto } from '@mymoney-common/api';
-import { AsyncStatus, ITransactionState, IAsyncState, IDateRangeModel } from '../types';
+import { AsyncStatus, ITransactionState, IDateRangeModel } from '../types';
 import { first, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { toDateString } from '@mymoney-common/functions';
@@ -17,14 +17,12 @@ function defaultDateRange(): IDateRangeModel {
    return { end: toDateString(end), start: toDateString(start) };
 }
 
-export const initialTransactionListState: IAsyncState<ITransactionDto[]> = {
-   data: [],
-   status: AsyncStatus.empty,
-   error: null,
-};
-
 export const initialTransactionsState: ITransactionState = {
-   transactions: initialTransactionListState,
+   transactions: {
+      data: [],
+      status: AsyncStatus.empty,
+      error: null,
+   },
    searchParameters: {
       dateRange: defaultDateRange(),
       refresh: true,
