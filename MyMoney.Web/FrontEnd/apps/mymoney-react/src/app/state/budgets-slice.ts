@@ -13,7 +13,7 @@ import {
    IAppState,
    AsyncStatus,
    IBudgetState,
-   IBudgetsSearch,
+   IMonthSearch,
    IAsyncState,
 } from './types';
 import { first, map } from 'rxjs/operators';
@@ -199,7 +199,7 @@ export const selectBudgets = (state: IAppState): IBudgetDto[] =>
 
 export const selectBudgetsSearchParameters = (
    state: IAppState
-): IBudgetsSearch => selectBudgetState(state).searchParameters;
+): IMonthSearch => selectBudgetState(state).searchParameters;
 
 export function selectBudget(
    budgetId: number

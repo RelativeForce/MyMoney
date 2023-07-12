@@ -1,7 +1,7 @@
 import Chart from './chart';
 import { IChartDataProvider } from '../interfaces/chart-data-provider';
 import { useNavigate } from 'react-router-dom';
-import { AsyncStatus, IBudgetsSearch } from '../state/types';
+import { AsyncStatus, IMonthSearch } from '../state/types';
 import { useDispatch, useSelector } from 'react-redux';
 import {
    fetchChartBudgets,
@@ -29,7 +29,7 @@ const colors = [
    '#aae3f5',
 ];
 
-function monthAsDate(searchParameters: IBudgetsSearch): Date {
+function monthAsDate(searchParameters: IMonthSearch): Date {
    const month = new Date();
 
    month.setDate(1);
@@ -60,7 +60,7 @@ function buildSeries(
 }
 
 function buildDataProvider(
-   searchParameters: IBudgetsSearch,
+   searchParameters: IMonthSearch,
    data: BudgetSeries[],
    navigate: (url: string) => void,
    setMonth: (month: number, year: number) => void
