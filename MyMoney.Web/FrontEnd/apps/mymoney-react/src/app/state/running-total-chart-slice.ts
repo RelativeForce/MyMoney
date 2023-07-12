@@ -157,13 +157,13 @@ export const runningTotalChartSlice = createSlice({
 
 export const { setSelectedYear } = runningTotalChartSlice.actions;
 
-export const selectRunningTotalChartStateState = (
+export const selectRunningTotalChartState = (
    state: IAppState
 ): IRunningTotalChartState => state.runningTotalChart;
-export const selectRemainingBudgetSearchParameters = (
+export const selectSearchParameters = (
    state: IAppState
-): IYearSearch => selectRunningTotalChartStateState(state).searchParameters;
-export const selectChartRunningTotals = (state: IAppState) =>
-   selectRunningTotalChartStateState(state).runningTotals;
+): IYearSearch => selectRunningTotalChartState(state).searchParameters;
+export const selectRunningTotals = (state: IAppState) =>
+selectRunningTotalChartState(state).runningTotals;
 
 export default runningTotalChartSlice.reducer;
