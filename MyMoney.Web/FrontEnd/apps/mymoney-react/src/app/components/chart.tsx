@@ -111,7 +111,15 @@ export default function Chart<
                      allowDuplicatedCategory={false}
                      hide={true}
                   />
-                  <YAxis />
+                  <YAxis
+                     label={{
+                        value: dataProvider.yAxisLabel,
+                        style: { textAnchor: 'middle' },
+                        angle: -90,
+                        position: 'left',
+                        offset: 0,
+                     }}
+                  />
                   <Tooltip content={ChartTooltip} />
                   <Legend />
                   {lines}
