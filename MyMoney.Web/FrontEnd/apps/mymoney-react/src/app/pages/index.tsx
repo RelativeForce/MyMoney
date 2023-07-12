@@ -1,3 +1,5 @@
+import RemainingBudgetChart from '../components/remaining-budget-chart';
+
 export default function Home() {
-   return <>Home</>;
+   return <RemainingBudgetChart></RemainingBudgetChart>;
 }
