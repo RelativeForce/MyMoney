@@ -34,10 +34,6 @@ export const initialChartState: IRemainingBudgetChartState = {
    },
 };
 
-function isPopulated<T>(state: IAsyncState<T>) {
-   return state.status !== AsyncStatus.empty && state.status !== AsyncStatus.loading;
-}
-
 function toDateRangeDto(search: IBudgetSearchDto): IDateRangeDto {
    const end: Date = new Date();
    end.setDate(1);
@@ -133,6 +129,10 @@ export const remainingBudgetChartSlice = createSlice({
                   status: AsyncStatus.loading,
                   error: null,
                },
+               searchParameters: {
+                  ...state.searchParameters,
+                  refresh: false,
+               },
             };
          })
          .addCase(fetchBudgets.fulfilled, (state: IRemainingBudgetChartState, action: { payload: IBudgetDto[] }) => {
@@ -142,10 +142,6 @@ export const remainingBudgetChartSlice = createSlice({
                   data: action.payload,
                   status: AsyncStatus.succeeded,
                   error: null,
-               },
-               searchParameters: {
-                  ...state.searchParameters,
-                  refresh: !isPopulated(state.transactions),
                },
             };
          })
@@ -157,10 +153,6 @@ export const remainingBudgetChartSlice = createSlice({
                   status: AsyncStatus.failed,
                   error: action.error.message ?? null,
                },
-               searchParameters: {
-                  ...state.searchParameters,
-                  refresh: !isPopulated(state.transactions),
-               },
             };
          })
          .addCase(fetchTransactions.pending, (state: IRemainingBudgetChartState, { meta: { arg } }) => {
@@ -170,6 +162,10 @@ export const remainingBudgetChartSlice = createSlice({
                   data: [],
                   status: AsyncStatus.loading,
                   error: null,
+               },
+               searchParameters: {
+                  ...state.searchParameters,
+                  refresh: false,
                },
             };
          })
@@ -181,10 +177,6 @@ export const remainingBudgetChartSlice = createSlice({
                   status: AsyncStatus.succeeded,
                   error: null,
                },
-               searchParameters: {
-                  ...state.searchParameters,
-                  refresh: !isPopulated(state.budgets),
-               },
             };
          })
          .addCase(fetchTransactions.rejected, (state: IRemainingBudgetChartState, action) => {
@@ -194,10 +186,6 @@ export const remainingBudgetChartSlice = createSlice({
                   data: [],
                   status: AsyncStatus.failed,
                   error: action.error.message ?? null,
-               },
-               searchParameters: {
-                  ...state.searchParameters,
-                  refresh: !isPopulated(state.budgets),
                },
             };
          });

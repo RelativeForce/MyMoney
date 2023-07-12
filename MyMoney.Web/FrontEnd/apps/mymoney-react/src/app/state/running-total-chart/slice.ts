@@ -88,6 +88,10 @@ export const runningTotalChartSlice = createSlice({
                   status: AsyncStatus.loading,
                   error: null,
                },
+               searchParameters: {
+                  ...state.searchParameters,
+                  refresh: false,
+               },
             };
          })
          .addCase(fetchRunningTotals.fulfilled, (state: IRunningTotalChartState, action: { payload: IRunningTotalDto[] }) => {
@@ -98,10 +102,6 @@ export const runningTotalChartSlice = createSlice({
                   status: AsyncStatus.succeeded,
                   error: null,
                },
-               searchParameters: {
-                  ...state.searchParameters,
-                  refresh: false,
-               },
             };
          })
          .addCase(fetchRunningTotals.rejected, (state: IRunningTotalChartState, action) => {
@@ -111,10 +111,6 @@ export const runningTotalChartSlice = createSlice({
                   data: [],
                   status: AsyncStatus.failed,
                   error: action.error.message ?? null,
-               },
-               searchParameters: {
-                  ...state.searchParameters,
-                  refresh: false,
                },
             };
          });
