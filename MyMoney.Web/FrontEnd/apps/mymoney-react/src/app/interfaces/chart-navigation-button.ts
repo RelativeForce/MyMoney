@@ -1,4 +1,3 @@
-
 export interface IChartNavigationButton {
    onClick(): void;
    icon: string;

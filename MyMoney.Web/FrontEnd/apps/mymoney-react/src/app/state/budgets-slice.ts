@@ -197,9 +197,8 @@ export const selectBudgetState = (state: IAppState): IBudgetState =>
 export const selectBudgets = (state: IAppState): IBudgetDto[] =>
    selectBudgetState(state).budgets.data;
 
-export const selectBudgetsSearchParameters = (
-   state: IAppState
-): IMonthSearch => selectBudgetState(state).searchParameters;
+export const selectBudgetsSearchParameters = (state: IAppState): IMonthSearch =>
+   selectBudgetState(state).searchParameters;
 
 export function selectBudget(
    budgetId: number

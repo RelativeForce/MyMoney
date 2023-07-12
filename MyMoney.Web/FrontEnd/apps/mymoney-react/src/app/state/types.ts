@@ -1,4 +1,9 @@
-import { IBudgetDto, IRunningTotalDto, ITransactionDto, IUserDto } from '@mymoney-common/api';
+import {
+   IBudgetDto,
+   IRunningTotalDto,
+   ITransactionDto,
+   IUserDto,
+} from '@mymoney-common/api';
 import { ISessionModel } from '@mymoney-common/interfaces';
 
 export interface IAppState {

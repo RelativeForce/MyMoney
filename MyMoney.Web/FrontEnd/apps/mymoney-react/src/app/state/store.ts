@@ -12,6 +12,6 @@ export const store = configureStore<IAppState>({
       transactions: transactionsReducer,
       budgets: budgetsReducer,
       remainingBudgetChart: remainingBudgetChartReducer,
-      runningTotalChart: runningTotalChartReducer
+      runningTotalChart: runningTotalChartReducer,
    },
 });
