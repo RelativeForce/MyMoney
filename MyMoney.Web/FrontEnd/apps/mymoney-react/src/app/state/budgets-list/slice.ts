@@ -39,11 +39,6 @@ export const fetchBudgets = createAsyncThunk(
    }
 );
 
-export interface IDeleteBudgetRequest {
-   sessionToken: string;
-   budgetId: number;
-}
-
 export const deleteBudget = createAsyncThunk(
    `${SLICE_NAME}/deleteBudget`,
    async ({ budgetId }: { budgetId: number }, { getState, rejectWithValue }) => {
