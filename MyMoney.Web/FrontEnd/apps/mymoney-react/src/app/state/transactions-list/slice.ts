@@ -58,11 +58,6 @@ export const fetchTransactions = createAsyncThunk(
    }
 );
 
-export interface IDeleteTransactionRequest {
-   sessionToken: string;
-   transactionId: number;
-}
-
 export const deleteTransaction = createAsyncThunk(
    `${SLICE_NAME}/deleteTransaction`,
    async ({ transactionId }: { transactionId: number }, { getState, rejectWithValue }) => {
