@@ -10,6 +10,6 @@ export const store = configureStore<IAppState>({
       session: sessionReducer,
       transactions: transactionsReducer,
       budgets: budgetsReducer,
-      remainingBudgetChart: remainingBudgetChartReducer
+      remainingBudgetChart: remainingBudgetChartReducer,
    },
 });

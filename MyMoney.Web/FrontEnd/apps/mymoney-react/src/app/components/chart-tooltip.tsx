@@ -15,8 +15,9 @@ export default function ChartTooltip({
 
       let index = 0;
       for (const dateChartPoint of payload) {
-
-         const text = `${dateChartPoint.name} • £${roundToDecimal(dateChartPoint.value ?? 0)}`;
+         const text = `${dateChartPoint.name} • £${roundToDecimal(
+            dateChartPoint.value ?? 0
+         )}`;
 
          seriesValues.push(
             <li

@@ -71,7 +71,7 @@ function buildRemainingBudget(
 
    return {
       chartTitle: 'Transactions',
-      yAxisLabel : 'Remaining in budget (£)',
+      yAxisLabel: 'Remaining in budget (£)',
       subChartTitle,
       data,
       next: () => {
@@ -89,7 +89,7 @@ function buildRemainingBudget(
       },
       onClickSeries: (data: BudgetSeries) => {
          navigate(`/budgets/edit?id=${data.budget.id}`);
-      }
+      },
    };
 }
 
@@ -129,7 +129,13 @@ export default function Home() {
 
       dispatch(fetchChartBudgets({ search }));
       dispatch(fetchChartTransactions({ search }));
-   }, [searchParameters.refresh, dispatch, transactions.status, budgets.status, searchParameters]);
+   }, [
+      searchParameters.refresh,
+      dispatch,
+      transactions.status,
+      budgets.status,
+      searchParameters,
+   ]);
 
    return <Chart dataProvider={dataProvider}></Chart>;
 }

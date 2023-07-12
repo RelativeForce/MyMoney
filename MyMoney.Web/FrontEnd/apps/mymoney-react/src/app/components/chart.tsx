@@ -13,13 +13,9 @@ import ChartTooltip from './chart-tooltip';
 import { ISeries, ISeriesDataPoint } from '@mymoney-common/interfaces';
 
 export default function Chart<
-TSeries extends ISeries<TDataPoint>,
-TDataPoint extends ISeriesDataPoint
->({
-   dataProvider,
-}: {
-   dataProvider: IChartDataProvider<TSeries, TDataPoint>;
-}) {
+   TSeries extends ISeries<TDataPoint>,
+   TDataPoint extends ISeriesDataPoint
+>({ dataProvider }: { dataProvider: IChartDataProvider<TSeries, TDataPoint> }) {
    const title = dataProvider.subChartTitle ? (
       <div>
          {dataProvider.chartTitle} - {dataProvider.subChartTitle}
@@ -39,18 +35,22 @@ TDataPoint extends ISeriesDataPoint
             name={series.name}
             key={series.name}
             stroke={series.color}
-            activeDot={{ r: 8, className: 'click-cursor', onClick: (_, dotData: any) => { 
-               const dataPoint: TDataPoint = dotData.payload;
+            activeDot={{
+               r: 5,
+               className: 'click-cursor',
+               onClick: (_, dotData: any) => {
+                  const dataPoint: TDataPoint = dotData.payload;
 
-               if (dataPoint.id === -1) {
-                  dataProvider.onClickSeries(series);
-                  return;
-               }
+                  if (dataPoint.id === -1) {
+                     dataProvider.onClickSeries(series);
+                     return;
+                  }
 
-               dataProvider.onClickDataPoint(dataPoint);
-            }}}
-         >
-         </Line>
+                  dataProvider.onClickDataPoint(dataPoint);
+               },
+            }}
+            dot={{ r: 0 }}
+         ></Line>
       );
    }
 

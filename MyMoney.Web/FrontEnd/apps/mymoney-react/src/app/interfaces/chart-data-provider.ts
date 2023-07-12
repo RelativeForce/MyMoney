@@ -1,8 +1,8 @@
-import { ISeries, ISeriesDataPoint } from "@mymoney-common/interfaces";
+import { ISeries, ISeriesDataPoint } from '@mymoney-common/interfaces';
 
 export interface IChartDataProvider<
-TSeries extends ISeries<TDataPoint>,
-TDataPoint extends ISeriesDataPoint
+   TSeries extends ISeries<TDataPoint>,
+   TDataPoint extends ISeriesDataPoint
 > {
    chartTitle: string;
    data: TSeries[];
