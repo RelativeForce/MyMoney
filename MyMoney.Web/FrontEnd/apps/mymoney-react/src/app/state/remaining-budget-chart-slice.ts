@@ -16,7 +16,7 @@ import {
 import {
    IAppState,
    AsyncStatus,
-   IBudgetsSearch,
+   IMonthSearch,
    IAsyncState,
    IRemainingBudgetChartState,
 } from './types';
@@ -264,7 +264,7 @@ export const selectRemainingBudgetChartState = (
 ): IRemainingBudgetChartState => state.remainingBudgetChart;
 export const selectRemainingBudgetSearchParameters = (
    state: IAppState
-): IBudgetsSearch => selectRemainingBudgetChartState(state).searchParameters;
+): IMonthSearch => selectRemainingBudgetChartState(state).searchParameters;
 export const selectChartBudgets = (state: IAppState) =>
    selectRemainingBudgetChartState(state).budgets;
 export const selectChartTransactions = (state: IAppState) =>
