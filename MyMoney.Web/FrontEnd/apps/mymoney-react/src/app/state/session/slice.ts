@@ -84,7 +84,7 @@ export const sessionSlice = createSlice({
             return { payload: { token, sessionEnd } };
          },
       },
-      clearSession: (state: ISessionState) => {
+      clearSession: () => {
          localStorage.removeItem(SESSION_LOCAL_STORAGE_KEY);
          console.log('Session: Cleared local storage');
 
