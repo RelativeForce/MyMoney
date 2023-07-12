@@ -59,10 +59,8 @@ export class BudgetSelectorComponent implements OnChanges {
 
    public updateBudgets(date: Date): void {
       this.budgets = null;
-      this.budgetService
-         .getBudgetsForMonth(date.getMonth() + 1, date.getFullYear())
-         .subscribe((response) => {
-            this.budgets = response.budgets.map((t) => new BudgetViewModel(t));
-         });
+      this.budgetService.getBudgetsForMonth(date.getMonth() + 1, date.getFullYear()).subscribe((response) => {
+         this.budgets = response.budgets.map((t) => new BudgetViewModel(t));
+      });
    }
 }

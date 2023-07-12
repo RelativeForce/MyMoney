@@ -12,21 +12,9 @@ export class HomeComponent implements OnInit, OnDestroy {
    public transactionsChart: TransactionsChartDataProvider;
    public runningTotalChart: RunningTotalChartDataProvider;
 
-   constructor(
-      transactionService: TransactionService,
-      budgetService: BudgetService,
-      homeService: HomeService,
-      router: Router
-   ) {
-      this.transactionsChart = new TransactionsChartDataProvider(
-         transactionService,
-         budgetService,
-         router
-      );
-      this.runningTotalChart = new RunningTotalChartDataProvider(
-         homeService,
-         router
-      );
+   constructor(transactionService: TransactionService, budgetService: BudgetService, homeService: HomeService, router: Router) {
+      this.transactionsChart = new TransactionsChartDataProvider(transactionService, budgetService, router);
+      this.runningTotalChart = new RunningTotalChartDataProvider(homeService, router);
    }
 
    ngOnInit(): void {

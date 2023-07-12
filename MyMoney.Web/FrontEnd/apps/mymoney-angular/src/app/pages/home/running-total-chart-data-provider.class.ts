@@ -3,17 +3,11 @@ import { Router } from '@angular/router';
 import { HomeService } from '../../shared/services';
 import { IDateRangeModel } from '../../shared/state/types';
 import { IRunningTotalDto } from '@mymoney-common/api';
-import {
-   RunningTotalSeries,
-   RunningTotalSeriesDataPoint,
-} from '@mymoney-common/classes';
+import { RunningTotalSeries, RunningTotalSeriesDataPoint } from '@mymoney-common/classes';
 
 const LINE_COLOR = '#7aa3e5';
 
-export class RunningTotalChartDataProvider
-   implements
-      IChartDataProvider<RunningTotalSeries, RunningTotalSeriesDataPoint>
-{
+export class RunningTotalChartDataProvider implements IChartDataProvider<RunningTotalSeries, RunningTotalSeriesDataPoint> {
    public chartTitle: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
@@ -22,10 +16,7 @@ export class RunningTotalChartDataProvider
 
    private year: number;
 
-   constructor(
-      private readonly homeService: HomeService,
-      private readonly router: Router
-   ) {
+   constructor(private readonly homeService: HomeService, private readonly router: Router) {
       this.series = [];
       this.subChartTitle = '';
       this.chartTitle = 'Total savings';
@@ -50,21 +41,13 @@ export class RunningTotalChartDataProvider
             if (item.runningTotal.parentId === null || item.id > 0) {
                this.router.navigate(['/incomes', 'edit', item.id]);
             } else {
-               this.router.navigate([
-                  '/incomes',
-                  'edit-recurring',
-                  item.runningTotal.parentId,
-               ]);
+               this.router.navigate(['/incomes', 'edit-recurring', item.runningTotal.parentId]);
             }
          } else if (item.amount < 0) {
             if (item.runningTotal.parentId === null || item.id > 0) {
                this.router.navigate(['/transactions', 'edit', item.id]);
             } else {
-               this.router.navigate([
-                  '/transactions',
-                  'edit-recurring',
-                  item.runningTotal.parentId,
-               ]);
+               this.router.navigate(['/transactions', 'edit-recurring', item.runningTotal.parentId]);
             }
          }
       }
@@ -99,11 +82,7 @@ export class RunningTotalChartDataProvider
 
    private loadChartData() {
       this.subChartTitle = `${this.year}`;
-      this.homeService
-         .getRunningTotal(0, this.dateRange)
-         .subscribe((runningTotalList) =>
-            this.updateChart(runningTotalList.runningTotals)
-         );
+      this.homeService.getRunningTotal(0, this.dateRange).subscribe((runningTotalList) => this.updateChart(runningTotalList.runningTotals));
    }
 
    private updateChart(runningTotals: IRunningTotalDto[]): void {

@@ -18,10 +18,7 @@ export class LoginComponent {
    public submitted = false;
    public error: string | null = null;
 
-   constructor(
-      private readonly authenticationService: AuthenticationService,
-      private readonly router: Router
-   ) {
+   constructor(private readonly authenticationService: AuthenticationService, private readonly router: Router) {
       this.loginForm = new FormGroup(this.loginFormControls);
    }
 

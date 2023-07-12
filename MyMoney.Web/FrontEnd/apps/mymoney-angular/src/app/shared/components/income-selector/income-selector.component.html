@@ -3,13 +3,7 @@
    <span class="spinner-border spinner-border-sm mr-1"></span>
    Loading...
 </div>
-<div
-   *ngIf="incomes !== null && incomes.length === 0"
-   class="alert alert-warning"
-   role="alert"
->
-   No incomes as of the date selected
-</div>
+<div *ngIf="incomes !== null && incomes.length === 0" class="alert alert-warning" role="alert">No incomes as of the date selected</div>
 <table *ngIf="incomes !== null && incomes.length !== 0" class="table">
    <thead>
       <tr>
@@ -22,10 +16,7 @@
    <tbody>
       <tr *ngFor="let income of incomes; let i = index">
          <td>
-            <span
-               *ngIf="realisingChild === income.id"
-               class="spinner-border spinner-border-sm"
-            ></span>
+            <span *ngIf="realisingChild === income.id" class="spinner-border spinner-border-sm"></span>
             <mymoney-check-box
                *ngIf="realisingChild !== income.id"
                [isChecked]="selectedIncomes.has(income.id)"

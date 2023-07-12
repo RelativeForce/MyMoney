@@ -39,9 +39,7 @@ export class ImportFileComponent<T> {
 
             let id = 0;
             for (const line of lines) {
-               const data = line
-                  .split(',')
-                  .map((element) => element.trim().replace(/"/g, ''));
+               const data = line.split(',').map((element) => element.trim().replace(/"/g, ''));
 
                this.rows[this.rows.length] = new Row(data, id++);
             }
@@ -85,14 +83,8 @@ export class ImportFileComponent<T> {
       this.checkRows();
    }
 
-   public changeElementValue(
-      event: Event,
-      rowId: number,
-      elementIndex: number
-   ) {
-      const value = (event.target as HTMLInputElement)?.value as
-         | string
-         | undefined;
+   public changeElementValue(event: Event, rowId: number, elementIndex: number) {
+      const value = (event.target as HTMLInputElement)?.value as string | undefined;
 
       if (value == undefined) {
          return;
@@ -119,10 +111,7 @@ export class ImportFileComponent<T> {
       if (this.dataProvider.columnErrorMessage(this.headings) !== null) {
          return; // Skip if the columns are not valid
       }
-      const duplicateTransactions = groupBy(
-         this.rows,
-         this.dataProvider.setupKeyExtractor(this.headings)
-      ).entries();
+      const duplicateTransactions = groupBy(this.rows, this.dataProvider.setupKeyExtractor(this.headings)).entries();
 
       for (const [_, rows] of duplicateTransactions) {
          if (rows.length === 1) {
@@ -140,24 +129,16 @@ export class ImportFileComponent<T> {
    }
 
    public onSubmit(): void {
-      const columnErrorMessage = this.dataProvider.columnErrorMessage(
-         this.headings
-      );
+      const columnErrorMessage = this.dataProvider.columnErrorMessage(this.headings);
 
       if (columnErrorMessage !== null) {
          return alert(columnErrorMessage);
       }
 
-      const anyInvalidRows: boolean = this.rows
-         .map((r) => this.isRowValid(r))
-         .reduce((a, b) => a || b, false);
+      const anyInvalidRows: boolean = this.rows.map((r) => this.isRowValid(r)).reduce((a, b) => a || b, false);
 
       if (anyInvalidRows) {
-         if (
-            !confirm(
-               'Warning:\nSome rows have invalid data and will be ignored.\nContinue?'
-            )
-         ) {
+         if (!confirm('Warning:\nSome rows have invalid data and will be ignored.\nContinue?')) {
             return;
          }
       }
@@ -177,9 +158,7 @@ export class ImportFileComponent<T> {
    }
 
    private isRowValid(row: Row) {
-      const allDataValid = row.data
-         .map((d, index) => this.headings[index].format(d) === null)
-         .reduce((a, b) => a || b, false);
+      const allDataValid = row.data.map((d, index) => this.headings[index].format(d) === null).reduce((a, b) => a || b, false);
 
       return allDataValid;
    }

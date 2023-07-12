@@ -11,11 +11,7 @@ import { IBasicResultDto } from '@mymoney-common/api';
 export class ResetPasswordComponent implements OnInit {
    public resetPasswordForm: FormGroup;
    public resetPasswordFormControls = {
-      password: new FormControl('', [
-         Validators.required,
-         Validators.minLength(8),
-         Validators.maxLength(15),
-      ]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]),
       confirmPassword: new FormControl(''),
    };
    public loading = false;
@@ -57,8 +53,7 @@ export class ResetPasswordComponent implements OnInit {
       this.loading = true;
       this.error = null;
 
-      const password: string =
-         this.resetPasswordFormControls.password.value ?? '';
+      const password: string = this.resetPasswordFormControls.password.value ?? '';
 
       this.authenticationService
          .resetPassword(password, this.token)
@@ -81,9 +76,7 @@ export class ResetPasswordComponent implements OnInit {
    }
 
    private checkPasswords() {
-      const isInvalid =
-         this.resetPasswordFormControls.password.value !==
-         this.resetPasswordFormControls.confirmPassword.value;
+      const isInvalid = this.resetPasswordFormControls.password.value !== this.resetPasswordFormControls.confirmPassword.value;
 
       if (isInvalid) {
          this.resetPasswordFormControls.confirmPassword.setErrors({

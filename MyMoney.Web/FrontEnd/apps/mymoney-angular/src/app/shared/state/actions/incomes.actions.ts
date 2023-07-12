@@ -39,10 +39,7 @@ export class DeleteRecurringIncomeAction implements Action {
 export class RealiseIncomeAction implements Action {
    public type: string = IncomeActionTypes.realiseIncome;
 
-   constructor(
-      public readonly virtualId: number,
-      public readonly realId: number
-   ) {}
+   constructor(public readonly virtualId: number, public readonly realId: number) {}
 }
 
 export class UpdateIncomesSearchAction implements Action {

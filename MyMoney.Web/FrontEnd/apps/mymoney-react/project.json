@@ -16,14 +16,8 @@
             "main": "apps/mymoney-react/src/main.tsx",
             "tsConfig": "apps/mymoney-react/tsconfig.app.json",
             "assets": ["apps/mymoney-react/src/assets"],
-            "styles": [
-               "apps/mymoney-react/src/app/globals.scss",
-               "node_modules/bootstrap/dist/css/bootstrap.css"
-            ],
-            "scripts": [
-               "node_modules/jquery/dist/jquery.js",
-               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ],
+            "styles": ["apps/mymoney-react/src/app/globals.scss", "node_modules/bootstrap/dist/css/bootstrap.css"],
+            "scripts": ["node_modules/jquery/dist/jquery.js", "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
             "isolatedConfig": true,
             "webpackConfig": "apps/mymoney-react/webpack.config.js"
          },

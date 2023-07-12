@@ -1,10 +1,7 @@
 <body>
    <!-- nav -->
    <div class="sticky-top">
-      <nav
-         class="navbar navbar-expand navbar-dark bg-dark justify-content-between"
-         *ngIf="user !== null"
-      >
+      <nav class="navbar navbar-expand navbar-dark bg-dark justify-content-between" *ngIf="user !== null">
          <a class="navbar-brand" routerLink="/">MyMoney</a>
          <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -33,28 +30,12 @@
                >
                   {{ user.fullName }}
                </a>
-               <div
-                  class="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="userMenuLink"
-               >
-                  <a
-                     class="dropdown-item icon-dropdown-item"
-                     routerLink="/user/profile"
-                  >
-                     <span class="material-icons">person</span>Profile
-                  </a>
-                  <a
-                     class="dropdown-item icon-dropdown-item"
-                     routerLink="/user/change-password"
-                  >
+               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuLink">
+                  <a class="dropdown-item icon-dropdown-item" routerLink="/user/profile"> <span class="material-icons">person</span>Profile </a>
+                  <a class="dropdown-item icon-dropdown-item" routerLink="/user/change-password">
                      <span class="material-icons">vpn_key</span>Change password
                   </a>
-                  <button
-                     class="dropdown-item icon-dropdown-item"
-                     (click)="logout()"
-                  >
-                     <span class="material-icons">logout</span>Logout
-                  </button>
+                  <button class="dropdown-item icon-dropdown-item" (click)="logout()"><span class="material-icons">logout</span>Logout</button>
                </div>
             </li>
          </ul>

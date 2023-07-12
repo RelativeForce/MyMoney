@@ -36,9 +36,7 @@ export class EditBasicTransactionComponent implements OnInit {
    ) {
       this.id = 0;
 
-      this.editTransactionForm = new FormGroup(
-         this.editTransactionFormControls
-      );
+      this.editTransactionForm = new FormGroup(this.editTransactionFormControls);
 
       this.disableForm();
    }
@@ -55,25 +53,13 @@ export class EditBasicTransactionComponent implements OnInit {
 
          this.transactionService.findTransaction(this.id).subscribe(
             (response: ITransactionModel) => {
-               response.budgetIds.forEach((bid) =>
-                  this.selectedBudgets.add(bid)
-               );
-               response.incomeIds.forEach((iid) =>
-                  this.selectedIncomes.add(iid)
-               );
+               response.budgetIds.forEach((bid) => this.selectedBudgets.add(bid));
+               response.incomeIds.forEach((iid) => this.selectedIncomes.add(iid));
 
-               this.editTransactionFormControls.date.patchValue(
-                  this.toInputDateString(response.date)
-               );
-               this.editTransactionFormControls.description.patchValue(
-                  response.description
-               );
-               this.editTransactionFormControls.amount.patchValue(
-                  response.amount
-               );
-               this.editTransactionFormControls.notes.patchValue(
-                  response.notes
-               );
+               this.editTransactionFormControls.date.patchValue(this.toInputDateString(response.date));
+               this.editTransactionFormControls.description.patchValue(response.description);
+               this.editTransactionFormControls.amount.patchValue(response.amount);
+               this.editTransactionFormControls.notes.patchValue(response.notes);
                this.parentId = response.parentId;
                this.parentFrequency = response.parentFrequency;
 
@@ -86,9 +72,7 @@ export class EditBasicTransactionComponent implements OnInit {
    }
 
    public get selectedDate(): Date | null {
-      return this.loadingTransaction
-         ? null
-         : new Date(this.editTransactionFormControls.date.value ?? '');
+      return this.loadingTransaction ? null : new Date(this.editTransactionFormControls.date.value ?? '');
    }
 
    public toInputDateString(text: string): string {
@@ -121,20 +105,18 @@ export class EditBasicTransactionComponent implements OnInit {
 
       this.loading = true;
 
-      this.transactionService
-         .editTransaction(this.asTransactionModel)
-         .subscribe(
-            (success) => {
-               this.loading = false;
-               if (success) {
-                  this.router.navigate(['/transactions']);
-               }
-            },
-            () => {
-               // Show error
-               this.loading = false;
+      this.transactionService.editTransaction(this.asTransactionModel).subscribe(
+         (success) => {
+            this.loading = false;
+            if (success) {
+               this.router.navigate(['/transactions']);
             }
-         );
+         },
+         () => {
+            // Show error
+            this.loading = false;
+         }
+      );
    }
 
    private disableForm() {
@@ -159,8 +141,7 @@ export class EditBasicTransactionComponent implements OnInit {
 
       const dateString: string = date.toLocaleDateString();
 
-      const description =
-         this.editTransactionFormControls.description.value ?? '';
+      const description = this.editTransactionFormControls.description.value ?? '';
       const amount = this.editTransactionFormControls.amount.value ?? 0;
       const notes = this.editTransactionFormControls.notes.value ?? '';
 

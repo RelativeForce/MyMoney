@@ -1,17 +1,8 @@
 import { Action } from '@ngrx/store';
-import {
-   SetBudgetsAction,
-   UpdateBudgetAction,
-   BudgetActionTypes,
-   DeleteBudgetAction,
-   UpdateSearchMonthIdAction,
-} from '../actions';
+import { SetBudgetsAction, UpdateBudgetAction, BudgetActionTypes, DeleteBudgetAction, UpdateSearchMonthIdAction } from '../actions';
 import { IBudgetModel, IBudgetsSearch } from '../types';
 
-function setBudgets(
-   state: IBudgetState,
-   action: SetBudgetsAction
-): IBudgetState {
+function setBudgets(state: IBudgetState, action: SetBudgetsAction): IBudgetState {
    const budgets: IBudgetModel[] = action.budgets;
 
    return {
@@ -34,10 +25,7 @@ function refreshBudgets(state: IBudgetState): IBudgetState {
    };
 }
 
-function updateBudget(
-   state: IBudgetState,
-   action: UpdateBudgetAction
-): IBudgetState {
+function updateBudget(state: IBudgetState, action: UpdateBudgetAction): IBudgetState {
    const budget: IBudgetModel = action.budget;
 
    const index = state.budgets.findIndex((t) => t.id === budget.id);
@@ -52,10 +40,7 @@ function updateBudget(
    };
 }
 
-function deleteBudget(
-   state: IBudgetState,
-   action: DeleteBudgetAction
-): IBudgetState {
+function deleteBudget(state: IBudgetState, action: DeleteBudgetAction): IBudgetState {
    const budgetId: number = action.budgetId;
 
    const index = state.budgets.findIndex((t) => t.id === budgetId);
@@ -70,10 +55,7 @@ function deleteBudget(
    };
 }
 
-function updateSelectedMonth(
-   state: IBudgetState,
-   action: UpdateSearchMonthIdAction
-): IBudgetState {
+function updateSelectedMonth(state: IBudgetState, action: UpdateSearchMonthIdAction): IBudgetState {
    const month: number = action.month;
    const year: number = action.year;
 
@@ -102,10 +84,7 @@ export const initialBudgetState: IBudgetState = {
    },
 };
 
-export function budgetReducer(
-   state: IBudgetState = initialBudgetState,
-   action: Action
-): IBudgetState {
+export function budgetReducer(state: IBudgetState = initialBudgetState, action: Action): IBudgetState {
    switch (action.type) {
       case BudgetActionTypes.setBudgets:
          return setBudgets(state, action as SetBudgetsAction);

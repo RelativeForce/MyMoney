@@ -1,12 +1,6 @@
 <div class="header">
    <h2>Add income</h2>
-   <mymoney-toggle
-      [value]="isRecurring"
-      [text]="'Toggle Recurring'"
-      (checked)="onRecurringChanged($event)"
-   ></mymoney-toggle>
+   <mymoney-toggle [value]="isRecurring" [text]="'Toggle Recurring'" (checked)="onRecurringChanged($event)"></mymoney-toggle>
 </div>
 <mymoney-add-basic-income *ngIf="!isRecurring"></mymoney-add-basic-income>
-<mymoney-add-recurring-income
-   *ngIf="isRecurring"
-></mymoney-add-recurring-income>
+<mymoney-add-recurring-income *ngIf="isRecurring"></mymoney-add-recurring-income>

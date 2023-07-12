@@ -8,17 +8,11 @@
                formControlName="date"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && addTransactionFormControls.date.errors
+                  'is-invalid': submitted && addTransactionFormControls.date.errors
                }"
             />
-            <div
-               *ngIf="submitted && addTransactionFormControls.date.errors"
-               class="invalid-feedback"
-            >
-               <div *ngIf="addTransactionFormControls.date.errors['required']">
-                  Date is required
-               </div>
+            <div *ngIf="submitted && addTransactionFormControls.date.errors" class="invalid-feedback">
+               <div *ngIf="addTransactionFormControls.date.errors['required']">Date is required</div>
             </div>
          </div>
          <div class="form-group">
@@ -28,23 +22,11 @@
                formControlName="description"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && addTransactionFormControls.description.errors
+                  'is-invalid': submitted && addTransactionFormControls.description.errors
                }"
             />
-            <div
-               *ngIf="
-                  submitted && addTransactionFormControls.description.errors
-               "
-               class="invalid-feedback"
-            >
-               <div
-                  *ngIf="
-                     addTransactionFormControls.description.errors['required']
-                  "
-               >
-                  Description is required
-               </div>
+            <div *ngIf="submitted && addTransactionFormControls.description.errors" class="invalid-feedback">
+               <div *ngIf="addTransactionFormControls.description.errors['required']">Description is required</div>
             </div>
          </div>
          <div class="form-group">
@@ -54,22 +36,12 @@
                formControlName="amount"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && addTransactionFormControls.amount.errors
+                  'is-invalid': submitted && addTransactionFormControls.amount.errors
                }"
             />
-            <div
-               *ngIf="submitted && addTransactionFormControls.amount.errors"
-               class="invalid-feedback"
-            >
-               <div
-                  *ngIf="addTransactionFormControls.amount.errors['required']"
-               >
-                  Amount is required
-               </div>
-               <div *ngIf="addTransactionFormControls.amount.errors['min']">
-                  Amount cannot be less than 0.01
-               </div>
+            <div *ngIf="submitted && addTransactionFormControls.amount.errors" class="invalid-feedback">
+               <div *ngIf="addTransactionFormControls.amount.errors['required']">Amount is required</div>
+               <div *ngIf="addTransactionFormControls.amount.errors['min']">Amount cannot be less than 0.01</div>
             </div>
          </div>
          <div class="form-group">
@@ -78,22 +50,15 @@
                formControlName="notes"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && addTransactionFormControls.notes.errors
+                  'is-invalid': submitted && addTransactionFormControls.notes.errors
                }"
                rows="3"
             ></textarea>
-            <div
-               *ngIf="submitted && addTransactionFormControls.notes.errors"
-               class="invalid-feedback"
-            ></div>
+            <div *ngIf="submitted && addTransactionFormControls.notes.errors" class="invalid-feedback"></div>
          </div>
          <div class="form-group">
             <button [disabled]="loading" class="btn btn-success">
-               <span
-                  *ngIf="loading"
-                  class="spinner-border spinner-border-sm mr-1"
-               ></span>
+               <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                Add
             </button>
             <a routerLink="/transactions" class="btn btn-link">Cancel</a>
@@ -101,15 +66,7 @@
       </form>
    </div>
    <div class="col-6">
-      <mymoney-budget-selector
-         [selectedBudgets]="selectedBudgets"
-         [date]="selectedDate"
-      >
-      </mymoney-budget-selector>
-      <mymoney-income-selector
-         [selectedIncomes]="selectedIncomes"
-         [date]="selectedDate"
-      >
-      </mymoney-income-selector>
+      <mymoney-budget-selector [selectedBudgets]="selectedBudgets" [date]="selectedDate"> </mymoney-budget-selector>
+      <mymoney-income-selector [selectedIncomes]="selectedIncomes" [date]="selectedDate"> </mymoney-income-selector>
    </div>
 </div>

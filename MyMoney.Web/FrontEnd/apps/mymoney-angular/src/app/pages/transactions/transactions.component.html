@@ -14,13 +14,8 @@
                'is-invalid': submitted && dateRangeFormControls.start.errors
             }"
          />
-         <div
-            *ngIf="submitted && dateRangeFormControls.start.errors"
-            class="invalid-feedback"
-         >
-            <div *ngIf="dateRangeFormControls.start.errors['required']">
-               Start is required
-            </div>
+         <div *ngIf="submitted && dateRangeFormControls.start.errors" class="invalid-feedback">
+            <div *ngIf="dateRangeFormControls.start.errors['required']">Start is required</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2">
@@ -36,13 +31,8 @@
                'is-invalid': submitted && dateRangeFormControls.end.errors
             }"
          />
-         <div
-            *ngIf="submitted && dateRangeFormControls.end.errors"
-            class="invalid-feedback"
-         >
-            <div *ngIf="dateRangeFormControls.end.errors['required']">
-               End is required
-            </div>
+         <div *ngIf="submitted && dateRangeFormControls.end.errors" class="invalid-feedback">
+            <div *ngIf="dateRangeFormControls.end.errors['required']">End is required</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">
@@ -53,19 +43,10 @@
             data-placement="bottom"
             title="Refresh transactions"
          >
-            <span
-               *ngIf="loading"
-               class="spinner-border spinner-border-sm"
-            ></span>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
             <div *ngIf="!loading" class="spin">refresh</div>
          </button>
-         <a
-            class="btn btn-success material-icons"
-            routerLink="./add"
-            data-toggle="tooltip"
-            data-placement="bottom"
-            title="Add new transaction"
-         >
+         <a class="btn btn-success material-icons" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new transaction">
             add
          </a>
          <a
@@ -103,9 +84,7 @@
                <mymoney-recurring-transaction-buttons
                   *ngIf="transaction.parentId !== null"
                   [transaction]="transaction"
-                  (deleteRecurringTransaction)="
-                     deleteRecurringTransaction(transaction.parentId)
-                  "
+                  (deleteRecurringTransaction)="deleteRecurringTransaction(transaction.parentId)"
                ></mymoney-recurring-transaction-buttons>
             </td>
          </tr>

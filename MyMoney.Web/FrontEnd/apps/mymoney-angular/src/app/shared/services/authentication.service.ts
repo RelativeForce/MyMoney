@@ -2,11 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common/constants';
-import {
-   IBasicResultDto,
-   ILoginResultDto,
-   IRegisterDto,
-} from '@mymoney-common/api';
+import { IBasicResultDto, ILoginResultDto, IRegisterDto } from '@mymoney-common/api';
 import { AuthenticationApi } from '../api';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../state/app-state';
@@ -16,18 +12,13 @@ import { ISessionModel } from '../state/types';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-   constructor(
-      private readonly authenticationApi: AuthenticationApi,
-      private readonly store: Store<IAppState>
-   ) {}
+   constructor(private readonly authenticationApi: AuthenticationApi, private readonly store: Store<IAppState>) {}
 
    public login(email: string, password: string): Observable<ILoginResultDto> {
       return this.authenticationApi.login({ email, password }).pipe(
          map((response: ILoginResultDto) => {
             if (response.success) {
-               this.store.dispatch(
-                  new StartSessionAction(response.token, response.validTo)
-               );
+               this.store.dispatch(new StartSessionAction(response.token, response.validTo));
             }
 
             return response;
@@ -39,9 +30,7 @@ export class AuthenticationService {
       return this.authenticationApi.register(newUserData).pipe(
          map((response: ILoginResultDto) => {
             if (response.success) {
-               this.store.dispatch(
-                  new StartSessionAction(response.token, response.validTo)
-               );
+               this.store.dispatch(new StartSessionAction(response.token, response.validTo));
             }
 
             return response;
@@ -53,14 +42,8 @@ export class AuthenticationService {
       return this.authenticationApi.forgotPassword({ email });
    }
 
-   public resetPassword(
-      newPassword: string,
-      userToken: string
-   ): Observable<IBasicResultDto> {
-      return this.authenticationApi.resetPassword(
-         { password: newPassword },
-         userToken
-      );
+   public resetPassword(newPassword: string, userToken: string): Observable<IBasicResultDto> {
+      return this.authenticationApi.resetPassword({ password: newPassword }, userToken);
    }
 
    public checkSession(): Observable<boolean> {
@@ -71,23 +54,14 @@ export class AuthenticationService {
             }
 
             try {
-               const sessionData: string | null = localStorage.getItem(
-                  SESSION_LOCAL_STORAGE_KEY
-               );
+               const sessionData: string | null = localStorage.getItem(SESSION_LOCAL_STORAGE_KEY);
 
                if (sessionData !== null) {
                   const browserSession: ISessionModel = JSON.parse(sessionData);
 
                   if (this.isValid(browserSession)) {
-                     console.log(
-                        'Session: Using cached session from local storage'
-                     );
-                     this.store.dispatch(
-                        new StartSessionAction(
-                           browserSession.token,
-                           browserSession.sessionEnd
-                        )
-                     );
+                     console.log('Session: Using cached session from local storage');
+                     this.store.dispatch(new StartSessionAction(browserSession.token, browserSession.sessionEnd));
                      return true;
                   }
                }

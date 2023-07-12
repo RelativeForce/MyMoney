@@ -13,8 +13,6 @@ export class HttpHelper extends CommonHttpHelper {
    constructor(store: Store<IAppState>) {
       super();
 
-      this.sessionToken$ = store
-         .select(selectCurrentSession)
-         .pipe(map((session: ISessionModel | null) => session?.token ?? null));
+      this.sessionToken$ = store.select(selectCurrentSession).pipe(map((session: ISessionModel | null) => session?.token ?? null));
    }
 }

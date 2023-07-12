@@ -5,35 +5,23 @@ function roundToDecimal(value: number): string {
    return (Math.round((value + Number.EPSILON) * 100) / 100).toFixed(2);
 }
 
-export default function ChartTooltip({
-   active,
-   payload,
-}: TooltipProps<number, string>) {
+export default function ChartTooltip({ active, payload }: TooltipProps<number, string>) {
    if (active && payload && payload.length) {
       const seriesValues = [];
       const dataPoint = payload[0].payload as ISeriesDataPoint;
 
       let index = 0;
       for (const dateChartPoint of payload) {
-         const text = `${dateChartPoint.name} • £${roundToDecimal(
-            dateChartPoint.value ?? 0
-         )}`;
+         const text = `${dateChartPoint.name} • £${roundToDecimal(dateChartPoint.value ?? 0)}`;
 
          seriesValues.push(
-            <li
-               key={index++}
-               className="list-group-item"
-               style={{ color: dateChartPoint.color }}
-            >
+            <li key={index++} className="list-group-item" style={{ color: dateChartPoint.color }}>
                {text}
             </li>
          );
       }
 
-      const title =
-         dataPoint.id === -1
-            ? dataPoint.text
-            : `${dataPoint.text} • £${roundToDecimal(dataPoint.amount)}`;
+      const title = dataPoint.id === -1 ? dataPoint.text : `${dataPoint.text} • £${roundToDecimal(dataPoint.amount)}`;
 
       return (
          <div className="card">

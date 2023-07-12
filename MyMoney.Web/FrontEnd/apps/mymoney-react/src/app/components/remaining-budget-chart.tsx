@@ -12,22 +12,11 @@ import {
    setSelectedMonth,
 } from '../state/remaining-budget-chart-slice';
 import { useEffect, useMemo } from 'react';
-import {
-   IBudgetDto,
-   IBudgetSearchDto,
-   ITransactionDto,
-} from '@mymoney-common/api';
+import { IBudgetDto, IBudgetSearchDto, ITransactionDto } from '@mymoney-common/api';
 import { BudgetSeries, BudgetSeriesDataPoint } from '@mymoney-common/classes';
 import { randomColor } from '@mymoney-common/functions';
 
-const colors = [
-   '#5AA454',
-   '#783320',
-   '#DB2E2E',
-   '#7aa3e5',
-   '#a8385d',
-   '#aae3f5',
-];
+const colors = ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5'];
 
 function monthAsDate(searchParameters: IMonthSearch): Date {
    const month = new Date();
@@ -39,10 +28,7 @@ function monthAsDate(searchParameters: IMonthSearch): Date {
    return month;
 }
 
-function buildSeries(
-   budgets: IBudgetDto[],
-   transactions: ITransactionDto[]
-): BudgetSeries[] {
+function buildSeries(budgets: IBudgetDto[], transactions: ITransactionDto[]): BudgetSeries[] {
    const data = [];
 
    for (let index = 0; index < budgets.length; index++) {
@@ -106,10 +92,8 @@ function buildDataProvider(
             tooltip: 'Next year',
          },
       ],
-      onClickDataPoint: (data: BudgetSeriesDataPoint) =>
-         navigate(`/transactions/edit?id=${data.id}`),
-      onClickSeries: (data: BudgetSeries) =>
-         navigate(`/budgets/edit?id=${data.budget.id}`),
+      onClickDataPoint: (data: BudgetSeriesDataPoint) => navigate(`/transactions/edit?id=${data.id}`),
+      onClickSeries: (data: BudgetSeries) => navigate(`/budgets/edit?id=${data.budget.id}`),
    };
 }
 
@@ -121,25 +105,14 @@ export default function RemainingBudgetChart() {
    const budgets = useSelector(selectChartBudgets);
    const searchParameters = useSelector(selectRemainingBudgetSearchParameters);
 
-   const series = useMemo(
-      () => buildSeries(budgets.data, transactions.data),
-      [transactions.data, budgets.data]
-   );
+   const series = useMemo(() => buildSeries(budgets.data, transactions.data), [transactions.data, budgets.data]);
 
-   const setMonth = (month: number, year: number) =>
-      dispatch(setSelectedMonth(year, month + 1));
+   const setMonth = (month: number, year: number) => dispatch(setSelectedMonth(year, month + 1));
 
-   const dataProvider = buildDataProvider(
-      searchParameters,
-      series,
-      navigate,
-      setMonth
-   );
+   const dataProvider = buildDataProvider(searchParameters, series, navigate, setMonth);
 
    useEffect(() => {
-      const loading =
-         transactions.status === AsyncStatus.loading ||
-         budgets.status === AsyncStatus.loading;
+      const loading = transactions.status === AsyncStatus.loading || budgets.status === AsyncStatus.loading;
 
       if (loading || (!loading && !searchParameters.refresh)) {
          return;
@@ -149,13 +122,7 @@ export default function RemainingBudgetChart() {
 
       dispatch(fetchChartBudgets({ search }));
       dispatch(fetchChartTransactions({ search }));
-   }, [
-      searchParameters.refresh,
-      dispatch,
-      transactions.status,
-      budgets.status,
-      searchParameters,
-   ]);
+   }, [searchParameters.refresh, dispatch, transactions.status, budgets.status, searchParameters]);
 
    return <Chart dataProvider={dataProvider}></Chart>;
 }

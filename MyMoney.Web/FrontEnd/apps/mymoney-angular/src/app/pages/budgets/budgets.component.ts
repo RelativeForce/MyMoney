@@ -4,10 +4,7 @@ import { BudgetViewModel } from '@mymoney-common/classes';
 import { BudgetService } from '../../shared/services';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../shared/state/app-state';
-import {
-   selectBudgets,
-   selectBudgetsSearchParameters,
-} from '../../shared/state/selectors/budget.selector';
+import { selectBudgets, selectBudgetsSearchParameters } from '../../shared/state/selectors/budget.selector';
 import { monthValidator } from '../../shared/common-validators';
 
 @Component({
@@ -24,10 +21,7 @@ export class BudgetsComponent implements OnInit {
    public loading = false;
    public submitted = false;
 
-   constructor(
-      private readonly budgetService: BudgetService,
-      private readonly store: Store<IAppState>
-   ) {
+   constructor(private readonly budgetService: BudgetService, private readonly store: Store<IAppState>) {
       this.monthIdForm = new FormGroup(this.monthIdFormControls);
    }
 
@@ -37,15 +31,13 @@ export class BudgetsComponent implements OnInit {
          this.loading = false;
       });
 
-      this.store
-         .select(selectBudgetsSearchParameters)
-         .subscribe((searchParams) => {
-            const month = searchParams.month;
-            const year = searchParams.year;
+      this.store.select(selectBudgetsSearchParameters).subscribe((searchParams) => {
+         const month = searchParams.month;
+         const year = searchParams.year;
 
-            this.monthIdFormControls.year.setValue(year);
-            this.monthIdFormControls.month.setValue(month);
-         });
+         this.monthIdFormControls.year.setValue(year);
+         this.monthIdFormControls.month.setValue(month);
+      });
 
       this.budgetService.refreshBudgets();
    }

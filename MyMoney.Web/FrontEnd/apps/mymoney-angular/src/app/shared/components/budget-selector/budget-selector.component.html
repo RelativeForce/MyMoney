@@ -3,13 +3,7 @@
    <span class="spinner-border spinner-border-sm mr-1"></span>
    Loading...
 </div>
-<div
-   *ngIf="budgets !== null && budgets.length === 0"
-   class="alert alert-warning"
-   role="alert"
->
-   No budgets exist for {{ month }}
-</div>
+<div *ngIf="budgets !== null && budgets.length === 0" class="alert alert-warning" role="alert">No budgets exist for {{ month }}</div>
 <table *ngIf="budgets != null && budgets.length !== 0" class="table">
    <thead>
       <tr>
@@ -22,11 +16,7 @@
    <tbody>
       <tr *ngFor="let budget of budgets; let i = index">
          <td>
-            <mymoney-check-box
-               [isChecked]="selectedBudgets.has(budget.id)"
-               (change)="onBudgetCheckboxChange($event, budget.id)"
-            >
-            </mymoney-check-box>
+            <mymoney-check-box [isChecked]="selectedBudgets.has(budget.id)" (change)="onBudgetCheckboxChange($event, budget.id)"> </mymoney-check-box>
          </td>
          <td>{{ budget.name }}</td>
          <td>{{ budget.amount }}</td>

@@ -6,9 +6,7 @@ export class IncomeHeading extends BaseHeading<IncomeProperty> {
       super(property);
    }
 
-   public static transactionPropertyToType(
-      property: IncomeProperty
-   ): 'text' | 'date' | 'number' {
+   public static transactionPropertyToType(property: IncomeProperty): 'text' | 'date' | 'number' {
       switch (property) {
          case IncomeProperty.amount:
             return 'number';
@@ -19,14 +17,8 @@ export class IncomeHeading extends BaseHeading<IncomeProperty> {
       }
    }
 
-   public static formatWithTransactionProperty(
-      type: IncomeProperty,
-      input: string
-   ): any | null {
-      return BaseHeading.formatWithType(
-         IncomeHeading.transactionPropertyToType(type),
-         input
-      );
+   public static formatWithTransactionProperty(type: IncomeProperty, input: string): any | null {
+      return BaseHeading.formatWithType(IncomeHeading.transactionPropertyToType(type), input);
    }
 
    public get isIgnored() {

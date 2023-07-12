@@ -24,10 +24,7 @@ export class AddBasicTransactionComponent {
    public selectedBudgets: Set<number> = new Set();
    public selectedIncomes: Set<number> = new Set();
 
-   constructor(
-      private readonly router: Router,
-      private readonly transactionService: TransactionService
-   ) {
+   constructor(private readonly router: Router, private readonly transactionService: TransactionService) {
       this.addTransactionForm = new FormGroup(this.addTransactionFormControls);
    }
 
@@ -46,8 +43,7 @@ export class AddBasicTransactionComponent {
       this.loading = true;
 
       const date = this.addTransactionFormControls.date.value ?? '';
-      const description =
-         this.addTransactionFormControls.description.value ?? '';
+      const description = this.addTransactionFormControls.description.value ?? '';
       const amount = this.addTransactionFormControls.amount.value ?? 0;
       const notes = this.addTransactionFormControls.notes.value ?? '';
 

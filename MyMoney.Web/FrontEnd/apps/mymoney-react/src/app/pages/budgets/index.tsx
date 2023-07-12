@@ -4,18 +4,8 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InlineInput from '../../components/inline-input';
 import BasicBudgetButtons from '../../components/basic-budget-buttons';
-import {
-   maxValidator,
-   minValidator,
-   requiredValidator,
-} from '../../functions/validators';
-import {
-   deleteBudget,
-   fetchBudgets,
-   refreshBudgets,
-   selectBudgetState,
-   setSelectedMonth,
-} from '../../state/budgets-slice';
+import { maxValidator, minValidator, requiredValidator } from '../../functions/validators';
+import { deleteBudget, fetchBudgets, refreshBudgets, selectBudgetState, setSelectedMonth } from '../../state/budgets-slice';
 import { AsyncStatus, IBudgetState } from '../../state/types';
 import { useValidatedState } from '../../hooks/validation';
 
@@ -105,15 +95,10 @@ export default function Budgets() {
          <tr key={budget.id}>
             <td>{budget.name}</td>
             <td>{budget.amount}</td>
-            <td className={budget.remaining <= 0 ? 'text-danger' : ''}>
-               {budget.remaining}
-            </td>
+            <td className={budget.remaining <= 0 ? 'text-danger' : ''}>{budget.remaining}</td>
             <td>{budget.notes}</td>
             <td className="pull-right">
-               <BasicBudgetButtons
-                  budget={budget}
-                  onDeleteClicked={() => onDeleteBudgetClicked(budget.id)}
-               />
+               <BasicBudgetButtons budget={budget} onDeleteClicked={() => onDeleteBudgetClicked(budget.id)} />
             </td>
          </tr>
       );
@@ -152,11 +137,7 @@ export default function Budgets() {
                   data-placement="bottom"
                   title="Refresh budgets"
                >
-                  {loading ? (
-                     <span className="spinner-border spinner-border-sm"></span>
-                  ) : (
-                     <div className="spin">refresh</div>
-                  )}
+                  {loading ? <span className="spinner-border spinner-border-sm"></span> : <div className="spin">refresh</div>}
                </button>
                <Link
                   className="btn btn-success material-icons"

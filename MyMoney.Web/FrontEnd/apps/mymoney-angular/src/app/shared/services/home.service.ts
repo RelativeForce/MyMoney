@@ -8,10 +8,7 @@ import { IDateRangeModel } from '../state/types';
 export class HomeService {
    constructor(private readonly homeApi: HomeApi) {}
 
-   public getRunningTotal(
-      initialTotal: number,
-      dateRange: IDateRangeModel
-   ): Observable<IRunningTotalListDto> {
+   public getRunningTotal(initialTotal: number, dateRange: IDateRangeModel): Observable<IRunningTotalListDto> {
       return this.homeApi.runningTotal({ dateRange, initialTotal });
    }
 }

@@ -11,10 +11,7 @@ export enum SessionActionTypes {
 export class StartSessionAction implements Action {
    public type: string = SessionActionTypes.startSession;
 
-   constructor(
-      public readonly token: string,
-      public readonly sessionEnd: string
-   ) {}
+   constructor(public readonly token: string, public readonly sessionEnd: string) {}
 }
 
 export class ClearSessionAction implements Action {

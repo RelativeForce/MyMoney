@@ -4,10 +4,7 @@ import { IncomeService } from '../../shared/services';
 import { IncomeViewModel } from '@mymoney-common/classes';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../shared/state/app-state';
-import {
-   selectIncomes,
-   selectIncomesSearchParameters,
-} from '../../shared/state/selectors/income.selector';
+import { selectIncomes, selectIncomesSearchParameters } from '../../shared/state/selectors/income.selector';
 import { IDateRangeModel } from '../../shared/state/types';
 import { toDateString } from '@mymoney-common/functions';
 
@@ -21,20 +18,13 @@ export class IncomesComponent implements OnInit {
    public dateRange: IDateRangeModel = { start: new Date(), end: new Date() };
    public dateForm: FormGroup;
    public dateRangeFormControls = {
-      start: new FormControl(toDateString(this.dateRange.start), [
-         Validators.required,
-      ]),
-      end: new FormControl(toDateString(this.dateRange.end), [
-         Validators.required,
-      ]),
+      start: new FormControl(toDateString(this.dateRange.start), [Validators.required]),
+      end: new FormControl(toDateString(this.dateRange.end), [Validators.required]),
    };
    public loading = false;
    public submitted = false;
 
-   constructor(
-      private readonly incomeService: IncomeService,
-      private readonly store: Store<IAppState>
-   ) {
+   constructor(private readonly incomeService: IncomeService, private readonly store: Store<IAppState>) {
       this.dateForm = new FormGroup(this.dateRangeFormControls);
    }
 
@@ -44,18 +34,12 @@ export class IncomesComponent implements OnInit {
          this.loading = false;
       });
 
-      this.store
-         .select(selectIncomesSearchParameters)
-         .subscribe((searchParameters) => {
-            this.dateRange = searchParameters.dateRange;
+      this.store.select(selectIncomesSearchParameters).subscribe((searchParameters) => {
+         this.dateRange = searchParameters.dateRange;
 
-            this.dateRangeFormControls.start.setValue(
-               toDateString(searchParameters.dateRange.start)
-            );
-            this.dateRangeFormControls.end.setValue(
-               toDateString(searchParameters.dateRange.end)
-            );
-         });
+         this.dateRangeFormControls.start.setValue(toDateString(searchParameters.dateRange.start));
+         this.dateRangeFormControls.end.setValue(toDateString(searchParameters.dateRange.end));
+      });
 
       this.incomeService.refreshIncomes();
    }

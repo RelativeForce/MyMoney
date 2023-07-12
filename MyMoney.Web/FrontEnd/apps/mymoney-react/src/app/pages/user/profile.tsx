@@ -10,23 +10,14 @@ import { Link } from 'react-router-dom';
 import { useValidatedState } from '../../hooks/validation';
 
 export default function Profile() {
-   const userState: IAsyncState<IUserDto | null> = useSelector(
-      selectCurrentUserState
-   );
+   const userState: IAsyncState<IUserDto | null> = useSelector(selectCurrentUserState);
 
    const [submitted, setSubmitted] = useState<boolean>(false);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
-   const [emailState, setEmailState] = useValidatedState<string>('', [
-      requiredValidator('Email is required'),
-   ]);
-   const [fullNameState, setFullNameState] = useValidatedState<string>('', [
-      requiredValidator('Full name is required'),
-   ]);
-   const [dateOfBirthState, setDateOfBirthState] = useValidatedState<string>(
-      '',
-      [requiredValidator('Date of birth is required')]
-   );
+   const [emailState, setEmailState] = useValidatedState<string>('', [requiredValidator('Email is required')]);
+   const [fullNameState, setFullNameState] = useValidatedState<string>('', [requiredValidator('Full name is required')]);
+   const [dateOfBirthState, setDateOfBirthState] = useValidatedState<string>('', [requiredValidator('Date of birth is required')]);
    const dispatch = useDispatch<any>();
 
    useEffect(() => {
@@ -116,17 +107,8 @@ export default function Profile() {
                type="date"
             />
             <div className="form-group">
-               <button
-                  disabled={loading}
-                  type="button"
-                  onClick={loginClicked}
-                  className="btn btn-primary"
-               >
-                  {loading ? (
-                     <span className="spinner-border spinner-border-sm mr-1"></span>
-                  ) : (
-                     ''
-                  )}
+               <button disabled={loading} type="button" onClick={loginClicked} className="btn btn-primary">
+                  {loading ? <span className="spinner-border spinner-border-sm mr-1"></span> : ''}
                   Save changes
                </button>
                <Link className="btn btn-link" to="/">

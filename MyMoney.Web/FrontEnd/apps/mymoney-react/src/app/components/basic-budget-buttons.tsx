@@ -1,13 +1,7 @@
 import { IBudgetDto } from '@mymoney-common/api';
 import { Link } from 'react-router-dom';
 
-export default function BasicBudgetButtons({
-   budget,
-   onDeleteClicked,
-}: {
-   budget: IBudgetDto;
-   onDeleteClicked: () => void;
-}) {
+export default function BasicBudgetButtons({ budget, onDeleteClicked }: { budget: IBudgetDto; onDeleteClicked: () => void }) {
    return (
       <div className="btn-group">
          <Link

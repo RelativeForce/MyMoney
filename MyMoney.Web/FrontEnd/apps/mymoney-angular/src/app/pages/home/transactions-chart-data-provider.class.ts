@@ -2,17 +2,11 @@ import { IChartDataProvider } from '../../shared/components/chart';
 import { Router } from '@angular/router';
 import { BudgetSeries, BudgetSeriesDataPoint } from '@mymoney-common/classes';
 import { BudgetService, TransactionService } from '../../shared/services';
-import {
-   IBudgetModel,
-   IDateRangeModel,
-   ITransactionModel,
-} from '../../shared/state/types';
+import { IBudgetModel, IDateRangeModel, ITransactionModel } from '../../shared/state/types';
 import { combineLatest } from 'rxjs';
 import { randomColor } from '@mymoney-common/functions';
 
-export class TransactionsChartDataProvider
-   implements IChartDataProvider<BudgetSeries, BudgetSeriesDataPoint>
-{
+export class TransactionsChartDataProvider implements IChartDataProvider<BudgetSeries, BudgetSeriesDataPoint> {
    public chartTitle: string;
    public yAxisLabel: string;
    public colorScheme: { domain: string[] };
@@ -51,11 +45,7 @@ export class TransactionsChartDataProvider
       if (item.transaction.parentId === null || item.transaction.id > 0) {
          this.router.navigate(['/transactions', 'edit', item.transaction.id]);
       } else {
-         this.router.navigate([
-            '/transactions',
-            'edit-recurring',
-            item.transaction.parentId,
-         ]);
+         this.router.navigate(['/transactions', 'edit-recurring', item.transaction.parentId]);
       }
    }
 
@@ -102,18 +92,10 @@ export class TransactionsChartDataProvider
       combineLatest([
          this.budgetService.getBudgetsForMonth(monthYear.month, monthYear.year),
          this.transactionService.getTransactionsInRange(this.dateRange),
-      ]).subscribe(([budgetList, transactionList]) =>
-         this.updateChart(
-            budgetList.budgets,
-            transactionList.transactions.reverse()
-         )
-      );
+      ]).subscribe(([budgetList, transactionList]) => this.updateChart(budgetList.budgets, transactionList.transactions.reverse()));
    }
 
-   private updateChart(
-      budgets: IBudgetModel[],
-      transactions: ITransactionModel[]
-   ): void {
+   private updateChart(budgets: IBudgetModel[], transactions: ITransactionModel[]): void {
       const seriesData = [];
       const colors = this.getColourScheme(budgets.length);
 
@@ -132,14 +114,7 @@ export class TransactionsChartDataProvider
    }
 
    private getColourScheme(budgetCount: number): string[] {
-      const colors = [
-         '#5AA454',
-         '#783320',
-         '#DB2E2E',
-         '#7aa3e5',
-         '#a8385d',
-         '#aae3f5',
-      ];
+      const colors = ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5'];
 
       if (budgetCount > colors.length) {
          const colorsToAdd = budgetCount - colors.length;
