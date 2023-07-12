@@ -2,17 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../../shared/services';
-import {
-   IRecurringTransactionDto,
-   Frequency,
-   ITransactionDto,
-} from '@mymoney-common/api';
+import { IRecurringTransactionDto, Frequency, ITransactionDto } from '@mymoney-common/api';
 import { toInputDateString } from '@mymoney-common/functions';
 import { frequencyOptions } from '@mymoney-common/constants';
-import {
-   frequencyValidator,
-   minAmountValidator,
-} from '../../../../shared/common-validators';
+import { frequencyValidator, minAmountValidator } from '../../../../shared/common-validators';
 
 @Component({
    templateUrl: './edit-recurring-transaction.component.html',
@@ -26,10 +19,7 @@ export class EditRecurringTransactionComponent implements OnInit {
       description: new FormControl('', [Validators.required]),
       amount: new FormControl(0.01, [Validators.required, minAmountValidator]),
       notes: new FormControl(''),
-      recurrence: new FormControl<Frequency>(Frequency.month, [
-         Validators.required,
-         frequencyValidator,
-      ]),
+      recurrence: new FormControl<Frequency>(Frequency.month, [Validators.required, frequencyValidator]),
    };
    public id = 0;
    public loading = false;
@@ -37,17 +27,14 @@ export class EditRecurringTransactionComponent implements OnInit {
    public submitted = false;
    public isValid = true;
    public children: { id: number; date: string }[] = [];
-   public recurrenceOptions: { key: Frequency; value: string }[] =
-      frequencyOptions;
+   public recurrenceOptions: { key: Frequency; value: string }[] = frequencyOptions;
 
    constructor(
       private readonly transactionService: TransactionService,
       private readonly router: Router,
       private readonly activatedRoute: ActivatedRoute
    ) {
-      this.editTransactionForm = new FormGroup(
-         this.editTransactionFormControls
-      );
+      this.editTransactionForm = new FormGroup(this.editTransactionFormControls);
    }
 
    public ngOnInit(): void {
@@ -64,24 +51,12 @@ export class EditRecurringTransactionComponent implements OnInit {
 
          this.transactionService.findRecurringTransaction(this.id).subscribe(
             (response: IRecurringTransactionDto) => {
-               this.editTransactionFormControls.start.patchValue(
-                  toInputDateString(response.start)
-               );
-               this.editTransactionFormControls.end.patchValue(
-                  toInputDateString(response.end)
-               );
-               this.editTransactionFormControls.description.patchValue(
-                  response.description
-               );
-               this.editTransactionFormControls.recurrence.patchValue(
-                  response.recurrence
-               );
-               this.editTransactionFormControls.amount.patchValue(
-                  response.amount
-               );
-               this.editTransactionFormControls.notes.patchValue(
-                  response.notes
-               );
+               this.editTransactionFormControls.start.patchValue(toInputDateString(response.start));
+               this.editTransactionFormControls.end.patchValue(toInputDateString(response.end));
+               this.editTransactionFormControls.description.patchValue(response.description);
+               this.editTransactionFormControls.recurrence.patchValue(response.recurrence);
+               this.editTransactionFormControls.amount.patchValue(response.amount);
+               this.editTransactionFormControls.notes.patchValue(response.notes);
 
                this.children = response.children;
                this.enableForm();
@@ -99,12 +74,10 @@ export class EditRecurringTransactionComponent implements OnInit {
    public addOrEditTransaction(child: { id: number; date: string }) {
       if (child.id < 0) {
          this.realisingChild = child.id;
-         this.transactionService
-            .realiseTransaction(this.id, child.date, child.id)
-            .subscribe((realChild: ITransactionDto) => {
-               this.realisingChild = null;
-               this.router.navigate(['/transactions', 'edit', realChild.id]);
-            });
+         this.transactionService.realiseTransaction(this.id, child.date, child.id).subscribe((realChild: ITransactionDto) => {
+            this.realisingChild = null;
+            this.router.navigate(['/transactions', 'edit', realChild.id]);
+         });
       } else {
          this.router.navigate(['/transactions', 'edit', child.id]);
       }
@@ -118,13 +91,8 @@ export class EditRecurringTransactionComponent implements OnInit {
          return;
       }
 
-      if (
-         this.editTransactionFormControls.start.dirty ||
-         this.editTransactionFormControls.recurrence.dirty
-      ) {
-         const message =
-            'Changing the start or recurrence will erase all manual changes to the transaction occurrences.\n\n' +
-            'Continue?';
+      if (this.editTransactionFormControls.start.dirty || this.editTransactionFormControls.recurrence.dirty) {
+         const message = 'Changing the start or recurrence will erase all manual changes to the transaction occurrences.\n\n' + 'Continue?';
 
          if (!confirm(message)) {
             return;
@@ -133,20 +101,18 @@ export class EditRecurringTransactionComponent implements OnInit {
 
       this.loading = true;
 
-      this.transactionService
-         .editRecurringTransaction(this.asTransactionModel)
-         .subscribe(
-            (success) => {
-               this.loading = false;
-               if (success) {
-                  this.router.navigate(['/transactions']);
-               }
-            },
-            () => {
-               // Show error
-               this.loading = false;
+      this.transactionService.editRecurringTransaction(this.asTransactionModel).subscribe(
+         (success) => {
+            this.loading = false;
+            if (success) {
+               this.router.navigate(['/transactions']);
             }
-         );
+         },
+         () => {
+            // Show error
+            this.loading = false;
+         }
+      );
    }
 
    private disableForm() {
@@ -168,18 +134,12 @@ export class EditRecurringTransactionComponent implements OnInit {
    }
 
    private get asTransactionModel(): IRecurringTransactionDto {
-      const start: string = new Date(
-         this.editTransactionFormControls.start.value ?? ''
-      ).toLocaleDateString();
-      const end: string = new Date(
-         this.editTransactionFormControls.end.value ?? ''
-      ).toLocaleDateString();
-      const description =
-         this.editTransactionFormControls.description.value ?? '';
+      const start: string = new Date(this.editTransactionFormControls.start.value ?? '').toLocaleDateString();
+      const end: string = new Date(this.editTransactionFormControls.end.value ?? '').toLocaleDateString();
+      const description = this.editTransactionFormControls.description.value ?? '';
       const amount = this.editTransactionFormControls.amount.value ?? 0;
       const notes = this.editTransactionFormControls.notes.value ?? '';
-      const recurrence =
-         this.editTransactionFormControls.recurrence.value ?? Frequency.day;
+      const recurrence = this.editTransactionFormControls.recurrence.value ?? Frequency.day;
 
       return {
          start,

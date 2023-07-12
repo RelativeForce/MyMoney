@@ -10,13 +10,8 @@
             'is-invalid': submitted && profileFormControls.email.errors
          }"
       />
-      <div
-         *ngIf="submitted && profileFormControls.email.errors"
-         class="invalid-feedback"
-      >
-         <div *ngIf="profileFormControls.email.errors['required']">
-            Email is required
-         </div>
+      <div *ngIf="submitted && profileFormControls.email.errors" class="invalid-feedback">
+         <div *ngIf="profileFormControls.email.errors['required']">Email is required</div>
       </div>
    </div>
    <div class="form-group">
@@ -29,13 +24,8 @@
             'is-invalid': submitted && profileFormControls.fullName.errors
          }"
       />
-      <div
-         *ngIf="submitted && profileFormControls.fullName.errors"
-         class="invalid-feedback"
-      >
-         <div *ngIf="profileFormControls.fullName.errors['required']">
-            Full name is required
-         </div>
+      <div *ngIf="submitted && profileFormControls.fullName.errors" class="invalid-feedback">
+         <div *ngIf="profileFormControls.fullName.errors['required']">Full name is required</div>
       </div>
    </div>
    <div class="form-group">
@@ -48,26 +38,16 @@
             'is-invalid': submitted && profileFormControls.dateOfBirth.errors
          }"
       />
-      <div
-         *ngIf="submitted && profileFormControls.dateOfBirth.errors"
-         class="invalid-feedback"
-      >
-         <div *ngIf="profileFormControls.dateOfBirth.errors['required']">
-            Date of birth is required
-         </div>
+      <div *ngIf="submitted && profileFormControls.dateOfBirth.errors" class="invalid-feedback">
+         <div *ngIf="profileFormControls.dateOfBirth.errors['required']">Date of birth is required</div>
       </div>
    </div>
    <div class="form-group">
       <button [disabled]="loading" class="btn btn-primary">
-         <span
-            *ngIf="loading"
-            class="spinner-border spinner-border-sm mr-1"
-         ></span>
+         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
          Save changes
       </button>
       <a routerLink="/" class="btn btn-link">Cancel</a>
    </div>
-   <div *ngIf="error !== null" class="alert alert-danger" role="alert">
-      Save failed: {{ error }}
-   </div>
+   <div *ngIf="error !== null" class="alert alert-danger" role="alert">Save failed: {{ error }}</div>
 </form>

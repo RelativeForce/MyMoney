@@ -1,9 +1,6 @@
 import { ISeries, ISeriesDataPoint } from '@mymoney-common/interfaces';
 
-export interface IChartDataProvider<
-   TSeries extends ISeries<TDataPoint>,
-   TDataPoint extends ISeriesDataPoint
-> {
+export interface IChartDataProvider<TSeries extends ISeries<TDataPoint>, TDataPoint extends ISeriesDataPoint> {
    chartTitle: string;
    yAxisLabel: string;
    colorScheme: { domain: string[] };

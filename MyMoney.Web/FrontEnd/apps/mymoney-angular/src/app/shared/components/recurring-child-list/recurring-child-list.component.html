@@ -1,22 +1,13 @@
 <h4>Occurrences</h4>
-<div *ngIf="!isValid">
-   Occurrences will be recalculated when changes are saved.
-</div>
-<div
-   *ngIf="children.length > 0"
-   [ngStyle]="{ 'max-height': '60vh', 'overflow-y': 'scroll' }"
->
+<div *ngIf="!isValid">Occurrences will be recalculated when changes are saved.</div>
+<div *ngIf="children.length > 0" [ngStyle]="{ 'max-height': '60vh', 'overflow-y': 'scroll' }">
    <table class="table">
       <tbody>
          <tr *ngFor="let child of children; let i = index">
             <td>
                <div class="center">
                   {{ child.date }}
-                  <span
-                     *ngIf="nextChildId === child.id"
-                     class="badge badge-pill badge-warning"
-                     >Upcoming next</span
-                  >
+                  <span *ngIf="nextChildId === child.id" class="badge badge-pill badge-warning">Upcoming next</span>
                </div>
             </td>
             <td class="pull-right">
@@ -43,11 +34,7 @@
                   >
                      comment
                   </button>
-                  <button
-                     *ngIf="realisingChildId === child.id"
-                     [disabled]="true"
-                     class="btn btn-primary material-icons"
-                  >
+                  <button *ngIf="realisingChildId === child.id" [disabled]="true" class="btn btn-primary material-icons">
                      <span class="spinner-border spinner-border-sm"></span>
                   </button>
                </div>

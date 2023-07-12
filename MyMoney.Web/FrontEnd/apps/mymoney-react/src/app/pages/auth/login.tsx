@@ -14,12 +14,8 @@ export default function Login() {
    const [submitted, setSubmitted] = useState<boolean>(false);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
-   const [emailState, setEmailState] = useValidatedState<string>('', [
-      requiredValidator('Email is required'),
-   ]);
-   const [passwordState, setPasswordState] = useValidatedState<string>('', [
-      requiredValidator('Password is required'),
-   ]);
+   const [emailState, setEmailState] = useValidatedState<string>('', [requiredValidator('Email is required')]);
+   const [passwordState, setPasswordState] = useValidatedState<string>('', [requiredValidator('Password is required')]);
    const dispatch = useDispatch<any>();
 
    const updateEmail: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -84,17 +80,8 @@ export default function Login() {
                type="password"
             />
             <div className="form-group">
-               <button
-                  disabled={loading}
-                  type="button"
-                  onClick={loginClicked}
-                  className="btn btn-primary"
-               >
-                  {loading ? (
-                     <span className="spinner-border spinner-border-sm mr-1"></span>
-                  ) : (
-                     ''
-                  )}
+               <button disabled={loading} type="button" onClick={loginClicked} className="btn btn-primary">
+                  {loading ? <span className="spinner-border spinner-border-sm mr-1"></span> : ''}
                   Login
                </button>
                <Link className="btn btn-link" to="/auth/register">

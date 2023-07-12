@@ -1,22 +1,6 @@
-import {
-   createSlice,
-   createAsyncThunk,
-   ActionReducerMapBuilder,
-} from '@reduxjs/toolkit';
-import {
-   TransactionApi,
-   IDateRangeDto,
-   ITransactionDto,
-   ITransactionListDto,
-} from '@mymoney-common/api';
-import {
-   IAppState,
-   AsyncStatus,
-   ITransactionState,
-   ITransactionsSearch,
-   IAsyncState,
-   IDateRangeModel,
-} from './types';
+import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
+import { TransactionApi, IDateRangeDto, ITransactionDto, ITransactionListDto } from '@mymoney-common/api';
+import { IAppState, AsyncStatus, ITransactionState, ITransactionsSearch, IAsyncState, IDateRangeModel } from './types';
 import { first, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { HttpHelper } from '../classess/http-helper';
@@ -47,10 +31,7 @@ export const initialTransactionsState: ITransactionState = {
 
 export const fetchTransactions = createAsyncThunk(
    'transactions/fetchTransactions',
-   async (
-      { dateRange }: { dateRange: IDateRangeModel },
-      { getState, rejectWithValue }
-   ) => {
+   async ({ dateRange }: { dateRange: IDateRangeModel }, { getState, rejectWithValue }) => {
       const state = getState() as IAppState;
       if (!state.session.currentSession?.token) {
          return rejectWithValue('No user session');
@@ -84,10 +65,7 @@ export interface IDeleteTransactionRequest {
 
 export const deleteTransaction = createAsyncThunk(
    'transactions/deleteTransaction',
-   async (
-      { transactionId }: { transactionId: number },
-      { getState, rejectWithValue }
-   ) => {
+   async ({ transactionId }: { transactionId: number }, { getState, rejectWithValue }) => {
       const state = getState() as IAppState;
       if (!state.session.currentSession?.token) {
          return rejectWithValue('No user session');
@@ -97,9 +75,7 @@ export const deleteTransaction = createAsyncThunk(
       const api = new TransactionApi(httpHelper);
 
       try {
-         return await firstValueFrom(
-            api.delete({ id: transactionId }).pipe(first())
-         );
+         return await firstValueFrom(api.delete({ id: transactionId }).pipe(first()));
       } catch (error: any) {
          return rejectWithValue(error.message);
       }
@@ -108,10 +84,7 @@ export const deleteTransaction = createAsyncThunk(
 
 export const deleteRecurringTransaction = createAsyncThunk(
    'transactions/deleteRecurringTransaction',
-   async (
-      { recurringTransactionId }: { recurringTransactionId: number },
-      { getState, rejectWithValue }
-   ) => {
+   async ({ recurringTransactionId }: { recurringTransactionId: number }, { getState, rejectWithValue }) => {
       const state = getState() as IAppState;
       if (!state.session.currentSession?.token) {
          return rejectWithValue('No user session');
@@ -121,9 +94,7 @@ export const deleteRecurringTransaction = createAsyncThunk(
       const api = new TransactionApi(httpHelper);
 
       try {
-         return await firstValueFrom(
-            api.deleteRecurring({ id: recurringTransactionId }).pipe(first())
-         );
+         return await firstValueFrom(api.deleteRecurring({ id: recurringTransactionId }).pipe(first()));
       } catch (error: any) {
          return rejectWithValue(error.message);
       }
@@ -135,10 +106,7 @@ export const transactionsSlice = createSlice({
    initialState: initialTransactionsState,
    reducers: {
       setDataRange: {
-         reducer: (
-            state: ITransactionState,
-            { payload }: { payload: IDateRangeModel }
-         ) => {
+         reducer: (state: ITransactionState, { payload }: { payload: IDateRangeModel }) => {
             return {
                ...state,
                searchParameters: {
@@ -165,112 +133,81 @@ export const transactionsSlice = createSlice({
    },
    extraReducers(builder: ActionReducerMapBuilder<ITransactionState>) {
       builder
-         .addCase(
-            fetchTransactions.pending,
-            (state: ITransactionState, { meta: { arg } }) => {
-               return {
-                  ...state,
-                  transactions: {
-                     data: [],
-                     status: AsyncStatus.loading,
-                     error: null,
-                  },
-                  searchParameters: {
-                     dateRange: arg.dateRange,
-                     refresh: false,
-                  },
-               };
+         .addCase(fetchTransactions.pending, (state: ITransactionState, { meta: { arg } }) => {
+            return {
+               ...state,
+               transactions: {
+                  data: [],
+                  status: AsyncStatus.loading,
+                  error: null,
+               },
+               searchParameters: {
+                  dateRange: arg.dateRange,
+                  refresh: false,
+               },
+            };
+         })
+         .addCase(fetchTransactions.fulfilled, (state: ITransactionState, action: { payload: ITransactionDto[] }) => {
+            return {
+               ...state,
+               transactions: {
+                  data: action.payload,
+                  status: AsyncStatus.succeeded,
+                  error: null,
+               },
+            };
+         })
+         .addCase(fetchTransactions.rejected, (state: ITransactionState, action) => {
+            return {
+               ...state,
+               transactions: {
+                  data: [],
+                  status: AsyncStatus.failed,
+                  error: action.error.message ?? null,
+               },
+            };
+         })
+         .addCase(deleteTransaction.fulfilled, (state: ITransactionState, { meta: { arg }, payload }) => {
+            if (!payload.success) {
+               return state;
             }
-         )
-         .addCase(
-            fetchTransactions.fulfilled,
-            (
-               state: ITransactionState,
-               action: { payload: ITransactionDto[] }
-            ) => {
-               return {
-                  ...state,
-                  transactions: {
-                     data: action.payload,
-                     status: AsyncStatus.succeeded,
-                     error: null,
-                  },
-               };
-            }
-         )
-         .addCase(
-            fetchTransactions.rejected,
-            (state: ITransactionState, action) => {
-               return {
-                  ...state,
-                  transactions: {
-                     data: [],
-                     status: AsyncStatus.failed,
-                     error: action.error.message ?? null,
-                  },
-               };
-            }
-         )
-         .addCase(
-            deleteTransaction.fulfilled,
-            (state: ITransactionState, { meta: { arg }, payload }) => {
-               if (!payload.success) {
-                  return state;
-               }
 
-               return {
-                  ...state,
-                  transactions: {
-                     ...state.transactions,
-                     data: state.transactions.data.filter(
-                        (t) => t.id !== arg.transactionId
-                     ),
-                  },
-               };
+            return {
+               ...state,
+               transactions: {
+                  ...state.transactions,
+                  data: state.transactions.data.filter((t) => t.id !== arg.transactionId),
+               },
+            };
+         })
+         .addCase(deleteRecurringTransaction.fulfilled, (state: ITransactionState, { meta: { arg }, payload }) => {
+            if (!payload.success) {
+               return state;
             }
-         )
-         .addCase(
-            deleteRecurringTransaction.fulfilled,
-            (state: ITransactionState, { meta: { arg }, payload }) => {
-               if (!payload.success) {
-                  return state;
-               }
 
-               return {
-                  ...state,
-                  transactions: {
-                     ...state.transactions,
-                     data: state.transactions.data.filter(
-                        (t) => t.parentId !== arg.recurringTransactionId
-                     ),
-                  },
-               };
-            }
-         );
+            return {
+               ...state,
+               transactions: {
+                  ...state.transactions,
+                  data: state.transactions.data.filter((t) => t.parentId !== arg.recurringTransactionId),
+               },
+            };
+         });
    },
 });
 
 export const { setDataRange, refreshTransactions } = transactionsSlice.actions;
 
-export const selectTransactionState = (state: IAppState): ITransactionState =>
-   state.transactions;
+export const selectTransactionState = (state: IAppState): ITransactionState => state.transactions;
 
-export const selectTransactions = (state: IAppState): ITransactionDto[] =>
-   selectTransactionState(state).transactions.data;
+export const selectTransactions = (state: IAppState): ITransactionDto[] => selectTransactionState(state).transactions.data;
 
-export const selectTransactionsSearchParameters = (
-   state: IAppState
-): ITransactionsSearch => selectTransactionState(state).searchParameters;
+export const selectTransactionsSearchParameters = (state: IAppState): ITransactionsSearch => selectTransactionState(state).searchParameters;
 
-export const selectTransactionsDateRange = (
-   state: IAppState
-): IDateRangeModel => selectTransactionsSearchParameters(state).dateRange;
+export const selectTransactionsDateRange = (state: IAppState): IDateRangeModel => selectTransactionsSearchParameters(state).dateRange;
 
-export function selectTransaction(
-   transactionId: number
-): (state: IAppState) => ITransactionDto | undefined {
-   return (state: IAppState): ITransactionDto | undefined =>
-      selectTransactions(state).find((t) => t.id === transactionId);
+export function selectTransaction(transactionId: number): (state: IAppState) => ITransactionDto | undefined {
+   return (state: IAppState): ITransactionDto | undefined => selectTransactions(state).find((t) => t.id === transactionId);
 }
 
 export default transactionsSlice.reducer;

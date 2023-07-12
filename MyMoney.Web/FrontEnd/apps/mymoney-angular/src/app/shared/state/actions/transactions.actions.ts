@@ -39,10 +39,7 @@ export class DeleteRecurringTransactionAction implements Action {
 export class RealiseTransactionAction implements Action {
    public type: string = TransactionActionTypes.realiseTransaction;
 
-   constructor(
-      public readonly virtualId: number,
-      public readonly realId: number
-   ) {}
+   constructor(public readonly virtualId: number, public readonly realId: number) {}
 }
 
 export class UpdateDataRangeAction implements Action {

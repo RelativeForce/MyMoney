@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import {
-   minAmountValidator,
-   monthValidator,
-} from '../../../shared/common-validators';
+import { minAmountValidator, monthValidator } from '../../../shared/common-validators';
 import { BudgetService } from '../../../shared/services';
 import { IBudgetModel } from '../../../shared/state/types';
 
@@ -23,10 +20,7 @@ export class AddBudgetComponent implements OnInit {
    public loading = false;
    public submitted = false;
 
-   constructor(
-      private readonly router: Router,
-      private readonly budgetService: BudgetService
-   ) {
+   constructor(private readonly router: Router, private readonly budgetService: BudgetService) {
       this.addBudgetForm = new FormGroup(this.addBudgetFormControls);
    }
 

@@ -14,16 +14,9 @@
             }"
             (change)="updateBudgets()"
          />
-         <div
-            *ngIf="submitted && monthIdFormControls.year.errors"
-            class="invalid-feedback"
-         >
-            <div *ngIf="monthIdFormControls.year.errors['required']">
-               Year is required
-            </div>
-            <div *ngIf="monthIdFormControls.year.errors['min']">
-               Year cannot be less than 1980
-            </div>
+         <div *ngIf="submitted && monthIdFormControls.year.errors" class="invalid-feedback">
+            <div *ngIf="monthIdFormControls.year.errors['required']">Year is required</div>
+            <div *ngIf="monthIdFormControls.year.errors['min']">Year cannot be less than 1980</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2">
@@ -39,41 +32,17 @@
             }"
             (change)="updateBudgets()"
          />
-         <div
-            *ngIf="submitted && monthIdFormControls.month.errors"
-            class="invalid-feedback"
-         >
-            <div *ngIf="monthIdFormControls.month.errors['required']">
-               Month is required
-            </div>
-            <div *ngIf="monthIdFormControls.month.errors['invalidMonth']">
-               Month must be 1 - 12
-            </div>
+         <div *ngIf="submitted && monthIdFormControls.month.errors" class="invalid-feedback">
+            <div *ngIf="monthIdFormControls.month.errors['required']">Month is required</div>
+            <div *ngIf="monthIdFormControls.month.errors['invalidMonth']">Month must be 1 - 12</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">
-         <button
-            [disabled]="loading"
-            class="btn btn-primary material-icons"
-            data-toggle="tooltip"
-            data-placement="bottom"
-            title="Refresh budgets"
-         >
-            <span
-               *ngIf="loading"
-               class="spinner-border spinner-border-sm"
-            ></span>
+         <button [disabled]="loading" class="btn btn-primary material-icons" data-toggle="tooltip" data-placement="bottom" title="Refresh budgets">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
             <div *ngIf="!loading" class="spin">refresh</div>
          </button>
-         <a
-            class="btn btn-success material-icons"
-            routerLink="./add"
-            data-toggle="tooltip"
-            data-placement="bottom"
-            title="Add new budget"
-         >
-            add
-         </a>
+         <a class="btn btn-success material-icons" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new budget"> add </a>
       </div>
    </div>
 </form>
@@ -97,10 +66,7 @@
             </td>
             <td>{{ budget.notes }}</td>
             <td class="pull-right">
-               <mymoney-budget-buttons
-                  [budget]="budget"
-                  (deleteBudget)="deleteBudget(budget.id)"
-               ></mymoney-budget-buttons>
+               <mymoney-budget-buttons [budget]="budget" (deleteBudget)="deleteBudget(budget.id)"></mymoney-budget-buttons>
             </td>
          </tr>
       </tbody>

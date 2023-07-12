@@ -14,13 +14,8 @@
                'is-invalid': submitted && dateRangeFormControls.start.errors
             }"
          />
-         <div
-            *ngIf="submitted && dateRangeFormControls.start.errors"
-            class="invalid-feedback"
-         >
-            <div *ngIf="dateRangeFormControls.start.errors['required']">
-               Start is required
-            </div>
+         <div *ngIf="submitted && dateRangeFormControls.start.errors" class="invalid-feedback">
+            <div *ngIf="dateRangeFormControls.start.errors['required']">Start is required</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2">
@@ -36,38 +31,16 @@
                'is-invalid': submitted && dateRangeFormControls.end.errors
             }"
          />
-         <div
-            *ngIf="submitted && dateRangeFormControls.end.errors"
-            class="invalid-feedback"
-         >
-            <div *ngIf="dateRangeFormControls.end.errors['required']">
-               End is required
-            </div>
+         <div *ngIf="submitted && dateRangeFormControls.end.errors" class="invalid-feedback">
+            <div *ngIf="dateRangeFormControls.end.errors['required']">End is required</div>
          </div>
       </div>
       <div class="input-group mb-3 pr-2 btn-group">
-         <button
-            [disabled]="loading"
-            class="btn btn-primary material-icons"
-            data-toggle="tooltip"
-            data-placement="bottom"
-            title="Refresh incomes"
-         >
-            <span
-               *ngIf="loading"
-               class="spinner-border spinner-border-sm"
-            ></span>
+         <button [disabled]="loading" class="btn btn-primary material-icons" data-toggle="tooltip" data-placement="bottom" title="Refresh incomes">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
             <div *ngIf="!loading" class="spin">refresh</div>
          </button>
-         <a
-            class="btn btn-success material-icons"
-            routerLink="./add"
-            data-toggle="tooltip"
-            data-placement="bottom"
-            title="Add new income"
-         >
-            add
-         </a>
+         <a class="btn btn-success material-icons" routerLink="./add" data-toggle="tooltip" data-placement="bottom" title="Add new income"> add </a>
          <a
             class="btn btn-success material-icons"
             routerLink="./import"
@@ -99,18 +72,12 @@
                {{ income.remaining }}
             </td>
             <td class="pull-right">
-               <mymoney-basic-income-buttons
-                  *ngIf="income.parentId === null"
-                  [income]="income"
-                  (deleteIncome)="deleteIncome(income.id)"
-               >
+               <mymoney-basic-income-buttons *ngIf="income.parentId === null" [income]="income" (deleteIncome)="deleteIncome(income.id)">
                </mymoney-basic-income-buttons>
                <mymoney-recurring-income-buttons
                   *ngIf="income.parentId !== null"
                   [income]="income"
-                  (deleteRecurringIncome)="
-                     deleteRecurringIncome(income.parentId)
-                  "
+                  (deleteRecurringIncome)="deleteRecurringIncome(income.parentId)"
                ></mymoney-recurring-income-buttons>
             </td>
          </tr>

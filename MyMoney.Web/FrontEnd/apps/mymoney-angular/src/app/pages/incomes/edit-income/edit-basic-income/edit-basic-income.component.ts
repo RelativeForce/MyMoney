@@ -4,10 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IncomeService } from '../../../../shared/services';
 import { BudgetViewModel } from '@mymoney-common/classes';
 import { IIncomeModel } from '../../../../shared/state/types';
-import {
-   toFrequencyString,
-   toInputDateString,
-} from '@mymoney-common/functions';
+import { toFrequencyString, toInputDateString } from '@mymoney-common/functions';
 import { Frequency } from '@mymoney-common/api';
 import { minAmountValidator } from '../../../../shared/common-validators';
 
@@ -32,11 +29,7 @@ export class EditBasicIncomeComponent implements OnInit {
    public submitted = false;
    public loadingIncome = true;
 
-   constructor(
-      private readonly incomeService: IncomeService,
-      private readonly router: Router,
-      private readonly activatedRoute: ActivatedRoute
-   ) {
+   constructor(private readonly incomeService: IncomeService, private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {
       this.editIncomeForm = new FormGroup(this.editIncomeFormControls);
    }
 
@@ -54,9 +47,7 @@ export class EditBasicIncomeComponent implements OnInit {
 
          this.incomeService.findIncome(this.id).subscribe(
             (response: IIncomeModel) => {
-               this.editIncomeFormControls.date.patchValue(
-                  toInputDateString(response.date)
-               );
+               this.editIncomeFormControls.date.patchValue(toInputDateString(response.date));
                this.editIncomeFormControls.name.patchValue(response.name);
                this.editIncomeFormControls.amount.patchValue(response.amount);
                this.editIncomeFormControls.notes.patchValue(response.notes);

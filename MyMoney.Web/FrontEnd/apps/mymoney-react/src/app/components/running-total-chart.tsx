@@ -3,18 +3,10 @@ import { IChartDataProvider } from '../interfaces/chart-data-provider';
 import { useNavigate } from 'react-router-dom';
 import { AsyncStatus, IYearSearch } from '../state/types';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-   fetchRunningTotals,
-   selectRunningTotals,
-   selectSearchParameters,
-   setSelectedYear,
-} from '../state/running-total-chart-slice';
+import { fetchRunningTotals, selectRunningTotals, selectSearchParameters, setSelectedYear } from '../state/running-total-chart-slice';
 import { useEffect, useMemo } from 'react';
 import { IRunningTotalDto } from '@mymoney-common/api';
-import {
-   RunningTotalSeries,
-   RunningTotalSeriesDataPoint,
-} from '@mymoney-common/classes';
+import { RunningTotalSeries, RunningTotalSeriesDataPoint } from '@mymoney-common/classes';
 
 const LINE_COLOR = '#7aa3e5';
 
@@ -83,19 +75,11 @@ export default function RunningTotalChart() {
    const runningTotals = useSelector(selectRunningTotals);
    const searchParameters = useSelector(selectSearchParameters);
 
-   const series = useMemo(
-      () => buildSeries(runningTotals.data),
-      [runningTotals.data]
-   );
+   const series = useMemo(() => buildSeries(runningTotals.data), [runningTotals.data]);
 
    const setYear = (year: number) => dispatch(setSelectedYear(year));
 
-   const dataProvider = buildDataProvider(
-      searchParameters,
-      series,
-      navigate,
-      setYear
-   );
+   const dataProvider = buildDataProvider(searchParameters, series, navigate, setYear);
 
    useEffect(() => {
       const loading = runningTotals.status === AsyncStatus.loading;
@@ -105,12 +89,7 @@ export default function RunningTotalChart() {
       }
 
       dispatch(fetchRunningTotals(searchParameters.year));
-   }, [
-      searchParameters.refresh,
-      dispatch,
-      runningTotals.status,
-      searchParameters,
-   ]);
+   }, [searchParameters.refresh, dispatch, runningTotals.status, searchParameters]);
 
    return <Chart dataProvider={dataProvider}></Chart>;
 }

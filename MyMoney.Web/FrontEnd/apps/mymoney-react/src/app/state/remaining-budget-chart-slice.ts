@@ -1,8 +1,4 @@
-import {
-   createSlice,
-   createAsyncThunk,
-   ActionReducerMapBuilder,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import {
    BudgetApi,
    IBudgetDto,
@@ -13,13 +9,7 @@ import {
    ITransactionListDto,
    TransactionApi,
 } from '@mymoney-common/api';
-import {
-   IAppState,
-   AsyncStatus,
-   IMonthSearch,
-   IAsyncState,
-   IRemainingBudgetChartState,
-} from './types';
+import { IAppState, AsyncStatus, IMonthSearch, IAsyncState, IRemainingBudgetChartState } from './types';
 import { first, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { HttpHelper } from '../classess/http-helper';
@@ -47,9 +37,7 @@ export const initialChartState: IRemainingBudgetChartState = {
 };
 
 function isPopulated<T>(state: IAsyncState<T>) {
-   return (
-      state.status !== AsyncStatus.empty && state.status !== AsyncStatus.loading
-   );
+   return state.status !== AsyncStatus.empty && state.status !== AsyncStatus.loading;
 }
 
 function toDateRangeDto(search: IBudgetSearchDto): IDateRangeDto {
@@ -71,10 +59,7 @@ function toDateRangeDto(search: IBudgetSearchDto): IDateRangeDto {
 
 export const fetchChartBudgets = createAsyncThunk(
    'remainingBudgetChart/fetchBudgets',
-   async (
-      { search }: { search: IBudgetSearchDto },
-      { getState, rejectWithValue }
-   ) => {
+   async ({ search }: { search: IBudgetSearchDto }, { getState, rejectWithValue }) => {
       const state = getState() as IAppState;
       if (!state.session.currentSession?.token) {
          return rejectWithValue('No user session');
@@ -98,10 +83,7 @@ export const fetchChartBudgets = createAsyncThunk(
 
 export const fetchChartTransactions = createAsyncThunk(
    'remainingBudgetChart/fetchTransactions',
-   async (
-      { search }: { search: IBudgetSearchDto },
-      { getState, rejectWithValue }
-   ) => {
+   async ({ search }: { search: IBudgetSearchDto }, { getState, rejectWithValue }) => {
       const state = getState() as IAppState;
       if (!state.session.currentSession?.token) {
          return rejectWithValue('No user session');
@@ -116,9 +98,7 @@ export const fetchChartTransactions = createAsyncThunk(
          return await firstValueFrom(
             api.list(dateRangeDto).pipe(
                first(),
-               map((listDto: ITransactionListDto) =>
-                  listDto.transactions.reverse()
-               )
+               map((listDto: ITransactionListDto) => listDto.transactions.reverse())
             )
          );
       } catch (error: any) {
@@ -132,10 +112,7 @@ export const remainingBudgetChartSlice = createSlice({
    initialState: initialChartState,
    reducers: {
       setSelectedMonth: {
-         reducer: (
-            state: IRemainingBudgetChartState,
-            { payload }: { payload: IBudgetSearchDto }
-         ) => {
+         reducer: (state: IRemainingBudgetChartState, { payload }: { payload: IBudgetSearchDto }) => {
             return {
                ...state,
                searchParameters: {
@@ -154,120 +131,90 @@ export const remainingBudgetChartSlice = createSlice({
    },
    extraReducers(builder: ActionReducerMapBuilder<IRemainingBudgetChartState>) {
       builder
-         .addCase(
-            fetchChartBudgets.pending,
-            (state: IRemainingBudgetChartState) => {
-               return {
-                  ...state,
-                  budgets: {
-                     data: [],
-                     status: AsyncStatus.loading,
-                     error: null,
-                  },
-               };
-            }
-         )
-         .addCase(
-            fetchChartBudgets.fulfilled,
-            (
-               state: IRemainingBudgetChartState,
-               action: { payload: IBudgetDto[] }
-            ) => {
-               return {
-                  ...state,
-                  budgets: {
-                     data: action.payload,
-                     status: AsyncStatus.succeeded,
-                     error: null,
-                  },
-                  searchParameters: {
-                     ...state.searchParameters,
-                     refresh: !isPopulated(state.transactions),
-                  },
-               };
-            }
-         )
-         .addCase(
-            fetchChartBudgets.rejected,
-            (state: IRemainingBudgetChartState, action) => {
-               return {
-                  ...state,
-                  budgets: {
-                     data: [],
-                     status: AsyncStatus.failed,
-                     error: action.error.message ?? null,
-                  },
-                  searchParameters: {
-                     ...state.searchParameters,
-                     refresh: !isPopulated(state.transactions),
-                  },
-               };
-            }
-         )
-         .addCase(
-            fetchChartTransactions.pending,
-            (state: IRemainingBudgetChartState, { meta: { arg } }) => {
-               return {
-                  ...state,
-                  transactions: {
-                     data: [],
-                     status: AsyncStatus.loading,
-                     error: null,
-                  },
-               };
-            }
-         )
-         .addCase(
-            fetchChartTransactions.fulfilled,
-            (
-               state: IRemainingBudgetChartState,
-               action: { payload: ITransactionDto[] }
-            ) => {
-               return {
-                  ...state,
-                  transactions: {
-                     data: action.payload,
-                     status: AsyncStatus.succeeded,
-                     error: null,
-                  },
-                  searchParameters: {
-                     ...state.searchParameters,
-                     refresh: !isPopulated(state.budgets),
-                  },
-               };
-            }
-         )
-         .addCase(
-            fetchChartTransactions.rejected,
-            (state: IRemainingBudgetChartState, action) => {
-               return {
-                  ...state,
-                  transactions: {
-                     data: [],
-                     status: AsyncStatus.failed,
-                     error: action.error.message ?? null,
-                  },
-                  searchParameters: {
-                     ...state.searchParameters,
-                     refresh: !isPopulated(state.budgets),
-                  },
-               };
-            }
-         );
+         .addCase(fetchChartBudgets.pending, (state: IRemainingBudgetChartState) => {
+            return {
+               ...state,
+               budgets: {
+                  data: [],
+                  status: AsyncStatus.loading,
+                  error: null,
+               },
+            };
+         })
+         .addCase(fetchChartBudgets.fulfilled, (state: IRemainingBudgetChartState, action: { payload: IBudgetDto[] }) => {
+            return {
+               ...state,
+               budgets: {
+                  data: action.payload,
+                  status: AsyncStatus.succeeded,
+                  error: null,
+               },
+               searchParameters: {
+                  ...state.searchParameters,
+                  refresh: !isPopulated(state.transactions),
+               },
+            };
+         })
+         .addCase(fetchChartBudgets.rejected, (state: IRemainingBudgetChartState, action) => {
+            return {
+               ...state,
+               budgets: {
+                  data: [],
+                  status: AsyncStatus.failed,
+                  error: action.error.message ?? null,
+               },
+               searchParameters: {
+                  ...state.searchParameters,
+                  refresh: !isPopulated(state.transactions),
+               },
+            };
+         })
+         .addCase(fetchChartTransactions.pending, (state: IRemainingBudgetChartState, { meta: { arg } }) => {
+            return {
+               ...state,
+               transactions: {
+                  data: [],
+                  status: AsyncStatus.loading,
+                  error: null,
+               },
+            };
+         })
+         .addCase(fetchChartTransactions.fulfilled, (state: IRemainingBudgetChartState, action: { payload: ITransactionDto[] }) => {
+            return {
+               ...state,
+               transactions: {
+                  data: action.payload,
+                  status: AsyncStatus.succeeded,
+                  error: null,
+               },
+               searchParameters: {
+                  ...state.searchParameters,
+                  refresh: !isPopulated(state.budgets),
+               },
+            };
+         })
+         .addCase(fetchChartTransactions.rejected, (state: IRemainingBudgetChartState, action) => {
+            return {
+               ...state,
+               transactions: {
+                  data: [],
+                  status: AsyncStatus.failed,
+                  error: action.error.message ?? null,
+               },
+               searchParameters: {
+                  ...state.searchParameters,
+                  refresh: !isPopulated(state.budgets),
+               },
+            };
+         });
    },
 });
 
 export const { setSelectedMonth } = remainingBudgetChartSlice.actions;
 
-export const selectRemainingBudgetChartState = (
-   state: IAppState
-): IRemainingBudgetChartState => state.remainingBudgetChart;
-export const selectRemainingBudgetSearchParameters = (
-   state: IAppState
-): IMonthSearch => selectRemainingBudgetChartState(state).searchParameters;
-export const selectChartBudgets = (state: IAppState) =>
-   selectRemainingBudgetChartState(state).budgets;
-export const selectChartTransactions = (state: IAppState) =>
-   selectRemainingBudgetChartState(state).transactions;
+export const selectRemainingBudgetChartState = (state: IAppState): IRemainingBudgetChartState => state.remainingBudgetChart;
+export const selectRemainingBudgetSearchParameters = (state: IAppState): IMonthSearch => selectRemainingBudgetChartState(state).searchParameters;
+export const selectChartBudgets = (state: IAppState) => selectRemainingBudgetChartState(state).budgets;
+export const selectChartTransactions = (state: IAppState) => selectRemainingBudgetChartState(state).transactions;
 
 export default remainingBudgetChartSlice.reducer;

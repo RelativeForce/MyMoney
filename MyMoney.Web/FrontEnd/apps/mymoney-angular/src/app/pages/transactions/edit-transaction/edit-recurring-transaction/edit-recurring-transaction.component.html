@@ -14,21 +14,11 @@
                   class="form-control"
                   (change)="onDurationOrRecurrenceChange()"
                   [ngClass]="{
-                     'is-invalid':
-                        submitted && editTransactionFormControls.start.errors
+                     'is-invalid': submitted && editTransactionFormControls.start.errors
                   }"
                />
-               <div
-                  *ngIf="submitted && editTransactionFormControls.start.errors"
-                  class="invalid-feedback"
-               >
-                  <div
-                     *ngIf="
-                        editTransactionFormControls.start.errors['required']
-                     "
-                  >
-                     Start is required
-                  </div>
+               <div *ngIf="submitted && editTransactionFormControls.start.errors" class="invalid-feedback">
+                  <div *ngIf="editTransactionFormControls.start.errors['required']">Start is required</div>
                </div>
             </div>
             <div class="input-group mb-3" [ngStyle]="{ width: '50%' }">
@@ -41,19 +31,11 @@
                   class="form-control"
                   (change)="onDurationOrRecurrenceChange()"
                   [ngClass]="{
-                     'is-invalid':
-                        submitted && editTransactionFormControls.end.errors
+                     'is-invalid': submitted && editTransactionFormControls.end.errors
                   }"
                />
-               <div
-                  *ngIf="submitted && editTransactionFormControls.end.errors"
-                  class="invalid-feedback"
-               >
-                  <div
-                     *ngIf="editTransactionFormControls.end.errors['required']"
-                  >
-                     End is required
-                  </div>
+               <div *ngIf="submitted && editTransactionFormControls.end.errors" class="invalid-feedback">
+                  <div *ngIf="editTransactionFormControls.end.errors['required']">End is required</div>
                </div>
             </div>
          </div>
@@ -63,43 +45,17 @@
                class="form-control"
                formControlName="recurrence"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && editTransactionFormControls.recurrence.errors
+                  'is-invalid': submitted && editTransactionFormControls.recurrence.errors
                }"
                (change)="onDurationOrRecurrenceChange()"
             >
-               <option
-                  *ngFor="let opt of recurrenceOptions"
-                  [value]="opt.key"
-                  [selected]="
-                     opt.key == editTransactionFormControls.recurrence.value
-                  "
-               >
+               <option *ngFor="let opt of recurrenceOptions" [value]="opt.key" [selected]="opt.key == editTransactionFormControls.recurrence.value">
                   {{ opt.value }}
                </option>
             </select>
-            <div
-               *ngIf="
-                  submitted && editTransactionFormControls.recurrence.errors
-               "
-               class="invalid-feedback"
-            >
-               <div
-                  *ngIf="
-                     editTransactionFormControls.recurrence.errors['required']
-                  "
-               >
-                  Recurrence is required
-               </div>
-               <div
-                  *ngIf="
-                     editTransactionFormControls.recurrence.errors[
-                        'invalidFrequency'
-                     ]
-                  "
-               >
-                  Invalid recurrence value
-               </div>
+            <div *ngIf="submitted && editTransactionFormControls.recurrence.errors" class="invalid-feedback">
+               <div *ngIf="editTransactionFormControls.recurrence.errors['required']">Recurrence is required</div>
+               <div *ngIf="editTransactionFormControls.recurrence.errors['invalidFrequency']">Invalid recurrence value</div>
             </div>
          </div>
          <div class="form-group">
@@ -109,23 +65,11 @@
                formControlName="description"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && editTransactionFormControls.description.errors
+                  'is-invalid': submitted && editTransactionFormControls.description.errors
                }"
             />
-            <div
-               *ngIf="
-                  submitted && editTransactionFormControls.description.errors
-               "
-               class="invalid-feedback"
-            >
-               <div
-                  *ngIf="
-                     editTransactionFormControls.description.errors['required']
-                  "
-               >
-                  Description is required
-               </div>
+            <div *ngIf="submitted && editTransactionFormControls.description.errors" class="invalid-feedback">
+               <div *ngIf="editTransactionFormControls.description.errors['required']">Description is required</div>
             </div>
          </div>
          <div class="form-group">
@@ -135,22 +79,12 @@
                formControlName="amount"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && editTransactionFormControls.amount.errors
+                  'is-invalid': submitted && editTransactionFormControls.amount.errors
                }"
             />
-            <div
-               *ngIf="submitted && editTransactionFormControls.amount.errors"
-               class="invalid-feedback"
-            >
-               <div
-                  *ngIf="editTransactionFormControls.amount.errors['required']"
-               >
-                  Amount is required
-               </div>
-               <div *ngIf="editTransactionFormControls.amount.errors['min']">
-                  Amount cannot be less than 0.01
-               </div>
+            <div *ngIf="submitted && editTransactionFormControls.amount.errors" class="invalid-feedback">
+               <div *ngIf="editTransactionFormControls.amount.errors['required']">Amount is required</div>
+               <div *ngIf="editTransactionFormControls.amount.errors['min']">Amount cannot be less than 0.01</div>
             </div>
          </div>
          <div class="form-group">
@@ -159,22 +93,15 @@
                formControlName="notes"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && editTransactionFormControls.notes.errors
+                  'is-invalid': submitted && editTransactionFormControls.notes.errors
                }"
                rows="3"
             ></textarea>
-            <div
-               *ngIf="submitted && editTransactionFormControls.notes.errors"
-               class="invalid-feedback"
-            ></div>
+            <div *ngIf="submitted && editTransactionFormControls.notes.errors" class="invalid-feedback"></div>
          </div>
          <div class="form-group">
             <button [disabled]="loading" class="btn btn-primary">
-               <span
-                  *ngIf="loading"
-                  class="spinner-border spinner-border-sm mr-1"
-               ></span>
+               <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                Save changes
             </button>
             <a routerLink="/transactions" class="btn btn-link">Cancel</a>

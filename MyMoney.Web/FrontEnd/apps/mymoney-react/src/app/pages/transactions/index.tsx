@@ -18,16 +18,10 @@ import RecurringTransactionButtons from '../../components/recurring-transaction-
 import { useValidatedState } from '../../hooks/validation';
 
 export default function Transactions() {
-   const tranactionState: ITransactionState = useSelector(
-      selectTransactionState
-   );
+   const tranactionState: ITransactionState = useSelector(selectTransactionState);
    const dispatch = useDispatch<any>();
-   const [startState, setStartState] = useValidatedState<string>('', [
-      requiredValidator('Start is required'),
-   ]);
-   const [endState, setEndState] = useValidatedState<string>('', [
-      requiredValidator('End is required'),
-   ]);
+   const [startState, setStartState] = useValidatedState<string>('', [requiredValidator('Start is required')]);
+   const [endState, setEndState] = useValidatedState<string>('', [requiredValidator('End is required')]);
 
    useEffect(() => {
       setStartState(tranactionState.searchParameters.dateRange.start);
@@ -79,9 +73,7 @@ export default function Transactions() {
       dispatch(deleteTransaction({ transactionId }));
    };
 
-   const onDeleteRecurringTransactionClicked = (
-      recurringTransactionId: number | null
-   ) => {
+   const onDeleteRecurringTransactionClicked = (recurringTransactionId: number | null) => {
       if (!recurringTransactionId) {
          return;
       }
@@ -101,19 +93,10 @@ export default function Transactions() {
                {transaction.parentId ? (
                   <RecurringTransactionButtons
                      transaction={transaction}
-                     onDeleteClicked={() =>
-                        onDeleteRecurringTransactionClicked(
-                           transaction.parentId
-                        )
-                     }
+                     onDeleteClicked={() => onDeleteRecurringTransactionClicked(transaction.parentId)}
                   />
                ) : (
-                  <BasicTransactionButtons
-                     transaction={transaction}
-                     onDeleteClicked={() =>
-                        onDeleteTransactionClicked(transaction.id)
-                     }
-                  />
+                  <BasicTransactionButtons transaction={transaction} onDeleteClicked={() => onDeleteTransactionClicked(transaction.id)} />
                )}
             </td>
          </tr>
@@ -153,11 +136,7 @@ export default function Transactions() {
                   data-placement="bottom"
                   title="Refresh transactions"
                >
-                  {loading ? (
-                     <span className="spinner-border spinner-border-sm"></span>
-                  ) : (
-                     <div className="spin">refresh</div>
-                  )}
+                  {loading ? <span className="spinner-border spinner-border-sm"></span> : <div className="spin">refresh</div>}
                </button>
                <Link
                   className="btn btn-success material-icons"

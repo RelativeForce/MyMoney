@@ -8,10 +8,7 @@ export interface ValidatedState<T> {
 
 export type ValidatedStateDispatch<T> = (value: T) => ValidationErrors | null;
 
-export function useValidatedState<T>(
-   initialValue: T,
-   validators: Validator<T>[]
-): [ValidatedState<T>, ValidatedStateDispatch<T>] {
+export function useValidatedState<T>(initialValue: T, validators: Validator<T>[]): [ValidatedState<T>, ValidatedStateDispatch<T>] {
    const [currentState, setState] = useState<ValidatedState<T>>({
       value: initialValue,
       errors: null,

@@ -21,10 +21,7 @@ export class AddBasicIncomeComponent {
    public loading = false;
    public submitted = false;
 
-   constructor(
-      private readonly router: Router,
-      private readonly incomeService: IncomeService
-   ) {
+   constructor(private readonly router: Router, private readonly incomeService: IncomeService) {
       this.addIncomeForm = new FormGroup(this.addIncomeFormControls);
    }
 

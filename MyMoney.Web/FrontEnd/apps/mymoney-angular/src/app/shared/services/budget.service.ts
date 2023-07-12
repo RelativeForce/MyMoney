@@ -2,44 +2,25 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map } from 'rxjs/operators';
-import {
-   IDeleteResultDto,
-   IBudgetListDto,
-   IUpdateResultDto,
-} from '@mymoney-common/api';
+import { IDeleteResultDto, IBudgetListDto, IUpdateResultDto } from '@mymoney-common/api';
 import { BudgetApi } from '../api';
-import {
-   DeleteBudgetAction,
-   RefreshBudgetsAction,
-   SetBudgetsAction,
-   UpdateBudgetAction,
-   UpdateSearchMonthIdAction,
-} from '../state/actions';
+import { DeleteBudgetAction, RefreshBudgetsAction, SetBudgetsAction, UpdateBudgetAction, UpdateSearchMonthIdAction } from '../state/actions';
 import { IAppState } from '../state/app-state';
-import {
-   selectBudgetsSearchParameters,
-   selectBudget,
-} from '../state/selectors/budget.selector';
+import { selectBudgetsSearchParameters, selectBudget } from '../state/selectors/budget.selector';
 import { IBudgetModel, IBudgetsSearch } from '../state/types';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
-   constructor(
-      private readonly budgetApi: BudgetApi,
-      private readonly store: Store<IAppState>
-   ) {
-      this.store
-         .select(selectBudgetsSearchParameters)
-         .subscribe((search: IBudgetsSearch) => {
-            if (!search.refresh) {
-               return;
-            }
+   constructor(private readonly budgetApi: BudgetApi, private readonly store: Store<IAppState>) {
+      this.store.select(selectBudgetsSearchParameters).subscribe((search: IBudgetsSearch) => {
+         if (!search.refresh) {
+            return;
+         }
 
-            this.getBudgetsForMonth(search.month, search.year).subscribe(
-               (response: IBudgetListDto) =>
-                  this.store.dispatch(new SetBudgetsAction(response.budgets))
-            );
-         });
+         this.getBudgetsForMonth(search.month, search.year).subscribe((response: IBudgetListDto) =>
+            this.store.dispatch(new SetBudgetsAction(response.budgets))
+         );
+      });
    }
 
    public getBudgetsForMonth(month: number, year: number) {
@@ -47,13 +28,11 @@ export class BudgetService {
    }
 
    public deleteBudget(budgetId: number): void {
-      this.budgetApi
-         .delete({ id: budgetId })
-         .subscribe((status: IDeleteResultDto) => {
-            if (status.success) {
-               this.store.dispatch(new DeleteBudgetAction(budgetId));
-            }
-         });
+      this.budgetApi.delete({ id: budgetId }).subscribe((status: IDeleteResultDto) => {
+         if (status.success) {
+            this.store.dispatch(new DeleteBudgetAction(budgetId));
+         }
+      });
    }
 
    public updateMonthId(month: number, year: number): void {

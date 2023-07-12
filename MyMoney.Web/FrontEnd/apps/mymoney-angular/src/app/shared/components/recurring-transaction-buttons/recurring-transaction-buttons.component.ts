@@ -10,8 +10,7 @@ export class RecurringTransactionButtonsComponent {
    public transaction!: TransactionViewModel;
 
    @Output()
-   public deleteRecurringTransaction: EventEmitter<void> =
-      new EventEmitter<void>();
+   public deleteRecurringTransaction: EventEmitter<void> = new EventEmitter<void>();
 
    public onDeleteRecurringTransactionClicked(): void {
       this.deleteRecurringTransaction.emit();

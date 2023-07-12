@@ -11,21 +11,14 @@ import { IBasicResultDto } from '@mymoney-common/api';
 export class ChangePasswordComponent implements OnInit {
    public changePasswordForm: FormGroup;
    public changePasswordFormControls = {
-      password: new FormControl('', [
-         Validators.required,
-         Validators.minLength(8),
-         Validators.maxLength(15),
-      ]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]),
       confirmPassword: new FormControl(''),
    };
    public loading = false;
    public submitted = false;
    public error: string | null = null;
 
-   constructor(
-      private readonly router: Router,
-      private readonly currentUserService: CurrentUserService
-   ) {
+   constructor(private readonly router: Router, private readonly currentUserService: CurrentUserService) {
       this.changePasswordForm = new FormGroup(this.changePasswordFormControls);
    }
 
@@ -45,8 +38,7 @@ export class ChangePasswordComponent implements OnInit {
       this.loading = true;
       this.error = null;
 
-      const password: string =
-         this.changePasswordFormControls.password.value ?? '';
+      const password: string = this.changePasswordFormControls.password.value ?? '';
 
       this.currentUserService
          .updatePassword(password)
@@ -69,9 +61,7 @@ export class ChangePasswordComponent implements OnInit {
    }
 
    private checkPasswords() {
-      const isInvalid =
-         this.changePasswordFormControls.password.value !==
-         this.changePasswordFormControls.confirmPassword.value;
+      const isInvalid = this.changePasswordFormControls.password.value !== this.changePasswordFormControls.confirmPassword.value;
 
       if (isInvalid) {
          this.changePasswordFormControls.confirmPassword.setErrors({

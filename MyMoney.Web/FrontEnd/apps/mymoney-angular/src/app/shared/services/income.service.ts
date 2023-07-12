@@ -2,13 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatAll, map, tap } from 'rxjs/operators';
-import {
-   IDeleteResultDto,
-   IIncomeListDto,
-   IUpdateResultDto,
-   IRecurringIncomeDto,
-   IIncomeDto,
-} from '@mymoney-common/api';
+import { IDeleteResultDto, IIncomeListDto, IUpdateResultDto, IRecurringIncomeDto, IIncomeDto } from '@mymoney-common/api';
 import { IncomeApi } from '../api';
 import {
    DeleteIncomeAction,
@@ -19,30 +13,19 @@ import {
    UpdateIncomesSearchAction,
 } from '../state/actions';
 import { IAppState } from '../state/app-state';
-import {
-   selectIncomesSearchParameters,
-   selectIncome,
-} from '../state/selectors/income.selector';
+import { selectIncomesSearchParameters, selectIncome } from '../state/selectors/income.selector';
 import { IDateRangeModel, IIncomeModel, IIncomesSearch } from '../state/types';
 
 @Injectable({ providedIn: 'root' })
 export class IncomeService {
-   constructor(
-      private readonly incomeApi: IncomeApi,
-      private readonly store: Store<IAppState>
-   ) {
-      this.store
-         .select(selectIncomesSearchParameters)
-         .subscribe((search: IIncomesSearch) => {
-            if (!search.refresh) {
-               return;
-            }
+   constructor(private readonly incomeApi: IncomeApi, private readonly store: Store<IAppState>) {
+      this.store.select(selectIncomesSearchParameters).subscribe((search: IIncomesSearch) => {
+         if (!search.refresh) {
+            return;
+         }
 
-            this.getIncomes(search.dateRange).subscribe(
-               (response: IIncomeListDto) =>
-                  this.store.dispatch(new SetIncomesAction(response.incomes))
-            );
-         });
+         this.getIncomes(search.dateRange).subscribe((response: IIncomeListDto) => this.store.dispatch(new SetIncomesAction(response.incomes)));
+      });
    }
 
    public getIncomes(dateRange: IDateRangeModel): Observable<IIncomeListDto> {
@@ -54,13 +37,11 @@ export class IncomeService {
    }
 
    public deleteIncome(incomeId: number): void {
-      this.incomeApi
-         .delete({ id: incomeId })
-         .subscribe((status: IDeleteResultDto) => {
-            if (status.success) {
-               this.store.dispatch(new DeleteIncomeAction(incomeId));
-            }
-         });
+      this.incomeApi.delete({ id: incomeId }).subscribe((status: IDeleteResultDto) => {
+         if (status.success) {
+            this.store.dispatch(new DeleteIncomeAction(incomeId));
+         }
+      });
    }
 
    public updateDate(dateRange: IDateRangeModel): void {
@@ -104,18 +85,10 @@ export class IncomeService {
       this.store.dispatch(new RefreshIncomesAction());
    }
 
-   public realiseIncome(
-      recurringIncomeId: number,
-      date: string,
-      virtualId: number
-   ): Observable<IIncomeDto> {
+   public realiseIncome(recurringIncomeId: number, date: string, virtualId: number): Observable<IIncomeDto> {
       return this.incomeApi
          .realise({ id: recurringIncomeId, date })
-         .pipe(
-            tap((real: IIncomeDto) =>
-               this.store.dispatch(new RealiseIncomeAction(virtualId, real.id))
-            )
-         );
+         .pipe(tap((real: IIncomeDto) => this.store.dispatch(new RealiseIncomeAction(virtualId, real.id))));
    }
 
    public addRecurringIncome(income: IRecurringIncomeDto): Observable<boolean> {
@@ -127,15 +100,11 @@ export class IncomeService {
       );
    }
 
-   public findRecurringIncome(
-      incomeId: number
-   ): Observable<IRecurringIncomeDto> {
+   public findRecurringIncome(incomeId: number): Observable<IRecurringIncomeDto> {
       return this.incomeApi.findRecurring({ id: incomeId });
    }
 
-   public editRecurringIncome(
-      income: IRecurringIncomeDto
-   ): Observable<boolean> {
+   public editRecurringIncome(income: IRecurringIncomeDto): Observable<boolean> {
       return this.incomeApi.updateRecurring(income).pipe(
          map((status: IUpdateResultDto) => {
             if (status.success) {
@@ -147,12 +116,10 @@ export class IncomeService {
    }
 
    public deleteRecurringIncome(incomeId: number): void {
-      this.incomeApi
-         .deleteRecurring({ id: incomeId })
-         .subscribe((status: IDeleteResultDto) => {
-            if (status.success) {
-               this.store.dispatch(new DeleteIncomeAction(incomeId));
-            }
-         });
+      this.incomeApi.deleteRecurring({ id: incomeId }).subscribe((status: IDeleteResultDto) => {
+         if (status.success) {
+            this.store.dispatch(new DeleteIncomeAction(incomeId));
+         }
+      });
    }
 }

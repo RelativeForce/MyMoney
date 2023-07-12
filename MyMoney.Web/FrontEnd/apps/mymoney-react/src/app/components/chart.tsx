@@ -1,21 +1,13 @@
 import { IChartDataProvider } from '../interfaces/chart-data-provider';
-import {
-   LineChart,
-   Line,
-   XAxis,
-   YAxis,
-   CartesianGrid,
-   Tooltip,
-   Legend,
-   ResponsiveContainer,
-} from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ChartTooltip from './chart-tooltip';
 import { ISeries, ISeriesDataPoint } from '@mymoney-common/interfaces';
 
-export default function Chart<
-   TSeries extends ISeries<TDataPoint>,
-   TDataPoint extends ISeriesDataPoint
->({ dataProvider }: { dataProvider: IChartDataProvider<TSeries, TDataPoint> }) {
+export default function Chart<TSeries extends ISeries<TDataPoint>, TDataPoint extends ISeriesDataPoint>({
+   dataProvider,
+}: {
+   dataProvider: IChartDataProvider<TSeries, TDataPoint>;
+}) {
    const lines = [];
 
    for (const series of dataProvider.data) {
@@ -105,12 +97,7 @@ export default function Chart<
                   }}
                >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                     dataKey="id"
-                     type="category"
-                     allowDuplicatedCategory={false}
-                     hide={true}
-                  />
+                  <XAxis dataKey="id" type="category" allowDuplicatedCategory={false} hide={true} />
                   <YAxis
                      label={{
                         value: dataProvider.yAxisLabel,

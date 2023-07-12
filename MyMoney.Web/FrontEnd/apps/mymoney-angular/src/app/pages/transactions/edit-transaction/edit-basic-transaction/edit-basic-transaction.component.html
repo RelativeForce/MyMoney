@@ -1,16 +1,8 @@
 <div class="header">
    <h2 *ngIf="loadingTransaction">Loading transaction {{ id }}</h2>
-   <h2 *ngIf="!loadingTransaction">
-      Edit transaction {{ id }} {{ frequencyString }}
-   </h2>
+   <h2 *ngIf="!loadingTransaction">Edit transaction {{ id }} {{ frequencyString }}</h2>
    <div>
-      <a
-         class="btn btn-link"
-         *ngIf="parentId !== null"
-         routerLink="/transactions/edit-recurring/{{ parentId }}"
-      >
-         Parent recurring transaction
-      </a>
+      <a class="btn btn-link" *ngIf="parentId !== null" routerLink="/transactions/edit-recurring/{{ parentId }}"> Parent recurring transaction </a>
    </div>
 </div>
 <div class="row">
@@ -23,17 +15,11 @@
                formControlName="date"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && editTransactionFormControls.date.errors
+                  'is-invalid': submitted && editTransactionFormControls.date.errors
                }"
             />
-            <div
-               *ngIf="submitted && editTransactionFormControls.date.errors"
-               class="invalid-feedback"
-            >
-               <div *ngIf="editTransactionFormControls.date.errors['required']">
-                  Date is required
-               </div>
+            <div *ngIf="submitted && editTransactionFormControls.date.errors" class="invalid-feedback">
+               <div *ngIf="editTransactionFormControls.date.errors['required']">Date is required</div>
             </div>
          </div>
          <div class="form-group">
@@ -43,23 +29,11 @@
                formControlName="description"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && editTransactionFormControls.description.errors
+                  'is-invalid': submitted && editTransactionFormControls.description.errors
                }"
             />
-            <div
-               *ngIf="
-                  submitted && editTransactionFormControls.description.errors
-               "
-               class="invalid-feedback"
-            >
-               <div
-                  *ngIf="
-                     editTransactionFormControls.description.errors['required']
-                  "
-               >
-                  Description is required
-               </div>
+            <div *ngIf="submitted && editTransactionFormControls.description.errors" class="invalid-feedback">
+               <div *ngIf="editTransactionFormControls.description.errors['required']">Description is required</div>
             </div>
          </div>
          <div class="form-group">
@@ -69,22 +43,12 @@
                formControlName="amount"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && editTransactionFormControls.amount.errors
+                  'is-invalid': submitted && editTransactionFormControls.amount.errors
                }"
             />
-            <div
-               *ngIf="submitted && editTransactionFormControls.amount.errors"
-               class="invalid-feedback"
-            >
-               <div
-                  *ngIf="editTransactionFormControls.amount.errors['required']"
-               >
-                  Amount is required
-               </div>
-               <div *ngIf="editTransactionFormControls.amount.errors['min']">
-                  Amount cannot be less than 0.01
-               </div>
+            <div *ngIf="submitted && editTransactionFormControls.amount.errors" class="invalid-feedback">
+               <div *ngIf="editTransactionFormControls.amount.errors['required']">Amount is required</div>
+               <div *ngIf="editTransactionFormControls.amount.errors['min']">Amount cannot be less than 0.01</div>
             </div>
          </div>
          <div class="form-group">
@@ -93,22 +57,15 @@
                formControlName="notes"
                class="form-control"
                [ngClass]="{
-                  'is-invalid':
-                     submitted && editTransactionFormControls.notes.errors
+                  'is-invalid': submitted && editTransactionFormControls.notes.errors
                }"
                rows="3"
             ></textarea>
-            <div
-               *ngIf="submitted && editTransactionFormControls.notes.errors"
-               class="invalid-feedback"
-            ></div>
+            <div *ngIf="submitted && editTransactionFormControls.notes.errors" class="invalid-feedback"></div>
          </div>
          <div class="form-group">
             <button [disabled]="loading" class="btn btn-primary">
-               <span
-                  *ngIf="loading"
-                  class="spinner-border spinner-border-sm mr-1"
-               ></span>
+               <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                Save changes
             </button>
             <a routerLink="/transactions" class="btn btn-link">Cancel</a>
@@ -116,15 +73,7 @@
       </form>
    </div>
    <div class="col-6">
-      <mymoney-budget-selector
-         [selectedBudgets]="selectedBudgets"
-         [date]="selectedDate"
-      >
-      </mymoney-budget-selector>
-      <mymoney-income-selector
-         [selectedIncomes]="selectedIncomes"
-         [date]="selectedDate"
-      >
-      </mymoney-income-selector>
+      <mymoney-budget-selector [selectedBudgets]="selectedBudgets" [date]="selectedDate"> </mymoney-budget-selector>
+      <mymoney-income-selector [selectedIncomes]="selectedIncomes" [date]="selectedDate"> </mymoney-income-selector>
    </div>
 </div>

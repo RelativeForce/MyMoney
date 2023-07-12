@@ -1,13 +1,7 @@
 import { ITransactionDto } from '@mymoney-common/api';
 import { Link } from 'react-router-dom';
 
-export default function BasicTransactionButtons({
-   transaction,
-   onDeleteClicked,
-}: {
-   transaction: ITransactionDto;
-   onDeleteClicked: () => void;
-}) {
+export default function BasicTransactionButtons({ transaction, onDeleteClicked }: { transaction: ITransactionDto; onDeleteClicked: () => void }) {
    return (
       <div className="btn-group">
          <Link

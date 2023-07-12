@@ -18,18 +18,14 @@ export function useRedirectUnauthorisedUserToLogin() {
       }
 
       try {
-         const sessionData: string | null = localStorage.getItem(
-            SESSION_LOCAL_STORAGE_KEY
-         );
+         const sessionData: string | null = localStorage.getItem(SESSION_LOCAL_STORAGE_KEY);
 
          if (sessionData !== null) {
             const browserSession: ISessionModel = JSON.parse(sessionData);
 
             if (isValidSession(browserSession)) {
                console.log('Session: Using cached session from local storage');
-               dispatch(
-                  setSession(browserSession.token, browserSession.sessionEnd)
-               );
+               dispatch(setSession(browserSession.token, browserSession.sessionEnd));
                return;
             }
          }

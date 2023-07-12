@@ -4,10 +4,7 @@ import { TransactionService } from '../../shared/services';
 import { TransactionViewModel } from '@mymoney-common/classes';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../shared/state/app-state';
-import {
-   selectTransactions,
-   selectTransactionsDateRange,
-} from '../../shared/state/selectors/transaction.selector';
+import { selectTransactions, selectTransactionsDateRange } from '../../shared/state/selectors/transaction.selector';
 import { IDateRangeModel } from '../../shared/state/types';
 import { toDateString } from '@mymoney-common/functions';
 
@@ -20,37 +17,26 @@ export class TransactionsComponent implements OnInit {
    public dateRange: IDateRangeModel = { start: new Date(), end: new Date() };
    public dateRangeForm: FormGroup;
    public dateRangeFormControls = {
-      start: new FormControl(toDateString(this.dateRange.start), [
-         Validators.required,
-      ]),
-      end: new FormControl(toDateString(this.dateRange.end), [
-         Validators.required,
-      ]),
+      start: new FormControl(toDateString(this.dateRange.start), [Validators.required]),
+      end: new FormControl(toDateString(this.dateRange.end), [Validators.required]),
    };
    public loading = false;
    public submitted = false;
 
-   constructor(
-      private readonly transactionService: TransactionService,
-      private readonly store: Store<IAppState>
-   ) {
+   constructor(private readonly transactionService: TransactionService, private readonly store: Store<IAppState>) {
       this.dateRangeForm = new FormGroup(this.dateRangeFormControls);
    }
 
    public ngOnInit(): void {
       this.store.select(selectTransactions).subscribe((transactions) => {
-         this.transactions = transactions.map(
-            (t) => new TransactionViewModel(t)
-         );
+         this.transactions = transactions.map((t) => new TransactionViewModel(t));
          this.loading = false;
       });
 
       this.store.select(selectTransactionsDateRange).subscribe((dateRange) => {
          this.dateRange = dateRange;
 
-         this.dateRangeFormControls.start.setValue(
-            toDateString(dateRange.start)
-         );
+         this.dateRangeFormControls.start.setValue(toDateString(dateRange.start));
          this.dateRangeFormControls.end.setValue(toDateString(dateRange.end));
       });
 

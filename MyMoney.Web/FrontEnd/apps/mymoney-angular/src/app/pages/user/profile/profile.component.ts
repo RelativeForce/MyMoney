@@ -17,18 +17,13 @@ export class ProfileComponent implements OnInit {
    public profileFormControls = {
       email: new FormControl('', [Validators.required]),
       fullName: new FormControl('', [Validators.required]),
-      dateOfBirth: new FormControl(toDateString(new Date()), [
-         Validators.required,
-      ]),
+      dateOfBirth: new FormControl(toDateString(new Date()), [Validators.required]),
    };
    public loading = false;
    public submitted = false;
    public error: string | null = null;
 
-   constructor(
-      private readonly currentUserService: CurrentUserService,
-      private readonly store: Store<IAppState>
-   ) {
+   constructor(private readonly currentUserService: CurrentUserService, private readonly store: Store<IAppState>) {
       this.profileForm = new FormGroup(this.profileFormControls);
    }
 
@@ -42,9 +37,7 @@ export class ProfileComponent implements OnInit {
             map((currentUser: IUser | null) => currentUser!)
          )
          .subscribe((currentUser: IUser) => {
-            this.profileFormControls.dateOfBirth.patchValue(
-               toInputDateString(currentUser.dateOfBirth)
-            );
+            this.profileFormControls.dateOfBirth.patchValue(toInputDateString(currentUser.dateOfBirth));
             this.profileFormControls.fullName.patchValue(currentUser.fullName);
             this.profileFormControls.email.patchValue(currentUser.email);
 
@@ -64,8 +57,7 @@ export class ProfileComponent implements OnInit {
 
       const email: string = this.profileFormControls.email.value ?? '';
       const fullName: string = this.profileFormControls.fullName.value ?? '';
-      const dateOfBirth: string =
-         this.profileFormControls.dateOfBirth.value ?? '';
+      const dateOfBirth: string = this.profileFormControls.dateOfBirth.value ?? '';
 
       const newData: IUserDto = {
          email,
@@ -79,9 +71,7 @@ export class ProfileComponent implements OnInit {
 
             if (result.success) {
                // Fix date to match what is expected from the server
-               newData.dateOfBirth = new Date(dateOfBirth).toLocaleDateString(
-                  'en-GB'
-               );
+               newData.dateOfBirth = new Date(dateOfBirth).toLocaleDateString('en-GB');
 
                this.store.dispatch(new SetUserAction(newData));
             } else {

@@ -6,9 +6,7 @@ export class TransactionHeading extends BaseHeading<TransactionProperty> {
       super(property);
    }
 
-   public static transactionPropertyToType(
-      property: TransactionProperty
-   ): 'text' | 'date' | 'number' {
+   public static transactionPropertyToType(property: TransactionProperty): 'text' | 'date' | 'number' {
       switch (property) {
          case TransactionProperty.amount:
             return 'number';
@@ -19,23 +17,15 @@ export class TransactionHeading extends BaseHeading<TransactionProperty> {
       }
    }
 
-   public static formatWithTransactionProperty(
-      type: TransactionProperty,
-      input: string
-   ): any | null {
-      return BaseHeading.formatWithType(
-         TransactionHeading.transactionPropertyToType(type),
-         input
-      );
+   public static formatWithTransactionProperty(type: TransactionProperty, input: string): any | null {
+      return BaseHeading.formatWithType(TransactionHeading.transactionPropertyToType(type), input);
    }
 
    public get isIgnored() {
       return this.property === TransactionProperty.ignore;
    }
 
-   public propertyToType(
-      property: TransactionProperty
-   ): 'text' | 'date' | 'number' {
+   public propertyToType(property: TransactionProperty): 'text' | 'date' | 'number' {
       return TransactionHeading.transactionPropertyToType(property);
    }
 

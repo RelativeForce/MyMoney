@@ -14,24 +14,15 @@ export class RegisterComponent implements OnInit {
    public registerFormControls = {
       email: new FormControl('', [Validators.required]),
       fullName: new FormControl('', [Validators.required]),
-      dateOfBirth: new FormControl(toDateString(new Date()), [
-         Validators.required,
-      ]),
-      password: new FormControl('', [
-         Validators.required,
-         Validators.minLength(8),
-         Validators.maxLength(15),
-      ]),
+      dateOfBirth: new FormControl(toDateString(new Date()), [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(15)]),
       confirmPassword: new FormControl(''),
    };
    public loading = false;
    public submitted = false;
    public error: string | null = null;
 
-   constructor(
-      private readonly router: Router,
-      private readonly authenticationService: AuthenticationService
-   ) {
+   constructor(private readonly router: Router, private readonly authenticationService: AuthenticationService) {
       this.registerForm = new FormGroup(this.registerFormControls);
    }
 
@@ -74,9 +65,7 @@ export class RegisterComponent implements OnInit {
    }
 
    private checkPasswords() {
-      const isInvalid =
-         this.registerFormControls.password.value !==
-         this.registerFormControls.confirmPassword.value;
+      const isInvalid = this.registerFormControls.password.value !== this.registerFormControls.confirmPassword.value;
 
       if (isInvalid) {
          this.registerFormControls.confirmPassword.setErrors({ notSame: true });

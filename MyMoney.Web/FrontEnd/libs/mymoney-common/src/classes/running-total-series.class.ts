@@ -2,9 +2,7 @@ import { IRunningTotalDto } from '../api/dtos';
 import { ISeries } from '../interfaces/series.interface';
 import { RunningTotalSeriesDataPoint } from './running-total-series-data-point.class';
 
-export class RunningTotalSeries
-   implements ISeries<RunningTotalSeriesDataPoint>
-{
+export class RunningTotalSeries implements ISeries<RunningTotalSeriesDataPoint> {
    public name: string;
    public series: RunningTotalSeriesDataPoint[];
 
@@ -17,9 +15,6 @@ export class RunningTotalSeries
    }
 
    public addEntry(entry: IRunningTotalDto) {
-      this.series[this.series.length] = new RunningTotalSeriesDataPoint(
-         entry,
-         this.initialTotal
-      );
+      this.series[this.series.length] = new RunningTotalSeriesDataPoint(entry, this.initialTotal);
    }
 }

@@ -2,13 +2,7 @@ import { IUserDto } from '@mymoney-common/api';
 import { useSelector } from 'react-redux';
 import Footer from './footer';
 import { Outlet, Link } from 'react-router-dom';
-import {
-   selectCurrentUser,
-   clearSession,
-   fetchUser,
-   selectCurrentUserState,
-   selectCurrentSessionToken,
-} from '../state/session-slice';
+import { selectCurrentUser, clearSession, fetchUser, selectCurrentUserState, selectCurrentSessionToken } from '../state/session-slice';
 import { useDispatch } from 'react-redux';
 import { AsyncStatus, IAsyncState } from '../state/types';
 import { useRedirectUnauthorisedUserToLogin } from '../hooks/user-session';
@@ -18,9 +12,7 @@ export default function Layout() {
    useRedirectUnauthorisedUserToLogin();
 
    const dispatch = useDispatch<any>();
-   const userState: IAsyncState<IUserDto | null> = useSelector(
-      selectCurrentUserState
-   );
+   const userState: IAsyncState<IUserDto | null> = useSelector(selectCurrentUserState);
    const token: string | null = useSelector(selectCurrentSessionToken);
 
    useEffect(() => {
@@ -80,31 +72,15 @@ export default function Layout() {
                         >
                            {user.fullName}
                         </a>
-                        <div
-                           className="dropdown-menu dropdown-menu-right"
-                           aria-labelledby="userMenuLink"
-                        >
-                           <Link
-                              className="dropdown-item icon-dropdown-item"
-                              to="/user/profile"
-                           >
-                              <span className="material-icons">person</span>{' '}
-                              Profile
+                        <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuLink">
+                           <Link className="dropdown-item icon-dropdown-item" to="/user/profile">
+                              <span className="material-icons">person</span> Profile
                            </Link>
-                           <Link
-                              className="dropdown-item icon-dropdown-item"
-                              to="/user/change-password"
-                           >
-                              <span className="material-icons">vpn_key</span>{' '}
-                              Change password
+                           <Link className="dropdown-item icon-dropdown-item" to="/user/change-password">
+                              <span className="material-icons">vpn_key</span> Change password
                            </Link>
-                           <Link
-                              className="dropdown-item icon-dropdown-item"
-                              onClick={logout}
-                              to="/auth/login"
-                           >
-                              <span className="material-icons">logout</span>{' '}
-                              Logout
+                           <Link className="dropdown-item icon-dropdown-item" onClick={logout} to="/auth/login">
+                              <span className="material-icons">logout</span> Logout
                            </Link>
                         </div>
                      </li>

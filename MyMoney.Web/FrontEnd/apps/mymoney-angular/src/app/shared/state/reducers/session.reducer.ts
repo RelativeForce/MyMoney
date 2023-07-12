@@ -1,12 +1,7 @@
 import { Action } from '@ngrx/store';
 import { IUserDto } from '@mymoney-common/api';
 import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common/constants';
-import {
-   SessionActionTypes,
-   StartSessionAction,
-   ClearSessionAction,
-   SetUserAction,
-} from '../actions';
+import { SessionActionTypes, StartSessionAction, ClearSessionAction, SetUserAction } from '../actions';
 import { ISessionModel, IUser } from '../types';
 
 function startSession(state: ISessionState, action: StartSessionAction) {
@@ -62,10 +57,7 @@ export const initialSessionState: ISessionState = {
    currentUser: null,
 };
 
-export function sessionReducer(
-   state: ISessionState = initialSessionState,
-   action: Action
-): ISessionState {
+export function sessionReducer(state: ISessionState = initialSessionState, action: Action): ISessionState {
    switch (action.type) {
       case SessionActionTypes.startSession:
          return startSession(state, action as StartSessionAction);

@@ -2,13 +2,7 @@
    <h2 *ngIf="loadingIncome">Loading income {{ id }}</h2>
    <h2 *ngIf="!loadingIncome">Edit income {{ id }} {{ frequencyString }}</h2>
    <div>
-      <a
-         class="btn btn-link"
-         *ngIf="parentId !== null"
-         routerLink="/incomes/edit-recurring/{{ parentId }}"
-      >
-         Parent recurring income
-      </a>
+      <a class="btn btn-link" *ngIf="parentId !== null" routerLink="/incomes/edit-recurring/{{ parentId }}"> Parent recurring income </a>
    </div>
 </div>
 <form [formGroup]="editIncomeForm" (ngSubmit)="onSubmit()">
@@ -22,13 +16,8 @@
             'is-invalid': submitted && editIncomeFormControls.date.errors
          }"
       />
-      <div
-         *ngIf="submitted && editIncomeFormControls.date.errors"
-         class="invalid-feedback"
-      >
-         <div *ngIf="editIncomeFormControls.date.errors['required']">
-            Date is required
-         </div>
+      <div *ngIf="submitted && editIncomeFormControls.date.errors" class="invalid-feedback">
+         <div *ngIf="editIncomeFormControls.date.errors['required']">Date is required</div>
       </div>
    </div>
    <div class="form-group">
@@ -41,13 +30,8 @@
             'is-invalid': submitted && editIncomeFormControls.name.errors
          }"
       />
-      <div
-         *ngIf="submitted && editIncomeFormControls.name.errors"
-         class="invalid-feedback"
-      >
-         <div *ngIf="editIncomeFormControls.name.errors['required']">
-            Name is required
-         </div>
+      <div *ngIf="submitted && editIncomeFormControls.name.errors" class="invalid-feedback">
+         <div *ngIf="editIncomeFormControls.name.errors['required']">Name is required</div>
       </div>
    </div>
    <div class="form-group">
@@ -60,16 +44,9 @@
             'is-invalid': submitted && editIncomeFormControls.amount.errors
          }"
       />
-      <div
-         *ngIf="submitted && editIncomeFormControls.amount.errors"
-         class="invalid-feedback"
-      >
-         <div *ngIf="editIncomeFormControls.amount.errors['required']">
-            Amount is required
-         </div>
-         <div *ngIf="editIncomeFormControls.amount.errors['min']">
-            Amount cannot be less than 0.01
-         </div>
+      <div *ngIf="submitted && editIncomeFormControls.amount.errors" class="invalid-feedback">
+         <div *ngIf="editIncomeFormControls.amount.errors['required']">Amount is required</div>
+         <div *ngIf="editIncomeFormControls.amount.errors['min']">Amount cannot be less than 0.01</div>
       </div>
    </div>
    <div class="form-group">
@@ -82,17 +59,11 @@
          }"
          rows="3"
       ></textarea>
-      <div
-         *ngIf="submitted && editIncomeFormControls.notes.errors"
-         class="invalid-feedback"
-      ></div>
+      <div *ngIf="submitted && editIncomeFormControls.notes.errors" class="invalid-feedback"></div>
    </div>
    <div class="form-group">
       <button [disabled]="loading" class="btn btn-primary">
-         <span
-            *ngIf="loading"
-            class="spinner-border spinner-border-sm mr-1"
-         ></span>
+         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
          Save changes
       </button>
       <a routerLink="/incomes" class="btn btn-link">Cancel</a>

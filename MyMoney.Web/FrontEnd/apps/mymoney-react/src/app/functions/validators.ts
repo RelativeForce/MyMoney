@@ -2,9 +2,7 @@ export type ValidationErrors = { [key: string]: string };
 
 export type Validator<T> = (value: T) => ValidationErrors | null;
 
-export function requiredValidator(
-   message?: string
-): Validator<string | number | undefined> {
+export function requiredValidator(message?: string): Validator<string | number | undefined> {
    return (value: string | number | undefined) => {
       let errors: ValidationErrors | null = null;
 

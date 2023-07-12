@@ -24,9 +24,7 @@ export function toInputDateString(text: string): string {
 }
 
 export function randomColor(): string {
-   return (
-      '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)
-   );
+   return '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
 }
 
 export function toDateString(date: Date): string {
