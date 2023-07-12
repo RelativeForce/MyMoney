@@ -67,29 +67,49 @@ function buildDataProvider(
 ): IChartDataProvider<BudgetSeries, BudgetSeriesDataPoint> {
    const date = monthAsDate(searchParameters);
    const monthString = date.toLocaleString('default', { month: 'long' });
-   const subChartTitle = `${monthString} ${date.getFullYear()}`;
+
+   function updateDate(isYear: boolean, increment: number) {
+      if (isYear) {
+         date.setFullYear(date.getFullYear() + increment);
+      } else {
+         date.setMonth(date.getMonth() + increment);
+      }
+
+      setMonth(date.getMonth(), date.getFullYear());
+   }
 
    return {
-      chartTitle: 'Transactions',
+      chartTitle: `Transactions - ${monthString} ${date.getFullYear()}`,
       yAxisLabel: 'Remaining in budget (£)',
-      subChartTitle,
       data,
-      next: () => {
-         date.setMonth(date.getMonth() + 1);
-
-         setMonth(date.getMonth(), date.getFullYear());
-      },
-      previous: () => {
-         date.setMonth(date.getMonth() - 1);
-
-         setMonth(date.getMonth(), date.getFullYear());
-      },
-      onClickDataPoint: (data: BudgetSeriesDataPoint) => {
-         navigate(`/transactions/edit?id=${data.id}`);
-      },
-      onClickSeries: (data: BudgetSeries) => {
-         navigate(`/budgets/edit?id=${data.budget.id}`);
-      },
+      leftButtons: [
+         {
+            icon: 'keyboard_double_arrow_left',
+            onClick: () => updateDate(true, -1),
+            tooltip: 'Previous year',
+         },
+         {
+            icon: 'navigate_before',
+            onClick: () => updateDate(false, -1),
+            tooltip: 'Previous month',
+         },
+      ],
+      rightButtons: [
+         {
+            icon: 'navigate_next',
+            onClick: () => updateDate(false, 1),
+            tooltip: 'Next month',
+         },
+         {
+            icon: 'keyboard_double_arrow_right',
+            onClick: () => updateDate(true, 1),
+            tooltip: 'Next year',
+         },
+      ],
+      onClickDataPoint: (data: BudgetSeriesDataPoint) =>
+         navigate(`/transactions/edit?id=${data.id}`),
+      onClickSeries: (data: BudgetSeries) =>
+         navigate(`/budgets/edit?id=${data.budget.id}`),
    };
 }
 
