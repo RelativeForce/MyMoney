@@ -19,17 +19,14 @@ import { useValidatedState } from '../../hooks/validation';
 
 export default function Transactions() {
    const tranactionState: ITransactionState = useSelector(selectTransactionsListState);
-   const dispatch = useDispatch<any>();
-   const [startState, setStartState] = useValidatedState<string>('', [requiredValidator('Start is required')]);
-   const [endState, setEndState] = useValidatedState<string>('', [requiredValidator('End is required')]);
 
-   useEffect(() => {
-      setStartState(tranactionState.searchParameters.dateRange.start);
-      setEndState(tranactionState.searchParameters.dateRange.end);
-   }, [dispatch]);
+   const dateRange = tranactionState.searchParameters.dateRange;
+   const [startState, setStartState] = useValidatedState<string>(dateRange.start, [requiredValidator('Start is required')]);
+   const [endState, setEndState] = useValidatedState<string>(dateRange.end, [requiredValidator('End is required')]);
 
    const loading = tranactionState.transactions.status === AsyncStatus.loading;
 
+   const dispatch = useDispatch<any>();
    useEffect(() => {
       if (loading || (!loading && !tranactionState.searchParameters.refresh)) {
          return;
