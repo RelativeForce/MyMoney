@@ -10,15 +10,15 @@ import {
    deleteTransaction,
    fetchTransactions,
    refreshTransactions,
-   selectTransactionState,
+   selectTransactionsListState,
    setDataRange,
-} from '../../state/transactions-slice';
+} from '../../state/transactions-list';
 import { AsyncStatus, ITransactionState } from '../../state/types';
 import RecurringTransactionButtons from '../../components/recurring-transaction-buttons';
 import { useValidatedState } from '../../hooks/validation';
 
 export default function Transactions() {
-   const tranactionState: ITransactionState = useSelector(selectTransactionState);
+   const tranactionState: ITransactionState = useSelector(selectTransactionsListState);
    const dispatch = useDispatch<any>();
    const [startState, setStartState] = useValidatedState<string>('', [requiredValidator('Start is required')]);
    const [endState, setEndState] = useValidatedState<string>('', [requiredValidator('End is required')]);

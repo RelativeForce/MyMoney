@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { HomeApi, IDateRangeDto, IRunningTotalDto, IRunningTotalListDto } from '@mymoney-common/api';
-import { IAppState, AsyncStatus, IYearSearch, IAsyncState, IRunningTotalChartState } from './types';
+import { AsyncStatus, IAsyncState, IRunningTotalChartState } from '../types';
 import { first, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { HttpHelper } from '../classess/http-helper';
+import { HttpHelper } from '../../classess/http-helper';
+
+const SLICE_NAME = 'runningTotalChart';
 
 export const initialRunningTotalListState: IAsyncState<IRunningTotalDto[]> = {
    data: [],
@@ -36,15 +38,14 @@ function toDateRangeDto(year: number): IDateRangeDto {
    return { end, start };
 }
 
-export const fetchRunningTotals = createAsyncThunk('runningTotalChart/fetchRunningTotals', async (year: number, { getState, rejectWithValue }) => {
-   const state = getState() as IAppState;
-   if (!state.session.currentSession?.token) {
+export const fetchRunningTotals = createAsyncThunk(`${SLICE_NAME}/fetchRunningTotals`, async (year: number, { getState, rejectWithValue }) => {
+   const httpHelper = HttpHelper.forCuurentUser(getState);
+   if (!httpHelper) {
       return rejectWithValue('No user session');
    }
 
    const dateRange = toDateRangeDto(year);
 
-   const httpHelper = new HttpHelper(state.session.currentSession.token);
    const api = new HomeApi(httpHelper);
 
    try {
@@ -60,7 +61,7 @@ export const fetchRunningTotals = createAsyncThunk('runningTotalChart/fetchRunni
 });
 
 export const runningTotalChartSlice = createSlice({
-   name: 'runningTotalChart',
+   name: SLICE_NAME,
    initialState: initialChartState,
    reducers: {
       setSelectedYear: {
@@ -123,9 +124,5 @@ export const runningTotalChartSlice = createSlice({
 });
 
 export const { setSelectedYear } = runningTotalChartSlice.actions;
-
-export const selectRunningTotalChartState = (state: IAppState): IRunningTotalChartState => state.runningTotalChart;
-export const selectSearchParameters = (state: IAppState): IYearSearch => selectRunningTotalChartState(state).searchParameters;
-export const selectRunningTotals = (state: IAppState) => selectRunningTotalChartState(state).runningTotals;
 
 export default runningTotalChartSlice.reducer;

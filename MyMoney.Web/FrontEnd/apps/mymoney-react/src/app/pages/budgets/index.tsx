@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom';
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { ChangeEventHandler, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InlineInput from '../../components/inline-input';
 import BasicBudgetButtons from '../../components/basic-budget-buttons';
 import { maxValidator, minValidator, requiredValidator } from '../../functions/validators';
-import { deleteBudget, fetchBudgets, refreshBudgets, selectBudgetState, setSelectedMonth } from '../../state/budgets-slice';
+import { deleteBudget, fetchBudgets, refreshBudgets, selectBudgetsListState, setSelectedMonth } from '../../state/budgets-list';
 import { AsyncStatus, IBudgetState } from '../../state/types';
 import { useValidatedState } from '../../hooks/validation';
 
 export default function Budgets() {
-   const budgetState: IBudgetState = useSelector(selectBudgetState);
+   const budgetState: IBudgetState = useSelector(selectBudgetsListState);
    const dispatch = useDispatch<any>();
    const [yearState, setYearState] = useValidatedState<number>(2020, [
       requiredValidator('Start is required'),

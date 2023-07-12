@@ -9,10 +9,12 @@ import {
    ITransactionListDto,
    TransactionApi,
 } from '@mymoney-common/api';
-import { IAppState, AsyncStatus, IMonthSearch, IAsyncState, IRemainingBudgetChartState } from './types';
+import { AsyncStatus, IAsyncState, IRemainingBudgetChartState } from '../types';
 import { first, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { HttpHelper } from '../classess/http-helper';
+import { HttpHelper } from '../../classess/http-helper';
+
+const SLICE_NAME = 'remainingBudgetChart';
 
 export const initialBudgetListState: IAsyncState<IBudgetDto[]> = {
    data: [],
@@ -57,15 +59,13 @@ function toDateRangeDto(search: IBudgetSearchDto): IDateRangeDto {
    return { end, start };
 }
 
-export const fetchChartBudgets = createAsyncThunk(
-   'remainingBudgetChart/fetchBudgets',
+export const fetchBudgets = createAsyncThunk(
+   `${SLICE_NAME}/fetchBudgets`,
    async ({ search }: { search: IBudgetSearchDto }, { getState, rejectWithValue }) => {
-      const state = getState() as IAppState;
-      if (!state.session.currentSession?.token) {
+      const httpHelper = HttpHelper.forCuurentUser(getState);
+      if (!httpHelper) {
          return rejectWithValue('No user session');
       }
-
-      const httpHelper = new HttpHelper(state.session.currentSession.token);
       const api = new BudgetApi(httpHelper);
 
       try {
@@ -81,15 +81,13 @@ export const fetchChartBudgets = createAsyncThunk(
    }
 );
 
-export const fetchChartTransactions = createAsyncThunk(
-   'remainingBudgetChart/fetchTransactions',
+export const fetchTransactions = createAsyncThunk(
+   `${SLICE_NAME}/fetchTransactions`,
    async ({ search }: { search: IBudgetSearchDto }, { getState, rejectWithValue }) => {
-      const state = getState() as IAppState;
-      if (!state.session.currentSession?.token) {
+      const httpHelper = HttpHelper.forCuurentUser(getState);
+      if (!httpHelper) {
          return rejectWithValue('No user session');
       }
-
-      const httpHelper = new HttpHelper(state.session.currentSession.token);
       const api = new TransactionApi(httpHelper);
 
       const dateRangeDto = toDateRangeDto(search);
@@ -108,7 +106,7 @@ export const fetchChartTransactions = createAsyncThunk(
 );
 
 export const remainingBudgetChartSlice = createSlice({
-   name: 'remainingBudgetChart',
+   name: SLICE_NAME,
    initialState: initialChartState,
    reducers: {
       setSelectedMonth: {
@@ -131,7 +129,7 @@ export const remainingBudgetChartSlice = createSlice({
    },
    extraReducers(builder: ActionReducerMapBuilder<IRemainingBudgetChartState>) {
       builder
-         .addCase(fetchChartBudgets.pending, (state: IRemainingBudgetChartState) => {
+         .addCase(fetchBudgets.pending, (state: IRemainingBudgetChartState) => {
             return {
                ...state,
                budgets: {
@@ -141,7 +139,7 @@ export const remainingBudgetChartSlice = createSlice({
                },
             };
          })
-         .addCase(fetchChartBudgets.fulfilled, (state: IRemainingBudgetChartState, action: { payload: IBudgetDto[] }) => {
+         .addCase(fetchBudgets.fulfilled, (state: IRemainingBudgetChartState, action: { payload: IBudgetDto[] }) => {
             return {
                ...state,
                budgets: {
@@ -155,7 +153,7 @@ export const remainingBudgetChartSlice = createSlice({
                },
             };
          })
-         .addCase(fetchChartBudgets.rejected, (state: IRemainingBudgetChartState, action) => {
+         .addCase(fetchBudgets.rejected, (state: IRemainingBudgetChartState, action) => {
             return {
                ...state,
                budgets: {
@@ -169,7 +167,7 @@ export const remainingBudgetChartSlice = createSlice({
                },
             };
          })
-         .addCase(fetchChartTransactions.pending, (state: IRemainingBudgetChartState, { meta: { arg } }) => {
+         .addCase(fetchTransactions.pending, (state: IRemainingBudgetChartState, { meta: { arg } }) => {
             return {
                ...state,
                transactions: {
@@ -179,7 +177,7 @@ export const remainingBudgetChartSlice = createSlice({
                },
             };
          })
-         .addCase(fetchChartTransactions.fulfilled, (state: IRemainingBudgetChartState, action: { payload: ITransactionDto[] }) => {
+         .addCase(fetchTransactions.fulfilled, (state: IRemainingBudgetChartState, action: { payload: ITransactionDto[] }) => {
             return {
                ...state,
                transactions: {
@@ -193,7 +191,7 @@ export const remainingBudgetChartSlice = createSlice({
                },
             };
          })
-         .addCase(fetchChartTransactions.rejected, (state: IRemainingBudgetChartState, action) => {
+         .addCase(fetchTransactions.rejected, (state: IRemainingBudgetChartState, action) => {
             return {
                ...state,
                transactions: {
@@ -211,10 +209,5 @@ export const remainingBudgetChartSlice = createSlice({
 });
 
 export const { setSelectedMonth } = remainingBudgetChartSlice.actions;
-
-export const selectRemainingBudgetChartState = (state: IAppState): IRemainingBudgetChartState => state.remainingBudgetChart;
-export const selectRemainingBudgetSearchParameters = (state: IAppState): IMonthSearch => selectRemainingBudgetChartState(state).searchParameters;
-export const selectChartBudgets = (state: IAppState) => selectRemainingBudgetChartState(state).budgets;
-export const selectChartTransactions = (state: IAppState) => selectRemainingBudgetChartState(state).transactions;
 
 export default remainingBudgetChartSlice.reducer;

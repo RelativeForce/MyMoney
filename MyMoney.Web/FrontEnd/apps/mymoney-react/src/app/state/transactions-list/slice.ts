@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { TransactionApi, IDateRangeDto, ITransactionDto, ITransactionListDto } from '@mymoney-common/api';
-import { IAppState, AsyncStatus, ITransactionState, ITransactionsSearch, IAsyncState, IDateRangeModel } from './types';
+import { AsyncStatus, ITransactionState, IAsyncState, IDateRangeModel } from '../types';
 import { first, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { HttpHelper } from '../classess/http-helper';
 import { toDateString } from '@mymoney-common/functions';
+import { HttpHelper } from '../../classess/http-helper';
+
+const SLICE_NAME = 'transactionsList';
 
 function defaultDateRange(): IDateRangeModel {
    const end: Date = new Date();
@@ -30,14 +32,12 @@ export const initialTransactionsState: ITransactionState = {
 };
 
 export const fetchTransactions = createAsyncThunk(
-   'transactions/fetchTransactions',
+   `${SLICE_NAME}/fetchTransactions`,
    async ({ dateRange }: { dateRange: IDateRangeModel }, { getState, rejectWithValue }) => {
-      const state = getState() as IAppState;
-      if (!state.session.currentSession?.token) {
+      const httpHelper = HttpHelper.forCuurentUser(getState);
+      if (!httpHelper) {
          return rejectWithValue('No user session');
       }
-
-      const httpHelper = new HttpHelper(state.session.currentSession.token);
       const api = new TransactionApi(httpHelper);
 
       const dateRangeDto: IDateRangeDto = {
@@ -64,14 +64,12 @@ export interface IDeleteTransactionRequest {
 }
 
 export const deleteTransaction = createAsyncThunk(
-   'transactions/deleteTransaction',
+   `${SLICE_NAME}/deleteTransaction`,
    async ({ transactionId }: { transactionId: number }, { getState, rejectWithValue }) => {
-      const state = getState() as IAppState;
-      if (!state.session.currentSession?.token) {
+      const httpHelper = HttpHelper.forCuurentUser(getState);
+      if (!httpHelper) {
          return rejectWithValue('No user session');
       }
-
-      const httpHelper = new HttpHelper(state.session.currentSession.token);
       const api = new TransactionApi(httpHelper);
 
       try {
@@ -83,14 +81,12 @@ export const deleteTransaction = createAsyncThunk(
 );
 
 export const deleteRecurringTransaction = createAsyncThunk(
-   'transactions/deleteRecurringTransaction',
+   `${SLICE_NAME}/deleteRecurringTransaction`,
    async ({ recurringTransactionId }: { recurringTransactionId: number }, { getState, rejectWithValue }) => {
-      const state = getState() as IAppState;
-      if (!state.session.currentSession?.token) {
+      const httpHelper = HttpHelper.forCuurentUser(getState);
+      if (!httpHelper) {
          return rejectWithValue('No user session');
       }
-
-      const httpHelper = new HttpHelper(state.session.currentSession.token);
       const api = new TransactionApi(httpHelper);
 
       try {
@@ -102,7 +98,7 @@ export const deleteRecurringTransaction = createAsyncThunk(
 );
 
 export const transactionsSlice = createSlice({
-   name: 'transactions',
+   name: SLICE_NAME,
    initialState: initialTransactionsState,
    reducers: {
       setDataRange: {
@@ -197,17 +193,5 @@ export const transactionsSlice = createSlice({
 });
 
 export const { setDataRange, refreshTransactions } = transactionsSlice.actions;
-
-export const selectTransactionState = (state: IAppState): ITransactionState => state.transactions;
-
-export const selectTransactions = (state: IAppState): ITransactionDto[] => selectTransactionState(state).transactions.data;
-
-export const selectTransactionsSearchParameters = (state: IAppState): ITransactionsSearch => selectTransactionState(state).searchParameters;
-
-export const selectTransactionsDateRange = (state: IAppState): IDateRangeModel => selectTransactionsSearchParameters(state).dateRange;
-
-export function selectTransaction(transactionId: number): (state: IAppState) => ITransactionDto | undefined {
-   return (state: IAppState): ITransactionDto | undefined => selectTransactions(state).find((t) => t.id === transactionId);
-}
 
 export default transactionsSlice.reducer;

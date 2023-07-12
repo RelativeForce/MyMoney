@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { BudgetApi, IBudgetDto, IBudgetListDto, IBudgetSearchDto } from '@mymoney-common/api';
-import { IAppState, AsyncStatus, IBudgetState, IMonthSearch, IAsyncState } from './types';
-import { first, map } from 'rxjs/operators';
+import { AsyncStatus, IBudgetState, IAsyncState } from '../types';
+import { map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { HttpHelper } from '../classess/http-helper';
+import { HttpHelper } from '../../classess/http-helper';
+
+const SLICE_NAME = 'budgetsList';
 
 export const initialBudgetListState: IAsyncState<IBudgetDto[]> = {
    data: [],
@@ -21,23 +23,16 @@ export const initialBudgetsState: IBudgetState = {
 };
 
 export const fetchBudgets = createAsyncThunk(
-   'budgets/fetchBudgets',
+   `${SLICE_NAME}/fetchBudgets`,
    async ({ search }: { search: IBudgetSearchDto }, { getState, rejectWithValue }) => {
-      const state = getState() as IAppState;
-      if (!state.session.currentSession?.token) {
+      const httpHelper = HttpHelper.forCuurentUser(getState);
+      if (!httpHelper) {
          return rejectWithValue('No user session');
       }
-
-      const httpHelper = new HttpHelper(state.session.currentSession.token);
       const api = new BudgetApi(httpHelper);
 
       try {
-         return await firstValueFrom(
-            api.list(search).pipe(
-               first(),
-               map((listDto: IBudgetListDto) => listDto.budgets)
-            )
-         );
+         return await firstValueFrom(api.list(search).pipe(map((listDto: IBudgetListDto) => listDto.budgets)));
       } catch (error: any) {
          return rejectWithValue(error.message);
       }
@@ -49,24 +44,25 @@ export interface IDeleteBudgetRequest {
    budgetId: number;
 }
 
-export const deleteBudget = createAsyncThunk('budgets/deleteBudget', async ({ budgetId }: { budgetId: number }, { getState, rejectWithValue }) => {
-   const state = getState() as IAppState;
-   if (!state.session.currentSession?.token) {
-      return rejectWithValue('No user session');
-   }
+export const deleteBudget = createAsyncThunk(
+   `${SLICE_NAME}/deleteBudget`,
+   async ({ budgetId }: { budgetId: number }, { getState, rejectWithValue }) => {
+      const httpHelper = HttpHelper.forCuurentUser(getState);
+      if (!httpHelper) {
+         return rejectWithValue('No user session');
+      }
+      const api = new BudgetApi(httpHelper);
 
-   const httpHelper = new HttpHelper(state.session.currentSession.token);
-   const api = new BudgetApi(httpHelper);
-
-   try {
-      return await firstValueFrom(api.delete({ id: budgetId }).pipe(first()));
-   } catch (error: any) {
-      return rejectWithValue(error.message);
+      try {
+         return await firstValueFrom(api.delete({ id: budgetId }));
+      } catch (error: any) {
+         return rejectWithValue(error.message);
+      }
    }
-});
+);
 
 export const budgetsSlice = createSlice({
-   name: 'budgets',
+   name: SLICE_NAME,
    initialState: initialBudgetsState,
    reducers: {
       setSelectedMonth: {
@@ -150,15 +146,5 @@ export const budgetsSlice = createSlice({
 });
 
 export const { setSelectedMonth, refreshBudgets } = budgetsSlice.actions;
-
-export const selectBudgetState = (state: IAppState): IBudgetState => state.budgets;
-
-export const selectBudgets = (state: IAppState): IBudgetDto[] => selectBudgetState(state).budgets.data;
-
-export const selectBudgetsSearchParameters = (state: IAppState): IMonthSearch => selectBudgetState(state).searchParameters;
-
-export function selectBudget(budgetId: number): (state: IAppState) => IBudgetDto | undefined {
-   return (state: IAppState): IBudgetDto | undefined => selectBudgets(state).find((t) => t.id === budgetId);
-}
 
 export default budgetsSlice.reducer;

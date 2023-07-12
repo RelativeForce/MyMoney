@@ -2,10 +2,12 @@ import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs
 import { AuthenticationApi, UserApi, ILoginDto, ILoginResultDto, IUserDto } from '@mymoney-common/api';
 import { ISessionModel } from '@mymoney-common/interfaces';
 import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common/constants';
-import { ISessionState, IAppState, AsyncStatus, IAsyncState } from './types';
+import { ISessionState, AsyncStatus, IAsyncState } from '../types';
 import { first } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { HttpHelper } from '../classess/http-helper';
+import { HttpHelper } from '../../classess/http-helper';
+
+const SLICE_NAME = 'session';
 
 export const initialUserState: IAsyncState<IUserDto | null> = {
    data: null,
@@ -18,13 +20,11 @@ export const initialSessionState: ISessionState = {
    currentUser: initialUserState,
 };
 
-export const fetchUser = createAsyncThunk('session/fetchUser', async (_, { getState, rejectWithValue }) => {
-   const state = getState() as IAppState;
-   if (!state.session.currentSession?.token) {
+export const fetchUser = createAsyncThunk(`${SLICE_NAME}/fetchUser`, async (_, { getState, rejectWithValue }) => {
+   const httpHelper = HttpHelper.forCuurentUser(getState);
+   if (!httpHelper) {
       return rejectWithValue('No user session');
    }
-
-   const httpHelper = new HttpHelper(state.session.currentSession.token);
    const api = new UserApi(httpHelper);
 
    try {
@@ -34,8 +34,8 @@ export const fetchUser = createAsyncThunk('session/fetchUser', async (_, { getSt
    }
 });
 
-export const login = createAsyncThunk('session/login', async (credentials: ILoginDto, { rejectWithValue }) => {
-   const httpHelper = new HttpHelper(null);
+export const login = createAsyncThunk(`${SLICE_NAME}/login`, async (credentials: ILoginDto, { rejectWithValue }) => {
+   const httpHelper = HttpHelper.forAnnonymous();
    const api = new AuthenticationApi(httpHelper);
 
    try {
@@ -45,13 +45,11 @@ export const login = createAsyncThunk('session/login', async (credentials: ILogi
    }
 });
 
-export const updateUser = createAsyncThunk('session/updateUser', async (user: IUserDto, { getState, rejectWithValue }) => {
-   const state = getState() as IAppState;
-   if (!state.session.currentSession?.token) {
+export const updateUser = createAsyncThunk(`${SLICE_NAME}/updateUser`, async (user: IUserDto, { getState, rejectWithValue }) => {
+   const httpHelper = HttpHelper.forCuurentUser(getState);
+   if (!httpHelper) {
       return rejectWithValue('No user session');
    }
-
-   const httpHelper = new HttpHelper(state.session.currentSession.token);
    const api = new UserApi(httpHelper);
 
    try {
@@ -71,7 +69,7 @@ export const updateUser = createAsyncThunk('session/updateUser', async (user: IU
 });
 
 export const sessionSlice = createSlice({
-   name: 'session',
+   name: SLICE_NAME,
    initialState: initialSessionState,
    reducers: {
       setSession: {
@@ -194,11 +192,5 @@ export const sessionSlice = createSlice({
 });
 
 export const { setSession, clearSession, setUser } = sessionSlice.actions;
-
-export const selectSessionState = (state: IAppState): ISessionState => state.session;
-export const selectCurrentSession = (state: IAppState): ISessionModel | null => selectSessionState(state).currentSession;
-export const selectCurrentSessionToken = (state: IAppState): string | null => selectCurrentSession(state)?.token ?? null;
-export const selectCurrentUser = (state: IAppState): IUserDto | null => selectCurrentUserState(state).data;
-export const selectCurrentUserState = (state: IAppState): IAsyncState<IUserDto | null> => selectSessionState(state).currentUser;
 
 export default sessionSlice.reducer;
