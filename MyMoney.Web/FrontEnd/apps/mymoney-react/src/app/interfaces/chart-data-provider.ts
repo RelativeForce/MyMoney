@@ -1,4 +1,5 @@
 import { ISeries, ISeriesDataPoint } from '@mymoney-common/interfaces';
+import { IChartNavigationButton } from './chart-navigation-button';
 
 export interface IChartDataProvider<
    TSeries extends ISeries<TDataPoint>,
@@ -6,10 +7,9 @@ export interface IChartDataProvider<
 > {
    chartTitle: string;
    data: TSeries[];
-   subChartTitle: string;
    yAxisLabel: string;
    onClickDataPoint(data: TDataPoint): void;
    onClickSeries(data: TSeries): void;
-   next(): void;
-   previous(): void;
+   leftButtons: IChartNavigationButton[];
+   rightButtons: IChartNavigationButton[];
 }

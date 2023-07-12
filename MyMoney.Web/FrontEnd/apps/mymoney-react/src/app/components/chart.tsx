@@ -16,14 +16,6 @@ export default function Chart<
    TSeries extends ISeries<TDataPoint>,
    TDataPoint extends ISeriesDataPoint
 >({ dataProvider }: { dataProvider: IChartDataProvider<TSeries, TDataPoint> }) {
-   const title = dataProvider.subChartTitle ? (
-      <div>
-         {dataProvider.chartTitle} - {dataProvider.subChartTitle}
-      </div>
-   ) : (
-      <div>{dataProvider.chartTitle}</div>
-   );
-
    const lines = [];
 
    for (const series of dataProvider.data) {
@@ -54,30 +46,44 @@ export default function Chart<
       );
    }
 
+   const leftButtons = [];
+   for (const buttonOptions of dataProvider.leftButtons) {
+      leftButtons.push(
+         <button
+            className="btn btn-light btn-sm mr-1 material-icons"
+            type="button"
+            onClick={buttonOptions.onClick}
+            data-toggle="tooltip"
+            data-placement="bottom"
+            title={buttonOptions.tooltip}
+         >
+            {buttonOptions.icon}
+         </button>
+      );
+   }
+
+   const rightButtons = [];
+   for (const buttonOptions of dataProvider.rightButtons) {
+      rightButtons.push(
+         <button
+            className="btn btn-light btn-sm ml-1 material-icons"
+            type="button"
+            onClick={buttonOptions.onClick}
+            data-toggle="tooltip"
+            data-placement="bottom"
+            title={buttonOptions.tooltip}
+         >
+            {buttonOptions.icon}
+         </button>
+      );
+   }
+
    return (
       <>
-         <div className="container inline">
-            <button
-               className="btn btn-light btn-sm material-icons"
-               type="button"
-               onClick={dataProvider.previous}
-               data-toggle="tooltip"
-               data-placement="bottom"
-               title="Previous"
-            >
-               navigate_before
-            </button>
-            <span className="ml-auto">{title}</span>
-            <button
-               className="btn btn-light btn-sm ml-auto material-icons"
-               type="button"
-               onClick={dataProvider.next}
-               data-toggle="tooltip"
-               data-placement="bottom"
-               title="Next"
-            >
-               navigate_next
-            </button>
+         <div className="container inline mb-3">
+            {leftButtons}
+            <span className="ml-auto mr-auto">{dataProvider.chartTitle}</span>
+            {rightButtons}
          </div>
          <div
             style={{
