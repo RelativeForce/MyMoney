@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TransactionApi, IDateRangeDto, ITransactionListDto } from '@mymoney-common/api';
-import { IDateRangeModel } from '../types';
+import { IDateRange } from '../types';
 import { first, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { HttpHelper } from '../../classess/http-helper';
@@ -8,7 +8,7 @@ import { SLICE_NAME } from './constants';
 
 export const fetchTransactions = createAsyncThunk(
    `${SLICE_NAME}/fetchTransactions`,
-   async ({ dateRange }: { dateRange: IDateRangeModel }, { getState, rejectWithValue }) => {
+   async ({ dateRange }: { dateRange: IDateRange }, { getState, rejectWithValue }) => {
       const httpHelper = HttpHelper.forCuurentUser(getState);
       if (!httpHelper) {
          return rejectWithValue('No user session');

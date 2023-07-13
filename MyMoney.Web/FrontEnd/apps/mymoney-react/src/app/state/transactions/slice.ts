@@ -1,11 +1,11 @@
 import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { ITransactionDto } from '@mymoney-common/api';
-import { AsyncStatus, ITransactionsState, IDateRangeModel } from '../types';
+import { AsyncStatus, ITransactionsState, IDateRange } from '../types';
 import { toDateString } from '@mymoney-common/functions';
 import { SLICE_NAME } from './constants';
 import { deleteRecurringTransaction, deleteTransaction, fetchTransactions } from './thunks';
 
-function defaultDateRange(): IDateRangeModel {
+function defaultDateRange(): IDateRange {
    const end: Date = new Date();
 
    const start: Date = new Date();
@@ -31,7 +31,7 @@ const slice = createSlice({
    initialState: initialState,
    reducers: {
       setDataRange: {
-         reducer: (state: ITransactionsState, { payload }: { payload: IDateRangeModel }) => {
+         reducer: (state: ITransactionsState, { payload }: { payload: IDateRange }) => {
             return {
                ...state,
                searchParameters: {
@@ -42,7 +42,7 @@ const slice = createSlice({
             };
          },
          prepare: (start: string, end: string) => {
-            const dateRange: IDateRangeModel = { start, end };
+            const dateRange: IDateRange = { start, end };
             return { payload: dateRange };
          },
       },

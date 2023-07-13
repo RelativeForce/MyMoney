@@ -29,15 +29,15 @@ export interface ISessionState {
 
 export interface ITransactionsState {
    list: IAsyncState<ITransactionDto[]>;
-   searchParameters: ITransactionsSearch;
+   searchParameters: IDateRangeSearch;
 }
 
-export interface ITransactionsSearch {
-   dateRange: IDateRangeModel;
+export interface IDateRangeSearch {
+   dateRange: IDateRange;
    refresh: boolean;
 }
 
-export interface IDateRangeModel {
+export interface IDateRange {
    start: string;
    end: string;
 }
