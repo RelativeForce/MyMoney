@@ -1,11 +1,11 @@
 import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { IBudgetDto, IBudgetSearchDto } from '@mymoney-common/api';
-import { AsyncStatus, IBudgetState } from '../types';
+import { AsyncStatus, IBudgetsState } from '../types';
 import { SLICE_NAME } from './constants';
 import { deleteBudget, fetchBudgets } from './thunks';
 
-export const initialBudgetsState: IBudgetState = {
-   budgets: {
+const initialState: IBudgetsState = {
+   list: {
       data: [],
       status: AsyncStatus.empty,
       error: null,
@@ -17,12 +17,12 @@ export const initialBudgetsState: IBudgetState = {
    },
 };
 
-export const budgetsSlice = createSlice({
+const slice = createSlice({
    name: SLICE_NAME,
-   initialState: initialBudgetsState,
+   initialState: initialState,
    reducers: {
       setSelectedMonth: {
-         reducer: (state: IBudgetState, { payload }: { payload: IBudgetSearchDto }) => {
+         reducer: (state: IBudgetsState, { payload }: { payload: IBudgetSearchDto }) => {
             return {
                ...state,
                searchParameters: {
@@ -38,7 +38,7 @@ export const budgetsSlice = createSlice({
             return { payload: selectedMonth };
          },
       },
-      refreshBudgets: (state: IBudgetState) => {
+      refreshBudgets: (state: IBudgetsState) => {
          return {
             ...state,
             searchParameters: {
@@ -48,12 +48,12 @@ export const budgetsSlice = createSlice({
          };
       },
    },
-   extraReducers(builder: ActionReducerMapBuilder<IBudgetState>) {
+   extraReducers(builder: ActionReducerMapBuilder<IBudgetsState>) {
       builder
-         .addCase(fetchBudgets.pending, (state: IBudgetState, { meta: { arg } }) => {
+         .addCase(fetchBudgets.pending, (state: IBudgetsState, { meta: { arg } }) => {
             return {
                ...state,
-               budgets: {
+               list: {
                   data: [],
                   status: AsyncStatus.loading,
                   error: null,
@@ -65,42 +65,42 @@ export const budgetsSlice = createSlice({
                },
             };
          })
-         .addCase(fetchBudgets.fulfilled, (state: IBudgetState, action: { payload: IBudgetDto[] }) => {
+         .addCase(fetchBudgets.fulfilled, (state: IBudgetsState, action: { payload: IBudgetDto[] }) => {
             return {
                ...state,
-               budgets: {
+               list: {
                   data: action.payload,
                   status: AsyncStatus.succeeded,
                   error: null,
                },
             };
          })
-         .addCase(fetchBudgets.rejected, (state: IBudgetState, action) => {
+         .addCase(fetchBudgets.rejected, (state: IBudgetsState, action) => {
             return {
                ...state,
-               budgets: {
+               list: {
                   data: [],
                   status: AsyncStatus.failed,
                   error: action.error.message ?? null,
                },
             };
          })
-         .addCase(deleteBudget.fulfilled, (state: IBudgetState, { meta: { arg }, payload }) => {
+         .addCase(deleteBudget.fulfilled, (state: IBudgetsState, { meta: { arg }, payload }) => {
             if (!payload.success) {
                return state;
             }
 
             return {
                ...state,
-               budgets: {
-                  ...state.budgets,
-                  data: state.budgets.data.filter((t) => t.id !== arg.budgetId),
+               list: {
+                  ...state.list,
+                  data: state.list.data.filter((t) => t.id !== arg.budgetId),
                },
             };
          });
    },
 });
 
-export const { setSelectedMonth, refreshBudgets } = budgetsSlice.actions;
+export const { setSelectedMonth, refreshBudgets } = slice.actions;
 
-export default budgetsSlice.reducer;
+export const reducer = slice.reducer;

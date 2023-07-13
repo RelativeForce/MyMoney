@@ -1,6 +1,6 @@
 import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { ITransactionDto } from '@mymoney-common/api';
-import { AsyncStatus, ITransactionState, IDateRangeModel } from '../types';
+import { AsyncStatus, ITransactionsState, IDateRangeModel } from '../types';
 import { toDateString } from '@mymoney-common/functions';
 import { SLICE_NAME } from './constants';
 import { deleteRecurringTransaction, deleteTransaction, fetchTransactions } from './thunks';
@@ -14,8 +14,8 @@ function defaultDateRange(): IDateRangeModel {
    return { end: toDateString(end), start: toDateString(start) };
 }
 
-export const initialTransactionsState: ITransactionState = {
-   transactions: {
+const initialState: ITransactionsState = {
+   list: {
       data: [],
       status: AsyncStatus.empty,
       error: null,
@@ -26,12 +26,12 @@ export const initialTransactionsState: ITransactionState = {
    },
 };
 
-export const transactionsSlice = createSlice({
+const transactionsListSlice = createSlice({
    name: SLICE_NAME,
-   initialState: initialTransactionsState,
+   initialState: initialState,
    reducers: {
       setDataRange: {
-         reducer: (state: ITransactionState, { payload }: { payload: IDateRangeModel }) => {
+         reducer: (state: ITransactionsState, { payload }: { payload: IDateRangeModel }) => {
             return {
                ...state,
                searchParameters: {
@@ -46,7 +46,7 @@ export const transactionsSlice = createSlice({
             return { payload: dateRange };
          },
       },
-      refreshTransactions: (state: ITransactionState) => {
+      refreshTransactions: (state: ITransactionsState) => {
          return {
             ...state,
             searchParameters: {
@@ -56,12 +56,12 @@ export const transactionsSlice = createSlice({
          };
       },
    },
-   extraReducers(builder: ActionReducerMapBuilder<ITransactionState>) {
+   extraReducers(builder: ActionReducerMapBuilder<ITransactionsState>) {
       builder
-         .addCase(fetchTransactions.pending, (state: ITransactionState, { meta: { arg } }) => {
+         .addCase(fetchTransactions.pending, (state: ITransactionsState, { meta: { arg } }) => {
             return {
                ...state,
-               transactions: {
+               list: {
                   data: [],
                   status: AsyncStatus.loading,
                   error: null,
@@ -72,55 +72,55 @@ export const transactionsSlice = createSlice({
                },
             };
          })
-         .addCase(fetchTransactions.fulfilled, (state: ITransactionState, action: { payload: ITransactionDto[] }) => {
+         .addCase(fetchTransactions.fulfilled, (state: ITransactionsState, action: { payload: ITransactionDto[] }) => {
             return {
                ...state,
-               transactions: {
+               list: {
                   data: action.payload,
                   status: AsyncStatus.succeeded,
                   error: null,
                },
             };
          })
-         .addCase(fetchTransactions.rejected, (state: ITransactionState, action) => {
+         .addCase(fetchTransactions.rejected, (state: ITransactionsState, action) => {
             return {
                ...state,
-               transactions: {
+               list: {
                   data: [],
                   status: AsyncStatus.failed,
                   error: action.error.message ?? null,
                },
             };
          })
-         .addCase(deleteTransaction.fulfilled, (state: ITransactionState, { meta: { arg }, payload }) => {
+         .addCase(deleteTransaction.fulfilled, (state: ITransactionsState, { meta: { arg }, payload }) => {
             if (!payload.success) {
                return state;
             }
 
             return {
                ...state,
-               transactions: {
-                  ...state.transactions,
-                  data: state.transactions.data.filter((t) => t.id !== arg.transactionId),
+               list: {
+                  ...state.list,
+                  data: state.list.data.filter((t) => t.id !== arg.transactionId),
                },
             };
          })
-         .addCase(deleteRecurringTransaction.fulfilled, (state: ITransactionState, { meta: { arg }, payload }) => {
+         .addCase(deleteRecurringTransaction.fulfilled, (state: ITransactionsState, { meta: { arg }, payload }) => {
             if (!payload.success) {
                return state;
             }
 
             return {
                ...state,
-               transactions: {
-                  ...state.transactions,
-                  data: state.transactions.data.filter((t) => t.parentId !== arg.recurringTransactionId),
+               list: {
+                  ...state.list,
+                  data: state.list.data.filter((t) => t.parentId !== arg.recurringTransactionId),
                },
             };
          });
    },
 });
 
-export const { setDataRange, refreshTransactions } = transactionsSlice.actions;
+export const { setDataRange, refreshTransactions } = transactionsListSlice.actions;
 
-export default transactionsSlice.reducer;
+export const reducer = transactionsListSlice.reducer;

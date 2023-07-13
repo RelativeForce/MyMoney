@@ -4,7 +4,7 @@ import { AsyncStatus, IRemainingBudgetChartState } from '../types';
 import { SLICE_NAME } from './constants';
 import { fetchBudgets, fetchTransactions } from './thunks';
 
-export const initialChartState: IRemainingBudgetChartState = {
+const initialState: IRemainingBudgetChartState = {
    budgets: {
       data: [],
       status: AsyncStatus.empty,
@@ -22,9 +22,9 @@ export const initialChartState: IRemainingBudgetChartState = {
    },
 };
 
-export const remainingBudgetChartSlice = createSlice({
+const slice = createSlice({
    name: SLICE_NAME,
-   initialState: initialChartState,
+   initialState: initialState,
    reducers: {
       setSelectedMonth: {
          reducer: (state: IRemainingBudgetChartState, { payload }: { payload: IBudgetSearchDto }) => {
@@ -117,6 +117,6 @@ export const remainingBudgetChartSlice = createSlice({
    },
 });
 
-export const { setSelectedMonth } = remainingBudgetChartSlice.actions;
+export const { setSelectedMonth } = slice.actions;
 
-export default remainingBudgetChartSlice.reducer;
+export const reducer = slice.reducer;

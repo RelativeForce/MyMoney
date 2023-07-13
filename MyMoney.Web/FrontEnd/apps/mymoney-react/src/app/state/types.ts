@@ -3,8 +3,8 @@ import { ISessionModel } from '@mymoney-common/interfaces';
 
 export interface IAppState {
    session: ISessionState;
-   transactions: ITransactionState;
-   budgets: IBudgetState;
+   transactions: ITransactionsState;
+   budgets: IBudgetsState;
    remainingBudgetChart: IRemainingBudgetChartState;
    runningTotalChart: IRunningTotalChartState;
 }
@@ -27,8 +27,8 @@ export interface ISessionState {
    currentUser: IAsyncState<IUserDto | null>;
 }
 
-export interface ITransactionState {
-   transactions: IAsyncState<ITransactionDto[]>;
+export interface ITransactionsState {
+   list: IAsyncState<ITransactionDto[]>;
    searchParameters: ITransactionsSearch;
 }
 
@@ -42,8 +42,8 @@ export interface IDateRangeModel {
    end: string;
 }
 
-export interface IBudgetState {
-   budgets: IAsyncState<IBudgetDto[]>;
+export interface IBudgetsState {
+   list: IAsyncState<IBudgetDto[]>;
    searchParameters: IMonthSearch;
 }
 

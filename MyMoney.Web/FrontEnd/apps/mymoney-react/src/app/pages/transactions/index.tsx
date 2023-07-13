@@ -12,19 +12,19 @@ import {
    refreshTransactions,
    selectTransactionsListState,
    setDataRange,
-} from '../../state/transactions-list';
-import { AsyncStatus, ITransactionState } from '../../state/types';
+} from '../../state/transactions';
+import { AsyncStatus, ITransactionsState } from '../../state/types';
 import RecurringTransactionButtons from '../../components/recurring-transaction-buttons';
 import { useValidatedState } from '../../hooks/validation';
 
 export default function Transactions() {
-   const tranactionState: ITransactionState = useSelector(selectTransactionsListState);
+   const tranactionState: ITransactionsState = useSelector(selectTransactionsListState);
 
    const dateRange = tranactionState.searchParameters.dateRange;
    const [startState, setStartState] = useValidatedState<string>(dateRange.start, [requiredValidator('Start is required')]);
    const [endState, setEndState] = useValidatedState<string>(dateRange.end, [requiredValidator('End is required')]);
 
-   const loading = tranactionState.transactions.status === AsyncStatus.loading;
+   const loading = tranactionState.list.status === AsyncStatus.loading;
 
    const dispatch = useDispatch<any>();
    useEffect(() => {
@@ -80,7 +80,7 @@ export default function Transactions() {
 
    const rows = [];
 
-   for (const transaction of tranactionState.transactions.data) {
+   for (const transaction of tranactionState.list.data) {
       rows.push(
          <tr key={transaction.id}>
             <td>{transaction.date}</td>

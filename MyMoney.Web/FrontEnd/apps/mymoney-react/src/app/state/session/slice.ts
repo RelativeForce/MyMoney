@@ -6,7 +6,7 @@ import { ISessionState, AsyncStatus } from '../types';
 import { fetchUser, login, updateUser } from './thunks';
 import { SLICE_NAME } from './constants';
 
-export const initialSessionState: ISessionState = {
+const initialState: ISessionState = {
    currentSession: null,
    currentUser: {
       data: null,
@@ -15,9 +15,9 @@ export const initialSessionState: ISessionState = {
    },
 };
 
-export const sessionSlice = createSlice({
+const slice = createSlice({
    name: SLICE_NAME,
-   initialState: initialSessionState,
+   initialState: initialState,
    reducers: {
       setSession: {
          reducer: (state: ISessionState, { payload }: { payload: ISessionModel }) => {
@@ -37,7 +37,7 @@ export const sessionSlice = createSlice({
          localStorage.removeItem(SESSION_LOCAL_STORAGE_KEY);
          console.log('Session: Cleared local storage');
 
-         return initialSessionState;
+         return initialState;
       },
       setUser: {
          reducer: (state: ISessionState, { payload }: { payload: IUserDto }) => {
@@ -134,6 +134,6 @@ export const sessionSlice = createSlice({
    },
 });
 
-export const { setSession, clearSession, setUser } = sessionSlice.actions;
+export const { setSession, clearSession, setUser } = slice.actions;
 
-export default sessionSlice.reducer;
+export const reducer = slice.reducer;

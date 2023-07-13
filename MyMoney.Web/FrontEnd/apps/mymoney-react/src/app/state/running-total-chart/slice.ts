@@ -4,7 +4,7 @@ import { AsyncStatus, IRunningTotalChartState } from '../types';
 import { SLICE_NAME } from './constants';
 import { fetchRunningTotals } from './thunks';
 
-export const initialChartState: IRunningTotalChartState = {
+const initialState: IRunningTotalChartState = {
    runningTotals: {
       data: [],
       status: AsyncStatus.empty,
@@ -16,9 +16,9 @@ export const initialChartState: IRunningTotalChartState = {
    },
 };
 
-export const runningTotalChartSlice = createSlice({
+const slice = createSlice({
    name: SLICE_NAME,
-   initialState: initialChartState,
+   initialState: initialState,
    reducers: {
       setSelectedYear: {
          reducer: (state: IRunningTotalChartState, { payload }: { payload: number }) => {
@@ -75,6 +75,6 @@ export const runningTotalChartSlice = createSlice({
    },
 });
 
-export const { setSelectedYear } = runningTotalChartSlice.actions;
+export const { setSelectedYear } = slice.actions;
 
-export default runningTotalChartSlice.reducer;
+export const reducer = slice.reducer;

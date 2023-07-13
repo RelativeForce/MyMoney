@@ -5,12 +5,12 @@ import { useSelector } from 'react-redux';
 import InlineInput from '../../components/inline-input';
 import BasicBudgetButtons from '../../components/basic-budget-buttons';
 import { maxValidator, minValidator, requiredValidator } from '../../functions/validators';
-import { deleteBudget, fetchBudgets, refreshBudgets, selectBudgetsListState, setSelectedMonth } from '../../state/budgets-list';
-import { AsyncStatus, IBudgetState } from '../../state/types';
+import { deleteBudget, fetchBudgets, refreshBudgets, selectBudgetsListState, setSelectedMonth } from '../../state/budgets';
+import { AsyncStatus, IBudgetsState } from '../../state/types';
 import { useValidatedState } from '../../hooks/validation';
 
 export default function Budgets() {
-   const budgetState: IBudgetState = useSelector(selectBudgetsListState);
+   const budgetState: IBudgetsState = useSelector(selectBudgetsListState);
 
    const dispatch = useDispatch<any>();
    const [yearState, setYearState] = useValidatedState<number>(budgetState.searchParameters.year, [
@@ -23,7 +23,7 @@ export default function Budgets() {
       minValidator(1, 'Month must be greater than or equal to 1'),
    ]);
 
-   const loading = budgetState.budgets.status === AsyncStatus.loading;
+   const loading = budgetState.list.status === AsyncStatus.loading;
 
    useEffect(() => {
       if (loading || (!loading && !budgetState.searchParameters.refresh)) {
@@ -86,7 +86,7 @@ export default function Budgets() {
 
    const rows = [];
 
-   for (const budget of budgetState.budgets.data) {
+   for (const budget of budgetState.list.data) {
       rows.push(
          <tr key={budget.id}>
             <td>{budget.name}</td>
