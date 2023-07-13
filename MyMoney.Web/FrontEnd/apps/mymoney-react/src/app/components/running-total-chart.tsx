@@ -1,12 +1,13 @@
 import Chart from './chart';
 import { IChartDataProvider } from '../interfaces/chart-data-provider';
 import { useNavigate } from 'react-router-dom';
-import { AsyncStatus, IYearSearch } from '../state/types';
+import { IYearSearch } from '../state/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRunningTotals, selectRunningTotals, selectSearchParameters, setSelectedYear } from '../state/running-total-chart';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { IRunningTotalDto } from '@mymoney-common/api';
 import { RunningTotalSeries, RunningTotalSeriesDataPoint } from '@mymoney-common/classes';
+import { useAuthenticatedEffect } from '../hooks/user-session';
 
 const LINE_COLOR = '#7aa3e5';
 
@@ -81,10 +82,8 @@ export default function RunningTotalChart() {
 
    const dataProvider = buildDataProvider(searchParameters, series, navigate, setYear);
 
-   useEffect(() => {
-      const loading = runningTotals.status === AsyncStatus.loading;
-
-      if (loading || (!loading && !searchParameters.refresh)) {
+   useAuthenticatedEffect(() => {
+      if (!searchParameters.refresh) {
          return;
       }
 

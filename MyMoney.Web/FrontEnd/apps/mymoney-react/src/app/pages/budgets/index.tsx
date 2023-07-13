@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ChangeEventHandler, useEffect } from 'react';
+import { ChangeEventHandler } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InlineInput from '../../components/inline-input';
@@ -8,6 +8,7 @@ import { maxValidator, minValidator, requiredValidator } from '../../functions/v
 import { deleteBudget, fetchBudgets, refreshBudgets, selectBudgetsListState, setSelectedMonth } from '../../state/budgets';
 import { AsyncStatus, IBudgetsState } from '../../state/types';
 import { useValidatedState } from '../../hooks/validation';
+import { useAuthenticatedEffect } from '../../hooks/user-session';
 
 export default function Budgets() {
    const budgetState: IBudgetsState = useSelector(selectBudgetsListState);
@@ -23,21 +24,12 @@ export default function Budgets() {
       minValidator(1, 'Month must be greater than or equal to 1'),
    ]);
 
-   const loading = budgetState.list.status === AsyncStatus.loading;
-
-   useEffect(() => {
-      if (loading || (!loading && !budgetState.searchParameters.refresh)) {
+   useAuthenticatedEffect(() => {
+      if (!budgetState.searchParameters.refresh) {
          return;
       }
 
-      dispatch(
-         fetchBudgets({
-            search: {
-               year: budgetState.searchParameters.year,
-               month: budgetState.searchParameters.month,
-            },
-         })
-      );
+      dispatch(fetchBudgets({ search: { year: budgetState.searchParameters.year, month: budgetState.searchParameters.month } }));
    }, [budgetState]);
 
    const updateYear: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -64,6 +56,8 @@ export default function Budgets() {
       setMonthState(month);
       dispatch(setSelectedMonth(yearState.value, month));
    };
+
+   const loading = budgetState.list.status === AsyncStatus.loading;
 
    const refershClicked = () => {
       if (loading) {
