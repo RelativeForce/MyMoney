@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { HttpHelper } from '../../classess/http-helper';
 import { SLICE_NAME } from './constants';
 
-function toDateRangeDto(year: number): IDateRangeDto {
+function getYearDateRange(year: number): IDateRangeDto {
    const end: Date = new Date();
    end.setDate(1);
    end.setMonth(0);
@@ -28,7 +28,7 @@ export const fetchRunningTotals = createAsyncThunk(`${SLICE_NAME}/fetchRunningTo
       return rejectWithValue('No user session');
    }
 
-   const dateRange = toDateRangeDto(year);
+   const dateRange = getYearDateRange(year);
 
    const api = new HomeApi(httpHelper);
 

@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { HttpHelper } from '../../classess/http-helper';
 import { SLICE_NAME } from './constants';
 
-function toDateRangeDto(search: IBudgetSearchDto): IDateRangeDto {
+function getMonthDateRange(search: IBudgetSearchDto): IDateRangeDto {
    const end: Date = new Date();
    end.setDate(1);
    end.setFullYear(search.year);
@@ -53,7 +53,7 @@ export const fetchTransactions = createAsyncThunk(
       }
       const api = new TransactionApi(httpHelper);
 
-      const dateRangeDto = toDateRangeDto(search);
+      const dateRangeDto = getMonthDateRange(search);
 
       try {
          return await firstValueFrom(
