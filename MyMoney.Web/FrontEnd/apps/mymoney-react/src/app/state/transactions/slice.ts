@@ -26,7 +26,7 @@ const initialState: ITransactionsState = {
    },
 };
 
-const transactionsListSlice = createSlice({
+const slice = createSlice({
    name: SLICE_NAME,
    initialState: initialState,
    reducers: {
@@ -121,6 +121,6 @@ const transactionsListSlice = createSlice({
    },
 });
 
-export const { setDataRange, refreshTransactions } = transactionsListSlice.actions;
+export const { setDataRange, refreshTransactions } = slice.actions;
 
-export const reducer = transactionsListSlice.reducer;
+export const reducer = slice.reducer;
