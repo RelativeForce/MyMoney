@@ -3,8 +3,10 @@
    "version": "1.3.0",
    "license": "MIT",
    "scripts": {
-      "angular": "npx nx run mymoney-angular:serve",
-      "react": "npx nx run mymoney-react:serve",
+      "run-angular": "npx nx run mymoney-angular:serve",
+      "run-react": "npx nx run mymoney-react:serve",
+      "publish-angular": "npx nx run mymoney-angular:build",
+      "publish-react": "npx nx run mymoney-react:build",
       "format": "npx prettier --write ."
    },
    "private": true,
