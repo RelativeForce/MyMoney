@@ -6,9 +6,9 @@
     <TypeScriptToolsVersion>3.9</TypeScriptToolsVersion>
     <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
     <IsPackable>false</IsPackable>
-    <FrontEndFramework>$(MyMoney_Front_End_FrameWork)</FrontEndFramework>
-    <SpaRoot Condition=" '$(FrontEndFramework)' == '' ">FrontEnd\Angular\</SpaRoot>
-    <SpaRoot Condition=" '$(FrontEndFramework)' != '' ">FrontEnd\$(FrontEndFramework)\</SpaRoot>
+    <FrontEndFramework Condition=" '$(MyMoney_Front_End_FrameWork)' != '' ">$(MyMoney_Front_End_FrameWork.toLower())</FrontEndFramework>
+    <FrontEndFramework Condition=" '$(MyMoney_Front_End_FrameWork)' == '' ">angular</FrontEndFramework>
+    <SpaRoot>FrontEnd\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 
     <!-- Set this to true if you enable server-side prerendering -->
@@ -88,9 +88,10 @@
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Copy SourceFiles="Resources\reset-password-email.html" DestinationFolder="$(PublishDir)\Resources" />
+    <RemoveDir Directories="$(SpaRoot)\dist" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run publish-$(FrontEndFramework)" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run publish-$(FrontEndFramework)-ssr" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
