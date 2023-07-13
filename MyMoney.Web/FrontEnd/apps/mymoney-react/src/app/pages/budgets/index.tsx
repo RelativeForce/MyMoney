@@ -29,14 +29,7 @@ export default function Budgets() {
          return;
       }
 
-      dispatch(
-         fetchBudgets({
-            search: {
-               year: budgetState.searchParameters.year,
-               month: budgetState.searchParameters.month,
-            },
-         })
-      );
+      dispatch(fetchBudgets({ search: { year: budgetState.searchParameters.year, month: budgetState.searchParameters.month } }));
    }, [budgetState]);
 
    const updateYear: ChangeEventHandler<HTMLInputElement> = (event) => {

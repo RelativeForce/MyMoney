@@ -31,11 +31,7 @@ export default function Transactions() {
          return;
       }
 
-      dispatch(
-         fetchTransactions({
-            dateRange: tranactionState.searchParameters.dateRange,
-         })
-      );
+      dispatch(fetchTransactions({ dateRange: tranactionState.searchParameters.dateRange }));
    }, [tranactionState]);
 
    const updateStart: ChangeEventHandler<HTMLInputElement> = (event) => {
