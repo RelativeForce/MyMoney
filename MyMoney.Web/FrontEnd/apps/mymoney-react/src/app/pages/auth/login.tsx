@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ChangeEventHandler, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ILoginDto } from '@mymoney-common/api';
-import { login } from '../../state/session-slice';
+import { login } from '../../state/session';
 import Input from '../../components/input';
 import { requiredValidator } from '../../functions/validators';
 import { useRedirectLoggedInUserToHome } from '../../hooks/user-session';

@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { AsyncStatus, IMonthSearch } from '../state/types';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-   fetchChartBudgets,
-   fetchChartTransactions,
-   selectChartBudgets,
-   selectChartTransactions,
-   selectRemainingBudgetSearchParameters,
+   fetchBudgets,
+   fetchTransactions,
+   selectBudgets,
+   selectTransactions,
+   selectSearchParameters,
    setSelectedMonth,
-} from '../state/remaining-budget-chart-slice';
+} from '../state/remaining-budget-chart';
 import { useEffect, useMemo } from 'react';
 import { IBudgetDto, IBudgetSearchDto, ITransactionDto } from '@mymoney-common/api';
 import { BudgetSeries, BudgetSeriesDataPoint } from '@mymoney-common/classes';
@@ -101,9 +101,9 @@ export default function RemainingBudgetChart() {
    const navigate = useNavigate();
    const dispatch = useDispatch<any>();
 
-   const transactions = useSelector(selectChartTransactions);
-   const budgets = useSelector(selectChartBudgets);
-   const searchParameters = useSelector(selectRemainingBudgetSearchParameters);
+   const transactions = useSelector(selectTransactions);
+   const budgets = useSelector(selectBudgets);
+   const searchParameters = useSelector(selectSearchParameters);
 
    const series = useMemo(() => buildSeries(budgets.data, transactions.data), [transactions.data, budgets.data]);
 
@@ -120,8 +120,8 @@ export default function RemainingBudgetChart() {
 
       const search: IBudgetSearchDto = searchParameters;
 
-      dispatch(fetchChartBudgets({ search }));
-      dispatch(fetchChartTransactions({ search }));
+      dispatch(fetchBudgets({ search }));
+      dispatch(fetchTransactions({ search }));
    }, [searchParameters.refresh, dispatch, transactions.status, budgets.status, searchParameters]);
 
    return <Chart dataProvider={dataProvider}></Chart>;

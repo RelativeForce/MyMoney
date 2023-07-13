@@ -1,33 +1,29 @@
 import { Link } from 'react-router-dom';
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { ChangeEventHandler, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InlineInput from '../../components/inline-input';
 import BasicBudgetButtons from '../../components/basic-budget-buttons';
 import { maxValidator, minValidator, requiredValidator } from '../../functions/validators';
-import { deleteBudget, fetchBudgets, refreshBudgets, selectBudgetState, setSelectedMonth } from '../../state/budgets-slice';
-import { AsyncStatus, IBudgetState } from '../../state/types';
+import { deleteBudget, fetchBudgets, refreshBudgets, selectBudgetsListState, setSelectedMonth } from '../../state/budgets';
+import { AsyncStatus, IBudgetsState } from '../../state/types';
 import { useValidatedState } from '../../hooks/validation';
 
 export default function Budgets() {
-   const budgetState: IBudgetState = useSelector(selectBudgetState);
+   const budgetState: IBudgetsState = useSelector(selectBudgetsListState);
+
    const dispatch = useDispatch<any>();
-   const [yearState, setYearState] = useValidatedState<number>(2020, [
+   const [yearState, setYearState] = useValidatedState<number>(budgetState.searchParameters.year, [
       requiredValidator('Start is required'),
       minValidator(1980, 'Year must be greater than or equal to 1980'),
    ]);
-   const [monthState, setMonthState] = useValidatedState<number>(1, [
+   const [monthState, setMonthState] = useValidatedState<number>(budgetState.searchParameters.month, [
       requiredValidator('Start is required'),
       maxValidator(12, 'Month must be less than or equal to 12'),
       minValidator(1, 'Month must be greater than or equal to 1'),
    ]);
 
-   useEffect(() => {
-      setYearState(budgetState.searchParameters.year);
-      setMonthState(budgetState.searchParameters.month);
-   }, [dispatch]);
-
-   const loading = budgetState.budgets.status === AsyncStatus.loading;
+   const loading = budgetState.list.status === AsyncStatus.loading;
 
    useEffect(() => {
       if (loading || (!loading && !budgetState.searchParameters.refresh)) {
@@ -90,7 +86,7 @@ export default function Budgets() {
 
    const rows = [];
 
-   for (const budget of budgetState.budgets.data) {
+   for (const budget of budgetState.list.data) {
       rows.push(
          <tr key={budget.id}>
             <td>{budget.name}</td>

@@ -1,7 +1,7 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IUserDto } from '@mymoney-common/api';
-import { selectCurrentUserState, updateUser } from '../../state/session-slice';
+import { selectCurrentUserState, updateUser } from '../../state/session';
 import Input from '../../components/input';
 import { requiredValidator } from '../../functions/validators';
 import { AsyncStatus, IAsyncState } from '../../state/types';

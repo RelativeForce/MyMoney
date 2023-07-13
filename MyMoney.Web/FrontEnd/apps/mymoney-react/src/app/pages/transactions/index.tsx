@@ -10,26 +10,23 @@ import {
    deleteTransaction,
    fetchTransactions,
    refreshTransactions,
-   selectTransactionState,
+   selectTransactionsListState,
    setDataRange,
-} from '../../state/transactions-slice';
-import { AsyncStatus, ITransactionState } from '../../state/types';
+} from '../../state/transactions';
+import { AsyncStatus, ITransactionsState } from '../../state/types';
 import RecurringTransactionButtons from '../../components/recurring-transaction-buttons';
 import { useValidatedState } from '../../hooks/validation';
 
 export default function Transactions() {
-   const tranactionState: ITransactionState = useSelector(selectTransactionState);
+   const tranactionState: ITransactionsState = useSelector(selectTransactionsListState);
+
+   const dateRange = tranactionState.searchParameters.dateRange;
+   const [startState, setStartState] = useValidatedState<string>(dateRange.start, [requiredValidator('Start is required')]);
+   const [endState, setEndState] = useValidatedState<string>(dateRange.end, [requiredValidator('End is required')]);
+
+   const loading = tranactionState.list.status === AsyncStatus.loading;
+
    const dispatch = useDispatch<any>();
-   const [startState, setStartState] = useValidatedState<string>('', [requiredValidator('Start is required')]);
-   const [endState, setEndState] = useValidatedState<string>('', [requiredValidator('End is required')]);
-
-   useEffect(() => {
-      setStartState(tranactionState.searchParameters.dateRange.start);
-      setEndState(tranactionState.searchParameters.dateRange.end);
-   }, [dispatch]);
-
-   const loading = tranactionState.transactions.status === AsyncStatus.loading;
-
    useEffect(() => {
       if (loading || (!loading && !tranactionState.searchParameters.refresh)) {
          return;
@@ -83,7 +80,7 @@ export default function Transactions() {
 
    const rows = [];
 
-   for (const transaction of tranactionState.transactions.data) {
+   for (const transaction of tranactionState.list.data) {
       rows.push(
          <tr key={transaction.id}>
             <td>{transaction.date}</td>

@@ -3,7 +3,7 @@ import { IChartDataProvider } from '../interfaces/chart-data-provider';
 import { useNavigate } from 'react-router-dom';
 import { AsyncStatus, IYearSearch } from '../state/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchRunningTotals, selectRunningTotals, selectSearchParameters, setSelectedYear } from '../state/running-total-chart-slice';
+import { fetchRunningTotals, selectRunningTotals, selectSearchParameters, setSelectedYear } from '../state/running-total-chart';
 import { useEffect, useMemo } from 'react';
 import { IRunningTotalDto } from '@mymoney-common/api';
 import { RunningTotalSeries, RunningTotalSeriesDataPoint } from '@mymoney-common/classes';

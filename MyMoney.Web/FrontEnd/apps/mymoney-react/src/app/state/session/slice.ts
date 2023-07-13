@@ -1,78 +1,23 @@
-import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { AuthenticationApi, UserApi, ILoginDto, ILoginResultDto, IUserDto } from '@mymoney-common/api';
+import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
+import { ILoginResultDto, IUserDto } from '@mymoney-common/api';
 import { ISessionModel } from '@mymoney-common/interfaces';
 import { SESSION_LOCAL_STORAGE_KEY } from '@mymoney-common/constants';
-import { ISessionState, IAppState, AsyncStatus, IAsyncState } from './types';
-import { first } from 'rxjs/operators';
-import { firstValueFrom } from 'rxjs';
-import { HttpHelper } from '../classess/http-helper';
+import { ISessionState, AsyncStatus } from '../types';
+import { fetchUser, login, updateUser } from './thunks';
+import { SLICE_NAME } from './constants';
 
-export const initialUserState: IAsyncState<IUserDto | null> = {
-   data: null,
-   status: AsyncStatus.empty,
-   error: null,
-};
-
-export const initialSessionState: ISessionState = {
+const initialState: ISessionState = {
    currentSession: null,
-   currentUser: initialUserState,
+   currentUser: {
+      data: null,
+      status: AsyncStatus.empty,
+      error: null,
+   },
 };
 
-export const fetchUser = createAsyncThunk('session/fetchUser', async (_, { getState, rejectWithValue }) => {
-   const state = getState() as IAppState;
-   if (!state.session.currentSession?.token) {
-      return rejectWithValue('No user session');
-   }
-
-   const httpHelper = new HttpHelper(state.session.currentSession.token);
-   const api = new UserApi(httpHelper);
-
-   try {
-      return await firstValueFrom(api.currentUserDetails().pipe(first()));
-   } catch (error: any) {
-      return rejectWithValue(error.message);
-   }
-});
-
-export const login = createAsyncThunk('session/login', async (credentials: ILoginDto, { rejectWithValue }) => {
-   const httpHelper = new HttpHelper(null);
-   const api = new AuthenticationApi(httpHelper);
-
-   try {
-      return await firstValueFrom(api.login(credentials).pipe(first()));
-   } catch (error: any) {
-      return rejectWithValue(error.message);
-   }
-});
-
-export const updateUser = createAsyncThunk('session/updateUser', async (user: IUserDto, { getState, rejectWithValue }) => {
-   const state = getState() as IAppState;
-   if (!state.session.currentSession?.token) {
-      return rejectWithValue('No user session');
-   }
-
-   const httpHelper = new HttpHelper(state.session.currentSession.token);
-   const api = new UserApi(httpHelper);
-
-   try {
-      const result = await firstValueFrom(api.updateCurrentUserDetails(user).pipe(first()));
-
-      if (!result.success) {
-         return rejectWithValue(result.error);
-      }
-
-      return {
-         ...user,
-         dateOfBirth: new Date(user.dateOfBirth).toLocaleDateString('en-GB'),
-      };
-   } catch (error: any) {
-      return rejectWithValue(error.message);
-   }
-});
-
-export const sessionSlice = createSlice({
-   name: 'session',
-   initialState: initialSessionState,
+const slice = createSlice({
+   name: SLICE_NAME,
+   initialState: initialState,
    reducers: {
       setSession: {
          reducer: (state: ISessionState, { payload }: { payload: ISessionModel }) => {
@@ -88,15 +33,11 @@ export const sessionSlice = createSlice({
             return { payload: { token, sessionEnd } };
          },
       },
-      clearSession: (state: ISessionState) => {
+      clearSession: () => {
          localStorage.removeItem(SESSION_LOCAL_STORAGE_KEY);
          console.log('Session: Cleared local storage');
 
-         return {
-            ...state,
-            currentSession: null,
-            currentUser: initialUserState,
-         };
+         return initialState;
       },
       setUser: {
          reducer: (state: ISessionState, { payload }: { payload: IUserDto }) => {
@@ -193,12 +134,6 @@ export const sessionSlice = createSlice({
    },
 });
 
-export const { setSession, clearSession, setUser } = sessionSlice.actions;
+export const { setSession, clearSession, setUser } = slice.actions;
 
-export const selectSessionState = (state: IAppState): ISessionState => state.session;
-export const selectCurrentSession = (state: IAppState): ISessionModel | null => selectSessionState(state).currentSession;
-export const selectCurrentSessionToken = (state: IAppState): string | null => selectCurrentSession(state)?.token ?? null;
-export const selectCurrentUser = (state: IAppState): IUserDto | null => selectCurrentUserState(state).data;
-export const selectCurrentUserState = (state: IAppState): IAsyncState<IUserDto | null> => selectSessionState(state).currentUser;
-
-export default sessionSlice.reducer;
+export const reducer = slice.reducer;

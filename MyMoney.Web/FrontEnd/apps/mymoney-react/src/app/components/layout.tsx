@@ -2,7 +2,7 @@ import { IUserDto } from '@mymoney-common/api';
 import { useSelector } from 'react-redux';
 import Footer from './footer';
 import { Outlet, Link } from 'react-router-dom';
-import { selectCurrentUser, clearSession, fetchUser, selectCurrentUserState, selectCurrentSessionToken } from '../state/session-slice';
+import { selectCurrentUser, clearSession, fetchUser, selectCurrentUserState, selectCurrentSessionToken } from '../state/session';
 import { useDispatch } from 'react-redux';
 import { AsyncStatus, IAsyncState } from '../state/types';
 import { useRedirectUnauthorisedUserToLogin } from '../hooks/user-session';
