@@ -1,11 +1,8 @@
-import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { HomeApi, IDateRangeDto, IRunningTotalDto, IRunningTotalListDto } from '@mymoney-common/api';
+import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
+import { IRunningTotalDto } from '@mymoney-common/api';
 import { AsyncStatus, IRunningTotalChartState } from '../types';
-import { first, map } from 'rxjs/operators';
-import { firstValueFrom } from 'rxjs';
-import { HttpHelper } from '../../classess/http-helper';
-
-const SLICE_NAME = 'runningTotalChart';
+import { SLICE_NAME } from './constants';
+import { fetchRunningTotals } from './thunks';
 
 export const initialChartState: IRunningTotalChartState = {
    runningTotals: {
@@ -18,45 +15,6 @@ export const initialChartState: IRunningTotalChartState = {
       refresh: true,
    },
 };
-
-function toDateRangeDto(year: number): IDateRangeDto {
-   const end: Date = new Date();
-   end.setDate(1);
-   end.setMonth(0);
-   end.setFullYear(year + 1);
-   end.setHours(0, 0, 0, 0);
-   end.setDate(0); // Subtract 1 day
-
-   const start: Date = new Date();
-   start.setDate(1);
-   start.setFullYear(year);
-   start.setMonth(0);
-   start.setHours(0, 0, 0, 0);
-
-   return { end, start };
-}
-
-export const fetchRunningTotals = createAsyncThunk(`${SLICE_NAME}/fetchRunningTotals`, async (year: number, { getState, rejectWithValue }) => {
-   const httpHelper = HttpHelper.forCuurentUser(getState);
-   if (!httpHelper) {
-      return rejectWithValue('No user session');
-   }
-
-   const dateRange = toDateRangeDto(year);
-
-   const api = new HomeApi(httpHelper);
-
-   try {
-      return await firstValueFrom(
-         api.runningTotal({ initialTotal: 0, dateRange }).pipe(
-            first(),
-            map((listDto: IRunningTotalListDto) => listDto.runningTotals)
-         )
-      );
-   } catch (error: any) {
-      return rejectWithValue(error.message);
-   }
-});
 
 export const runningTotalChartSlice = createSlice({
    name: SLICE_NAME,
