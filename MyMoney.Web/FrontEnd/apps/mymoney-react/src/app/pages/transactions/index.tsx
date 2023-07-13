@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ChangeEventHandler, useEffect } from 'react';
+import { ChangeEventHandler } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InlineInput from '../../components/inline-input';
@@ -16,6 +16,7 @@ import {
 import { AsyncStatus, ITransactionsState } from '../../state/types';
 import RecurringTransactionButtons from '../../components/recurring-transaction-buttons';
 import { useValidatedState } from '../../hooks/validation';
+import { useAuthenticatedEffect } from '../../hooks/user-session';
 
 export default function Transactions() {
    const tranactionState: ITransactionsState = useSelector(selectTransactionsListState);
@@ -24,11 +25,9 @@ export default function Transactions() {
    const [startState, setStartState] = useValidatedState<string>(dateRange.start, [requiredValidator('Start is required')]);
    const [endState, setEndState] = useValidatedState<string>(dateRange.end, [requiredValidator('End is required')]);
 
-   const loading = tranactionState.list.status === AsyncStatus.loading;
-
    const dispatch = useDispatch<any>();
-   useEffect(() => {
-      if (loading || (!loading && !tranactionState.searchParameters.refresh)) {
+   useAuthenticatedEffect(() => {
+      if (!tranactionState.searchParameters.refresh) {
          return;
       }
 
@@ -50,6 +49,8 @@ export default function Transactions() {
       setEndState(end);
       dispatch(setDataRange(startState.value, end));
    };
+
+   const loading = tranactionState.list.status === AsyncStatus.loading;
 
    const refershClicked = () => {
       if (loading) {

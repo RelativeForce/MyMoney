@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IUserDto } from '@mymoney-common/api';
 import { selectCurrentUserState, updateUser } from '../../state/session';
@@ -8,6 +8,7 @@ import { AsyncStatus, IAsyncState } from '../../state/types';
 import { toInputDateString } from '@mymoney-common/functions';
 import { Link } from 'react-router-dom';
 import { useValidatedState } from '../../hooks/validation';
+import { useAuthenticatedEffect } from '../../hooks/user-session';
 
 export default function Profile() {
    const userState: IAsyncState<IUserDto | null> = useSelector(selectCurrentUserState);
@@ -20,7 +21,7 @@ export default function Profile() {
    const [dateOfBirthState, setDateOfBirthState] = useValidatedState<string>('', [requiredValidator('Date of birth is required')]);
    const dispatch = useDispatch<any>();
 
-   useEffect(() => {
+   useAuthenticatedEffect(() => {
       if (userState.status === AsyncStatus.loading || userState.data == null) {
          return;
       }

@@ -1,7 +1,7 @@
 import Chart from './chart';
 import { IChartDataProvider } from '../interfaces/chart-data-provider';
 import { useNavigate } from 'react-router-dom';
-import { AsyncStatus, IMonthSearch } from '../state/types';
+import { IMonthSearch } from '../state/types';
 import { useDispatch, useSelector } from 'react-redux';
 import {
    fetchBudgets,
@@ -11,10 +11,11 @@ import {
    selectSearchParameters,
    setSelectedMonth,
 } from '../state/remaining-budget-chart';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { IBudgetDto, IBudgetSearchDto, ITransactionDto } from '@mymoney-common/api';
 import { BudgetSeries, BudgetSeriesDataPoint } from '@mymoney-common/classes';
 import { randomColor } from '@mymoney-common/functions';
+import { useAuthenticatedEffect } from '../hooks/user-session';
 
 const colors = ['#5AA454', '#783320', '#DB2E2E', '#7aa3e5', '#a8385d', '#aae3f5'];
 
@@ -111,10 +112,8 @@ export default function RemainingBudgetChart() {
 
    const dataProvider = buildDataProvider(searchParameters, series, navigate, setMonth);
 
-   useEffect(() => {
-      const loading = transactions.status === AsyncStatus.loading || budgets.status === AsyncStatus.loading;
-
-      if (loading || (!loading && !searchParameters.refresh)) {
+   useAuthenticatedEffect(() => {
+      if (!searchParameters.refresh) {
          return;
       }
 
