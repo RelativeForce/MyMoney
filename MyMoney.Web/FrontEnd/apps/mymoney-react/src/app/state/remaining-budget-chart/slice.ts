@@ -50,7 +50,7 @@ const slice = createSlice({
             return {
                ...state,
                budgets: {
-                  data: [],
+                  data: state.budgets.data,
                   status: AsyncStatus.loading,
                   error: null,
                },
@@ -84,7 +84,7 @@ const slice = createSlice({
             return {
                ...state,
                transactions: {
-                  data: [],
+                  data: state.transactions.data,
                   status: AsyncStatus.loading,
                   error: null,
                },

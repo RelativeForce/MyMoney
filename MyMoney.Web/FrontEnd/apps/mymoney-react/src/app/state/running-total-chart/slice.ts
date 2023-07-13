@@ -42,7 +42,7 @@ const slice = createSlice({
             return {
                ...state,
                runningTotals: {
-                  data: [],
+                  data: state.runningTotals.data,
                   status: AsyncStatus.loading,
                   error: null,
                },
