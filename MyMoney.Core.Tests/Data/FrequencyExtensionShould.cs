@@ -2,7 +2,7 @@
 using MyMoney.Core.Data;
 using Xunit;
 
-namespace MyMoney.Core.Tests.Services
+namespace MyMoney.Core.Tests.Data
 {
    public class FrequencyExtensionShould
    {

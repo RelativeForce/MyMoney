@@ -27,4 +27,9 @@
     <ProjectReference Include="..\MyMoney.Core\MyMoney.Core.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

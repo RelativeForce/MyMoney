@@ -65,8 +65,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyMoney.Core\MyMoney.Core.csproj" />
-    <ProjectReference Include="..\MyMoney.Infrastructure\MyMoney.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyMoney.Application\MyMoney.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

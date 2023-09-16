@@ -1,9 +1,9 @@
 ﻿using MyMoney.Core.Data;
-using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Web.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyMoney.Infrastructure.Entities;
 
 namespace MyMoney.Web.Models.Entity
 {
@@ -22,12 +22,12 @@ namespace MyMoney.Web.Models.Entity
 
       }
 
-      public RecurringIncomeDto(IRecurringIncome model, IList<IIncome> children) : this(model)
+      public RecurringIncomeDto(RecurringIncome model, IList<Income> children) : this(model)
       {
          Children = children.Select(t => new RecurringEntityChildDto(t)).ToList();
       }
 
-      public RecurringIncomeDto(IRecurringIncome model) : base(model.Id)
+      public RecurringIncomeDto(RecurringIncome model) : base(model.Id)
       {
          Start = model.Start.ToShortDateString();
          End = model.End.ToShortDateString();

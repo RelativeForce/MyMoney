@@ -1,5 +1,4 @@
 ﻿using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Interfaces.Entities.Abstract;
 using MyMoney.Web.Models.Entity;
 using System;
 using System.Collections.Generic;

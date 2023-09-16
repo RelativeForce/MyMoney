@@ -5,13 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MyMoney.Core.Data;
-using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities.Abstract;
 
 namespace MyMoney.Infrastructure.Entities
 {
-   public class Income : UserFilteredEntity, IIncome
+   public class Income : UserFilteredEntity, IRecurringChildEntity
    {
       public DateTime Date { get; set; }
 
@@ -28,25 +27,18 @@ namespace MyMoney.Infrastructure.Entities
 
       public long? ParentId { get; set; } = null;
 
-      [NotMapped]
-      public IRecurringIncome Parent
-      {
-         get => ParentProxy;
-         set => ParentProxy = value as RecurringIncome;
-      }
-
       [ForeignKey(nameof(ParentId))]
-      public virtual RecurringIncome ParentProxy { get; set; } = null;
+      public virtual RecurringIncome Parent { get; set; } = null;
 
       [NotMapped]
-      public IQueryable<ITransaction> Transactions => TransactionsProxy.Select(tb => tb.Transaction).Cast<ITransaction>().AsQueryable();
+      public IQueryable<Transaction> Transactions => TransactionsProxy.Select(tb => tb.Transaction).AsQueryable();
       public virtual ICollection<TransactionIncome> TransactionsProxy { get; set; } = new List<TransactionIncome>();
 
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<Income>().HasIndex(t => new { t.UserId, t.Date, t.Name }).IsUnique();
-         model.Entity<Income>().HasOne(t => t.UserProxy).WithMany().IsRequired();
-         model.Entity<Income>().HasOne(t => t.ParentProxy).WithMany().IsRequired(false);
+         model.Entity<Income>().HasOne(t => t.User).WithMany().IsRequired();
+         model.Entity<Income>().HasOne(t => t.Parent).WithMany(ri => ri.RealChildren).IsRequired(false);
       }
    }
 }

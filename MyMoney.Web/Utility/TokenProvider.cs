@@ -1,12 +1,12 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using MyMoney.Core;
 using MyMoney.Core.Data;
-using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using MyMoney.Application.Interfaces;
+using MyMoney.Infrastructure.Entities;
 
 namespace MyMoney.Web.Utility
 {
@@ -17,7 +17,7 @@ namespace MyMoney.Web.Utility
       public static byte[] Key => _key ??= GetKey();
       public static byte[] _key;
 
-      public Token NewToken(IUser user)
+      public Token NewToken(User user)
       {
          var expiryDateTime = GetExpiryDateTime();
          var tokenHandler = new JwtSecurityTokenHandler();

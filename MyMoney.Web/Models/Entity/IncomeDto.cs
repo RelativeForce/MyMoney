@@ -1,6 +1,6 @@
 ﻿using MyMoney.Core.Data;
-using MyMoney.Core.Interfaces.Entities;
 using System.Linq;
+using MyMoney.Infrastructure.Entities;
 
 namespace MyMoney.Web.Models.Entity
 {
@@ -19,7 +19,7 @@ namespace MyMoney.Web.Models.Entity
 
       }
 
-      public IncomeDto(IIncome model) : base(model.Id)
+      public IncomeDto(Income model) : base(model.Id)
       {
          Date = model.Date.ToShortDateString();
          Name = model.Name;

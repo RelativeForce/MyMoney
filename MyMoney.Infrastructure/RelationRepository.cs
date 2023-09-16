@@ -1,6 +1,6 @@
 ﻿using System;
 using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Entities.Abstract;
+using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Infrastructure

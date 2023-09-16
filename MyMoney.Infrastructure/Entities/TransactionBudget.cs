@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyMoney.Core.Interfaces.Entities.Abstract;
 using System.ComponentModel.DataAnnotations;
+using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Infrastructure.Entities
 {

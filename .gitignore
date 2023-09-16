@@ -1,9 +1,14 @@
 ﻿*.vs
 *.user
+/.idea
 /MyMoney.Core/bin
 /MyMoney.Core/obj
 /MyMoney.Infrastructure/bin
 /MyMoney.Infrastructure/obj
+/MyMoney.Application/bin
+/MyMoney.Application/obj
+/MyMoney.Application.Tests/bin
+/MyMoney.Application.Tests/obj
 /MyMoney.Core.Tests/bin
 /MyMoney.Core.Tests/obj
 /MyMoney.Web/bin
