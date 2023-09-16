@@ -1,6 +1,6 @@
 ﻿using MyMoney.Core.Email;
 
-namespace MyMoney.Core.Interfaces.Email
+namespace MyMoney.Core.Interfaces
 {
    public interface IEmailManager
    {

@@ -1,10 +1,9 @@
-﻿using MyMoney.Core.Data;
-using MyMoney.Core.Interfaces.Service;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyMoney.Application.Interfaces.Services;
 
-namespace MyMoney.Core.Services
+namespace MyMoney.Application.Services
 {
    public class RunningTotalService : IRunningTotalService
    {

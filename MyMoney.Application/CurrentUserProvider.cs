@@ -2,15 +2,14 @@
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Interfaces.Service;
+using MyMoney.Application.Interfaces;
+using MyMoney.Application.Interfaces.Services;
+using MyMoney.Infrastructure.Entities;
 
-namespace MyMoney.Infrastructure
+namespace MyMoney.Application
 {
    public sealed class CurrentUserProvider : ICurrentUserProvider
    {
-
       private readonly IUserService _userService;
       private readonly IHttpContextAccessor _accessor;
 
@@ -30,7 +29,7 @@ namespace MyMoney.Infrastructure
          }
       }
 
-      public IUser CurrentUser
+      public User CurrentUser
       {
          get
          {

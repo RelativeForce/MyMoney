@@ -1,6 +1,6 @@
 ﻿using MyMoney.Core.Data;
-using MyMoney.Core.Interfaces.Entities;
 using System.Linq;
+using MyMoney.Infrastructure.Entities;
 
 namespace MyMoney.Web.Models.Entity
 {
@@ -20,7 +20,7 @@ namespace MyMoney.Web.Models.Entity
 
       }
 
-      public TransactionDto(ITransaction model) : base(model.Id)
+      public TransactionDto(Transaction model) : base(model.Id)
       {
          Date = model.Date.ToShortDateString();
          Description = model.Description;

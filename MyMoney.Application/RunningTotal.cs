@@ -1,7 +1,7 @@
-﻿using MyMoney.Core.Interfaces.Entities;
-using System;
+﻿using System;
+using MyMoney.Infrastructure.Entities;
 
-namespace MyMoney.Core.Data
+namespace MyMoney.Application
 {
    public class RunningTotal
    {
@@ -13,7 +13,7 @@ namespace MyMoney.Core.Data
       public decimal Delta { get; }
       public decimal Value { get; private set; }
 
-      public RunningTotal(ITransaction transaction)
+      public RunningTotal(Transaction transaction)
       {
          Name = $"Transaction {transaction.Id}";
          Id = transaction.Id;
@@ -23,7 +23,7 @@ namespace MyMoney.Core.Data
          ParentId = transaction.ParentId;
       }
 
-      public RunningTotal(IIncome income)
+      public RunningTotal(Income income)
       {
          Id = income.Id;
          Name = $"Income {income.Id}";

@@ -1,37 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using MyMoney.Application.Interfaces;
+using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Interfaces.Service;
+using MyMoney.Infrastructure.Entities;
 
-namespace MyMoney.Core.Services
+namespace MyMoney.Application.Services
 {
    public sealed class BasicIncomeService : IBasicIncomeService
    {
       private readonly IRepository _repository;
-      private readonly IEntityFactory _entityFactory;
       private readonly ICurrentUserProvider _currentUserProvider;
 
-      public BasicIncomeService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider)
+      public BasicIncomeService(IRepository repository, ICurrentUserProvider currentUserProvider)
       {
          _repository = repository;
-         _entityFactory = entityFactory;
          _currentUserProvider = currentUserProvider;
       }
 
-      public IIncome Find(long incomeId)
+      public Income Find(long incomeId)
       {
-         var income = _repository.FindById<IIncome>(incomeId);
          var userId = _currentUserProvider.CurrentUserId;
-
-         if (income == null || income.UserId != userId)
-            return null;
-
-         return income;
+         
+         return _repository
+            .UserFiltered<Income>(userId)
+            .Include(i => i.Parent)
+            .Include(i => i.TransactionsProxy)
+            .ThenInclude(t => t.Transaction)
+            .AsSplitQuery()
+            .FirstOrDefault(i => i.Id == incomeId);
       }
 
-      public IIncome Add(DateTime date, string name, decimal amount, string notes)
+      public Income Add(DateTime date, string name, decimal amount, string notes)
       {
          if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return null;
@@ -40,39 +42,44 @@ namespace MyMoney.Core.Services
 
          var user = _currentUserProvider.CurrentUser;
 
-         var income = _entityFactory.NewIncome;
-         income.UserId = user.Id;
-         income.User = user;
-         income.Amount = amount;
-         income.Date = date;
-         income.Name = name;
-         income.Notes = notes;
+         var income = new Income
+         {
+            UserId = user.Id,
+            User = user,
+            Amount = amount,
+            Date = date,
+            Name = name,
+            Notes = notes
+         };
 
          return _repository.Add(income);
       }
 
-      public IEnumerable<IIncome> From(DateTime start, int count)
+      public IEnumerable<Income> From(DateTime start, int count)
       {
          if (count <= 0)
-            return new List<IIncome>();
+            return new List<Income>();
 
-         var user = _currentUserProvider.CurrentUser;
+         var userId = _currentUserProvider.CurrentUserId;
 
          return _repository
-            .UserFiltered<IIncome>(user)
+            .UserFiltered<Income>(userId)
             .Where(i => i.ParentId == null)
             .Where(i => i.Date <= start)
+            .Include(i => i.TransactionsProxy)
+            .ThenInclude(t => t.Transaction)
+            .AsSplitQuery()
             .OrderByDescending(i => i.Date)
             .Take(count)
             .AsEnumerable();
       }
 
-      public IEnumerable<IIncome> Between(DateTime start, DateTime end)
+      public IEnumerable<Income> Between(DateTime start, DateTime end)
       {
-         var user = _currentUserProvider.CurrentUser;
+         var userId = _currentUserProvider.CurrentUserId;
 
          return _repository
-            .UserFiltered<IIncome>(user)
+            .UserFiltered<Income>(userId)
             .Where(i => i.ParentId == null)
             .Where(i => i.Date >= start && i.Date <= end)
             .AsEnumerable();
@@ -85,10 +92,9 @@ namespace MyMoney.Core.Services
 
          notes ??= string.Empty;
 
-         var income = _repository.FindById<IIncome>(incomeId);
-         var userId = _currentUserProvider.CurrentUserId;
+         var income = Find(incomeId);
 
-         if (income == null || income.UserId != userId)
+         if (income == null)
             return false;
 
          var basicDataHasChanged =
@@ -110,10 +116,9 @@ namespace MyMoney.Core.Services
 
       public bool Delete(long incomeId)
       {
-         var income = _repository.FindById<IIncome>(incomeId);
-         var userId = _currentUserProvider.CurrentUserId;
+         var income = Find(incomeId);
 
-         if (income == null || income.UserId != userId)
+         if (income == null)
             return false;
 
          return _repository.Delete(income);

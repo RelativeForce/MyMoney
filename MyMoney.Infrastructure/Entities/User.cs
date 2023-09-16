@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using Microsoft.EntityFrameworkCore;
-using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities.Abstract;
 
 namespace MyMoney.Infrastructure.Entities
 {
-   public class User : BaseEntity, IUser
+   public class User : BaseEntity
    {
       [Required]
       public string Email { get; set; }
@@ -37,15 +36,7 @@ namespace MyMoney.Infrastructure.Entities
 
       private static bool IsValidEmail(string emailAddress)
       {
-         try
-         {
-            new MailAddress(emailAddress);
-            return true;
-         }
-         catch (FormatException)
-         {
-            return false;
-         }
+         return MailAddress.TryCreate(emailAddress, out _);
       }
    }
 }

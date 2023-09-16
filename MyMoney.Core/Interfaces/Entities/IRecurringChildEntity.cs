@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyMoney.Core.Interfaces.Entities.Abstract
+namespace MyMoney.Core.Interfaces.Entities
 {
    public interface IRecurringChildEntity : IUserFilteredEntity
    {

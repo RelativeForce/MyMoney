@@ -1,7 +1,7 @@
-﻿using MyMoney.Core;
-using System;
+﻿using System;
+using MyMoney.Core;
 
-namespace MyMoney.Infrastructure.EntityFramework
+namespace MyMoney.Web.Utility
 {
    public static class FrontEndConstants
    {

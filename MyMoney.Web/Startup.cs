@@ -1,22 +1,20 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using MyMoney.Application;
+using MyMoney.Application.Interfaces;
+using MyMoney.Application.Interfaces.Services;
+using MyMoney.Application.Services;
 using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Email;
-using MyMoney.Core.Interfaces.Service;
-using MyMoney.Core.Services;
 using MyMoney.Infrastructure;
 using MyMoney.Infrastructure.Email;
 using MyMoney.Infrastructure.EntityFramework;
 using MyMoney.Web.Utility;
-using MySql.EntityFrameworkCore;
-using System;
 
 namespace MyMoney.Web
 {
@@ -44,7 +42,6 @@ namespace MyMoney.Web
          services.AddScoped<IBasicIncomeService, BasicIncomeService>();
          services.AddScoped<IRecurringIncomeService, RecurringIncomeService>();
          services.AddScoped<IRunningTotalService, RunningTotalService>();
-         services.AddScoped<IEntityFactory, EntityFactory>();
          services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
          services.AddSingleton<IEmailManager, EmailManager>();
          services.AddSingleton<IResourceManager, ResourceManager>();
@@ -79,16 +76,12 @@ namespace MyMoney.Web
          {
             if (DatabaseConstants.TargetDatabaseEngine == DatabaseConstants.DatabaseEngine.SQLServer)
             {
-               options
-                  .UseLazyLoadingProxies()
-                  .UseSqlServer(DatabaseConstants.DatabaseConnection);
+               options.UseSqlServer(DatabaseConstants.DatabaseConnection);
             }
 
             if (DatabaseConstants.TargetDatabaseEngine == DatabaseConstants.DatabaseEngine.MySQL)
             {
-               options
-                  .UseLazyLoadingProxies()
-                  .UseMySQL(DatabaseConstants.DatabaseConnection);
+               options.UseMySQL(DatabaseConstants.DatabaseConnection);
             }
          });
       }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
 using MyMoney.Core.Email;
-using MyMoney.Core.Interfaces.Email;
+using MyMoney.Core.Interfaces;
 
 namespace MyMoney.Infrastructure.Email
 {

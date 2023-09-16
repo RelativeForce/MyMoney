@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyMoney.Core.Data;
-using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.Entities.Abstract;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyMoney.Infrastructure.Entities
 {
-   public class RecurringTransaction : RecurringEntity<ITransaction>, IRecurringTransaction
+   public class RecurringTransaction : RecurringEntity<Transaction>
    {
       [Required]
       [MaxLength(Constants.MaxNameLength)]
@@ -21,7 +20,7 @@ namespace MyMoney.Infrastructure.Entities
       [Column(TypeName = "decimal(18,2)")]
       public decimal Amount { get; set; }
 
-      protected override ITransaction BuildVirtualChild(DateTime date)
+      protected override Transaction BuildVirtualChild(DateTime date)
       {
          return new Transaction
          {
@@ -31,7 +30,7 @@ namespace MyMoney.Infrastructure.Entities
             Notes = Notes,
             UserId = UserId,
             User = User,
-            Id = VirtualTransactionId--,
+            Id = _virtualTransactionId--,
             Parent = this,
             ParentId = Id
          };
@@ -40,12 +39,12 @@ namespace MyMoney.Infrastructure.Entities
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<RecurringTransaction>().HasIndex(t => new { t.UserId, t.Start, t.End, t.Recurrence, t.Description }).IsUnique();
-         model.Entity<RecurringTransaction>().HasOne(t => t.UserProxy).WithMany().IsRequired();
+         model.Entity<RecurringTransaction>().HasOne(t => t.User).WithMany().IsRequired();
       }
 
       /// <summary>
       /// A virtual Id for transactions that only exist as part of a recurring transaction.
       /// </summary>
-      private static long VirtualTransactionId = -1;
+      private static long _virtualTransactionId = -1;
    }
 }

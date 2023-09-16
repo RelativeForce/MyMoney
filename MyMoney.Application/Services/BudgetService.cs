@@ -1,36 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MyMoney.Application.Interfaces;
+using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Interfaces.Service;
+using MyMoney.Infrastructure.Entities;
 
-namespace MyMoney.Core.Services
+namespace MyMoney.Application.Services
 {
    public sealed class BudgetService : IBudgetService
    {
       private readonly IRepository _repository;
-      private readonly IEntityFactory _entityFactory;
       private readonly ICurrentUserProvider _currentUserProvider;
 
-      public BudgetService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider)
+      public BudgetService(IRepository repository, ICurrentUserProvider currentUserProvider)
       {
          _repository = repository;
-         _entityFactory = entityFactory;
          _currentUserProvider = currentUserProvider;
       }
 
-      public IBudget Find(long budgetId)
+      public Budget Find(long budgetId)
       {
-         var budget = _repository.FindById<IBudget>(budgetId);
          var userId = _currentUserProvider.CurrentUserId;
-
-         if (budget == null || budget.UserId != userId)
-            return null;
-
-         return budget;
+         
+         return _repository.UserFiltered<Budget>(userId).FirstOrDefault(b => b.Id == budgetId);
       }
 
-      public IBudget Add(int month, int year, string name, decimal amount, string notes)
+      public Budget Add(int month, int year, string name, decimal amount, string notes)
       {
          if (string.IsNullOrWhiteSpace(name) || month <= 0 || year <= 0 || month > 12 || amount < 0.01m)
             return null;
@@ -39,24 +34,26 @@ namespace MyMoney.Core.Services
 
          var user = _currentUserProvider.CurrentUser;
 
-         var budget = _entityFactory.NewBudget;
-         budget.UserId = user.Id;
-         budget.User = user;
-         budget.Amount = amount;
-         budget.Month = month;
-         budget.Year = year;
-         budget.Notes = notes;
-         budget.Name = name;
+         var budget = new Budget
+         {
+            UserId = user.Id,
+            User = user,
+            Amount = amount,
+            Month = month,
+            Year = year,
+            Notes = notes,
+            Name = name
+         };
 
          return _repository.Add(budget);
       }
 
-      public List<IBudget> List(int month, int year)
+      public List<Budget> List(int month, int year)
       {
-         var user = _currentUserProvider.CurrentUser;
+         var userId = _currentUserProvider.CurrentUserId;
 
          return _repository
-            .UserFiltered<IBudget>(user)
+            .UserFiltered<Budget>(userId)
             .Where(b => month == b.Month && year == b.Year)
             .OrderBy(b => b.Name)
             .ToList();
@@ -68,11 +65,10 @@ namespace MyMoney.Core.Services
             return false;
 
          notes ??= string.Empty;
+         
+         var budget = Find(budgetId);
 
-         var budget = _repository.FindById<IBudget>(budgetId);
-         var userId = _currentUserProvider.CurrentUserId;
-
-         if (budget == null || budget.UserId != userId)
+         if (budget == null)
             return false;
 
          budget.Month = month;
@@ -86,10 +82,9 @@ namespace MyMoney.Core.Services
 
       public bool Delete(long budgetId)
       {
-         var budget = _repository.FindById<IBudget>(budgetId);
-         var userId = _currentUserProvider.CurrentUserId;
+         var budget = Find(budgetId);
 
-         if (budget == null || budget.UserId != userId)
+         if (budget == null)
             return false;
 
          return _repository.Delete(budget);

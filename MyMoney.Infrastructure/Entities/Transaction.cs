@@ -11,7 +11,7 @@ using MyMoney.Infrastructure.Entities.Abstract;
 
 namespace MyMoney.Infrastructure.Entities
 {
-   public class Transaction : UserFilteredEntity, ITransaction
+   public class Transaction : UserFilteredEntity, IRecurringChildEntity
    {
       public DateTime Date { get; set; }
 
@@ -28,22 +28,15 @@ namespace MyMoney.Infrastructure.Entities
 
       public long? ParentId { get; set; } = null;
 
-      [NotMapped]
-      public IRecurringTransaction Parent
-      {
-         get => ParentProxy;
-         set => ParentProxy = value as RecurringTransaction;
-      }
-
       [ForeignKey(nameof(ParentId))]
-      public virtual RecurringTransaction ParentProxy { get; set; } = null;
+      public virtual RecurringTransaction Parent { get; set; }
 
       [NotMapped]
-      public IQueryable<IBudget> Budgets => BudgetsProxy.Select(tb => tb.Budget).Cast<IBudget>().AsQueryable();
+      public IQueryable<Budget> Budgets => BudgetsProxy.Select(tb => tb.Budget).AsQueryable();
       public virtual ICollection<TransactionBudget> BudgetsProxy { get; set; } = new List<TransactionBudget>();
 
       [NotMapped]
-      public IQueryable<IIncome> Incomes => IncomesProxy.Select(tb => tb.Income).Cast<IIncome>().AsQueryable();
+      public IQueryable<Income> Incomes => IncomesProxy.Select(tb => tb.Income).AsQueryable();
       public virtual ICollection<TransactionIncome> IncomesProxy { get; set; } = new List<TransactionIncome>();
 
       public void UpdateBudgets(IRepository repository, IRelationRepository relationRepository, long[] budgetIds)
@@ -95,8 +88,8 @@ namespace MyMoney.Infrastructure.Entities
       internal static void Configure(ModelBuilder model)
       {
          model.Entity<Transaction>().HasIndex(t => new { t.UserId, t.Date, t.Description }).IsUnique();
-         model.Entity<Transaction>().HasOne(t => t.UserProxy).WithMany().IsRequired();
-         model.Entity<Transaction>().HasOne(t => t.ParentProxy).WithMany().IsRequired(false);
+         model.Entity<Transaction>().HasOne(t => t.User).WithMany().IsRequired();
+         model.Entity<Transaction>().HasOne(t => t.Parent).WithMany(rt => rt.RealChildren).IsRequired(false);
       }
    }
 }

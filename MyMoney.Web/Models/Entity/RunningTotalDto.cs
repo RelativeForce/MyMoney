@@ -1,5 +1,6 @@
 ﻿using MyMoney.Core.Data;
 using System;
+using MyMoney.Application;
 
 namespace MyMoney.Web.Models.Entity
 {

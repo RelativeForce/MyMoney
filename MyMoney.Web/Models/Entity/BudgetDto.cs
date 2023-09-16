@@ -1,5 +1,5 @@
-﻿using MyMoney.Core.Interfaces.Entities;
-using System.Linq;
+﻿using System.Linq;
+using MyMoney.Infrastructure.Entities;
 
 namespace MyMoney.Web.Models.Entity
 {
@@ -17,7 +17,7 @@ namespace MyMoney.Web.Models.Entity
 
       }
 
-      public BudgetDto(IBudget model) : base(model.Id)
+      public BudgetDto(Budget model) : base(model.Id)
       {
          Amount = model.Amount;
          Month = model.Month;

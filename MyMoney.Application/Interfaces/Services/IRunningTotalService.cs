@@ -1,8 +1,7 @@
-﻿using MyMoney.Core.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace MyMoney.Core.Interfaces.Service
+namespace MyMoney.Application.Interfaces.Services
 {
    public interface IRunningTotalService
    {

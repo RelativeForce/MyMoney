@@ -1,52 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using MyMoney.Application.Interfaces;
+using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Interfaces.Service;
+using MyMoney.Infrastructure.Entities;
 
-namespace MyMoney.Core.Services
+namespace MyMoney.Application.Services
 {
    public sealed class RecurringIncomeService : IRecurringIncomeService
    {
       private readonly IRepository _repository;
-      private readonly IEntityFactory _entityFactory;
       private readonly ICurrentUserProvider _currentUserProvider;
 
-      public RecurringIncomeService(IRepository repository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider)
+      public RecurringIncomeService(IRepository repository, ICurrentUserProvider currentUserProvider)
       {
          _repository = repository;
-         _entityFactory = entityFactory;
          _currentUserProvider = currentUserProvider;
       }
 
-      public IEnumerable<IIncome> Between(DateTime start, DateTime end)
+      public IEnumerable<Income> Between(DateTime start, DateTime end)
       {
          var userId = _currentUserProvider.CurrentUserId;
 
          var recurring = _repository
-            .UserFiltered<IRecurringIncome>(userId)
+            .UserFiltered<RecurringIncome>(userId)
             .Where(ri =>
                (ri.Start >= start && ri.Start <= end) || // Starts in the range
                (ri.End >= start && ri.End <= end) || // Ends in the range
                (ri.Start <= start && ri.End >= end)) // Spans the range
+            .Include(ri => ri.RealChildren)
+            .AsSplitQuery()
             .AsEnumerable()
-            .Select(ri => ri.Children(_repository, i => i.Date >= start && i.Date <= end))
+            .Select(ri => ri.Children(i => i.Date >= start && i.Date <= end))
             .SelectMany(vi => vi);
 
          return recurring;
       }
 
-      public IEnumerable<IIncome> From(DateTime date, int count)
+      public IEnumerable<Income> From(DateTime date, int count)
       {
          var userId = _currentUserProvider.CurrentUserId;
 
          var recurring = _repository
-            .UserFiltered<IRecurringIncome>(userId)
+            .UserFiltered<RecurringIncome>(userId)
             .Where(ri => ri.Start <= date)
+            .Include(ri => ri.RealChildren)
+            .AsSplitQuery()
             .AsEnumerable()
-            .Select(ri => ri.Children(_repository, i => i.Date <= date))
+            .Select(ri => ri.Children(i => i.Date <= date))
             .SelectMany(vi => vi)
             .OrderByDescending(i => i.Date)
             .Take(count);
@@ -54,7 +58,7 @@ namespace MyMoney.Core.Services
          return recurring;
       }
 
-      public IRecurringIncome Add(DateTime start, DateTime end, string name, decimal amount, string notes, Frequency period)
+      public RecurringIncome Add(DateTime start, DateTime end, string name, decimal amount, string notes, Frequency period)
       {
          if (string.IsNullOrWhiteSpace(name) || amount < 0.01m)
             return null;
@@ -63,27 +67,27 @@ namespace MyMoney.Core.Services
 
          if (start > end)
          {
-            var temp = start;
-            start = end;
-            end = temp;
+            (start, end) = (end, start);
          }
 
          var user = _currentUserProvider.CurrentUser;
 
-         var income = _entityFactory.NewRecurringIncome;
-         income.Start = start;
-         income.End = end;
-         income.Recurrence = period;
-         income.Name = name;
-         income.Amount = amount;
-         income.UserId = user.Id;
-         income.User = user;
-         income.Notes = notes;
+         var income = new RecurringIncome
+         {
+            Start = start,
+            End = end,
+            Recurrence = period,
+            Name = name,
+            Amount = amount,
+            UserId = user.Id,
+            User = user,
+            Notes = notes
+         };
 
          return _repository.Add(income);
       }
 
-      public IIncome Realise(long recurringIncomeId, DateTime date)
+      public Income Realise(long recurringIncomeId, DateTime date)
       {
          var recurring = Find(recurringIncomeId);
          if (recurring == null)
@@ -91,34 +95,30 @@ namespace MyMoney.Core.Services
 
          var user = _currentUserProvider.CurrentUser;
 
-         var income = _entityFactory.NewIncome;
-
-         income.Date = date;
-         income.Name = recurring.Name;
-         income.Amount = recurring.Amount;
-         income.UserId = user.Id;
-         income.User = user;
-         income.Notes = string.Empty;
-         income.Parent = recurring;
-         income.ParentId = recurring.Id;
+         var income = new Income
+         {
+            Date = date,
+            Name = recurring.Name,
+            Amount = recurring.Amount,
+            UserId = user.Id,
+            User = user,
+            Notes = string.Empty,
+            Parent = recurring,
+            ParentId = recurring.Id
+         };
 
          return _repository.Add(income);
       }
 
-      public IRecurringIncome Find(long recurringIncomeId)
+      public RecurringIncome Find(long recurringIncomeId)
       {
-         var income = _repository.FindById<IRecurringIncome>(recurringIncomeId);
          var userId = _currentUserProvider.CurrentUserId;
-
-         if (income == null || income.UserId != userId)
-            return null;
-
-         return income;
-      }
-
-      public IList<IIncome> GetChildIncomes(IRecurringIncome recurringIncome)
-      {
-         return recurringIncome.Children(_repository);
+         
+         return _repository
+            .UserFiltered<RecurringIncome>(userId)
+            .Include(ri => ri.RealChildren)
+            .AsSplitQuery()
+            .FirstOrDefault(ri => ri.Id == recurringIncomeId);
       }
 
       public bool Update(long incomeId, DateTime start, DateTime end, string name, decimal amount, string notes, Frequency period)
@@ -130,15 +130,12 @@ namespace MyMoney.Core.Services
 
          if (start > end)
          {
-            var temp = start;
-            start = end;
-            end = temp;
+            (start, end) = (end, start);
          }
 
-         var income = _repository.FindById<IRecurringIncome>(incomeId);
-         var user = _currentUserProvider.CurrentUser;
+         var income = Find(incomeId);
 
-         if (income == null || income.UserId != user.Id)
+         if (income == null)
             return false;
 
          var clearChildren = income.Start != start || income.Recurrence != period;
@@ -154,10 +151,7 @@ namespace MyMoney.Core.Services
          if (!_repository.Update(income))
             return false;
 
-         var children = _repository
-            .UserFiltered<IIncome>(user)
-            .Where(i => i.ParentId == incomeId)
-            .ToList();
+         var children = income.RealChildren;
 
          if (clearChildren)
             return _repository.DeleteRange(children);
@@ -183,18 +177,12 @@ namespace MyMoney.Core.Services
 
       public bool Delete(long incomeId)
       {
-         var income = _repository.FindById<IRecurringIncome>(incomeId);
-         var userId = _currentUserProvider.CurrentUserId;
+         var income = Find(incomeId);
 
-         if (income == null || income.UserId != userId)
+         if (income == null)
             return false;
 
-         var children = _repository
-            .UserFiltered<IIncome>(userId)
-            .Where(i => i.ParentId == incomeId)
-            .ToList();
-
-         if (!_repository.DeleteRange(children))
+         if (!_repository.DeleteRange(income.RealChildren))
             return false;
 
          return _repository.Delete(income);

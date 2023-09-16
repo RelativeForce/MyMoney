@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MyMoney.Infrastructure.Entities;
 
 namespace MyMoney.Web.Models.Entity
 {
@@ -17,7 +18,7 @@ namespace MyMoney.Web.Models.Entity
          // Required for recieving dto
       }
 
-      public UserDto(IUser user)
+      public UserDto(User user)
       {
          Email = user.Email;
          DateOfBirth = user.DateOfBirth.ToShortDateString();

@@ -2,27 +2,25 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using MyMoney.Application.Interfaces;
+using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Email;
 using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Email;
-using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Interfaces.Service;
 using MyMoney.Core.Results;
+using MyMoney.Infrastructure.Entities;
 
-namespace MyMoney.Core.Services
+namespace MyMoney.Application.Services
 {
    public sealed class UserService : IUserService
    {
       private readonly IRepository _repository;
-      private readonly IEntityFactory _entityFactory;
       private readonly ITokenProvider _tokenProvider;
       private readonly IEmailManager _emailManager;
       private readonly IResourceManager _resourceManager;
 
-      public UserService(IRepository repository, IEntityFactory entityFactory, ITokenProvider tokenProvider, IEmailManager emailManager, IResourceManager resourceManager)
+      public UserService(IRepository repository, ITokenProvider tokenProvider, IEmailManager emailManager, IResourceManager resourceManager)
       {
          _repository = repository;
-         _entityFactory = entityFactory;
          _tokenProvider = tokenProvider;
          _emailManager = emailManager;
          _resourceManager = resourceManager;
@@ -30,7 +28,7 @@ namespace MyMoney.Core.Services
 
       public LoginResult Login(string email, string passwordHash)
       {
-         var user = _repository.Find<IUser>(u => u.Email.Equals(email));
+         var user = _repository.All<User>().FirstOrDefault(u => u.Email.Equals(email));
 
          if (user == null)
             return LoginResult.FailResult("No user with that email exists");
@@ -65,18 +63,19 @@ namespace MyMoney.Core.Services
 
          string savedPasswordHash = HashPassword(password);
 
-         var user = _entityFactory.NewUser;
-
-         user.Email = email;
-         user.FullName = fullName;
-         user.Password = savedPasswordHash;
-         user.DateOfBirth = dateOfBirth;
+         var user = new User
+         {
+            Email = email,
+            FullName = fullName,
+            Password = savedPasswordHash,
+            DateOfBirth = dateOfBirth
+         };
 
          var validationError = user.ValidationErrors().FirstOrDefault();
          if(validationError != null)
             return LoginResult.FailResult(validationError);
 
-         if (_repository.Find<IUser>(u => u.Email.Equals(email)) != null)
+         if (_repository.All<User>().Any(u => u.Email.Equals(email)))
             return LoginResult.FailResult("Email already exists");
 
          user = _repository.Add(user);
@@ -101,8 +100,8 @@ namespace MyMoney.Core.Services
          if (validationError != null)
             return BasicResult.FailResult(validationError);
 
-         var userWithEmail = _repository.Find<IUser>(u => u.Email.Equals(email));
-         if (userWithEmail.Id != user.Id)
+         var emailTaken = _repository.All<User>().Any(u => u.Email == email && u.Id != userId);
+         if (emailTaken)
             return BasicResult.FailResult("Email already exists");
 
          var success = _repository.Update(user);
@@ -134,7 +133,7 @@ namespace MyMoney.Core.Services
 
       public void SendForgotPasswordEmail(string email, string baseUrl)
       {
-         var userWithEmail = _repository.Find<IUser>(u => u.Email.Equals(email));
+         var userWithEmail = _repository.All<User>().FirstOrDefault(u => u.Email.Equals(email));
          if (userWithEmail == null)
             return;
 
@@ -162,9 +161,9 @@ namespace MyMoney.Core.Services
          _emailManager.SendMail(config, content);
       }
 
-      public IUser GetById(long userId)
+      public User GetById(long userId)
       {
-         return _repository.FindById<IUser>(userId);
+         return _repository.All<User>().FirstOrDefault(u => u.Id == userId);
       }
 
       private static bool IsValidPassword(string password)

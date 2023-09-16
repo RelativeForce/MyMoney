@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyMoney.Core;
-using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Interfaces.Service;
 using MyMoney.Web.Models.Common;
 using MyMoney.Web.Models.Entity;
 using MyMoney.Web.Models.Request;
 using MyMoney.Web.Models.Response;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using MyMoney.Application.Interfaces.Services;
 
 namespace MyMoney.Web.Controllers
 {
@@ -213,7 +210,7 @@ namespace MyMoney.Web.Controllers
 
             if (transaction != null)
             {
-               var children = _recurringTransactionService.GetChildTransactions(transaction);
+               var children = transaction.Children();
 
                return Ok(new RecurringTransactionDto(transaction, children));
             }

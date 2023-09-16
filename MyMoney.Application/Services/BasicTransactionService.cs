@@ -1,41 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using MyMoney.Application.Interfaces;
+using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Interfaces;
-using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Interfaces.Service;
+using MyMoney.Infrastructure.Entities;
 
-namespace MyMoney.Core.Services
+namespace MyMoney.Application.Services
 {
    public sealed class BasicTransactionService : IBasicTransactionService
    {
       private readonly IRepository _repository;
       private readonly IRelationRepository _relationRepository;
-      private readonly IEntityFactory _entityFactory;
       private readonly ICurrentUserProvider _currentUserProvider;
 
-      public BasicTransactionService(IRepository repository, IRelationRepository relationRepository, IEntityFactory entityFactory, ICurrentUserProvider currentUserProvider)
+      public BasicTransactionService(IRepository repository, IRelationRepository relationRepository, ICurrentUserProvider currentUserProvider)
       {
          _repository = repository;
          _relationRepository = relationRepository;
-         _entityFactory = entityFactory;
          _currentUserProvider = currentUserProvider;
       }
 
-      public IEnumerable<ITransaction> Between(DateTime start, DateTime end)
+      public IEnumerable<Transaction> Between(DateTime start, DateTime end)
       {
          var userId = _currentUserProvider.CurrentUserId;
 
          var basic = _repository
-            .UserFiltered<ITransaction>(userId)
+            .UserFiltered<Transaction>(userId)
             .Where(t => t.ParentId == null)
             .Where(t => t.Date >= start && t.Date <= end)
+            .Include(t => t.BudgetsProxy)
+            .ThenInclude(p => p.Budget)
+            .Include(t => t.IncomesProxy)
+            .ThenInclude(p => p.Income)
+            .AsSplitQuery()
             .AsEnumerable();
 
          return basic;
       }
 
-      public ITransaction Add(DateTime date, string description, decimal amount, string notes, long[] budgetIds, long[] incomeIds)
+      public Transaction Add(DateTime date, string description, decimal amount, string notes, long[] budgetIds, long[] incomeIds)
       {
          if (string.IsNullOrWhiteSpace(description) || amount < 0.01m)
             return null;
@@ -44,15 +49,17 @@ namespace MyMoney.Core.Services
 
          var user = _currentUserProvider.CurrentUser;
 
-         var transaction = _entityFactory.NewTransaction;
-         transaction.Date = date;
-         transaction.Description = description;
-         transaction.Amount = amount;
-         transaction.UserId = user.Id;
-         transaction.User = user;
-         transaction.Notes = notes;
-         transaction.Parent = null;
-         transaction.ParentId = null;
+         var transaction = new Transaction
+         {
+            Date = date,
+            Description = description,
+            Amount = amount,
+            UserId = user.Id,
+            User = user,
+            Notes = notes,
+            Parent = null,
+            ParentId = null
+         };
 
          var addedTransaction = _repository.Add(transaction);
 
@@ -66,15 +73,18 @@ namespace MyMoney.Core.Services
          return _repository.Update(addedTransaction) ? addedTransaction : null;
       }
 
-      public ITransaction Find(long transactionId)
+      public Transaction Find(long transactionId)
       {
-         var transaction = _repository.FindById<ITransaction>(transactionId);
          var userId = _currentUserProvider.CurrentUserId;
-
-         if (transaction == null || transaction.UserId != userId)
-            return null;
-
-         return transaction;
+         
+         return _repository.UserFiltered<Transaction>(userId)
+            .Include(t => t.Parent)
+            .Include(t => t.BudgetsProxy)
+            .ThenInclude(p => p.Budget)
+            .Include(t => t.IncomesProxy)
+            .ThenInclude(p => p.Income)
+            .AsSplitQuery()
+            .FirstOrDefault(t => t.Id == transactionId);
       }
 
       public bool Update(long transactionId, DateTime date, string description, decimal amount, string notes, long[] budgetIds, long[] incomeIds)
@@ -84,10 +94,9 @@ namespace MyMoney.Core.Services
 
          notes ??= string.Empty;
 
-         var transaction = _repository.FindById<ITransaction>(transactionId);
-         var userId = _currentUserProvider.CurrentUserId;
+         var transaction = Find(transactionId);
 
-         if (transaction == null || transaction.UserId != userId)
+         if (transaction == null)
             return false;
 
          var basicDataHasChanged = 
@@ -113,10 +122,9 @@ namespace MyMoney.Core.Services
 
       public bool Delete(long transactionId)
       {
-         var transaction = _repository.FindById<ITransaction>(transactionId);
-         var userId = _currentUserProvider.CurrentUserId;
+         var transaction = Find(transactionId);
 
-         if (transaction == null || transaction.UserId != userId || transaction.ParentId != null)
+         if (transaction == null || transaction.ParentId != null)
             return false;
 
          return _repository.Delete(transaction);

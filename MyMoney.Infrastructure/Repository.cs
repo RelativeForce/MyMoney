@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Interfaces.Entities.Abstract;
-using MyMoney.Infrastructure.Entities;
 using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Infrastructure
@@ -122,106 +119,22 @@ namespace MyMoney.Infrastructure
          }
       }
 
-      public IQueryable<T> Where<T>(Expression<Func<T, bool>> predicate) where T : class, IBaseEntity
+      public IQueryable<T> UserFiltered<T>(long userId) where T : class, IUserFilteredEntity
       {
-         if (predicate == null)
-            return null;
-
-         try
-         {
-            return Set<T>().Where(predicate);
-         }
-         catch (Exception e)
-         {
-            Console.WriteLine(e);
-            return null;
-         }
-      }
-
-      public T Find<T>(Func<T, bool> predicate) where T : class, IBaseEntity
-      {
-         if (predicate == null)
-            return null;
-
-         try
-         {
-            return Set<T>().FirstOrDefault(predicate);
-         }
-         catch (Exception e)
-         {
-            Console.WriteLine(e);
-            return null;
-         }
-      }
-
-      public T FindById<T>(long id) where T : class, IBaseEntity
-      {
-         if (id <= 0)
-            return null;
-
-         try
-         {
-            return Set<T>().FirstOrDefault(e => e.Id == id);
-         }
-         catch (Exception e)
-         {
-            Console.WriteLine(e);
-            return null;
-         }
+         return All<T>().Where(e => e.UserId == userId);
       }
 
       public IQueryable<T> All<T>() where T : class, IBaseEntity
       {
          try
          {
-            return Set<T>();
+            return _model.Set<T>();
          }
          catch (Exception e)
          {
             Console.WriteLine(e);
             return null;
          }
-      }
-
-      public IQueryable<T> UserFiltered<T>(long userId) where T : class, IUserFilteredEntity { 
-         try
-         {
-            return Set<T>().Where(e => e.UserId == userId);
-         }
-         catch (Exception e)
-         {
-            Console.WriteLine(e);
-            return null;
-         }
-      }
-
-      public IQueryable<T> UserFiltered<T>(IUser user) where T : class, IUserFilteredEntity
-      {
-         return UserFiltered<T>(user.Id);
-      }
-
-      private IQueryable<T> Set<T>() where T : class, IBaseEntity
-      {
-         if (typeof(T) == typeof(ITransaction))
-            return _model.Set<Transaction>().Cast<ITransaction>().AsQueryable() as IQueryable<T>;
-
-         if (typeof(T) == typeof(IUser))
-            return _model.Set<User>().Cast<IUser>().AsQueryable() as IQueryable<T>;
-
-         if (typeof(T) == typeof(IBudget))
-            return _model.Set<Budget>().Cast<IBudget>().AsQueryable() as IQueryable<T>;
-
-         if (typeof(T) == typeof(IIncome))
-            return _model.Set<Income>().Cast<IIncome>().AsQueryable() as IQueryable<T>;
-
-         if (typeof(T) == typeof(IRecurringTransaction))
-            return _model.Set<RecurringTransaction>().Cast<IRecurringTransaction>().AsQueryable() as IQueryable<T>;
-
-         if (typeof(T) == typeof(IRecurringIncome))
-            return _model.Set<RecurringIncome>().Cast<IRecurringIncome>().AsQueryable() as IQueryable<T>;
-
-         // Attempt to use entity directly
-         return _model.Set<T>().AsQueryable();
       }
    }
 }

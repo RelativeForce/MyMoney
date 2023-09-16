@@ -1,6 +1,5 @@
-﻿using MyMoney.Core.Interfaces.Entities;
-using MyMoney.Core.Interfaces.Entities.Abstract;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Infrastructure.Entities.Abstract
 {
@@ -8,14 +7,7 @@ namespace MyMoney.Infrastructure.Entities.Abstract
    {
       public long UserId { get; set; }
 
-      [NotMapped]
-      public IUser User
-      {
-         get => UserProxy;
-         set => UserProxy = value as User;
-      }
-
       [ForeignKey(nameof(UserId))]
-      public virtual User UserProxy { get; set; }
+      public User User { get; set; }
    }
 }

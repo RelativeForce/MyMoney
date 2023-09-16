@@ -1,4 +1,4 @@
-﻿using MyMoney.Core.Interfaces.Entities.Abstract;
+﻿using MyMoney.Core.Interfaces.Entities;
 
 namespace MyMoney.Infrastructure.Entities.Abstract
 {

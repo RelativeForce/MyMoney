@@ -1,8 +1,7 @@
-﻿namespace MyMoney.Core.Interfaces.Entities.Abstract
+﻿namespace MyMoney.Core.Interfaces.Entities
 {
    public interface IUserFilteredEntity : IBaseEntity
    {
       long UserId { get; set; }
-      IUser User { get; set; }
    }
 }
