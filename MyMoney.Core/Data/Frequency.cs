@@ -15,7 +15,7 @@ namespace MyMoney.Core.Data
 
    public static class FrequencyExtensions
    {
-      const int DaysInWeek = 7;
+      private const int DaysInWeek = 7;
 
       public static DateTime Add(this DateTime date, Frequency period)
       {
@@ -43,7 +43,7 @@ namespace MyMoney.Core.Data
          return count;
       }
 
-      public static IList<T> Repeat<T>(this Frequency period, DateTime start, DateTime end, Func<DateTime, T> instanceBuilder)
+      public static List<T> Repeat<T>(this Frequency period, DateTime start, DateTime end, Func<DateTime, T> instanceBuilder)
       {
          var instances = new List<T>();
          var current = start;
