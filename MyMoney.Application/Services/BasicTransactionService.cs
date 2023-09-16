@@ -104,7 +104,7 @@ namespace MyMoney.Application.Services
             transaction.Date != date ||
             transaction.Description != description;
 
-         // Cannot edit the basic data of a recuring transaction child
+         // Cannot edit the basic data of a recurring transaction child
          if (transaction.ParentId != null && basicDataHasChanged)
             return false;
 

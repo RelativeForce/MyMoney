@@ -102,7 +102,7 @@ namespace MyMoney.Application.Services
             income.Date != date ||
             income.Name != name;
 
-         // Cannot edit the basic data of a recuring income child
+         // Cannot edit the basic data of a recurring income child
          if (income.ParentId != null && basicDataHasChanged)
             return false;
 

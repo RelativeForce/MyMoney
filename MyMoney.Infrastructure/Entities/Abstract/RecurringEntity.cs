@@ -36,6 +36,7 @@ namespace MyMoney.Infrastructure.Entities.Abstract
             .OrderBy(t => t.Date)
             .ToList();
       }
+
       protected abstract T BuildVirtualChild(DateTime date);
    }
 }
