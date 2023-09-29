@@ -30,7 +30,7 @@ namespace MyMoney.Application
          Text = income.Name;
          Date = income.Date;
          Delta = income.Amount;
-         ParentId = null;
+         ParentId = income.ParentId;
       }
 
       public decimal AdjustTotal(decimal runningTotal)
