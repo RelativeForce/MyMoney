@@ -6,6 +6,7 @@ using MyMoney.Application.Interfaces;
 using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Interfaces;
 using MyMoney.Infrastructure.Entities;
+using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Application.Services
 {
@@ -66,8 +67,7 @@ namespace MyMoney.Application.Services
             .UserFiltered<Income>(userId)
             .Where(i => i.ParentId == null)
             .Where(i => i.Date <= start)
-            .Include(i => i.TransactionsProxy)
-            .ThenInclude(t => t.Transaction)
+            .IncludeTransactions()
             .AsSplitQuery()
             .OrderByDescending(i => i.Date)
             .Take(count)
@@ -82,6 +82,8 @@ namespace MyMoney.Application.Services
             .UserFiltered<Income>(userId)
             .Where(i => i.ParentId == null)
             .Where(i => i.Date >= start && i.Date <= end)
+            .IncludeTransactions()
+            .AsSplitQuery()
             .AsEnumerable();
       }
 

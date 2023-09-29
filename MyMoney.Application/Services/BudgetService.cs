@@ -5,6 +5,7 @@ using MyMoney.Application.Interfaces;
 using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Interfaces;
 using MyMoney.Infrastructure.Entities;
+using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Application.Services
 {
@@ -25,8 +26,7 @@ namespace MyMoney.Application.Services
          
          return _repository
             .UserFiltered<Budget>(userId)
-            .Include(b => b.TransactionsProxy)
-            .ThenInclude(p => p.Transaction)
+            .IncludeTransactions()
             .AsSplitQuery()
             .FirstOrDefault(b => b.Id == budgetId);
       }
@@ -61,8 +61,7 @@ namespace MyMoney.Application.Services
          return _repository
             .UserFiltered<Budget>(userId)
             .Where(b => month == b.Month && year == b.Year)
-            .Include(b => b.TransactionsProxy)
-            .ThenInclude(p => p.Transaction)
+            .IncludeTransactions()
             .AsSplitQuery()
             .OrderBy(b => b.Name)
             .ToList();
