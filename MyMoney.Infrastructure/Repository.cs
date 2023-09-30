@@ -126,15 +126,7 @@ namespace MyMoney.Infrastructure
 
       public IQueryable<T> All<T>() where T : class, IBaseEntity
       {
-         try
-         {
-            return _model.Set<T>();
-         }
-         catch (Exception e)
-         {
-            Console.WriteLine(e);
-            return null;
-         }
+         return _model.Set<T>();
       }
    }
 }
