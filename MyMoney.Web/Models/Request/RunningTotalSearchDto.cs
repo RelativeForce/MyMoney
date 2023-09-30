@@ -5,6 +5,6 @@ namespace MyMoney.Web.Models.Request
    public class RunningTotalSearchDto
    {
       public decimal InitialTotal { get; set; }
-      public DateRangeDto dateRange { get; set; }
+      public DateRangeDto DateRange { get; set; }
    }
 }
