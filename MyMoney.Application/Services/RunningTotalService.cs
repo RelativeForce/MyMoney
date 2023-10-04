@@ -20,7 +20,7 @@ namespace MyMoney.Application.Services
          _recurringIncomeService = recurringIncomeService;
       }
 
-      public IList<RunningTotal> RunningTotal(decimal initialTotal, DateTime start, DateTime end)
+      public List<RunningTotal> RunningTotal(decimal initialTotal, DateTime start, DateTime end)
       {
          var basicTransactions = _basicTransactionService
             .Between(start, end)

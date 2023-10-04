@@ -14,14 +14,14 @@ namespace MyMoney.Web.Models.Entity
       public string Name { get; set; }
       public string Notes { get; set; }
       public decimal Amount { get; set; }
-      public IList<RecurringEntityChildDto> Children { get; set; }
+      public List<RecurringEntityChildDto> Children { get; set; }
 
       public RecurringIncomeDto()
       {
 
       }
 
-      public RecurringIncomeDto(RecurringIncome model, IList<Income> children) : this(model)
+      public RecurringIncomeDto(RecurringIncome model, List<Income> children) : this(model)
       {
          Children = children.Select(t => new RecurringEntityChildDto(t)).ToList();
       }
