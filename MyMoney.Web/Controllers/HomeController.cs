@@ -31,7 +31,7 @@ namespace MyMoney.Web.Controllers
                return BadRequest("Invalid State");
             }
 
-            var runningTotals = _runningTotalService.RunningTotal(dto.InitialTotal, dto.dateRange.Start, dto.dateRange.End);
+            var runningTotals = _runningTotalService.RunningTotal(dto.InitialTotal, dto.DateRange.Start, dto.DateRange.End);
 
             if (runningTotals == null)
                return NotFound();

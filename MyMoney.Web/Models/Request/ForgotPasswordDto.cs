@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MyMoney.Web.Models.Request
+﻿namespace MyMoney.Web.Models.Request
 {
    public class ForgotPasswordDto
    {

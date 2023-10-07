@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using MyMoney.Application.Interfaces;
 using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces;
 using MyMoney.Infrastructure.Entities;
+using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Application.Services
 {
@@ -31,8 +31,7 @@ namespace MyMoney.Application.Services
                (rt.Start >= start && rt.Start <= end) || // Starts in the range
                (rt.End >= start && rt.End <= end) || // Ends in the range
                (rt.Start <= start && rt.End >= end)) // Spans the range
-            .Include(rt => rt.RealChildren)
-            .AsSplitQuery()
+            .IncludeChildren()
             .AsEnumerable()
             .Select(rt => rt.Children(t => t.Date >= start && t.Date <= end))
             .SelectMany(vt => vt);
@@ -98,8 +97,7 @@ namespace MyMoney.Application.Services
          
          return _repository
             .UserFiltered<RecurringTransaction>(userId)
-            .Include(rt => rt.RealChildren)
-            .AsSplitQuery()
+            .IncludeChildren()
             .FirstOrDefault(rt => rt.Id == transactionId);
       }
 

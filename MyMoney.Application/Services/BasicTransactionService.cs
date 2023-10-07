@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using MyMoney.Application.Interfaces;
 using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Interfaces;
 using MyMoney.Infrastructure.Entities;
+using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Application.Services
 {
@@ -30,11 +30,8 @@ namespace MyMoney.Application.Services
             .UserFiltered<Transaction>(userId)
             .Where(t => t.ParentId == null)
             .Where(t => t.Date >= start && t.Date <= end)
-            .Include(t => t.BudgetsProxy)
-            .ThenInclude(p => p.Budget)
-            .Include(t => t.IncomesProxy)
-            .ThenInclude(p => p.Income)
-            .AsSplitQuery()
+            .IncludeBudgets()
+            .IncludeIncomes()
             .AsEnumerable();
 
          return basic;
@@ -78,12 +75,9 @@ namespace MyMoney.Application.Services
          var userId = _currentUserProvider.CurrentUserId;
          
          return _repository.UserFiltered<Transaction>(userId)
-            .Include(t => t.Parent)
-            .Include(t => t.BudgetsProxy)
-            .ThenInclude(p => p.Budget)
-            .Include(t => t.IncomesProxy)
-            .ThenInclude(p => p.Income)
-            .AsSplitQuery()
+            .IncludeParent()
+            .IncludeBudgets()
+            .IncludeIncomes()
             .FirstOrDefault(t => t.Id == transactionId);
       }
 

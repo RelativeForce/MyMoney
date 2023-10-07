@@ -1,9 +1,5 @@
 ﻿using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Web.Models.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyMoney.Web.Models.Response
 {
@@ -13,7 +9,7 @@ namespace MyMoney.Web.Models.Response
 
       public RecurringEntityChildDto() : base()
       { 
-         // Required for deserialisation
+         // Required for deserialization
       }
 
       public RecurringEntityChildDto(IRecurringChildEntity model) : base(model.Id)

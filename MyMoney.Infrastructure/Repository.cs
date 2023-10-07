@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using MyMoney.Core.Interfaces;
 using MyMoney.Core.Interfaces.Entities;
 using MyMoney.Infrastructure.EntityFramework;
@@ -126,15 +127,7 @@ namespace MyMoney.Infrastructure
 
       public IQueryable<T> All<T>() where T : class, IBaseEntity
       {
-         try
-         {
-            return _model.Set<T>();
-         }
-         catch (Exception e)
-         {
-            Console.WriteLine(e);
-            return null;
-         }
+         return _model.Set<T>().AsSplitQuery();
       }
    }
 }

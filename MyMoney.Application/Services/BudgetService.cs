@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using MyMoney.Application.Interfaces;
 using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Interfaces;
 using MyMoney.Infrastructure.Entities;
+using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Application.Services
 {
@@ -25,9 +25,7 @@ namespace MyMoney.Application.Services
          
          return _repository
             .UserFiltered<Budget>(userId)
-            .Include(b => b.TransactionsProxy)
-            .ThenInclude(p => p.Transaction)
-            .AsSplitQuery()
+            .IncludeTransactions()
             .FirstOrDefault(b => b.Id == budgetId);
       }
 
@@ -61,9 +59,7 @@ namespace MyMoney.Application.Services
          return _repository
             .UserFiltered<Budget>(userId)
             .Where(b => month == b.Month && year == b.Year)
-            .Include(b => b.TransactionsProxy)
-            .ThenInclude(p => p.Transaction)
-            .AsSplitQuery()
+            .IncludeTransactions()
             .OrderBy(b => b.Name)
             .ToList();
       }

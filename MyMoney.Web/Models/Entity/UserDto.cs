@@ -1,9 +1,4 @@
-﻿using MyMoney.Core.Interfaces.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MyMoney.Infrastructure.Entities;
+﻿using MyMoney.Infrastructure.Entities;
 
 namespace MyMoney.Web.Models.Entity
 {
@@ -15,7 +10,7 @@ namespace MyMoney.Web.Models.Entity
 
       public UserDto()
       {
-         // Required for recieving dto
+         // Required for receiving dto
       }
 
       public UserDto(User user)

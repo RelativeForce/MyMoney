@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using MyMoney.Application.Interfaces;
 using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Data;
 using MyMoney.Core.Interfaces;
 using MyMoney.Infrastructure.Entities;
+using MyMoney.Infrastructure.EntityFramework;
 
 namespace MyMoney.Application.Services
 {
@@ -31,8 +31,7 @@ namespace MyMoney.Application.Services
                (ri.Start >= start && ri.Start <= end) || // Starts in the range
                (ri.End >= start && ri.End <= end) || // Ends in the range
                (ri.Start <= start && ri.End >= end)) // Spans the range
-            .Include(ri => ri.RealChildren)
-            .AsSplitQuery()
+            .IncludeChildren()
             .AsEnumerable()
             .Select(ri => ri.Children(i => i.Date >= start && i.Date <= end))
             .SelectMany(vi => vi);
@@ -47,8 +46,7 @@ namespace MyMoney.Application.Services
          var recurring = _repository
             .UserFiltered<RecurringIncome>(userId)
             .Where(ri => ri.Start <= date)
-            .Include(ri => ri.RealChildren)
-            .AsSplitQuery()
+            .IncludeChildren()
             .AsEnumerable()
             .Select(ri => ri.Children(i => i.Date <= date))
             .SelectMany(vi => vi)
@@ -116,8 +114,7 @@ namespace MyMoney.Application.Services
          
          return _repository
             .UserFiltered<RecurringIncome>(userId)
-            .Include(ri => ri.RealChildren)
-            .AsSplitQuery()
+            .IncludeChildren()
             .FirstOrDefault(ri => ri.Id == recurringIncomeId);
       }
 
