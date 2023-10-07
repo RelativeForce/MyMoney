@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using MyMoney.Application.Interfaces;
 using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Interfaces;
@@ -33,7 +32,6 @@ namespace MyMoney.Application.Services
             .Where(t => t.Date >= start && t.Date <= end)
             .IncludeBudgets()
             .IncludeIncomes()
-            .AsSplitQuery()
             .AsEnumerable();
 
          return basic;
@@ -80,7 +78,6 @@ namespace MyMoney.Application.Services
             .IncludeParent()
             .IncludeBudgets()
             .IncludeIncomes()
-            .AsSplitQuery()
             .FirstOrDefault(t => t.Id == transactionId);
       }
 

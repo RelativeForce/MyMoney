@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using MyMoney.Application.Interfaces;
 using MyMoney.Application.Interfaces.Services;
 using MyMoney.Core.Interfaces;
@@ -27,10 +26,7 @@ namespace MyMoney.Application.Services
          
          return _repository
             .UserFiltered<Income>(userId)
-            .Include(i => i.Parent)
-            .Include(i => i.TransactionsProxy)
-            .ThenInclude(t => t.Transaction)
-            .AsSplitQuery()
+            .IncludeTransactions()
             .FirstOrDefault(i => i.Id == incomeId);
       }
 
@@ -68,7 +64,6 @@ namespace MyMoney.Application.Services
             .Where(i => i.ParentId == null)
             .Where(i => i.Date <= start)
             .IncludeTransactions()
-            .AsSplitQuery()
             .OrderByDescending(i => i.Date)
             .Take(count)
             .AsEnumerable();
@@ -83,7 +78,6 @@ namespace MyMoney.Application.Services
             .Where(i => i.ParentId == null)
             .Where(i => i.Date >= start && i.Date <= end)
             .IncludeTransactions()
-            .AsSplitQuery()
             .AsEnumerable();
       }
 
